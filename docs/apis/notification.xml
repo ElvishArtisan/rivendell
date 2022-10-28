@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<article xmlns="http://docbook.org/ns/docbook" version="5.0">
+<article xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink">
 <info>
   <title>Rivendell Notification Protocol</title>
   <author>
@@ -14,26 +14,65 @@
 <sect1 xml:id="overview">
   <title>Overview</title>
   <para>
-    This defines the IP protocol used to notify Rivendell components of
-    changes to the state of database objects. Messages are send by means
-    of multicast UDP packets to port 20539.
+    This document defines the IP protocol used by Rivendell for real-time
+    communication between different modules and/or hosts. Messages are sent
+    by means of multicast UDP packets to port 20539. The IPv4 multicast group
+    address used is defined the in the SYSTEM.NOTIFICATION_ADDRESS database
+    field.
   </para>
   <para>
-    Update messages are textual, formatted as follows:
+    Update messages are textual, with individual fields delimited by
+    the ASCII SPACE character. They are formatted as follows:
   </para>
   <para>
-    NOTIFY <replaceable choice='req'>keyword</replaceable>
+    <replaceable choice='req'>keyword</replaceable>
+    <replaceable choice='req'>arg1</replaceable>
+    <replaceable choice='req'>arg2</replaceable>
+    <replaceable choice='opt'>[...]</replaceable>
+  </para>
+  <para>
+    where <replaceable>keyword</replaceable> defines the class of message.
+    The following classes are defined:
+  </para>
+  <variablelist>
+    <varlistentry>
+      <term>Notifications</term>
+      <listitem>
+	<para>
+	  Signals a change to a Rivendell database object.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>Catch Events</term>
+      <listitem>
+	<para>
+	  RDCatch state changes.
+	</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+
+</sect1>
+
+<sect1 xml:id="sect.notification_messages">
+  <title>Notification Messages</title>
+  <para>
+    Notification messages use the following format:
+  </para>
+  <para>
+    NOTIFY <replaceable choice='req'>type</replaceable>
     <replaceable choice='req'>action</replaceable>
     <replaceable choice='req'>id</replaceable>
   </para>
   <variablelist>
     <varlistentry>
       <term>
-	<replaceable>keyword</replaceable>
+	<replaceable>type</replaceable>
       </term>
       <listitem>
 	<para>
-	  The object type to which the message pertains.
+	  The database object type to which the message pertains.
 	</para>
       </listitem>
     </varlistentry>
@@ -90,16 +129,13 @@
       </listitem>
     </varlistentry>
   </variablelist>
-</sect1>
 
-<sect1 xml:id="sect.object_types">
-  <title>Object Types</title>
   <para>
-    The following object types are defined:
+    The following database object types are defined:
   </para>
-  <sect2 xml:id="sect.object_types.cart">
+  <sect2 xml:id="sect.notifications.object_types.cart">
     <title>Carts</title>
-    <table xml:id="table.object_types.carts" frame="all" pgwide="0">
+    <table xml:id="table.notifications.types.carts" frame="all" pgwide="0">
       <title>Cart Fields</title>
       <tgroup cols="2" align="left" colsep="1" rowsep="1">
 	<colspec colname="Field" colwidth="2.0*"/>
@@ -110,12 +146,12 @@
 	    <entry>Value</entry>
 	  </row>
 	  <row>
-	    <entry>Keyword</entry>
-	    <entry>CART</entry>
-	  </row>
-	  <row>
 	    <entry>Database Field</entry>
 	  <entry>CART.NUMBER</entry>
+	  </row>
+	  <row>
+	    <entry>Type</entry>
+	    <entry>CART</entry>
 	  </row>
 	  <row>
 	    <entry>Id Data Type</entry>
@@ -130,9 +166,9 @@
     </table>
   </sect2>
 
-  <sect2 xml:id="sect.object_types.log">
+  <sect2 xml:id="sect.notifications.types.log">
     <title>Logs</title>
-    <table xml:id="table.object_types.logs" frame="all" pgwide="0">
+    <table xml:id="table.notifications.types.logs" frame="all" pgwide="0">
       <title>Log Fields</title>
       <tgroup cols="2" align="left" colsep="1" rowsep="1">
 	<colspec colname="Field" colwidth="2.0*"/>
@@ -143,12 +179,12 @@
 	    <entry>Value</entry>
 	  </row>
 	  <row>
-	    <entry>Keyword</entry>
-	    <entry>LOG</entry>
-	  </row>
-	  <row>
 	    <entry>Database Field</entry>
 	    <entry>LOGS.NAME</entry>
+	  </row>
+	  <row>
+	    <entry>Type</entry>
+	    <entry>LOG</entry>
 	  </row>
 	  <row>
 	    <entry>Id Data Type</entry>
@@ -163,9 +199,9 @@
     </table>
   </sect2>
 
-  <sect2 xml:id="sect.object_types.pypad">
+  <sect2 xml:id="sect.notifications.types.pypad">
     <title>Pypad Instances</title>
-    <table xml:id="table.object_types.pypad" frame="all" pgwide="0">
+    <table xml:id="table.notifications.types.pypad" frame="all" pgwide="0">
       <title>Pypad Instance Fields</title>
       <tgroup cols="2" align="left" colsep="1" rowsep="1">
 	<colspec colname="Field" colwidth="2.0*"/>
@@ -176,12 +212,12 @@
 	    <entry>Value</entry>
 	  </row>
 	  <row>
-	    <entry>Keyword</entry>
-	    <entry>PYPAD</entry>
-	  </row>
-	  <row>
 	    <entry>Database Field</entry>
 	    <entry>PYPAD_INSTANCES.ID</entry>
+	  </row>
+	  <row>
+	    <entry>Type</entry>
+	    <entry>PYPAD</entry>
 	  </row>
 	  <row>
 	    <entry>Id Data Type</entry>
@@ -196,9 +232,9 @@
     </table>
   </sect2>
 
-  <sect2 xml:id="sect.object_types.dropbox">
+  <sect2 xml:id="sect.notifications.types.dropbox">
     <title>Dropbox Instances</title>
-    <table xml:id="table.object_types.dropbox" frame="all" pgwide="0">
+    <table xml:id="table.notifications.types.dropbox" frame="all" pgwide="0">
       <title>Dropbox Instance Fields</title>
       <tgroup cols="2" align="left" colsep="1" rowsep="1">
 	<colspec colname="Field" colwidth="2.0*"/>
@@ -209,12 +245,12 @@
 	    <entry>Value</entry>
 	  </row>
 	  <row>
-	    <entry>Keyword</entry>
-	    <entry>DROPBOX</entry>
-	  </row>
-	  <row>
 	    <entry>Database Field</entry>
 	    <entry>DROPBOXES.ID</entry>
+	  </row>
+	  <row>
+	    <entry>Type</entry>
+	    <entry>DROPBOX</entry>
 	  </row>
 	  <row>
 	    <entry>Id Data Type</entry>
@@ -229,9 +265,9 @@
     </table>
   </sect2>
 
-  <sect2 xml:id="sect.object_types.catch_event">
+  <sect2 xml:id="sect.notifications.types.catch_event">
     <title>RDCatch Event Instances</title>
-    <table xml:id="table.object_types.catch_event" frame="all" pgwide="0">
+    <table xml:id="table.notifications.types.catch_event" frame="all" pgwide="0">
       <title>RDCatch Event Fields</title>
       <tgroup cols="2" align="left" colsep="1" rowsep="1">
 	<colspec colname="Field" colwidth="2.0*"/>
@@ -242,12 +278,12 @@
 	    <entry>Value</entry>
 	  </row>
 	  <row>
-	    <entry>Keyword</entry>
-	    <entry>CATCH_EVENT</entry>
-	  </row>
-	  <row>
 	    <entry>Database Field</entry>
 	    <entry>RECORDINGS.ID</entry>
+	  </row>
+	  <row>
+	    <entry>Type</entry>
+	    <entry>CATCH_EVENT</entry>
 	  </row>
 	  <row>
 	    <entry>Id Data Type</entry>
@@ -262,9 +298,9 @@
     </table>
   </sect2>
 
-  <sect2 xml:id="sect.object_types.feed_item">
+  <sect2 xml:id="sect.notifications.types.feed_item">
     <title>RSS Feed Items</title>
-    <table xml:id="table.object_types.feed_item" frame="all" pgwide="0">
+    <table xml:id="table.notifications.types.feed_item" frame="all" pgwide="0">
       <title>RSS Feed Item Fields</title>
       <tgroup cols="2" align="left" colsep="1" rowsep="1">
 	<colspec colname="Field" colwidth="2.0*"/>
@@ -275,12 +311,12 @@
 	    <entry>Value</entry>
 	  </row>
 	  <row>
-	    <entry>Keyword</entry>
-	    <entry>FEED_ITEM</entry>
-	  </row>
-	  <row>
 	    <entry>Database Field</entry>
 	    <entry>PODCASTS.ID</entry>
+	  </row>
+	  <row>
+	    <entry>Type</entry>
+	    <entry>FEED_ITEM</entry>
 	  </row>
 	  <row>
 	    <entry>Id Data Type</entry>
@@ -295,9 +331,9 @@
     </table>
   </sect2>
 
-  <sect2 xml:id="sect.object_types.feed">
+  <sect2 xml:id="sect.notifications.types.feed">
     <title>RSS Feeds</title>
-    <table xml:id="table.object_types.feed" frame="all" pgwide="0">
+    <table xml:id="table.notifications.types.feed" frame="all" pgwide="0">
       <title>RSS Feed Fields</title>
       <tgroup cols="2" align="left" colsep="1" rowsep="1">
 	<colspec colname="Field" colwidth="2.0*"/>
@@ -308,12 +344,12 @@
 	    <entry>Value</entry>
 	  </row>
 	  <row>
-	    <entry>Keyword</entry>
-	    <entry>FEED</entry>
-	  </row>
-	  <row>
 	    <entry>Database Field</entry>
 	    <entry>FEEDS.KEY_NAME</entry>
+	  </row>
+	  <row>
+	    <entry>Type</entry>
+	    <entry>FEED</entry>
 	  </row>
 	  <row>
 	    <entry>Id Data Type</entry>
@@ -327,7 +363,166 @@
       </tgroup>
     </table>
   </sect2>
-
 </sect1>
 
+<sect1 xml:id="sect.rdcatch_messages">
+  <title>RDCatch Messages</title>
+  <para>
+    RDCatch messages use the following format:
+  </para>
+  <para>
+    CATCH <replaceable choice='req'>hostname</replaceable>
+    <replaceable choice='req'>operation</replaceable>
+    <replaceable choice='req'>arg1</replaceable>
+    <replaceable choice='opt'>[...]</replaceable>
+  </para>
+  <variablelist>
+    <varlistentry>
+      <term>
+	<replaceable>hostname</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  The name of the host originating the message. From STATIONS.NAME. 
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<replaceable>operation</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  The RDCatch operation. See the list below.
+	</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+
+  <sect2 xml:id="sect.rdcatch_event_processed">
+    <title>Deck Event Processed Operation</title>
+    <table xml:id="table.rdcatch_event_processed" frame="all" pgwide="0">
+      <title>RDCatch Event Fields</title>
+      <tgroup cols="2" align="left" colsep="1" rowsep="1">
+	<colspec colname="Field" colwidth="2.0*"/>
+	<colspec colname="Value" colwidth="2.0*"/>
+	<tbody>
+	  <row>
+	    <entry>Field</entry>
+	    <entry>Value</entry>
+	  </row>
+	  <row>
+	    <entry>Hostname</entry>
+	    <entry>String, from STATIONS.NAME</entry>
+	  </row>
+	  <row>
+	    <entry>Operation</entry>
+	    <entry>&quot;DE&quot;</entry>
+	  </row>
+	  <row>
+	    <entry>Deck Channel</entry>
+	    <entry>
+	      Integer. Record decks have values in the range 1-127,
+	      while play decks have values in the range 128-254.
+	    </entry>
+	  </row>
+	  <row>
+	    <entry>Event Number</entry>
+	    <entry>
+	    Integer. The value of CUT_EVENTS.NUMBER.
+	    </entry>
+	  </row>
+	</tbody>
+      </tgroup>
+    </table>
+  </sect2>
+
+  <sect2 xml:id="sect.rdcatch_deck_status">
+    <title>Deck Status Operation</title>
+    <table xml:id="table.rdcatch_deck_status" frame="all" pgwide="0">
+      <title>RDCatch Event Fields</title>
+      <tgroup cols="2" align="left" colsep="1" rowsep="1">
+	<colspec colname="Field" colwidth="2.0*"/>
+	<colspec colname="Value" colwidth="2.0*"/>
+	<tbody>
+	  <row>
+	    <entry>Field</entry>
+	    <entry>Value</entry>
+	  </row>
+	  <row>
+	    <entry>Hostname</entry>
+	    <entry>String, from STATIONS.NAME</entry>
+	  </row>
+	  <row>
+	    <entry>Operation</entry>
+	    <entry>&quot;ME&quot;</entry>
+	  </row>
+	  <row>
+	    <entry>Deck Channel</entry>
+	    <entry>
+	      Integer. Record decks have values in the range 1-127,
+	      while play decks have values in the range 128-254.
+	    </entry>
+	  </row>
+	  <row>
+	    <entry>Status</entry>
+	    <entry>
+	    Integer. Current status of the specified deck. See
+	    <xref linkend="sect.rdcatch_deck_status.deck_status_codes" />
+	    </entry>
+	  </row>
+	</tbody>
+      </tgroup>
+    </table>
+
+
+    <sect3 xml:id="sect.rdcatch_deck_status.deck_status_codes">
+    <title>Deck Status Codes</title>
+      <table frame="all">
+	<title>Deck Status Codes</title>
+	<tgroup cols="3" align="left" colsep="1" rowsep="1">
+	  <colspec colname="Code"  colwidth="1.0*" />
+	  <colspec colname="Meaning" colwidth="5.0*" />
+	  <colspec colname="RDDeck::Status" colwidth="5.0*" />
+	  <thead>
+	    <row>
+	      <entry>Code</entry>
+	      <entry>Meaning</entry>
+	      <entry>RDDeck::Status Value</entry>
+	    </row>
+	  </thead>
+	  <tbody>
+	    <row>
+	      <entry>0</entry>
+	      <entry>Offline</entry>
+	      <entry>RDDeck::Offline</entry>
+	    </row>
+	    <row>
+	      <entry>1</entry>
+	      <entry>Idle</entry>
+	      <entry>RDDeck::Idle</entry>
+	    </row>
+	    <row>
+	      <entry>2</entry>
+	      <entry>Ready</entry>
+	      <entry>RDDeck::Ready</entry>
+	    </row>
+	    <row>
+	      <entry>3</entry>
+	      <entry>Active (playing or recording)</entry>
+	      <entry>RDDeck::Recording</entry>
+	    </row>
+	    <row>
+	      <entry>4</entry>
+	      <entry>Waiting (for a GPI)</entry>
+	      <entry>RDDeck::Waiting</entry>
+	    </row>
+	  </tbody>
+	</tgroup>
+      </table>
+    </sect3>
+
+
+  </sect2>
+</sect1>
 </article>

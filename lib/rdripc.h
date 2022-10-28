@@ -2,7 +2,7 @@
 //
 // Connection to the Rivendell Interprocess Communication Daemon
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,20 +18,18 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qsqldatabase.h>
-#include <qstring.h>
-#include <qobject.h>
-#include <qlabel.h>
-#include <qtimer.h>
-#include <qtcpsocket.h>
+#ifndef RDRIPC_H
+#define RDRIPC_H
 
+#include <QLabel>
+#include <QTimer>
+#include <QTcpSocket>
+
+#include <rdcatchevent.h>
 #include <rdconfig.h>
 #include <rdmacro.h>
 #include <rdnotification.h>
 #include <rdstation.h>
-
-#ifndef RDRIPC_H
-#define RDRIPC_H
 
 #define RIPC_MAX_ARGS 100
 #define RIPC_MAX_LENGTH 256
@@ -58,6 +56,7 @@ class RDRipc : public QObject
   void sendNotification(RDNotification::Type type,
 			RDNotification::Action action,const QVariant &id);
   void sendNotification(const RDNotification &notify);
+  void sendCatchEvent(RDCatchEvent *evt);
   void sendOnairFlag();
   void sendRml(RDMacro *macro);
   void reloadHeartbeat();
@@ -72,6 +71,7 @@ class RDRipc : public QObject
   void gpiCartChanged(int matrix,int line,int off_cartnum,int on_cartnum);
   void gpoCartChanged(int matrix,int line,int off_cartnum,int on_cartnum);
   void notificationReceived(RDNotification *notify);
+  void catchEventReceived(RDCatchEvent *evt);
   void onairFlagChanged(bool state);
   void rmlReceived(RDMacro *rml);
   

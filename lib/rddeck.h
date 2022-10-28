@@ -30,7 +30,7 @@
 class RDDeck
 {
   public:
-   enum Status {Offline=0,Idle=1,Ready=2,Recording=3,Waiting=4};
+  enum Status {Offline=0,Idle=1,Ready=2,Recording=3,Waiting=4,LastStatus=5};
    RDDeck(QString station,unsigned channel,bool create=false);
    bool isActive() const;
    QString station() const;

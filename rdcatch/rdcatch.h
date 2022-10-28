@@ -82,7 +82,8 @@ class MainWidget : public RDMainWindow
   void statusChangedData(int,unsigned,RDDeck::Status,int,
 			 const QString &cutname);
   void monitorChangedData(int serial,unsigned chan,bool state);
-  void deckEventSentData(int serial,int chan,int number);
+  //  void deckEventSentData(int serial,int chan,int number);
+  void catchEventReceivedData(RDCatchEvent *evt);
   void scrollButtonData();
   void reportsButtonData();
   void headButtonData();

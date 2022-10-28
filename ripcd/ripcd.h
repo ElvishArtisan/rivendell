@@ -2,7 +2,7 @@
 //
 // Rivendell Interprocess Communication Daemon
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,26 +25,25 @@
 
 #include <vector>
 
-#include <qobject.h>
-#include <qstring.h>
-#include <qsignalmapper.h>
-#include <qtcpserver.h>
-#include <qtimer.h>
-#include <qudpsocket.h>
+#include <QSignalMapper>
+#include <QTcpServer>
+#include <QTimer>
+#include <QUdpSocket>
 
 #ifdef JACK
 #include <jack/jack.h>
 #endif  // JACK
 
+#include <rdcatchevent.h>
+#include <rdcodetrap.h>
+#include <rdmacro.h>
+#include <rdmatrix.h>
+#include <rdmulticaster.h>
 #include <rdnotification.h>
 #include <rdsocket.h>
-#include <rdttydevice.h>
-#include <rdcodetrap.h>
 #include <rdstation.h>
-#include <rdmatrix.h>
-#include <rdmacro.h>
-#include <rdmulticaster.h>
 #include <rdtty.h>
+#include <rdttydevice.h>
 
 #include <ripcd_connection.h>
 #include <globals.h>
@@ -95,6 +94,7 @@ class MainObject : public QObject
   QString StripPoint(QString);
   void LoadLocalMacros();
   void RunLocalNotifications(RDNotification *notify);
+  void RunLocalNotifications(RDCatchEvent *evt);
   void RunLocalMacros(RDMacro *rml);
   void LoadGpiTable();
   void SendGpi(int ch,int matrix);

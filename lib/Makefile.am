@@ -83,6 +83,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdcastsearch.cpp rdcastsearch.h\
                         rdcatch_conf.cpp rdcatch_conf.h\
                         rdcatch_connect.cpp rdcatch_connect.h\
+                        rdcatchevent.cpp rdcatchevent.h\
                         rdcutlistmodel.cpp rdcutlistmodel.h\
                         rdcddblookup.cpp rdcddblookup.h\
                         rdcdplayer.cpp rdcdplayer.h\
@@ -315,6 +316,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdcartfilter.cpp\
                           moc_rdcartslot.cpp\
                           moc_rdcatch_connect.cpp\
+                          moc_rdcatchevent.cpp\
                           moc_rdcddblookup.cpp\
                           moc_rdcdplayer.cpp\
                           moc_rdcdripper.cpp\

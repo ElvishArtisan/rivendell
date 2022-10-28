@@ -2,7 +2,7 @@
 //
 // Monitor a Rivendell RDCatch Deck
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -40,10 +40,8 @@ DeckMon::DeckMon(QString station,unsigned channel,QWidget *parent)
   mon_red_palette=palette();
   mon_red_palette.setColor(QPalette::Background,Qt::darkRed);
   mon_red_palette.setColor(QPalette::Foreground,Qt::white);
+  mon_red_stylesheet="color: white;background-color: darkRed;";
   mon_dark_palette=palette();
-  mon_dark_palette.
-    setColor(QPalette::Background,palette().color(QPalette::Active,QPalette::Mid));
-  mon_dark_palette.setColor(QPalette::Foreground,Qt::white);
 
   //
   // Station/Channel
@@ -91,15 +89,8 @@ DeckMon::DeckMon(QString station,unsigned channel,QWidget *parent)
   //
   // Event Indicator
   //
-  mon_event_label=new QLabel(this);
-  mon_event_label->setFont(labelFont());
-  mon_event_label->setAlignment(Qt::AlignCenter);
-  mon_event_label->setFrameStyle(QFrame::Panel|QFrame::Sunken);
-  mon_event_label->setPalette(mon_dark_palette);
-  mon_event_label->setText("--");
-  mon_event_timer=new QTimer(this);
-  mon_event_timer->setSingleShot(true);
-  connect(mon_event_timer,SIGNAL(timeout()),this,SLOT(eventResetData()));
+  mon_event_light=new EventLight(this);
+  mon_event_light->setFont(labelFont());
 
   //
   // Status
@@ -167,6 +158,7 @@ void DeckMon::setStatus(RDDeck::Status status,int id,const QString &cutname)
     mon_left_meter->setPeakBar(-10000);
     mon_right_meter->setPeakBar(-10000);
     mon_abort_button->setDisabled(true);
+    mon_event_light->setDisabled(true);
     return;
   }
   switch(status) {
@@ -176,6 +168,7 @@ void DeckMon::setStatus(RDDeck::Status status,int id,const QString &cutname)
     mon_left_meter->setPeakBar(-10000);
     mon_right_meter->setPeakBar(-10000);
     mon_abort_button->setDisabled(true);
+    mon_event_light->setDisabled(true);
     break;
 
   case RDDeck::Idle:
@@ -184,6 +177,7 @@ void DeckMon::setStatus(RDDeck::Status status,int id,const QString &cutname)
     mon_left_meter->setPeakBar(-10000);
     mon_right_meter->setPeakBar(-10000);
     mon_abort_button->setDisabled(true);
+    mon_event_light->setDisabled(true);
     break;
 
   case RDDeck::Ready:
@@ -192,6 +186,7 @@ void DeckMon::setStatus(RDDeck::Status status,int id,const QString &cutname)
     mon_left_meter->setPeakBar(-10000);
     mon_right_meter->setPeakBar(-10000);
     mon_abort_button->setEnabled(true);
+    mon_event_light->setDisabled(true);
     break;
 
   case RDDeck::Waiting:
@@ -200,6 +195,7 @@ void DeckMon::setStatus(RDDeck::Status status,int id,const QString &cutname)
     mon_left_meter->setPeakBar(-10000);
     mon_right_meter->setPeakBar(-10000);
     mon_abort_button->setEnabled(true);
+    mon_event_light->setDisabled(true);
     break;
 
   case RDDeck::Recording:
@@ -211,17 +207,12 @@ void DeckMon::setStatus(RDDeck::Status status,int id,const QString &cutname)
     }
     SetCutInfo(id,cutname);
     mon_abort_button->setEnabled(true);
+    mon_event_light->setEnabled(true);
+    break;
+
+  case RDDeck::LastStatus:
     break;
   }
-  mon_event_label->setText("--");
-}
-
-
-void DeckMon::setEvent(int number)
-{
-  mon_event_label->setText(QString::asprintf("%d",number));
-  mon_event_label->setPalette(mon_red_palette);
-  mon_event_timer->start(1000);
 }
 
 
@@ -237,6 +228,16 @@ void DeckMon::setRightMeter(int level)
 }
 
 
+void DeckMon::processCatchEvent(RDCatchEvent *evt)
+{
+  if((evt->hostName()==mon_station)&&(evt->deckChannel()==mon_channel)) {
+    if(evt->operation()==RDCatchEvent::DeckEventProcessedOp) {
+      mon_event_light->trigger(evt->eventNumber());
+    }
+  }
+}
+
+
 void DeckMon::monitorButtonData()
 {
   emit monitorClicked();
@@ -249,19 +250,13 @@ void DeckMon::abortButtonData()
 }
 
 
-void DeckMon::eventResetData()
-{
-  mon_event_label->setPalette(mon_dark_palette);
-}
-
-
 void DeckMon::resizeEvent(QResizeEvent *e)
 {
   mon_station_label->setGeometry(10,6,140,18);
   mon_monitor_button->setGeometry(155,5,40,20);
   mon_abort_button->setGeometry(200,5,40,20);
   mon_cut_label->setGeometry(245,6,e->size().width()-595,18);
-  mon_event_label->setGeometry(e->size().width()-345,6,20,18);
+  mon_event_light->setGeometry(e->size().width()-345,6,20,18);
   mon_status_label->setGeometry(e->size().width()-320,6,80,18);
   mon_left_meter->setGeometry(e->size().width()-235,6,225,10);
   mon_right_meter->setGeometry(e->size().width()-235,16,225,10);

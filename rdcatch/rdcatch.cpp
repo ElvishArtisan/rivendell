@@ -208,9 +208,11 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
     connect(catch_connect.back()->connector(),
 	    SIGNAL(eventPurged(int)),
 	    this,SLOT(eventPurgedData(int)));
+    /*
     connect(catch_connect.back()->connector(),
 	    SIGNAL(deckEventSent(int,int,int)),
 	    this,SLOT(deckEventSentData(int,int,int)));
+    */
     connect(catch_connect.back()->connector(),
 	    SIGNAL(heartbeatFailed(int)),
 	    this,SLOT(heartbeatFailedData(int)));
@@ -230,11 +232,12 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
       catch_connect.back()->chan.push_back(q1->value(0).toUInt());
       catch_connect.back()->mon_id.push_back(catch_monitor.size());
 
-
+      DeckMon *mon=new DeckMon(q->value(0).toString(),q1->value(0).toUInt(),
+			       catch_monitor_vbox);
+      connect(rda->ripc(),SIGNAL(catchEventReceived(RDCatchEvent *)),
+	      mon,SLOT(processCatchEvent(RDCatchEvent *)));
       catch_monitor.push_back(new CatchMonitor());
-      catch_monitor.back()->setDeckMon(new DeckMon(q->value(0).toString(),
-						   q1->value(0).toUInt(),
-						   catch_monitor_vbox));
+      catch_monitor.back()->setDeckMon(mon);
       catch_monitor.back()->setSerialNumber(catch_connect.size()-1);
       catch_monitor.back()->setChannelNumber(q1->value(0).toUInt());
       catch_monitor_vbox->addWidget(catch_monitor.back()->deckMon());
@@ -771,13 +774,20 @@ void MainWidget::monitorChangedData(int serial,unsigned chan,bool state)
   }
 }
 
-
+/*
 void MainWidget::deckEventSentData(int serial,int chan,int number)
 {
   int mon=GetMonitor(serial,chan);
   if(mon>=0) {
     catch_monitor[mon]->deckMon()->setEvent(number);
   }
+}
+*/
+
+void MainWidget::catchEventReceivedData(RDCatchEvent *evt)
+{
+  printf("catchEventReceivedData()\n");
+  printf("%s\n",evt->dump().toUtf8().constData());
 }
 
 

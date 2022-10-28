@@ -2,7 +2,7 @@
 //
 // Connection to the Rivendell Interprocess Communication Daemon
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -144,6 +144,13 @@ void RDRipc::sendNotification(RDNotification::Type type,
 void RDRipc::sendNotification(const RDNotification &notify)
 {
   SendCommand("ON "+notify.write()+"!");
+}
+
+
+void RDRipc::sendCatchEvent(RDCatchEvent *evt)
+{
+  SendCommand("ON "+evt->write()+"!");
+  rda->syslog(LOG_NOTICE,"sent catch event: %s\n",evt->write().toUtf8().constData());
 }
 
 
@@ -406,12 +413,24 @@ void RDRipc::DispatchCommand()
       msg+=QString(cmds[i])+" ";
     }
     msg=msg.left(msg.length()-1);
-    RDNotification *notify=new RDNotification();
-    if(!notify->read(msg)) {
+    QStringList f0=msg.split(" ",QString::SkipEmptyParts);
+    if(f0.at(0)=="NOTIFY") {
+      RDNotification *notify=new RDNotification();
+      if(!notify->read(msg)) {
+	delete notify;
+	return;
+      }
+      emit notificationReceived(notify);
       delete notify;
-      return;
     }
-    emit notificationReceived(notify);
-    delete notify;
+    if(f0.at(0)=="CATCH") {
+      RDCatchEvent *evt=new RDCatchEvent();
+      if(!evt->read(msg)) {
+	delete evt;
+	return;
+      }
+      emit catchEventReceived(evt);
+      delete evt;
+    }
   }
 }

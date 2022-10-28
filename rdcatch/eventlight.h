@@ -1,8 +1,8 @@
-// local_notifications.cpp
+// eventlight.h
 //
-// Process local notifications for ripcd(8)
+// Indicator light for cut events in rdcatch(1);
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,25 +18,31 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <signal.h>
+#ifndef EVENTLIGHT_H
+#define EVENTLIGHT_H
 
-#include <rdapplication.h>
-#include <rdconf.h>
+#include <QLabel>
+#include <QTimer>
 
-#include "ripcd.h"
-
-void MainObject::RunLocalNotifications(RDNotification *notify)
+class EventLight : public QLabel
 {
-  if((notify->type()==RDNotification::DropboxType)&&
-     (notify->id().toString()==rda->config()->stationName())) {
-    pid_t pid=RDGetPid(QString(RD_PID_DIR)+"/rdservice.pid");
-    if(pid>0) {
-      kill(pid,SIGUSR1);
-    }
-  }
-}
+  Q_OBJECT
+ public:
+  EventLight(QWidget *parent=0);
+  QSize sizeHint() const;
+  QSizePolicy sizePolicy() const;
+
+ public slots:
+  void trigger(int num);
+  void setEnabled(bool state);
+  void setDisabled(bool state);
+
+ private slots:
+  void reset();
+
+ private:
+  QTimer *d_timer;
+};
 
 
-void MainObject::RunLocalNotifications(RDCatchEvent *evt)
-{
-}
+#endif  // EVENTLIGHT_H

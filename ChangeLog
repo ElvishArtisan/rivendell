@@ -23565,3 +23565,7 @@
 	* Incremented the package version to 4.0.0rc0int1.
 2022-10-25 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the 'Rivendell Notification Protocol' API document.
+2022-10-28 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDCatchEvent' class.
+	* Reimplemented the 'Deck Event Processed' command using
+	'RDCatchEvent'.

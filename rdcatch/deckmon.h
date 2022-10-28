@@ -29,6 +29,8 @@
 #include <rdplaymeter.h>
 #include <rdrecording.h>
 
+#include "eventlight.h"
+
 class DeckMon : public RDFrame
 {
   Q_OBJECT
@@ -42,10 +44,10 @@ class DeckMon : public RDFrame
  public slots:
   void setMonitor(bool state);
   void setStatus(RDDeck::Status status,int id,const QString &cutname);
-  void setEvent(int number);
   void setLeftMeter(int level);
   void setRightMeter(int level);
-  
+  void processCatchEvent(RDCatchEvent *evt);
+
  signals:
   void monitorClicked();
   void abortClicked();
@@ -56,13 +58,12 @@ class DeckMon : public RDFrame
  private slots:
   void monitorButtonData();
   void abortButtonData();
-  void eventResetData();
 
  private:
   void SetCutInfo(int id,const QString &cutname);
   QLabel *mon_station_label;
   QLabel *mon_cut_label;
-  QLabel *mon_event_label;
+  EventLight *mon_event_light;
   QLabel *mon_status_label;
   QPushButton *mon_abort_button;
   QPushButton *mon_monitor_button;
@@ -73,7 +74,9 @@ class DeckMon : public RDFrame
   unsigned mon_channel;
   QTimer *mon_event_timer;
   QPalette mon_red_palette;
+  QString mon_red_stylesheet;
   QPalette mon_dark_palette;
+  QString mon_dark_stylesheet;
 };
 
 

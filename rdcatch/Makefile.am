@@ -52,6 +52,7 @@ dist_rdcatch_SOURCES = add_recording.cpp add_recording.h\
                        edit_recording.cpp edit_recording.h\
                        edit_switchevent.cpp edit_switchevent.h\
                        edit_upload.cpp edit_upload.h\
+                       eventlight.cpp eventlight.h\
                        eventwidget.cpp eventwidget.h\
                        globals.h\
                        list_reports.cpp list_reports.h\
@@ -69,6 +70,7 @@ nodist_rdcatch_SOURCES = moc_add_recording.cpp\
                          moc_edit_recording.cpp\
                          moc_edit_switchevent.cpp\
                          moc_edit_upload.cpp\
+                         moc_eventlight.cpp\
                          moc_eventwidget.cpp\
                          moc_list_reports.cpp\
                          moc_rdcatch.cpp\

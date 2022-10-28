@@ -1595,6 +1595,13 @@ void MainObject::SendMeterLevel(int deck,short levels[2])
 void MainObject::SendDeckEvent(int deck,int number)
 {
   BroadcastCommand(QString::asprintf("DE %d %d!",deck,number));
+
+  RDCatchEvent *evt=new RDCatchEvent();
+  evt->setOperation(RDCatchEvent::DeckEventProcessedOp);
+  evt->setDeckChannel(deck);
+  evt->setEventNumber(number);
+  rda->ripc()->sendCatchEvent(evt);
+  delete evt;
 }
 
 

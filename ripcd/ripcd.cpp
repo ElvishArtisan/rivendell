@@ -238,18 +238,31 @@ void MainObject::newConnectionData()
 void MainObject::notificationReceivedData(const QString &msg,
 					  const QHostAddress &addr)
 {
-  RDNotification *notify=new RDNotification();
-
-  if(!notify->read(msg)) {
-    rda->syslog(LOG_INFO,"invalid notification received from %s",
-		(const char *)addr.toString().toUtf8());
+  QStringList f0=msg.split(msg,QString::SkipEmptyParts);
+  if(msg.at(0)=="NOTIFY") {
+    RDNotification *notify=new RDNotification();
+    if(!notify->read(msg)) {
+      rda->syslog(LOG_INFO,"invalid notification received from %s",
+		  addr.toString().toUtf8().constData());
+      delete notify;
+      return;
+    }
+    RunLocalNotifications(notify);
+    BroadcastCommand("ON "+msg+"!");
     delete notify;
-    return;
   }
-  RunLocalNotifications(notify);
-  BroadcastCommand("ON "+msg+"!");
-
-  delete notify;
+  if(msg.at(0)=="CATCH") {
+    RDCatchEvent *evt=new RDCatchEvent();
+    if(!evt->read(msg)) {
+      rda->syslog(LOG_INFO,"invalid catch event received from %s",
+		  addr.toString().toUtf8().constData());
+      delete evt;
+      return;
+    }
+    RunLocalNotifications(evt);
+    BroadcastCommand("ON "+msg+"!");
+    delete evt;
+  }
 }
 
 
@@ -611,22 +624,43 @@ bool MainObject::DispatchCommand(RipcdConnection *conn)
       msg+=QString(cmds[i])+" ";
     }
     msg=msg.left(msg.length()-1);
-    RDNotification *notify=new RDNotification();
-    if(!notify->read(msg)) {
-      rda->syslog(LOG_INFO,"invalid notification processed");
+    QStringList f0=msg.split(" ",QString::SkipEmptyParts);
+    if(f0.at(0)=="NOTIFY") {
+      RDNotification *notify=new RDNotification();
+      if(!notify->read(msg)) {
+	rda->syslog(LOG_INFO,"invalid notification processed");
+	delete notify;
+	return true;
+      }
+      RunLocalNotifications(notify);
+      BroadcastCommand("ON "+msg+"!",conn->id());
+      ripcd_notification_mcaster->
+	send(msg,rda->system()->notificationAddress(),RD_NOTIFICATION_PORT);
+      rda->syslog(LOG_DEBUG,"sent notification: \"%s\" to %s:%d",
+		  msg.toUtf8().constData(),
+		  rda->system()->notificationAddress().
+		  toString().toUtf8().constData(),
+		  RD_NOTIFICATION_PORT);
       delete notify;
-      return true;
     }
-    RunLocalNotifications(notify);
-    BroadcastCommand("ON "+msg+"!",conn->id());
-    ripcd_notification_mcaster->
-      send(msg,rda->system()->notificationAddress(),RD_NOTIFICATION_PORT);
-    rda->syslog(LOG_DEBUG,"sent notification: \"%s\" to %s:%d",
-		(const char *)msg.toUtf8(),
-		(const char *)rda->system()->notificationAddress().
-		toString().toUtf8(),
-		RD_NOTIFICATION_PORT);
-    delete notify;
+    if(f0.at(0)=="CATCH") {
+      RDCatchEvent *evt=new RDCatchEvent();
+      if(!evt->read(msg)) {
+	rda->syslog(LOG_INFO,"invalid catch event processed");
+	delete evt;
+	return true;
+      }
+      RunLocalNotifications(evt);
+      BroadcastCommand("ON "+msg+"!",conn->id());
+      ripcd_notification_mcaster->
+	send(msg,rda->system()->notificationAddress(),RD_NOTIFICATION_PORT);
+      rda->syslog(LOG_DEBUG,"sent catch event: \"%s\" to %s:%d",
+		  msg.toUtf8().constData(),
+		  rda->system()->notificationAddress().
+		  toString().toUtf8().constData(),
+		  RD_NOTIFICATION_PORT);
+      delete evt;
+    }
   }
 
   if(cmds[0]=="TA") {  // Send Onair Flag State
