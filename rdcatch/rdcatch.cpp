@@ -805,10 +805,6 @@ void MainWidget::catchEventReceivedData(RDCatchEvent *evt)
   //  printf("%s\n",evt->dump().toUtf8().constData());
 
   switch(evt->operation()) {
-  case RDCatchEvent::PurgeEventOp:
-    catch_recordings_model->removeRecord(evt->eventId());
-    break;
-
   case RDCatchEvent::DeckStatusResponseOp:
     if(evt->eventId()>0) {
       if(!catch_recordings_model->refresh(evt->eventId())) {

@@ -23577,3 +23577,6 @@
 2022-10-30 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdcatch(1) that caused status indication
 	to break for record events.
+2022-10-30 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdcatch(1) to use the notification mechanism instead of
+	the 'PurgeEvent' command.

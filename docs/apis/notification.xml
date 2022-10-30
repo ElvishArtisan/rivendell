@@ -578,40 +578,6 @@
     </sect3>
   </sect2>
 
-  <sect2 xml:id="sect.rdcatch_purge_event">
-    <title>Purge Event Operation</title>
-    <para>
-      Emitted by <command>rdcatch</command><manvolnum>1</manvolnum> to
-      report purging of a one-shot event.
-    </para>
-    <table xml:id="table.rdcatch_purge_event" frame="all" pgwide="0">
-      <title>RDCatch Event Request Fields</title>
-      <tgroup cols="2" align="left" colsep="1" rowsep="1">
-	<colspec colname="Field" colwidth="2.0*"/>
-	<colspec colname="Value" colwidth="2.0*"/>
-	<tbody>
-	  <row>
-	    <entry>Field</entry>
-	    <entry>Value</entry>
-	  </row>
-	  <row>
-	    <entry>Hostname</entry>
-	    <entry>String, from STATIONS.NAME</entry>
-	  </row>
-	  <row>
-	    <entry>Operation</entry>
-	    <entry>Integer. 4 [RDCatchEvent::PurgeEventOp]</entry>
-	  </row>
-	  <row>
-	    <entry>Event ID</entry>
-	    <entry>
-	    Unsigned Integer, from RECORDINGS.ID.
-	    </entry>
-	  </row>
-	</tbody>
-      </tgroup>
-    </table>
-  </sect2>
 </sect1>
 
 </article>

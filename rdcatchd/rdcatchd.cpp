@@ -477,7 +477,6 @@ void MainObject::catchEventReceivedData(RDCatchEvent *evt)
 
   case RDCatchEvent::DeckEventProcessedOp:
   case RDCatchEvent::DeckStatusResponseOp:
-  case RDCatchEvent::PurgeEventOp:
   case RDCatchEvent::NullOp:
   case RDCatchEvent::LastOp:
     break;
@@ -2447,11 +2446,11 @@ void MainObject::PurgeEvent(int event)
 				catch_events[event].id());
   RDSqlQuery::apply(sql);
 
-  RDCatchEvent *evt=new RDCatchEvent();
-  evt->setOperation(RDCatchEvent::PurgeEventOp);
-  evt->setEventId(catch_events[event].id());
-  rda->ripc()->sendCatchEvent(evt);
-  delete evt;
+  RDNotification *notify=new RDNotification(RDNotification::CatchEventType,
+					    RDNotification::DeleteAction,
+					    catch_events[event].id());
+  rda->ripc()->sendNotification(*notify);
+  delete notify;
 
   switch(catch_events[event].type()) {
   case RDRecording::Recording:

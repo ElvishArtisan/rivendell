@@ -31,7 +31,7 @@ class RDCatchEvent
  public:
   enum Operation {NullOp=0,DeckEventProcessedOp=1,
 		  DeckStatusQueryOp=2,DeckStatusResponseOp=3,
-		  PurgeEventOp=4,LastOp=5};
+		  LastOp=5};
   RDCatchEvent(RDDeck::Status status);
   RDCatchEvent();
   Operation operation() const;
