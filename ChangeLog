@@ -23574,3 +23574,6 @@
 	'RDCatchEvent'.
 2022-10-30 Fred Gleason <fredg@paravelsystems.com>
 	* Reimplemented the 'PurgeEvent' command using 'RDCatchEvent'.
+2022-10-30 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdcatch(1) that caused status indication
+	to break for record events.

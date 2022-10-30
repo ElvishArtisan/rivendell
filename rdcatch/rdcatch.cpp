@@ -205,9 +205,11 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
     connect(catch_connect.back()->connector(),
 	    SIGNAL(meterLevel(int,int,int,int)),
 	    this,SLOT(meterLevelData(int,int,int,int)));
+    /*
     connect(catch_connect.back()->connector(),
 	    SIGNAL(eventUpdated(int)),
 	    this,SLOT(eventUpdatedData(int)));
+    */
     /*
     connect(catch_connect.back()->connector(),
 	    SIGNAL(eventPurged(int)),
@@ -799,18 +801,25 @@ void MainWidget::deckEventSentData(int serial,int chan,int number)
 
 void MainWidget::catchEventReceivedData(RDCatchEvent *evt)
 {
-  printf("catchEventReceivedData()\n");
-  printf("%s\n",evt->dump().toUtf8().constData());
+  //  printf("catchEventReceivedData()\n");
+  //  printf("%s\n",evt->dump().toUtf8().constData());
 
   switch(evt->operation()) {
   case RDCatchEvent::PurgeEventOp:
     catch_recordings_model->removeRecord(evt->eventId());
-    printf("removed event %u\n",evt->eventId());
+    break;
+
+  case RDCatchEvent::DeckStatusResponseOp:
+    if(evt->eventId()>0) {
+      if(!catch_recordings_model->refresh(evt->eventId())) {
+	catch_recordings_model->addRecord(evt->eventId());
+      }
+      catch_recordings_model->setRecordStatus(evt->eventId(),evt->deckStatus());
+    }
     break;
 
   case RDCatchEvent::DeckEventProcessedOp:
   case RDCatchEvent::DeckStatusQueryOp:
-  case RDCatchEvent::DeckStatusResponseOp:
   case RDCatchEvent::NullOp:
   case RDCatchEvent::LastOp:
     break;

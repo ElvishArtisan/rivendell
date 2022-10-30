@@ -470,8 +470,17 @@ void MainObject::catchEventReceivedData(RDCatchEvent *evt)
   rda->syslog(LOG_NOTICE,"catchEventReceivedData(): %s",
 	      evt->dump().toUtf8().constData());
 
-  if(evt->operation()==RDCatchEvent::DeckStatusQueryOp) {
+  switch(evt->operation()) {
+  case RDCatchEvent::DeckStatusQueryOp:
     SendFullEventResponse(rda->station()->address());
+    break;
+
+  case RDCatchEvent::DeckEventProcessedOp:
+  case RDCatchEvent::DeckStatusResponseOp:
+  case RDCatchEvent::PurgeEventOp:
+  case RDCatchEvent::NullOp:
+  case RDCatchEvent::LastOp:
+    break;
   }
   /*
     chan=cmds.at(1).toInt(&ok);
