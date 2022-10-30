@@ -2436,9 +2436,14 @@ void MainObject::PurgeEvent(int event)
 {
   QString sql=QString::asprintf("delete from `RECORDINGS` where `ID`=%d",
 				catch_events[event].id());
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  delete q;
-  BroadcastCommand(QString::asprintf("PE %d!",catch_events[event].id()));
+  RDSqlQuery::apply(sql);
+
+  RDCatchEvent *evt=new RDCatchEvent();
+  evt->setOperation(RDCatchEvent::PurgeEventOp);
+  evt->setEventId(catch_events[event].id());
+  rda->ripc()->sendCatchEvent(evt);
+  delete evt;
+
   switch(catch_events[event].type()) {
   case RDRecording::Recording:
     rda->syslog(LOG_INFO,"purged event %d, Type: recording, Cut: %s",

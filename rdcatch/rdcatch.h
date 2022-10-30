@@ -103,7 +103,7 @@ class MainWidget : public RDMainWindow
   void clockData();
   void midnightData();
   void eventUpdatedData(int id);
-  void eventPurgedData(int id);
+  //  void eventPurgedData(int id);
   void heartbeatFailedData(int id);
   void quitMainWidget();
 

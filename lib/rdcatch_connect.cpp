@@ -318,14 +318,14 @@ void RDCatchConnect::DispatchCommand()
     }
     emit eventUpdated(id);
   }
-
+  /*
   if(!strcmp(args[0],"PE")) {   // Purge Event
     if(sscanf(args[1],"%d",&id)!=1) {
       return;
     }
     emit eventPurged(id);
   }
-
+  */
   if(!strcmp(args[0],"HB")) {   // Heartbeat
     cc_heartbeat_timer->stop();
     cc_heartbeat_timer->start(CC_HEARTBEAT_INTERVAL);

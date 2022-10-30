@@ -141,6 +141,8 @@ bool RDCatchEvent::isValid() const
 
 bool RDCatchEvent::read(const QString &str)
 {
+  printf("RDCatchEvent::read(\"%s\")\n",str.toUtf8().constData());
+
   RDCatchEvent::Operation op=RDCatchEvent::NullOp;
   QStringList f0=str.split(" ");
   bool ok=false;
@@ -214,6 +216,19 @@ bool RDCatchEvent::read(const QString &str)
     }
   }
 
+  if(ok&&(op==RDCatchEvent::PurgeEventOp)) {
+    if(f0.size()!=4) {
+      return false;
+    }
+    unsigned id=f0.at(3).toUInt(&ok);
+    if(ok) {
+      d_operation=op;
+      d_host_name=f0.at(1);
+      d_event_id=id;
+      return true;
+    }
+  }
+
   return false;
 }
 
@@ -244,6 +259,10 @@ QString RDCatchEvent::write() const
     ret+=QString::asprintf(" %u",d_event_id);
     ret+=QString::asprintf(" %u",d_cart_number);
     ret+=QString::asprintf(" %d",d_cut_number);
+    break;
+
+  case RDCatchEvent::PurgeEventOp:
+    ret+=QString::asprintf(" %u",d_event_id);
     break;
 
   case RDCatchEvent::DeckStatusQueryOp:
@@ -286,6 +305,11 @@ QString RDCatchEvent::dump() const
     ret+=QString::asprintf("event id: %u\n",d_event_id);
     ret+=QString::asprintf("cart number: %u\n",d_cart_number);
     ret+=QString::asprintf("cut number: %d\n",d_cut_number);
+    break;
+
+  case RDCatchEvent::PurgeEventOp:
+    ret+="operation: RDCatchEvent::PurgeEventOpOp\n";
+    ret+=QString::asprintf("event id: %u\n",d_event_id);
     break;
 
   case RDCatchEvent::NullOp:

@@ -208,9 +208,11 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
     connect(catch_connect.back()->connector(),
 	    SIGNAL(eventUpdated(int)),
 	    this,SLOT(eventUpdatedData(int)));
+    /*
     connect(catch_connect.back()->connector(),
 	    SIGNAL(eventPurged(int)),
 	    this,SLOT(eventPurgedData(int)));
+    */
     /*
     connect(catch_connect.back()->connector(),
 	    SIGNAL(deckEventSent(int,int,int)),
@@ -799,6 +801,20 @@ void MainWidget::catchEventReceivedData(RDCatchEvent *evt)
 {
   printf("catchEventReceivedData()\n");
   printf("%s\n",evt->dump().toUtf8().constData());
+
+  switch(evt->operation()) {
+  case RDCatchEvent::PurgeEventOp:
+    catch_recordings_model->removeRecord(evt->eventId());
+    printf("removed event %u\n",evt->eventId());
+    break;
+
+  case RDCatchEvent::DeckEventProcessedOp:
+  case RDCatchEvent::DeckStatusQueryOp:
+  case RDCatchEvent::DeckStatusResponseOp:
+  case RDCatchEvent::NullOp:
+  case RDCatchEvent::LastOp:
+    break;
+  }
 }
 
 
@@ -1012,12 +1028,12 @@ void MainWidget::eventUpdatedData(int id)
   nextEventData();
 }
 
-
+/*
 void MainWidget::eventPurgedData(int id)
 {
   catch_recordings_model->removeRecord(id);
 }
-
+*/
 
 void MainWidget::heartbeatFailedData(int id)
 {
