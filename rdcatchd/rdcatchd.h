@@ -30,6 +30,7 @@
 #include <rdcart.h>
 #include <rdcatch_conf.h>
 #include <rdcatch_connect.h>
+#include <rdcatchevent.h>
 #include <rdcmd_switch.h>
 #include <rddeck.h>
 #include <rdmacro_event.h>
@@ -113,6 +114,7 @@ class MainObject : public QObject
   void updateXloadsData();
   void startupCartData();
   void notificationReceivedData(RDNotification *notify);
+  void catchEventReceivedData(RDCatchEvent *evt);
 
   //
   // batch.cpp
@@ -145,7 +147,9 @@ class MainObject : public QObject
   void StartDownloadEvent(int event);
   void StartUploadEvent(int event);
   bool ExecuteMacroCart(RDCart *cart,int id=-1,int event=-1);
-  void SendFullStatus(int ch);
+  void SendEventResponse(int chan,RDDeck::Status status,int id,
+			 const QString &cutname);
+  void SendFullEventResponse(const QHostAddress &addr);
   void SendMeterLevel(int deck,short levels[2]);
   void SendDeckEvent(int deck,int number);
   void ParseCommand(int);

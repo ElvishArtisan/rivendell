@@ -401,6 +401,10 @@
 
   <sect2 xml:id="sect.rdcatch_event_processed">
     <title>Deck Event Processed Operation</title>
+    <para>
+      Emitted by <command>rdcatchd</command><manvolnum>8</manvolnum> every
+      time a 'Cut Event' ['CE'] RML is processed.
+    </para>
     <table xml:id="table.rdcatch_event_processed" frame="all" pgwide="0">
       <title>RDCatch Event Fields</title>
       <tgroup cols="2" align="left" colsep="1" rowsep="1">
@@ -417,7 +421,7 @@
 	  </row>
 	  <row>
 	    <entry>Operation</entry>
-	    <entry>&quot;DE&quot;</entry>
+	    <entry>Integer. 1 [RDCatchEvent::DeckEventProcessedOp]</entry>
 	  </row>
 	  <row>
 	    <entry>Deck Channel</entry>
@@ -439,8 +443,12 @@
 
   <sect2 xml:id="sect.rdcatch_deck_status">
     <title>Deck Status Operation</title>
-    <table xml:id="table.rdcatch_deck_status" frame="all" pgwide="0">
-      <title>RDCatch Event Fields</title>
+    <para>
+      Emitted by <command>rdcatch</command><manvolnum>1</manvolnum> at
+      startup to request the current status of all decks.
+    </para>
+    <table xml:id="table.rdcatch_deck_status.request" frame="all" pgwide="0">
+      <title>RDCatch Event Request Fields</title>
       <tgroup cols="2" align="left" colsep="1" rowsep="1">
 	<colspec colname="Field" colwidth="2.0*"/>
 	<colspec colname="Value" colwidth="2.0*"/>
@@ -455,7 +463,34 @@
 	  </row>
 	  <row>
 	    <entry>Operation</entry>
-	    <entry>&quot;ME&quot;</entry>
+	    <entry>Integer. 2 [RDCatchEvent::DeckStatusQueryOp]</entry>
+	  </row>
+	</tbody>
+      </tgroup>
+    </table>
+
+    <para>
+      Emitted by <command>rdcatchd</command><manvolnum>8</manvolnum> whenever
+      the status of a deck changes, or as a set in response to a request.
+      (See <xref linkend="table.rdcatch_deck_status.request" />).
+    </para>
+    <table xml:id="table.rdcatch_deck_status.response" frame="all" pgwide="0">
+      <title>RDCatch Event Response Fields</title>
+      <tgroup cols="2" align="left" colsep="1" rowsep="1">
+	<colspec colname="Field" colwidth="2.0*"/>
+	<colspec colname="Value" colwidth="2.0*"/>
+	<tbody>
+	  <row>
+	    <entry>Field</entry>
+	    <entry>Value</entry>
+	  </row>
+	  <row>
+	    <entry>Hostname</entry>
+	    <entry>String, from STATIONS.NAME</entry>
+	  </row>
+	  <row>
+	    <entry>Operation</entry>
+	    <entry>Integer. 3 [RDCatchEvent::DeckStatusResponseOp]</entry>
 	  </row>
 	  <row>
 	    <entry>Deck Channel</entry>
@@ -469,12 +504,32 @@
 	    <entry>
 	    Integer. Current status of the specified deck. See
 	    <xref linkend="sect.rdcatch_deck_status.deck_status_codes" />
+	    for code point values.
+	    </entry>
+	  </row>
+	  <row>
+	    <entry>Event ID</entry>
+	    <entry>
+	    Unsigned Integer, from RECORDINGS.ID or 0 if deck is inactive.
+	    </entry>
+	  </row>
+	  <row>
+	    <entry>Cart Number</entry>
+	    <entry>
+	    Unsigned Integer, from CART.NUMBER or 0 if deck status is not
+	    3 [Active].
+	    </entry>
+	  </row>
+	  <row>
+	    <entry>Cut Number</entry>
+	    <entry>
+	      Integer, from cut part of CUTS.CUTNAME or 0 if deck status is
+	      not 3 [Active].
 	    </entry>
 	  </row>
 	</tbody>
       </tgroup>
     </table>
-
 
     <sect3 xml:id="sect.rdcatch_deck_status.deck_status_codes">
     <title>Deck Status Codes</title>

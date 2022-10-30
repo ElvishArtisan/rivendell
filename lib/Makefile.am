@@ -316,7 +316,6 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdcartfilter.cpp\
                           moc_rdcartslot.cpp\
                           moc_rdcatch_connect.cpp\
-                          moc_rdcatchevent.cpp\
                           moc_rdcddblookup.cpp\
                           moc_rdcdplayer.cpp\
                           moc_rdcdripper.cpp\

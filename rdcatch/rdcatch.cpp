@@ -159,7 +159,10 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   connect(rda->ripc(),SIGNAL(connected(bool)),
 	  this,SLOT(ripcConnectedData(bool)));
   connect(rda,SIGNAL(userChanged()),this,SLOT(ripcUserData()));
-  rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
+  rda->ripc()->
+    connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
+  connect(rda->ripc(),SIGNAL(catchEventReceived(RDCatchEvent *)),
+	  this,SLOT(catchEventReceivedData(RDCatchEvent *)));
 
   //
   // CAE Connection
@@ -732,6 +735,14 @@ void MainWidget::ripcUserData()
   catch_add_button->setEnabled(modification_allowed);
   catch_edit_button->setEnabled(modification_allowed);
   catch_delete_button->setEnabled(modification_allowed);
+
+  //
+  // Request Deck Statuses
+  //
+  RDCatchEvent *evt=new RDCatchEvent();
+  evt->setOperation(RDCatchEvent::DeckStatusQueryOp);
+  rda->ripc()->sendCatchEvent(evt);
+  delete evt;
 }
 
 

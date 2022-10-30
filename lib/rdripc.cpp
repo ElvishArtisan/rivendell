@@ -250,7 +250,7 @@ void RDRipc::DispatchCommand()
   RDMacro macro;
   QString str;
 
-  //  printf("RDRipc::DispatchCommand: %s\n",(const char *)ripc_accum.toUtf8());
+  //  printf("RDRipc::DispatchCommand: %s\n",ripc_accum.toUtf8().constData());
   QStringList cmds=ripc_accum.split(" ",QString::SkipEmptyParts);
 
   if(cmds.size()==0) {

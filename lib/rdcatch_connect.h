@@ -67,7 +67,7 @@ class RDCatchConnect : public QObject
   void meterLevel(int serial,int deck,int chan,int level);
   void eventUpdated(int id);
   void eventPurged(int id);
-  void deckEventSent(int serial,int chan,int number);
+  //  void deckEventSent(int serial,int chan,int number);
   void heartbeatFailed(int id);
   
  private slots:

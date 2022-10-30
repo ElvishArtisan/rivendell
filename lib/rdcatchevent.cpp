@@ -73,6 +73,42 @@ void RDCatchEvent::setHostName(const QString &str)
 }
 
 
+unsigned RDCatchEvent::eventId() const
+{
+  return d_event_id;
+}
+
+
+void RDCatchEvent::setEventId(unsigned id)
+{
+  d_event_id=id;
+}
+
+
+unsigned RDCatchEvent::cartNumber() const
+{
+  return d_cart_number;
+}
+
+
+void RDCatchEvent::setCartNumber(unsigned cartnum)
+{
+  d_cart_number=cartnum;
+}
+
+
+int RDCatchEvent::cutNumber() const
+{
+  return d_cut_number;
+}
+
+
+void RDCatchEvent::setCutNumber(int cutnum)
+{
+  d_cut_number=cutnum;
+}
+
+
 unsigned RDCatchEvent::deckChannel() const
 {
   return d_deck_channel;
@@ -105,6 +141,7 @@ bool RDCatchEvent::isValid() const
 
 bool RDCatchEvent::read(const QString &str)
 {
+  RDCatchEvent::Operation op=RDCatchEvent::NullOp;
   QStringList f0=str.split(" ");
   bool ok=false;
 
@@ -116,12 +153,12 @@ bool RDCatchEvent::read(const QString &str)
   if((f0.size()<3)||(f0.at(0)!="CATCH")) {
     return false;
   }
+  op=(RDCatchEvent::Operation)f0.at(2).toUInt(&ok);
 
   //
   // Operation-specific Fields
   //
-  if(f0.at(2)==
-     RDCatchEvent::operationString(RDCatchEvent::DeckEventProcessedOp)) {
+  if(ok&&(op==RDCatchEvent::DeckEventProcessedOp)) {
     if(f0.size()!=5) {
       return false;
     }
@@ -131,33 +168,52 @@ bool RDCatchEvent::read(const QString &str)
     }
     unsigned num=f0.at(4).toUInt(&ok);
     if(ok) {
-      d_operation=RDCatchEvent::DeckEventProcessedOp;
+      d_operation=op;
       d_host_name=f0.at(1);
       d_deck_channel=chan;
       d_event_number=num;
       return true;
     }
   }
-  /*
-  if(f0.at(2)==
-     RDCatchEvent::operationString(RDCatchEvent::DeckEventProcessedOp)) {
-    if(f0.size()!=5) {
+
+  if(ok&&(op==RDCatchEvent::DeckStatusQueryOp)) {
+    if(f0.size()!=3) {
       return false;
     }
-    unsigned chan=f0.at(3).toUInt(&ok);
-    if(!ok) {
+    d_operation=op;
+    d_host_name=f0.at(1);
+    return true;
+  }
+
+  if(ok&&(op==RDCatchEvent::DeckStatusResponseOp)) {
+    if(f0.size()!=8) {
       return false;
     }
-    unsigned val=f0.at(4).toUInt(&ok);
-    if(ok&&(val<RDDeck::LastStatus)) {
-      d_operation=RDCatchEvent::DeckEventProcessedOp;
-      d_host_name=f0.at(1);
-      d_deck_channel=chan;
-      d_deck_status=(RDDeck::Status)val;
-      return true;
+    int chan=f0.at(3).toUInt(&ok);
+    if(ok&&(chan<255)) {
+      RDDeck::Status status=(RDDeck::Status)f0.at(4).toUInt(&ok);
+      if(ok&&(status<RDDeck::LastStatus)) {
+	unsigned id=f0.at(5).toUInt(&ok);
+	if(ok) {
+	  unsigned cartnum=f0.at(6).toUInt(&ok);
+	  if(ok&&(cartnum<=RD_MAX_CART_NUMBER)) {
+	    int cutnum=f0.at(7).toInt(&ok);
+	    if(ok&&(cutnum>=0)&&(cutnum<=RD_MAX_CUT_NUMBER)) {
+	      d_operation=op;
+	      d_host_name=f0.at(1);
+	      d_deck_channel=chan;
+	      d_deck_status=status;
+	      d_event_id=id;
+	      d_cart_number=cartnum;
+	      d_cut_number=cutnum;
+	      return true;
+	    }
+	  }
+	}
+      }
     }
   }
-  */
+
   return false;
 }
 
@@ -171,17 +227,26 @@ QString RDCatchEvent::write() const
   //
   ret+="CATCH ";
   ret+=d_host_name+" ";
+  ret+=QString::asprintf("%u",d_operation);
 
   //
   // Operation-specific Fields
   //
-  ret+=RDCatchEvent::operationString(d_operation);
   switch(d_operation) {
   case RDCatchEvent::DeckEventProcessedOp:
     ret+=QString::asprintf(" %u",d_deck_channel);
     ret+=QString::asprintf(" %u",d_event_number);
     break;
 
+  case RDCatchEvent::DeckStatusResponseOp:
+    ret+=QString::asprintf(" %u",d_deck_channel);
+    ret+=QString::asprintf(" %u",d_deck_status);
+    ret+=QString::asprintf(" %u",d_event_id);
+    ret+=QString::asprintf(" %u",d_cart_number);
+    ret+=QString::asprintf(" %d",d_cut_number);
+    break;
+
+  case RDCatchEvent::DeckStatusQueryOp:
   case RDCatchEvent::NullOp:
   case RDCatchEvent::LastOp:
     break;
@@ -203,11 +268,24 @@ QString RDCatchEvent::dump() const
   //
   // Operation-specific Fields
   //
-  ret+="operation: "+RDCatchEvent::operationString(d_operation)+"\n";
   switch(d_operation) {
   case RDCatchEvent::DeckEventProcessedOp:
+    ret+="operation: RDCatchEvent::DeckEventProcessedOp\n";
     ret+=QString::asprintf("deck channel: %u\n",d_deck_channel);
     ret+=QString::asprintf("event number: %u\n",d_event_number);
+    break;
+
+  case RDCatchEvent::DeckStatusQueryOp:
+    ret+="operation: RDCatchEvent::DeckStatusQueryOp\n";
+    break;
+
+  case RDCatchEvent::DeckStatusResponseOp:
+    ret+="operation: RDCatchEvent::DeckStatusResponseOp\n";
+    ret+=QString::asprintf("deck channel: %u\n",d_deck_channel);
+    ret+=QString::asprintf("deck status: %u\n",d_deck_status);
+    ret+=QString::asprintf("event id: %u\n",d_event_id);
+    ret+=QString::asprintf("cart number: %u\n",d_cart_number);
+    ret+=QString::asprintf("cut number: %d\n",d_cut_number);
     break;
 
   case RDCatchEvent::NullOp:
@@ -223,25 +301,10 @@ void RDCatchEvent::clear()
 {
   d_operation=RDCatchEvent::NullOp;
   d_host_name=rda->station()->name();
+  d_event_id=0;
+  d_cart_number=0;
+  d_cut_number=0;
   d_deck_channel=0;
   d_event_number=0;
   d_deck_status=RDDeck::Offline;
-}
-
-
-QString RDCatchEvent::operationString(Operation op)
-{
-  QString ret="UNKNOWN";
-
-  switch(op) {
-  case RDCatchEvent::DeckEventProcessedOp:
-    ret="DE";
-    break;
-
-  case RDCatchEvent::NullOp:
-  case RDCatchEvent::LastOp:
-    break;
-  }
-
-  return ret;
 }

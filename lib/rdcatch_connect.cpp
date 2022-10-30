@@ -234,10 +234,10 @@ void RDCatchConnect::DispatchCommand()
   int deck;
   int channel;
   int level;
-  unsigned chan;
-  int status;
+  //  unsigned chan;
+  //  int status;
   int id;
-  int number;
+  //  int number;
 
   if(!strcmp(args[0],"PW")) {   // Password Response
     if(args[1][0]=='+') {
@@ -248,7 +248,7 @@ void RDCatchConnect::DispatchCommand()
       emit connected(cc_serial,false);
     }
   }
-
+  /*
   if(!strcmp(args[0],"DE")) {   // Deck Event
     if(sscanf(args[1],"%d",&deck)!=1) {
       return;
@@ -297,7 +297,7 @@ void RDCatchConnect::DispatchCommand()
     }
     return;
   }
-
+  */
   if(!strcmp(args[0],"RM")) {   // Meter Level
     if(sscanf(args[1],"%d",&deck)!=1) {
       return;

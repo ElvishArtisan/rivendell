@@ -23569,3 +23569,6 @@
 	* Added an 'RDCatchEvent' class.
 	* Reimplemented the 'Deck Event Processed' command using
 	'RDCatchEvent'.
+2022-10-30 Fred Gleason <fredg@paravelsystems.com>
+	* Reimplemented the 'Request Deck Status' command using
+	'RDCatchEvent'.

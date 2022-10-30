@@ -354,6 +354,7 @@ void RecordListModel::channelCounts(int chan,int *waiting,int *active,
 
       case RDDeck::Offline:
       case RDDeck::Idle:
+      case RDDeck::LastStatus:
 	break;
       }
     }
@@ -950,6 +951,7 @@ void RecordListModel::UpdateStatus(int line)
 {
   switch(d_statuses.at(line)) {
   case RDDeck::Offline:
+  case RDDeck::LastStatus:
     d_back_colors[line]=QColor(EVENT_ERROR_COLOR);
     break;
   

@@ -234,6 +234,11 @@ void DeckMon::processCatchEvent(RDCatchEvent *evt)
     if(evt->operation()==RDCatchEvent::DeckEventProcessedOp) {
       mon_event_light->trigger(evt->eventNumber());
     }
+
+    if(evt->operation()==RDCatchEvent::DeckStatusResponseOp) {
+      setStatus(evt->deckStatus(),evt->eventId(),
+		RDCut::cutName(evt->cartNumber(),evt->cutNumber()));
+    }
   }
 }
 
