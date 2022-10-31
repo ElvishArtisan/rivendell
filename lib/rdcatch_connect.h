@@ -49,7 +49,6 @@ class RDCatchConnect : public QObject
   void reloadDropboxes();
   
  public slots:
-  void stop(int deck);
   void monitor(int deck,bool state);
   void toggleMonitor(int deck);
   void setExitCode(int id,RDRecording::ExitCode code,const QString &msg);

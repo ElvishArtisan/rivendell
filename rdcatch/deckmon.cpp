@@ -251,7 +251,15 @@ void DeckMon::monitorButtonData()
 
 void DeckMon::abortButtonData()
 {
-  emit abortClicked();
+  RDCatchEvent *evt=new RDCatchEvent();
+
+  evt->setOperation(RDCatchEvent::StopDeckOp);
+  evt->setTargetHostName(mon_station);
+  evt->setDeckChannel(mon_channel);
+  rda->ripc()->sendCatchEvent(evt);
+
+  delete evt;
+  //  emit abortClicked();
 }
 
 

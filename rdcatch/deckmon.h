@@ -50,7 +50,7 @@ class DeckMon : public RDFrame
 
  signals:
   void monitorClicked();
-  void abortClicked();
+  //  void abortClicked();
 
  protected:
   void resizeEvent(QResizeEvent *e);

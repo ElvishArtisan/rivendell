@@ -90,12 +90,6 @@ void RDCatchConnect::reloadDropboxes()
 }
 
 
-void RDCatchConnect::stop(int deck)
-{
-  SendCommand(QString::asprintf("SR %d!",deck));
-}
-
-
 void RDCatchConnect::monitor(int deck,bool state)
 {
   SendCommand(QString::asprintf("MN %d %d!",deck,state));

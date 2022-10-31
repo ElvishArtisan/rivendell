@@ -460,6 +460,35 @@ void MainObject::catchEventReceivedData(RDCatchEvent *evt)
     SendFullEventResponse(rda->station()->address());
     break;
 
+  case RDCatchEvent::StopDeckOp:
+    if((evt->deckChannel()>0)&&(evt->deckChannel()<(MAX_DECKS+1))) {
+      switch(catch_record_deck_status[evt->deckChannel()-1]) {
+      case RDDeck::Recording:
+	catch_record_aborting[evt->deckChannel()-1]=true;
+	rda->cae()->stopRecord(catch_record_card[evt->deckChannel()-1],
+			       catch_record_stream[evt->deckChannel()-1]);
+	break;
+
+      case RDDeck::Waiting:
+	startTimerData(catch_record_id[evt->deckChannel()-1]);
+	break;
+
+      default:
+	break;
+      }
+    }
+    if((evt->deckChannel()>128)&&(evt->deckChannel()<(MAX_DECKS+129))) {
+      switch(catch_playout_deck_status[evt->deckChannel()-129]) {
+      case RDDeck::Recording:
+	rda->cae()->stopPlay(catch_playout_handle[evt->deckChannel()-129]);
+	break;
+
+      default:
+	break;
+      }
+    }
+    break;
+
   case RDCatchEvent::DeckEventProcessedOp:
   case RDCatchEvent::DeckStatusResponseOp:
   case RDCatchEvent::NullOp:
@@ -1844,82 +1873,8 @@ void MainObject::DispatchCommand(ServerConnection *conn)
     LoadDeckList();
   }
 
-  if((cmds.at(0)=="RE")&&(cmds.size()==2)) {  // Request Status
-    /*
-    chan=cmds.at(1).toInt(&ok);
-    if(!ok) {
-      EchoArgs(conn->id(),'-');
-      return;
-    }
-    if(chan==0) {
-      SendFullStatus(conn->id());
-      return;
-    }
-    chan--;
-    if(chan<MAX_DECKS) {
-      if(catch_record_deck_status[chan]==RDDeck::Offline) {
-	EchoArgs(conn->id(),'-');
-	return;
-      }
-      EchoCommand(conn->id(),QString::asprintf("RE %u %d %d!",
-					       chan+1,
-					       catch_record_deck_status[chan],
-					       catch_record_id[chan]));
-      EchoCommand(conn->id(),QString::asprintf("MN %u %d!",chan+1,
-					       catch_monitor_state[chan]));
-      return;
-    }
-    if((chan>=128)&&(chan<(MAX_DECKS+128))) {
-      if(catch_playout_deck_status[chan-128]==RDDeck::Offline) {
-	EchoArgs(conn->id(),'-');
-	return;
-      }
-      EchoCommand(conn->id(),
-		  QString::asprintf("RE %u %d %d!",
-				    chan+1,catch_playout_deck_status[chan-128],
-				    catch_playout_id[chan-128]));
-      return;
-    }
-    EchoArgs(conn->id(),'-');
-    */
-    return;
-  }
-
   if((cmds.at(0)=="RM")&&(cmds.size()==2)) {  // Enable/Disable Metering
     conn->setMeterEnabled(cmds.at(1).trimmed()!="0");
-  }
-
-  if((cmds.at(0)=="SR")&&(cmds.size()==2)) {  // Stop Recording
-    chan=cmds.at(1).toInt(&ok);
-    if(!ok) {
-      return;
-    }
-    if((chan>0)&&(chan<(MAX_DECKS+1))) {
-      switch(catch_record_deck_status[chan-1]) {
-      case RDDeck::Recording:
-	catch_record_aborting[chan-1]=true;
-	rda->cae()->stopRecord(catch_record_card[chan-1],
-			       catch_record_stream[chan-1]);
-	break;
-
-      case RDDeck::Waiting:
-	startTimerData(catch_record_id[chan-1]);
-	break;
-
-      default:
-	break;
-      }
-    }
-    if((chan>128)&&(chan<(MAX_DECKS+129))) {
-      switch(catch_playout_deck_status[chan-129]) {
-      case RDDeck::Recording:
-	rda->cae()->stopPlay(catch_playout_handle[chan-129]);
-	break;
-
-      default:
-	break;
-      }
-    }
   }
 
   if((cmds.at(0)=="MN")&&(cmds.size()==3)) {  // Monitor State

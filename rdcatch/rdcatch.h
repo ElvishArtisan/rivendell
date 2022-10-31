@@ -93,7 +93,7 @@ class MainWidget : public RDMainWindow
   void playedData(int);
   void playStoppedData(int);
   void meterLevelData(int,int,int,int);
-  void abortData(int);
+  //  void abortData(int);
   void monitorData(int);
   void selectionChangedData(const QItemSelection &before,
 			    const QItemSelection &after);
@@ -103,7 +103,6 @@ class MainWidget : public RDMainWindow
   void clockData();
   void midnightData();
   void eventUpdatedData(int id);
-  //  void eventPurgedData(int id);
   void heartbeatFailedData(int id);
   void quitMainWidget();
 

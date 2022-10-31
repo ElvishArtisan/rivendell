@@ -181,8 +181,8 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   catch_monitor_vbox->setSpacing(2);
   catch_monitor_area->setWidget(catch_monitor_vbox);
 
-  QSignalMapper *mapper=new QSignalMapper(this);
-  connect(mapper,SIGNAL(mapped(int)),this,SLOT(abortData(int)));
+  //  QSignalMapper *mapper=new QSignalMapper(this);
+  //  connect(mapper,SIGNAL(mapped(int)),this,SLOT(abortData(int)));
   QSignalMapper *mon_mapper=new QSignalMapper(this);
   connect(mon_mapper,SIGNAL(mapped(int)),this,SLOT(monitorData(int)));
   QString sql;
@@ -205,21 +205,6 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
     connect(catch_connect.back()->connector(),
 	    SIGNAL(meterLevel(int,int,int,int)),
 	    this,SLOT(meterLevelData(int,int,int,int)));
-    /*
-    connect(catch_connect.back()->connector(),
-	    SIGNAL(eventUpdated(int)),
-	    this,SLOT(eventUpdatedData(int)));
-    */
-    /*
-    connect(catch_connect.back()->connector(),
-	    SIGNAL(eventPurged(int)),
-	    this,SLOT(eventPurgedData(int)));
-    */
-    /*
-    connect(catch_connect.back()->connector(),
-	    SIGNAL(deckEventSent(int,int,int)),
-	    this,SLOT(deckEventSentData(int,int,int)));
-    */
     connect(catch_connect.back()->connector(),
 	    SIGNAL(heartbeatFailed(int)),
 	    this,SLOT(heartbeatFailedData(int)));
@@ -254,10 +239,6 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
 			    (rda->config()->stationName().toLower()==
 			     q->value(0).toString().toLower()));
       catch_monitor.back()->deckMon()->show();
-      mapper->setMapping(catch_monitor.back()->deckMon(),
-			 catch_monitor.size()-1);
-      connect(catch_monitor.back()->deckMon(),SIGNAL(abortClicked()),
-	      mapper,SLOT(map()));
       mon_mapper->setMapping(catch_monitor.back()->deckMon(),
 			     catch_monitor.size()-1);
       connect(catch_monitor.back()->deckMon(),SIGNAL(monitorClicked()),
@@ -789,15 +770,6 @@ void MainWidget::monitorChangedData(int serial,unsigned chan,bool state)
   }
 }
 
-/*
-void MainWidget::deckEventSentData(int serial,int chan,int number)
-{
-  int mon=GetMonitor(serial,chan);
-  if(mon>=0) {
-    catch_monitor[mon]->deckMon()->setEvent(number);
-  }
-}
-*/
 
 void MainWidget::catchEventReceivedData(RDCatchEvent *evt)
 {
@@ -816,6 +788,7 @@ void MainWidget::catchEventReceivedData(RDCatchEvent *evt)
 
   case RDCatchEvent::DeckEventProcessedOp:
   case RDCatchEvent::DeckStatusQueryOp:
+  case RDCatchEvent::StopDeckOp:
   case RDCatchEvent::NullOp:
   case RDCatchEvent::LastOp:
     break;
@@ -969,13 +942,6 @@ void MainWidget::meterLevelData(int serial,int deck,int l_r,int level)
 }
 
 
-void MainWidget::abortData(int id)
-{
-  catch_connect[catch_monitor[id]->serialNumber()]->connector()->
-    stop(catch_monitor[id]->channelNumber());
-}
-
-
 void MainWidget::monitorData(int id)
 {
   catch_connect[catch_monitor[id]->serialNumber()]->connector()->
@@ -1033,12 +999,6 @@ void MainWidget::eventUpdatedData(int id)
   nextEventData();
 }
 
-/*
-void MainWidget::eventPurgedData(int id)
-{
-  catch_recordings_model->removeRecord(id);
-}
-*/
 
 void MainWidget::heartbeatFailedData(int id)
 {

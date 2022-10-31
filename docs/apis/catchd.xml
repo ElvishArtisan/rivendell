@@ -131,36 +131,6 @@
     </variablelist>
   </sect2>
   
-  <sect2 xml:id="sect.privileged_commands.stop_deck">
-    <title>Stop Deck</title>
-    <para>
-      Stop active event.
-    </para>
-    <para>
-      <userinput>SR <replaceable>deck-num</replaceable>!</userinput>
-    </para>
-    <variablelist>
-      <varlistentry>
-	<term><replaceable>deck-num</replaceable></term>
-	<listitem>
-	  <para>
-	    The number of the deck to stop.
-	  </para>
-	</listitem>
-      </varlistentry>
-    </variablelist>
-  </sect2>
-
-  <sect2 xml:id="sect.privileged_commands.reload_heartbeat_configuration">
-    <title>Reload Heartbeat Configuration</title>
-    <para>
-      Reload the heartbeat configuration from the database.
-    </para>
-    <para>
-      <userinput>RH!</userinput>
-    </para>
-  </sect2>
-
   <sect2 xml:id="sect.privileged_commands.input_monitor_state">
     <title>Input Monitor State</title>
     <para>

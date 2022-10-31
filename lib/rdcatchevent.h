@@ -31,13 +31,15 @@ class RDCatchEvent
  public:
   enum Operation {NullOp=0,DeckEventProcessedOp=1,
 		  DeckStatusQueryOp=2,DeckStatusResponseOp=3,
-		  LastOp=5};
+		  StopDeckOp=5,LastOp=6};
   RDCatchEvent(RDDeck::Status status);
   RDCatchEvent();
   Operation operation() const;
   void setOperation(Operation op);
   QString hostName() const;
   void setHostName(const QString &str);
+  QString targetHostName() const;
+  void setTargetHostName(const QString &str);
   unsigned eventId() const;
   void setEventId(unsigned id);
   unsigned cartNumber() const;
@@ -59,6 +61,7 @@ class RDCatchEvent
  private:
   Operation d_operation;
   QString d_host_name;
+  QString d_target_host_name;
   unsigned d_event_id;
   unsigned d_cart_number;
   int d_cut_number;

@@ -73,6 +73,18 @@ void RDCatchEvent::setHostName(const QString &str)
 }
 
 
+QString RDCatchEvent::targetHostName() const
+{
+  return d_target_host_name;
+}
+
+
+void RDCatchEvent::setTargetHostName(const QString &str)
+{
+  d_target_host_name=str;
+}
+
+
 unsigned RDCatchEvent::eventId() const
 {
   return d_event_id;
@@ -141,7 +153,7 @@ bool RDCatchEvent::isValid() const
 
 bool RDCatchEvent::read(const QString &str)
 {
-  printf("RDCatchEvent::read(\"%s\")\n",str.toUtf8().constData());
+  //  printf("RDCatchEvent::read(\"%s\")\n",str.toUtf8().constData());
 
   RDCatchEvent::Operation op=RDCatchEvent::NullOp;
   QStringList f0=str.split(" ");
@@ -216,6 +228,17 @@ bool RDCatchEvent::read(const QString &str)
     }
   }
 
+  if(ok&&(op==RDCatchEvent::StopDeckOp)) {
+    if(f0.size()!=5) {
+      return false;
+    }    
+    d_operation=op;
+    d_host_name=f0.at(1);
+    d_target_host_name=f0.at(3);
+    d_deck_channel=f0.at(4).toInt();
+    return true;
+  }
+
   return false;
 }
 
@@ -251,6 +274,11 @@ QString RDCatchEvent::write() const
   case RDCatchEvent::DeckStatusQueryOp:
   case RDCatchEvent::NullOp:
   case RDCatchEvent::LastOp:
+    break;
+
+  case RDCatchEvent::StopDeckOp:
+    ret+=" "+d_target_host_name;
+    ret+=QString::asprintf(" %u",d_deck_channel);
     break;
   }
 
@@ -288,6 +316,12 @@ QString RDCatchEvent::dump() const
     ret+=QString::asprintf("event id: %u\n",d_event_id);
     ret+=QString::asprintf("cart number: %u\n",d_cart_number);
     ret+=QString::asprintf("cut number: %d\n",d_cut_number);
+    break;
+
+  case RDCatchEvent::StopDeckOp:
+    ret+="operation: RDCatchEvent::DeckEventProcessedOp\n";
+    ret+="target hostname: "+d_target_host_name+"\n";
+    ret+=QString::asprintf("deck channel: %u\n",d_deck_channel);
     break;
 
   case RDCatchEvent::NullOp:
