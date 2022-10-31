@@ -32,7 +32,6 @@ bin_PROGRAMS = nexgen_filter\
                panel_copy\
                rdcatch_copy\
                rivendell_filter\
-               sas_filter\
                wings_filter
 
 dist_nexgen_filter_SOURCES = nexgen_filter.cpp nexgen_filter.h
@@ -50,10 +49,6 @@ rdcatch_copy_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@
 dist_rivendell_filter_SOURCES = rivendell_filter.cpp rivendell_filter.h
 nodist_rivendell_filter_SOURCES = moc_rivendell_filter.cpp
 rivendell_filter_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@
-
-dist_sas_filter_SOURCES = sas_filter.cpp sas_filter.h
-nodist_sas_filter_SOURCES = moc_sas_filter.cpp
-sas_filter_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@
 
 dist_wings_filter_SOURCES = wings_filter.cpp wings_filter.h
 nodist_wings_filter_SOURCES = moc_wings_filter.cpp

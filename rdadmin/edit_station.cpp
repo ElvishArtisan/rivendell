@@ -691,7 +691,6 @@ void EditStation::okData()
   station_station->setHttpStation(station_http_station_box->currentText());
   station_station->setCaeStation(station_cae_station_box->currentText());
   station_catch_connect->reloadHeartbeat();
-  station_catch_connect->reloadOffset();
 
   //
   // Allow the event loop to run so the packets get delivered
@@ -728,7 +727,6 @@ void EditStation::editDeckData()
 {
   EditDecks *edit_conf=new EditDecks(station_station,station_cae_station,this);
   if(edit_conf->exec()==0) {
-    station_catch_connect->reload();
   }
   delete edit_conf;
 }

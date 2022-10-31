@@ -23580,3 +23580,12 @@
 2022-10-30 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored rdcatch(1) to use the notification mechanism instead of
 	the 'PurgeEvent' command.
+2022-10-31 Fred Gleason <fredg@paravelsystems.com>
+	* Removed vestigal support for the 'Reload Deck List' catch
+	protocol command.
+	* Removed vestigal support for the 'Reload Event List' catch
+	protocol command.
+	* Removed vestigal support for the 'Reload Event List' catch
+	protocol command.
+	* Removed vestigal support for the 'Reload Time Offset' catch
+	protocol command.

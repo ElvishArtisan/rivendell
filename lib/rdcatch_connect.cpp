@@ -106,30 +106,6 @@ void RDCatchConnect::reloadDropboxes()
 }
 
 
-void RDCatchConnect::reset()
-{
-  SendCommand("RS!");
-}
-
-
-void RDCatchConnect::reload()
-{
-  SendCommand("RD!");
-}
-
-
-void RDCatchConnect::refresh()
-{
-  SendCommand("RE 0!");
-}
-
-
-void RDCatchConnect::reloadOffset()
-{
-  SendCommand("RO!");
-}
-
-
 void RDCatchConnect::stop(int deck)
 {
   SendCommand(QString::asprintf("SR %d!",deck));

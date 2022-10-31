@@ -50,10 +50,6 @@ class RDCatchConnect : public QObject
   void reloadDropboxes();
   
  public slots:
-  void reset();
-  void reload();
-  void refresh();
-  void reloadOffset();
   void stop(int deck);
   void monitor(int deck,bool state);
   void toggleMonitor(int deck);
