@@ -2,7 +2,7 @@
 //
 // Connect to the Rivendell Netcatcher Daemon.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -81,12 +81,6 @@ int RDCatchConnect::currentId(unsigned chan) const
 void RDCatchConnect::enableMetering(bool state)
 {
   SendCommand(QString::asprintf("RM %d!",state));
-}
-
-
-void RDCatchConnect::reloadHeartbeat()
-{
-  SendCommand("RH!");
 }
 
 

@@ -690,7 +690,6 @@ void EditStation::okData()
     setEnforcePanelSetup(!station_panel_enforce_box->isChecked());
   station_station->setHttpStation(station_http_station_box->currentText());
   station_station->setCaeStation(station_cae_station_box->currentText());
-  station_catch_connect->reloadHeartbeat();
 
   //
   // Allow the event loop to run so the packets get delivered

@@ -109,8 +109,6 @@ class MainObject : public QObject
   void meterData();
   void eventFinishedData(int id);
   void freeEventsData();
-  //  void heartbeatData();
-  void sysHeartbeatData();
   void updateXloadsData();
   void startupCartData();
   void notificationReceivedData(RDNotification *notify);
@@ -198,7 +196,6 @@ class MainObject : public QObject
   int16_t tcp_port;
   QTcpServer *server;
   RDCatchConnect *catch_connect;
-
   QList<ServerConnection *> catch_connections;
   QSignalMapper *catch_ready_mapper;
   QSignalMapper *catch_kill_mapper;
@@ -212,11 +209,9 @@ class MainObject : public QObject
   int catch_record_id[MAX_DECKS];
   QString catch_record_name[MAX_DECKS];
   bool catch_record_aborting[MAX_DECKS];
-
   unsigned catch_record_pending_cartnum[MAX_DECKS];
   unsigned catch_record_pending_cutnum[MAX_DECKS];
   unsigned catch_record_pending_maxlen[MAX_DECKS];
-
   bool catch_playout_status[MAX_DECKS];
   int catch_playout_card[MAX_DECKS];
   int catch_playout_stream[MAX_DECKS];
@@ -227,10 +222,8 @@ class MainObject : public QObject
   int catch_playout_id[MAX_DECKS];
   QString catch_playout_name[MAX_DECKS];
   EventPlayer *catch_playout_event_player[MAX_DECKS];
-
   int catch_monitor_port[MAX_DECKS];
   bool catch_monitor_state[MAX_DECKS];
-  
   unsigned catch_record_threshold[MAX_DECKS];
   QHostAddress catch_swaddress[MAX_DECKS];
   int catch_swmatrix[MAX_DECKS];
@@ -245,9 +238,6 @@ class MainObject : public QObject
   int catch_macro_event_id[RDCATCHD_MAX_MACROS];
   QSignalMapper *catch_event_mapper;
   std::vector<CatchEvent> catch_events;
-  QTimer *catch_heartbeat_timer;
-  unsigned catch_heartbeat_cart;
-
   int catch_default_format;
   int catch_default_channels;
   int catch_default_layer;

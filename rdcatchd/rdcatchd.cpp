@@ -386,14 +386,6 @@ MainObject::MainObject(QObject *parent)
   timer->start(RD_METER_UPDATE_INTERVAL);
 
   //
-  // Heartbeat Timer
-  //
-  catch_heartbeat_timer=new QTimer(this);
-  connect(catch_heartbeat_timer,SIGNAL(timeout()),
-	  this,SLOT(sysHeartbeatData()));
-  LoadHeartbeat();
-
-  //
   // Mark Interrupted Events
   //
   sql=QString("update `RECORDINGS` set ")+
@@ -1266,16 +1258,6 @@ void MainObject::freeEventsData()
 }
 
 
-void MainObject::sysHeartbeatData()
-{
-  RDCart *cart=new RDCart(catch_heartbeat_cart);
-  if(cart->exists()) {
-    ExecuteMacroCart(cart);
-  }
-  delete cart;
-}
-
-
 void MainObject::updateXloadsData()
 {
   std::vector<int>::iterator it;
@@ -1940,10 +1922,6 @@ void MainObject::DispatchCommand(ServerConnection *conn)
     }
   }
 
-  if(cmds.at(0)=="RH") {  // Reload Heartbeat Configuration
-    LoadHeartbeat();
-  }
-
   if((cmds.at(0)=="MN")&&(cmds.size()==3)) {  // Monitor State
     chan=cmds.at(1).toInt(&ok);
     if(!ok) {
@@ -2485,28 +2463,6 @@ void MainObject::PurgeEvent(int event)
   catch_engine->removeEvent(catch_events[event].id());
   std::vector<CatchEvent>::iterator it=catch_events.begin()+event;
   catch_events.erase(it,it+1);
-}
-
-
-void MainObject::LoadHeartbeat()
-{
-  if(catch_heartbeat_timer->isActive()) {
-    catch_heartbeat_timer->stop();
-  }
-  QString sql=QString("select ")+
-    "`HEARTBEAT_CART`,"+      // 00
-    "`HEARTBEAT_INTERVAL` "+  // 01
-    "from `STATIONS` where "+
-    "`NAME`='"+RDEscapeString(rda->station()->name())+"'";
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  if(q->first()) {
-    if((q->value(0).toUInt()!=0)&&(q->value(1).toUInt()!=0)) {
-      catch_heartbeat_cart=q->value(0).toUInt();
-      sysHeartbeatData();
-      catch_heartbeat_timer->start(q->value(1).toUInt());
-    }
-  }
-  delete q;
 }
 
 
