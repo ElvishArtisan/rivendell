@@ -63,13 +63,10 @@ class RDCatchConnect : public QObject
   void meterLevel(int serial,int deck,int chan,int level);
   void eventUpdated(int id);
   void eventPurged(int id);
-  //  void deckEventSent(int serial,int chan,int number);
-  void heartbeatFailed(int id);
   
  private slots:
   void connectedData();
   void readyData();
-  void heartbeatTimeoutData();
   
  private:
   void SendCommand(QString cmd);
@@ -86,7 +83,6 @@ class RDCatchConnect : public QObject
   int cc_record_id[MAX_DECKS];
   int cc_play_id[MAX_DECKS];
   int cc_serial;
-  QTimer *cc_heartbeat_timer;
   bool cc_heartbeat_valid;
   bool cc_monitor_state[MAX_DECKS];
 };

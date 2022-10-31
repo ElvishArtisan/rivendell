@@ -66,41 +66,6 @@
   <para>
     No authentication is required to execute these.
   </para>
-  <sect2 xml:id="sect.unprivileged_commands.drop_connection">
-    <title>Drop Connection</title>
-    <para>
-      End the session and drop the TCP connection.
-    </para>
-    <para>
-      <userinput>DC!</userinput>
-    </para>
-  </sect2>
-
-  <sect2 xml:id="sect.unprivileged_commands.send_password">
-    <title>Send Password</title>
-    <para>
-      Send a password to the server for authentication.
-    </para>
-    <para>
-      <userinput>PW <replaceable>passwd</replaceable>!</userinput>
-    </para>
-    <variablelist>
-      <varlistentry>
-	<term>
-	  <replaceable>passwd</replaceable>
-	</term>
-	<listitem>
-	  A password to be supplied before granting the client access.
-	</listitem>
-      </varlistentry>
-    </variablelist>
-    <para>
-      <command>rdcatchd</command><manvolnum>8</manvolnum> will respond
-      with <computeroutput>PW +!</computeroutput> or
-      <computeroutput>PW -!</computeroutput>, indicating the success or
-      failure of the authentication.
-    </para>
-  </sect2>
 </sect1>
 
 <sect1 xml:id="sect.privileged_commands">
@@ -109,157 +74,6 @@
      A connection must be authenticated before these can be executed.
   </para>
 
-  <sect2 xml:id="sect.privileged_commands.deck_event_processed">
-    <title>Deck Event Processed</title>
-    <para>
-      Sent by RDCatchd whenever a deck event is processed.
-    </para>
-    <para>
-      <userinput>DE <replaceable>deck-num</replaceable>
-      <replaceable>event-num</replaceable>!</userinput>
-    </para>
-    <variablelist>
-      <varlistentry>
-	<term><replaceable>deck-num</replaceable></term>
-	<listitem>
-	  <para>
-	    The number of the deck originating the event. Record decks have
-	    numbers in the range <computeroutput>1</computeroutput> through
-	    <computeroutput>127</computeroutput>, while Play decks have
-	    numbers in the range <computeroutput>128</computeroutput> through
-	    <computeroutput>254</computeroutput>.
-	  </para>
-	</listitem>
-      </varlistentry>
-      <varlistentry>
-	<term><replaceable>event-num</replaceable></term>
-	<listitem>
-	  <para>
-	    The new event state of the specified deck.
-	  </para>
-	</listitem>
-      </varlistentry>
-    </variablelist>
-    <para>
-      See <xref linkend="sect.privileged_commands.request_deck_status" /> for
-      the list of possible deck event states.
-    </para>
-  </sect2>
-  <sect2 xml:id="sect.privileged_commands.reload_deck_list">
-    <title>Reload Deck List</title>
-    <para>
-      Reload the record/play deck configuration.
-    </para>
-    <para>
-      <userinput>RD!</userinput>
-    </para>
-    <para>
-      <command>rdcatchd</command><manvolnum>8</manvolnum> will respond with
-      <computeroutput>RS +!</computeroutput>.
-    </para>
-  </sect2>
-  <sect2 xml:id="sect.privileged_commands.reload_event_list">
-    <title>Reload Event List</title>
-    <para>
-      Reload the list of scheduled events.
-    </para>
-    <para>
-      <userinput>RS!</userinput>
-    </para>
-    <para>
-      <command>rdcatchd</command><manvolnum>8</manvolnum> will respond with
-      <computeroutput>RS +!</computeroutput>.
-    </para>
-  </sect2>
-  <sect2 xml:id="sect.privileged_commands.request_deck_status">
-    <title>Request Deck Status</title>
-    <para>
-      Request the current deck status.
-    </para>
-    <para>
-      <userinput>RE <replaceable>deck-num</replaceable>!</userinput>
-    </para>
-    <variablelist>
-      <varlistentry>
-	<term><replaceable>deck-num</replaceable></term>
-	<listitem>
-	  <para>
-	    The number of the deck for which to return status.
-	  </para>
-	</listitem>
-      </varlistentry>
-    </variablelist>
-    <para>
-      If <replaceable>deck-num</replaceable> is greater than zero,
-      <command>rdcatchd</command><manvolnum>8</manvolnum> will respond with 
-      <computeroutput>RE <replaceable>deck-num</replaceable> 
-      <replaceable>status</replaceable> <replaceable>id</replaceable>
-      <replaceable>cutname</replaceable>!</computeroutput>
-    </para>
-    <variablelist>
-      <varlistentry>
-	<term><replaceable>deck-num</replaceable></term>
-	<listitem>
-	  <para>
-	    Channel number
-	  </para>
-	</listitem>
-      </varlistentry>
-      <varlistentry>
-	<term><replaceable>status</replaceable></term>
-	<listitem>
-	  <para>
-	    The current status of the deck. Possible values are:
-	  </para>
-	  <para>
-	    <table frame="all">
-	      <title>Deck Status Codes</title>
-	      <tgroup cols="2" align="left" colsep="1" rowsep="1">
-		<colspec colname="Code"  colwidth="1.0*" />
-		<colspec colname="Meaning" colwidth="10.0*" />
-		<thead>
-		  <row><entry>Code</entry><entry>Meaning</entry></row>
-		</thead>
-		<tbody>
-		  <row><entry>0</entry><entry>Offline</entry></row>
-		  <row><entry>1</entry><entry>Idle</entry></row>
-		  <row><entry>2</entry><entry>Ready</entry></row>
-		  <row><entry>3</entry><entry>Active (playing or recording)</entry></row>
-		  <row><entry>4</entry><entry>Waiting (for a GPI)</entry></row>
-		</tbody>
-	      </tgroup>
-	    </table>
-	  </para>
-	</listitem>
-      </varlistentry>
-      <varlistentry>
-	<term><replaceable>event-id</replaceable></term>
-	<listitem>
-	  <para>
-	    ID number of current event (from RECORDINGS table)
-	  </para>
-	</listitem>
-      </varlistentry>
-      <varlistentry>
-	<term><replaceable>cutname</replaceable></term>
-	<listitem>
-	  <para>
-	    The cutname of the event (present only for
-	    <replaceable>status</replaceable>==<computeroutput>3</computeroutput>).
-	  </para>
-	</listitem>
-      </varlistentry>
-    </variablelist>
-    <para>
-      If <replaceable>channel</replaceable> is zero,
-      <command>rdcatchd</command><manvolnum>8</manvolnum> will respond for
-      every event whose status is non-idle.
-    </para>
-    <para>
-      An <computeroutput>RE</computeroutput> packet will also be sent
-      automatically to all active connections upon any change of deck status.
-    </para>
-  </sect2>
   <sect2 xml:id="sect.privileged_commands.enable_metering">
     <title>Enable Metering</title>
     <para>
@@ -337,41 +151,6 @@
     </variablelist>
   </sect2>
 
-  <sect2 xml:id="sect.privileged_commands.purge_event">
-    <title>Purge Event</title>
-    <para>
-      Report purging of one-shot event.
-    </para>
-    <para>
-      <userinput>PE <replaceable>event-num</replaceable>!</userinput>
-    </para>
-    <variablelist>
-      <varlistentry>
-	<term><replaceable>event-num</replaceable></term>
-	<listitem>
-	  <para>
-	    The number of the purged event.
-	  </para>
-	</listitem>
-      </varlistentry>
-    </variablelist>
-    <para>
-      Received upon completion of a one-shot event by
-      <command>rdcatchd</command><manvolnum>8</manvolnum> to indicate that
-      the event has been purged.
-    </para>
-  </sect2>
-
-  <sect2 xml:id="sect.privileged_commands.reload_time_offset">
-    <title>Reload Time Offset</title>
-    <para>
-      Reload the time offset value from the database.
-    </para>
-    <para>
-      <userinput>RO!</userinput>
-    </para>
-  </sect2>
-
   <sect2 xml:id="sect.privileged_commands.reload_heartbeat_configuration">
     <title>Reload Heartbeat Configuration</title>
     <para>
@@ -379,16 +158,6 @@
     </para>
     <para>
       <userinput>RH!</userinput>
-    </para>
-  </sect2>
-
-  <sect2 xml:id="sect.privileged_commands.heartbeat_pulse">
-    <title>Heartbeat Pulse</title>
-    <para>
-      Heartbeat Pulse, for connection keep-alive.
-    </para>
-    <para>
-      <userinput>HB!</userinput>
     </para>
   </sect2>
 

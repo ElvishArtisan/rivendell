@@ -109,7 +109,7 @@ class MainObject : public QObject
   void meterData();
   void eventFinishedData(int id);
   void freeEventsData();
-  void heartbeatData();
+  //  void heartbeatData();
   void sysHeartbeatData();
   void updateXloadsData();
   void startupCartData();

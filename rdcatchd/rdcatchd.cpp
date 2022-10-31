@@ -379,13 +379,6 @@ MainObject::MainObject(QObject *parent)
   ::signal(SIGCHLD,SigHandler);
 
   //
-  // Start Heartbeat Timer
-  //
-  timer=new QTimer(this);
-  connect(timer,SIGNAL(timeout()),this,SLOT(heartbeatData()));
-  timer->start(RDCATCHD_HEARTBEAT_INTERVAL);
-
-  //
   // Meter Timer
   //
   timer=new QTimer(this);
@@ -1270,12 +1263,6 @@ void MainObject::freeEventsData()
       catch_event_pool[i]=NULL;
     }
   }
-}
-
-
-void MainObject::heartbeatData()
-{
-  BroadcastCommand("HB!");
 }
 
 

@@ -43,16 +43,6 @@ RDCatchConnect::RDCatchConnect(int serial,QObject *parent)
   cc_socket=new QTcpSocket(this);
   connect(cc_socket,SIGNAL(connected()),this,SLOT(connectedData()));
   connect(cc_socket,SIGNAL(readyRead()),this,SLOT(readyData()));
-
-  //
-  // Start the heartbeat timer
-  //
-  cc_heartbeat_timer=new QTimer(this);
-  cc_heartbeat_timer->setSingleShot(true);
-  connect(cc_heartbeat_timer,SIGNAL(timeout()),
-	  this,SLOT(heartbeatTimeoutData()));
-  cc_heartbeat_timer->start(CC_HEARTBEAT_INTERVAL);
-  cc_heartbeat_valid=true;
 }
 
 
@@ -189,15 +179,6 @@ void RDCatchConnect::readyData()
 }
 
 
-void RDCatchConnect::heartbeatTimeoutData()
-{
-  if(cc_heartbeat_valid) {
-    emit heartbeatFailed(cc_serial);
-    cc_heartbeat_valid=false;
-  }
-}
-
-
 void RDCatchConnect::SendCommand(QString cmd)
 {
   // printf("SendCommand(%s)\n",(const char *)cmd);
@@ -302,11 +283,12 @@ void RDCatchConnect::DispatchCommand()
     emit eventPurged(id);
   }
   */
+  /*
   if(!strcmp(args[0],"HB")) {   // Heartbeat
     cc_heartbeat_timer->stop();
     cc_heartbeat_timer->start(CC_HEARTBEAT_INTERVAL);
   }
-
+  */
   if(!strcmp(args[0],"MN")) {  // Monitor State
     if(sscanf(args[1],"%d",&deck)!=1) {
       return;

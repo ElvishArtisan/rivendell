@@ -23587,3 +23587,6 @@
 	protocol command.
 	* Removed vestigal support for the 'Reload Time Offset' catch
 	protocol command.
+2022-10-31 Fred Gleason <fredg@paravelsystems.com>
+	* Removed vestigal support for the 'Heartbeat Pulse' catch
+	protocol command.
