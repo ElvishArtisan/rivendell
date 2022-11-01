@@ -643,7 +643,7 @@
 	  <row>
 	    <entry>Operation</entry>
 	    <entry>2</entry>
-	    <entry>Integer. 1 [RDCatchEvent::StopDeckOp]</entry>
+	    <entry>Integer. 4 [RDCatchEvent::StopDeckOp]</entry>
 	  </row>
 	  <row>
 	    <entry>Target Hostname</entry>
@@ -658,6 +658,117 @@
 	      while play decks have values in the range 128-254.
 	    </entry>
 	  </row>
+	</tbody>
+      </tgroup>
+    </table>
+  </sect2>
+
+  <sect2 xml:id="sect.rdcatch_set_input_monitor">
+    <title>Set Input Monitor</title>
+    <para>
+      Emitted by <command>rdcatch</command><manvolnum>1</manvolnum> to
+      turn a deck input monitor on or off.
+    </para>
+    <table xml:id="table.rdcatch_set_input_monitor" frame="all" pgwide="0">
+      <title>RDCatch Set Input Monitor Fields</title>
+      <tgroup cols="3" align="left" colsep="1" rowsep="1">
+	<colspec colname="Field" colwidth="10.0*"/>
+	<colspec colname="Offset" colwidth="2.0*"/>
+	<colspec colname="Value" colwidth="10.0*"/>
+	<tbody>
+	  <row>
+	    <entry>Field</entry>
+	    <entry>Offset</entry>
+	    <entry>Value</entry>
+	  </row>
+	  <row>
+	    <entry>Keyword</entry>
+	    <entry>0</entry>
+	    <entry>CATCH</entry>
+	  </row>
+	  <row>
+	    <entry>Originating Hostname</entry>
+	    <entry>1</entry>
+	    <entry>String, from STATIONS.NAME</entry>
+	  </row>
+	  <row>
+	    <entry>Operation</entry>
+	    <entry>2</entry>
+	    <entry>Integer. 5 [RDCatchEvent::SetInputMonitorOp]</entry>
+	  </row>
+	  <row>
+	    <entry>Target Hostname</entry>
+	    <entry>3</entry>
+	    <entry>String, from STATIONS.NAME</entry>
+	  </row>
+	  <row>
+	    <entry>Deck Channel</entry>
+	    <entry>4</entry>
+	    <entry>
+	      Integer. Record decks have values in the range 1-127,
+	      while play decks have values in the range 128-254.
+	    </entry>
+	  </row>
+	  <row>
+	    <entry>State</entry>
+	    <entry>5</entry>
+	    <entry>
+	      Boolean. 0=False, 1=True.
+	    </entry>
+	  </row>	  
+	</tbody>
+      </tgroup>
+    </table>
+  </sect2>
+
+  <sect2 xml:id="sect.rdcatch_set_input_monitor_response">
+    <title>Set Input Monitor Response</title>
+    <para>
+      Emitted by <command>rdcatchd</command><manvolnum>8</manvolnum> to
+      signal change of a deck input monitor.
+    </para>
+    <table xml:id="table.rdcatch_set_input_monitor_response" frame="all" pgwide="0">
+      <title>RDCatch Set Input Monitor Fields</title>
+      <tgroup cols="3" align="left" colsep="1" rowsep="1">
+	<colspec colname="Field" colwidth="10.0*"/>
+	<colspec colname="Offset" colwidth="2.0*"/>
+	<colspec colname="Value" colwidth="10.0*"/>
+	<tbody>
+	  <row>
+	    <entry>Field</entry>
+	    <entry>Offset</entry>
+	    <entry>Value</entry>
+	  </row>
+	  <row>
+	    <entry>Keyword</entry>
+	    <entry>0</entry>
+	    <entry>CATCH</entry>
+	  </row>
+	  <row>
+	    <entry>Originating Hostname</entry>
+	    <entry>1</entry>
+	    <entry>String, from STATIONS.NAME</entry>
+	  </row>
+	  <row>
+	    <entry>Operation</entry>
+	    <entry>2</entry>
+	    <entry>Integer. 6    [RDCatchEvent::SetInputMonitorResponseOp]</entry>
+	  </row>
+	  <row>
+	    <entry>Deck Channel</entry>
+	    <entry>3</entry>
+	    <entry>
+	      Integer. Record decks have values in the range 1-127,
+	      while play decks have values in the range 128-254.
+	    </entry>
+	  </row>
+	  <row>
+	    <entry>State</entry>
+	    <entry>4</entry>
+	    <entry>
+	      Boolean. 0=False, 1=True.
+	    </entry>
+	  </row>	  
 	</tbody>
       </tgroup>
     </table>

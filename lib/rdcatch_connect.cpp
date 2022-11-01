@@ -89,7 +89,7 @@ void RDCatchConnect::reloadDropboxes()
   SendCommand("RX!");
 }
 
-
+/*
 void RDCatchConnect::monitor(int deck,bool state)
 {
   SendCommand(QString::asprintf("MN %d %d!",deck,state));
@@ -105,7 +105,7 @@ void RDCatchConnect::toggleMonitor(int deck)
     SendCommand(QString::asprintf("MN %d 1!",deck));
   }
 }
-
+*/
 
 void RDCatchConnect::setExitCode(int id,RDRecording::ExitCode code,
 				 const QString &msg)
@@ -277,6 +277,7 @@ void RDCatchConnect::DispatchCommand()
     cc_heartbeat_timer->start(CC_HEARTBEAT_INTERVAL);
   }
   */
+  /*
   if(!strcmp(args[0],"MN")) {  // Monitor State
     if(sscanf(args[1],"%d",&deck)!=1) {
       return;
@@ -290,6 +291,7 @@ void RDCatchConnect::DispatchCommand()
       emit monitorChanged(cc_serial,deck,false);
     }
   }
+  */
 }
 
 

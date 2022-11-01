@@ -2,7 +2,7 @@
 //
 // Monitor a Rivendell Netcatcher Deck
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -42,15 +42,10 @@ class DeckMon : public RDFrame
   void enableMonitorButton(bool state);
 
  public slots:
-  void setMonitor(bool state);
   void setStatus(RDDeck::Status status,int id,const QString &cutname);
   void setLeftMeter(int level);
   void setRightMeter(int level);
   void processCatchEvent(RDCatchEvent *evt);
-
- signals:
-  void monitorClicked();
-  //  void abortClicked();
 
  protected:
   void resizeEvent(QResizeEvent *e);
@@ -67,6 +62,7 @@ class DeckMon : public RDFrame
   QLabel *mon_status_label;
   QPushButton *mon_abort_button;
   QPushButton *mon_monitor_button;
+  bool mon_monitor_state;
   QPalette *mon_monitor_palette;
   RDPlayMeter *mon_left_meter;
   RDPlayMeter *mon_right_meter;
@@ -80,5 +76,5 @@ class DeckMon : public RDFrame
 };
 
 
-#endif
+#endif // DECKMON_H
 

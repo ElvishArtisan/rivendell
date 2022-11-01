@@ -131,36 +131,6 @@
     </variablelist>
   </sect2>
   
-  <sect2 xml:id="sect.privileged_commands.input_monitor_state">
-    <title>Input Monitor State</title>
-    <para>
-      Turn the input monitor on or off.
-    </para>
-    <para>
-      <userinput>MN <replaceable>deck-num</replaceable>
-      <replaceable>state</replaceable>!</userinput>
-    </para>
-    <variablelist>
-      <varlistentry>
-	<term><replaceable>deck-num</replaceable></term>
-	<listitem>
-	  <para>
-	    The number of the deck.
-	  </para>
-	</listitem>
-      </varlistentry>
-      <varlistentry>
-	<term><replaceable>state</replaceable></term>
-	<listitem>
-	  <para>
-	    <computeroutput>1</computeroutput> = Enabled,
-	    <computeroutput>0</computeroutput> = Disabled.
-	  </para>
-	</listitem>
-      </varlistentry>
-    </variablelist>
-  </sect2>
-
   <sect2 xml:id="sect.privileged_commands.set_exit_code">
     <title>Set Exit Code</title>
     <para>

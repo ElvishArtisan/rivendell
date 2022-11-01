@@ -181,10 +181,6 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   catch_monitor_vbox->setSpacing(2);
   catch_monitor_area->setWidget(catch_monitor_vbox);
 
-  //  QSignalMapper *mapper=new QSignalMapper(this);
-  //  connect(mapper,SIGNAL(mapped(int)),this,SLOT(abortData(int)));
-  QSignalMapper *mon_mapper=new QSignalMapper(this);
-  connect(mon_mapper,SIGNAL(mapped(int)),this,SLOT(monitorData(int)));
   QString sql;
   RDSqlQuery *q1;
   sql=QString("select `NAME`,`IPV4_ADDRESS` from `STATIONS` where ")+
@@ -197,17 +193,11 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
       this,
       SLOT(statusChangedData(int,unsigned,RDDeck::Status,int,const QString &)));
     connect(catch_connect.back()->connector(),
-	    SIGNAL(monitorChanged(int,unsigned,bool)),
-	    this,SLOT(monitorChangedData(int,unsigned,bool)));
-    connect(catch_connect.back()->connector(),
 	    SIGNAL(connected(int,bool)),
 	    this,SLOT(connectedData(int,bool)));
     connect(catch_connect.back()->connector(),
 	    SIGNAL(meterLevel(int,int,int,int)),
 	    this,SLOT(meterLevelData(int,int,int,int)));
-    connect(catch_connect.back()->connector(),
-	    SIGNAL(heartbeatFailed(int)),
-	    this,SLOT(heartbeatFailedData(int)));
     catch_connect.back()->connector()->
       connectHost(q->value(1).toString(),RDCATCHD_TCP_PORT,
 		  rda->config()->password());
@@ -239,10 +229,6 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
 			    (rda->config()->stationName().toLower()==
 			     q->value(0).toString().toLower()));
       catch_monitor.back()->deckMon()->show();
-      mon_mapper->setMapping(catch_monitor.back()->deckMon(),
-			     catch_monitor.size()-1);
-      connect(catch_monitor.back()->deckMon(),SIGNAL(monitorClicked()),
-	      mon_mapper,SLOT(map()));
     }
     delete q1;
   }
@@ -761,16 +747,6 @@ void MainWidget::statusChangedData(int serial,unsigned chan,
 }
 
 
-void MainWidget::monitorChangedData(int serial,unsigned chan,bool state)
-{
-  // printf("monitorChangedData(%d,%u,%d)\n",serial,chan,state);
-  int mon=GetMonitor(serial,chan);
-  if(mon>=0) {
-    catch_monitor[mon]->deckMon()->setMonitor(state);
-  }
-}
-
-
 void MainWidget::catchEventReceivedData(RDCatchEvent *evt)
 {
   //  printf("catchEventReceivedData()\n");
@@ -789,6 +765,8 @@ void MainWidget::catchEventReceivedData(RDCatchEvent *evt)
   case RDCatchEvent::DeckEventProcessedOp:
   case RDCatchEvent::DeckStatusQueryOp:
   case RDCatchEvent::StopDeckOp:
+  case RDCatchEvent::SetInputMonitorOp:
+  case RDCatchEvent::SetInputMonitorResponseOp:
   case RDCatchEvent::NullOp:
   case RDCatchEvent::LastOp:
     break;
@@ -942,13 +920,6 @@ void MainWidget::meterLevelData(int serial,int deck,int l_r,int level)
 }
 
 
-void MainWidget::monitorData(int id)
-{
-  catch_connect[catch_monitor[id]->serialNumber()]->connector()->
-    toggleMonitor(catch_monitor[id]->channelNumber());
-}
-
-
 void MainWidget::selectionChangedData(const QItemSelection &before,
 				      const QItemSelection &after)
 {
@@ -997,17 +968,6 @@ void MainWidget::eventUpdatedData(int id)
     catch_recordings_model->addRecord(id);
   }
   nextEventData();
-}
-
-
-void MainWidget::heartbeatFailedData(int id)
-{
-  if(!catch_host_warnings) {
-    return;
-  }
-  QString msg=tr("Control connection timed out to host")+
-    " `"+catch_connect[id]->stationName()+"'?";
-  QMessageBox::warning(this,"RDCatch - "+tr("Connection Error"),msg);
 }
 
 

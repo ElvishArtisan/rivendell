@@ -29,6 +29,7 @@ DeckMon::DeckMon(QString station,unsigned channel,QWidget *parent)
 {
   mon_station=station;
   mon_channel=channel;
+  mon_monitor_state=false;
 
   setFrameStyle(Box|Raised);
   setLineWidth(1);
@@ -139,17 +140,6 @@ void DeckMon::enableMonitorButton(bool state)
 }
 
 
-void DeckMon::setMonitor(bool state)
-{
-  if(state) {
-    mon_monitor_button->setPalette(*mon_monitor_palette);
-  }
-  else {
-    mon_monitor_button->setPalette(palette());
-  }
-}
-
-
 void DeckMon::setStatus(RDDeck::Status status,int id,const QString &cutname)
 {
   if(id==0) {
@@ -231,13 +221,38 @@ void DeckMon::setRightMeter(int level)
 void DeckMon::processCatchEvent(RDCatchEvent *evt)
 {
   if((evt->hostName()==mon_station)&&(evt->deckChannel()==mon_channel)) {
-    if(evt->operation()==RDCatchEvent::DeckEventProcessedOp) {
+    switch(evt->operation()) {
+    case RDCatchEvent::DeckEventProcessedOp:
       mon_event_light->trigger(evt->eventNumber());
-    }
+      break;
 
-    if(evt->operation()==RDCatchEvent::DeckStatusResponseOp) {
+    case RDCatchEvent::DeckStatusResponseOp:
       setStatus(evt->deckStatus(),evt->eventId(),
 		RDCut::cutName(evt->cartNumber(),evt->cutNumber()));
+      break;
+
+    case RDCatchEvent::SetInputMonitorResponseOp:
+      if((evt->hostName()==mon_station)&&
+	 (evt->deckChannel()==mon_channel)&&
+	 (evt->inputMonitorActive()!=mon_monitor_state)) {
+	mon_monitor_state=evt->inputMonitorActive();
+	if(mon_monitor_state) {
+	  mon_monitor_button->setPalette(mon_red_palette);
+	  mon_monitor_button->setStyleSheet(mon_red_stylesheet);
+	}
+	else {
+	  mon_monitor_button->setPalette(palette());
+	  mon_monitor_button->setStyleSheet("");
+	}
+      }
+      break;
+
+    case RDCatchEvent::DeckStatusQueryOp:
+    case RDCatchEvent::StopDeckOp:
+    case RDCatchEvent::SetInputMonitorOp:
+    case RDCatchEvent::NullOp:
+    case RDCatchEvent::LastOp:
+      break;
     }
   }
 }
@@ -245,7 +260,15 @@ void DeckMon::processCatchEvent(RDCatchEvent *evt)
 
 void DeckMon::monitorButtonData()
 {
-  emit monitorClicked();
+  RDCatchEvent *evt=new RDCatchEvent();
+
+  evt->setOperation(RDCatchEvent::SetInputMonitorOp);
+  evt->setTargetHostName(mon_station);
+  evt->setDeckChannel(mon_channel);
+  evt->setInputMonitorActive(!mon_monitor_state);
+  rda->ripc()->sendCatchEvent(evt);
+
+  delete evt;
 }
 
 

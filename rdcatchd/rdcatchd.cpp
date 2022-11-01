@@ -455,6 +455,8 @@ void MainObject::catchEventReceivedData(RDCatchEvent *evt)
   rda->syslog(LOG_NOTICE,"catchEventReceivedData(): %s",
 	      evt->dump().toUtf8().constData());
 
+  RDCatchEvent *resp=NULL;
+
   switch(evt->operation()) {
   case RDCatchEvent::DeckStatusQueryOp:
     SendFullEventResponse(rda->station()->address());
@@ -489,8 +491,37 @@ void MainObject::catchEventReceivedData(RDCatchEvent *evt)
     }
     break;
 
+  case RDCatchEvent::SetInputMonitorOp:
+    if((evt->targetHostName()==rda->station()->name())&&
+       (evt->deckChannel()>0)&&(evt->deckChannel()<(MAX_DECKS+1))&&
+       (catch_monitor_port[evt->deckChannel()-1]>=0)) {
+      int chan=evt->deckChannel();
+      if(evt->inputMonitorActive()) {
+	rda->cae()->setPassthroughVolume(catch_record_card[chan-1],
+					 catch_record_stream[chan-1],
+					 catch_monitor_port[chan-1],0);
+	catch_monitor_state[chan-1]=true;
+      }
+      else {
+	rda->cae()->setPassthroughVolume(catch_record_card[chan-1],
+					 catch_record_stream[chan-1],
+					 catch_monitor_port[chan-1],
+					 RD_MUTE_DEPTH);
+	catch_monitor_state[chan-1]=false;
+      }
+      
+      resp=new RDCatchEvent();
+      resp->setOperation(RDCatchEvent::SetInputMonitorResponseOp);
+      resp->setDeckChannel(chan);
+      resp->setInputMonitorActive(catch_monitor_state[chan-1]);
+      rda->ripc()->sendCatchEvent(resp);
+      delete resp;
+    }
+    break;
+
   case RDCatchEvent::DeckEventProcessedOp:
   case RDCatchEvent::DeckStatusResponseOp:
+  case RDCatchEvent::SetInputMonitorResponseOp:
   case RDCatchEvent::NullOp:
   case RDCatchEvent::LastOp:
     break;
@@ -1729,12 +1760,12 @@ void MainObject::SendFullEventResponse(const QHostAddress &addr)
   //
   // Decks
   //
-  evt->clear();
-  evt->setOperation(RDCatchEvent::DeckStatusResponseOp);
   for(int i=0;i<MAX_DECKS;i++) {
     //
     // Record Decks
     //
+    evt->clear();
+    evt->setOperation(RDCatchEvent::DeckStatusResponseOp);
     evt->setDeckChannel(i+1);
     evt->setDeckStatus(catch_record_deck_status[i]);
     evt->setEventId(catch_record_id[i]);
@@ -1748,9 +1779,17 @@ void MainObject::SendFullEventResponse(const QHostAddress &addr)
     }
     rda->ripc()->sendCatchEvent(evt);
 
+    evt->clear();
+    evt->setOperation(RDCatchEvent::SetInputMonitorResponseOp);
+    evt->setDeckChannel(i+1);
+    evt->setInputMonitorActive(catch_monitor_state[i]);
+    rda->ripc()->sendCatchEvent(evt);
+
     //
     // Play Decks
     //
+    evt->clear();
+    evt->setOperation(RDCatchEvent::DeckStatusResponseOp);
     evt->setDeckChannel(i+129);
     evt->setDeckStatus(catch_playout_deck_status[i]);
     evt->setEventId(catch_playout_id[i]);
@@ -1823,7 +1862,7 @@ void MainObject::ParseCommand(int ch)
 
 void MainObject::DispatchCommand(ServerConnection *conn)
 {
-  int chan;
+  //  int chan;
   int id;
   int event;
   int code;
@@ -1875,32 +1914,6 @@ void MainObject::DispatchCommand(ServerConnection *conn)
 
   if((cmds.at(0)=="RM")&&(cmds.size()==2)) {  // Enable/Disable Metering
     conn->setMeterEnabled(cmds.at(1).trimmed()!="0");
-  }
-
-  if((cmds.at(0)=="MN")&&(cmds.size()==3)) {  // Monitor State
-    chan=cmds.at(1).toInt(&ok);
-    if(!ok) {
-      return;
-    }
-    if((chan>0)&&(chan<(MAX_DECKS+1))) {
-      if(catch_monitor_port[chan-1]>=0) {
-	if(cmds.at(2).toInt()!=0) {
-	  rda->cae()->setPassthroughVolume(catch_record_card[chan-1],
-					  catch_record_stream[chan-1],
-					  catch_monitor_port[chan-1],0);
-	  catch_monitor_state[chan-1]=true;
-	  BroadcastCommand(QString::asprintf("MN %d 1!",chan));
-	}
-	else {
-	  rda->cae()->setPassthroughVolume(catch_record_card[chan-1],
-					  catch_record_stream[chan-1],
-					  catch_monitor_port[chan-1],
-					  RD_MUTE_DEPTH);
-	  catch_monitor_state[chan-1]=false;
-	  BroadcastCommand(QString::asprintf("MN %d 0!",chan));
-	}
-      }
-    }
   }
 
   if((cmds.at(0)=="SC")&&(cmds.size()>=4)) {  // Set Exit Code

@@ -31,7 +31,8 @@ class RDCatchEvent
  public:
   enum Operation {NullOp=0,DeckEventProcessedOp=1,
 		  DeckStatusQueryOp=2,DeckStatusResponseOp=3,
-		  StopDeckOp=5,LastOp=6};
+		  StopDeckOp=4,SetInputMonitorOp=5,SetInputMonitorResponseOp=6,
+		  LastOp=7};
   RDCatchEvent(RDDeck::Status status);
   RDCatchEvent();
   Operation operation() const;
@@ -52,7 +53,8 @@ class RDCatchEvent
   void setEventNumber(int num);
   RDDeck::Status deckStatus() const;
   void setDeckStatus(RDDeck::Status status);
-  bool isValid() const;
+  bool inputMonitorActive() const;
+  void setInputMonitorActive(bool state);
   bool read(const QString &str);
   QString write() const;
   QString dump() const;
@@ -67,6 +69,7 @@ class RDCatchEvent
   int d_cut_number;
   unsigned d_deck_channel;
   int d_event_number;
+  bool d_input_monitor_active;
   RDDeck::Status d_deck_status;
 };
 

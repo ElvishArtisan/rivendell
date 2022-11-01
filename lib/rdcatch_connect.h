@@ -49,15 +49,15 @@ class RDCatchConnect : public QObject
   void reloadDropboxes();
   
  public slots:
-  void monitor(int deck,bool state);
-  void toggleMonitor(int deck);
+   //  void monitor(int deck,bool state);
+   //  void toggleMonitor(int deck);
   void setExitCode(int id,RDRecording::ExitCode code,const QString &msg);
 
  signals:
   void connected(int serial,bool state);
   void statusChanged(int serial,unsigned channel,RDDeck::Status status,
 		     int id,const QString &cutname);
-  void monitorChanged(int serial,unsigned channel,bool state);
+  //  void monitorChanged(int serial,unsigned channel,bool state);
   void meterLevel(int serial,int deck,int chan,int level);
   void eventUpdated(int id);
   void eventPurged(int id);

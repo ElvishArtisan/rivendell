@@ -145,9 +145,15 @@ void RDCatchEvent::setDeckStatus(RDDeck::Status status)
 }
 
 
-bool RDCatchEvent::isValid() const
+bool RDCatchEvent::inputMonitorActive() const
 {
-  return true;
+  return d_input_monitor_active;
+}
+
+
+void RDCatchEvent::setInputMonitorActive(bool state)
+{
+  d_input_monitor_active=state;
 }
 
 
@@ -157,6 +163,11 @@ bool RDCatchEvent::read(const QString &str)
 
   RDCatchEvent::Operation op=RDCatchEvent::NullOp;
   QStringList f0=str.split(" ");
+
+  unsigned chan=0;
+  unsigned num=0;
+  RDDeck::Status status=RDDeck::Offline;
+  int state=0;
   bool ok=false;
 
   clear();
@@ -168,19 +179,24 @@ bool RDCatchEvent::read(const QString &str)
     return false;
   }
   op=(RDCatchEvent::Operation)f0.at(2).toUInt(&ok);
+  if(!ok) {
+    return false;
+  }
 
   //
   // Operation-specific Fields
   //
-  if(ok&&(op==RDCatchEvent::DeckEventProcessedOp)) {
+  rda->syslog(LOG_NOTICE,"HERE0 op: %u",op);
+  switch(op) {
+  case RDCatchEvent::DeckEventProcessedOp:
     if(f0.size()!=5) {
       return false;
     }
-    unsigned chan=f0.at(3).toUInt(&ok);
+    chan=f0.at(3).toUInt(&ok);
     if(!ok) {
       return false;
     }
-    unsigned num=f0.at(4).toUInt(&ok);
+    num=f0.at(4).toUInt(&ok);
     if(ok) {
       d_operation=op;
       d_host_name=f0.at(1);
@@ -188,24 +204,24 @@ bool RDCatchEvent::read(const QString &str)
       d_event_number=num;
       return true;
     }
-  }
+    break;
 
-  if(ok&&(op==RDCatchEvent::DeckStatusQueryOp)) {
+  case RDCatchEvent::DeckStatusQueryOp:
     if(f0.size()!=3) {
       return false;
     }
     d_operation=op;
     d_host_name=f0.at(1);
     return true;
-  }
+    break;
 
-  if(ok&&(op==RDCatchEvent::DeckStatusResponseOp)) {
+  case RDCatchEvent::DeckStatusResponseOp:
     if(f0.size()!=8) {
       return false;
     }
-    int chan=f0.at(3).toUInt(&ok);
+    chan=f0.at(3).toUInt(&ok);
     if(ok&&(chan<255)) {
-      RDDeck::Status status=(RDDeck::Status)f0.at(4).toUInt(&ok);
+      status=(RDDeck::Status)f0.at(4).toUInt(&ok);
       if(ok&&(status<RDDeck::LastStatus)) {
 	unsigned id=f0.at(5).toUInt(&ok);
 	if(ok) {
@@ -226,17 +242,60 @@ bool RDCatchEvent::read(const QString &str)
 	}
       }
     }
-  }
+    break;
 
-  if(ok&&(op==RDCatchEvent::StopDeckOp)) {
+  case RDCatchEvent::StopDeckOp:
     if(f0.size()!=5) {
       return false;
     }    
-    d_operation=op;
-    d_host_name=f0.at(1);
-    d_target_host_name=f0.at(3);
-    d_deck_channel=f0.at(4).toInt();
-    return true;
+    chan=f0.at(4).toInt(&ok);
+    if(ok&&(chan<255)) {
+      d_operation=op;
+      d_host_name=f0.at(1);
+      d_target_host_name=f0.at(3);
+      d_deck_channel=chan;
+      return true;
+    }
+    break;
+
+  case RDCatchEvent::SetInputMonitorOp:
+    if(f0.size()!=6) {
+      return false;
+    }    
+    chan=f0.at(4).toInt(&ok);
+    if(ok&&(chan<255)) {
+      state=f0.at(5).toUInt(&ok);
+      if((state==0)||(state==1)) {
+	d_operation=op;
+	d_host_name=f0.at(1);
+	d_target_host_name=f0.at(3);
+	d_deck_channel=chan;
+	d_input_monitor_active=(state==1);
+	return true;
+      }
+    }
+    break;
+
+  case RDCatchEvent::SetInputMonitorResponseOp:
+    if(f0.size()!=5) {
+      return false;
+    }    
+    chan=f0.at(3).toInt(&ok);
+    if(ok&&(chan<255)) {
+      state=f0.at(4).toUInt(&ok);
+      if((state==0)||(state==1)) {
+	d_operation=op;
+	d_host_name=f0.at(1);
+	d_deck_channel=chan;
+	d_input_monitor_active=(state==1);
+	return true;
+      }
+    }
+    break;
+
+  case RDCatchEvent::NullOp:
+  case RDCatchEvent::LastOp:
+    break;
   }
 
   return false;
@@ -274,6 +333,17 @@ QString RDCatchEvent::write() const
   case RDCatchEvent::DeckStatusQueryOp:
   case RDCatchEvent::NullOp:
   case RDCatchEvent::LastOp:
+    break;
+
+  case RDCatchEvent::SetInputMonitorOp:
+    ret+=" "+d_target_host_name;
+    ret+=QString::asprintf(" %u",d_deck_channel);
+    ret+=QString::asprintf(" %u",d_input_monitor_active);
+    break;
+
+  case RDCatchEvent::SetInputMonitorResponseOp:
+    ret+=QString::asprintf(" %u",d_deck_channel);
+    ret+=QString::asprintf(" %u",d_input_monitor_active);
     break;
 
   case RDCatchEvent::StopDeckOp:
@@ -324,6 +394,19 @@ QString RDCatchEvent::dump() const
     ret+=QString::asprintf("deck channel: %u\n",d_deck_channel);
     break;
 
+  case RDCatchEvent::SetInputMonitorOp:
+    ret+="operation: RDCatchEvent::DeckEventProcessedOp\n";
+    ret+="target hostname: "+d_target_host_name+"\n";
+    ret+=QString::asprintf("deck channel: %u\n",d_deck_channel);
+    ret+=QString::asprintf("input monitor active: %u\n",d_input_monitor_active);
+    break;
+
+  case RDCatchEvent::SetInputMonitorResponseOp:
+    ret+="operation: RDCatchEvent::DeckEventProcessedOp\n";
+    ret+=QString::asprintf("deck channel: %u\n",d_deck_channel);
+    ret+=QString::asprintf("input monitor active: %u\n",d_input_monitor_active);
+    break;
+
   case RDCatchEvent::NullOp:
   case RDCatchEvent::LastOp:
     break;
@@ -337,10 +420,12 @@ void RDCatchEvent::clear()
 {
   d_operation=RDCatchEvent::NullOp;
   d_host_name=rda->station()->name();
+  d_target_host_name="";
   d_event_id=0;
   d_cart_number=0;
   d_cut_number=0;
   d_deck_channel=0;
   d_event_number=0;
+  d_input_monitor_active=false;
   d_deck_status=RDDeck::Offline;
 }

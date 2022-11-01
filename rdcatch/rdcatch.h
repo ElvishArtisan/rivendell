@@ -81,8 +81,6 @@ class MainWidget : public RDMainWindow
   void ripcUserData();
   void statusChangedData(int,unsigned,RDDeck::Status,int,
 			 const QString &cutname);
-  void monitorChangedData(int serial,unsigned chan,bool state);
-  //  void deckEventSentData(int serial,int chan,int number);
   void catchEventReceivedData(RDCatchEvent *evt);
   void scrollButtonData();
   void reportsButtonData();
@@ -93,8 +91,6 @@ class MainWidget : public RDMainWindow
   void playedData(int);
   void playStoppedData(int);
   void meterLevelData(int,int,int,int);
-  //  void abortData(int);
-  void monitorData(int);
   void selectionChangedData(const QItemSelection &before,
 			    const QItemSelection &after);
   void doubleClickedData(const QModelIndex &index);
@@ -103,7 +99,6 @@ class MainWidget : public RDMainWindow
   void clockData();
   void midnightData();
   void eventUpdatedData(int id);
-  void heartbeatFailedData(int id);
   void quitMainWidget();
 
  protected:
