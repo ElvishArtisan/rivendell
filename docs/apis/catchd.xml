@@ -131,45 +131,6 @@
     </variablelist>
   </sect2>
   
-  <sect2 xml:id="sect.privileged_commands.set_exit_code">
-    <title>Set Exit Code</title>
-    <para>
-      Set the exit code of an event.
-    </para>
-    <para>
-      <userinput>SC <replaceable>event-num</replaceable>
-      <replaceable>code</replaceable>
-      <replaceable>msg</replaceable>!</userinput>
-    </para>
-    <variablelist>
-      <varlistentry>
-	<term><replaceable>event-num</replaceable></term>
-	<listitem>
-	  <para>
-	    The number of the event.
-	  </para>
-	</listitem>
-      </varlistentry>
-      <varlistentry>
-	<term><replaceable>code</replaceable></term>
-	<listitem>
-	  <para>
-	    The numeric code to set.
-	  </para>
-	</listitem>
-      </varlistentry>
-      <varlistentry>
-	<term><replaceable>msg</replaceable></term>
-	<listitem>
-	  <para>
-	    The text message to set.
-	  </para>
-	</listitem>
-      </varlistentry>
-    </variablelist>
-  </sect2>
-
-
 
 </sect1>
 

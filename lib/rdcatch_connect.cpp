@@ -89,31 +89,6 @@ void RDCatchConnect::reloadDropboxes()
   SendCommand("RX!");
 }
 
-/*
-void RDCatchConnect::monitor(int deck,bool state)
-{
-  SendCommand(QString::asprintf("MN %d %d!",deck,state));
-}
-
-
-void RDCatchConnect::toggleMonitor(int deck)
-{
-  if(cc_monitor_state[deck-1]) {
-    SendCommand(QString::asprintf("MN %d 0!",deck));
-  }
-  else {
-    SendCommand(QString::asprintf("MN %d 1!",deck));
-  }
-}
-*/
-
-void RDCatchConnect::setExitCode(int id,RDRecording::ExitCode code,
-				 const QString &msg)
-{
-  SendCommand(QString::asprintf("SC %d %d %s!",id,code,
-				msg.trimmed().toUtf8().constData()));
-}
-
 
 void RDCatchConnect::connectedData()
 {

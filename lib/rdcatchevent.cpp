@@ -186,7 +186,6 @@ bool RDCatchEvent::read(const QString &str)
   //
   // Operation-specific Fields
   //
-  rda->syslog(LOG_NOTICE,"HERE0 op: %u",op);
   switch(op) {
   case RDCatchEvent::DeckEventProcessedOp:
     if(f0.size()!=5) {

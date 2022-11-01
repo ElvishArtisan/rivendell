@@ -173,12 +173,12 @@ class MainObject : public QObject
   RDRecording::ExitCode ReadExitCode(int event);
   void WriteExitCode(int event,RDRecording::ExitCode code,
 		     const QString &err_text="");
-  void WriteExitCodeById(int id,RDRecording::ExitCode code,
-			 const QString &err_text="");
+  void WriteExitCode(CatchEvent *ce,RDRecording::ExitCode code,
+		     const QString &err_text="");
   QString BuildTempName(int event,QString str);
   QString BuildTempName(CatchEvent *evt,QString str);
   QString GetFileExtension(QString filename);
-  bool SendErrorMessage(CatchEvent *event,const QString &err_desc,QString rml);
+  bool ExecuteErrorRml(CatchEvent *event,const QString &err_desc,QString rml);
   void ResolveErrorWildcards(CatchEvent *event,const QString &err_desc,
 			     QString *rml);
   void RunLocalMacros(RDMacro *rml);

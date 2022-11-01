@@ -23599,3 +23599,6 @@
 2022-11-01 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored rdcatch(1) to use the notification mechanism instead of
 	the 'Input Monitor State' catch command.
+2022-11-01 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdcatchd(1) to eliminate the need for the 'Set Exit Code'
+	catch command.
