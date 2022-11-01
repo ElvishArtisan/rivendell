@@ -612,6 +612,49 @@
     </sect3>
   </sect2>
 
+  <sect2 xml:id="sect.rdcatch_reload_decks">
+    <title>Reload Decks Operation</title>
+    <para>
+      Emitted by <command>rdadmin</command><manvolnum>1</manvolnum> to
+      trigger a reload of the record and play-out deck parameters.
+    </para>
+    <table xml:id="table.rdcatch_reload_decks" frame="all" pgwide="0">
+      <title>RDCatch Reload Decks Fields</title>
+      <tgroup cols="3" align="left" colsep="1" rowsep="1">
+	<colspec colname="Field" colwidth="10.0*"/>
+	<colspec colname="Offset" colwidth="2.0*"/>
+	<colspec colname="Value" colwidth="10.0*"/>
+	<tbody>
+	  <row>
+	    <entry>Field</entry>
+	    <entry>Offset</entry>
+	    <entry>Value</entry>
+	  </row>
+	  <row>
+	    <entry>Keyword</entry>
+	    <entry>0</entry>
+	    <entry>CATCH</entry>
+	  </row>
+	  <row>
+	    <entry>Originating Hostname</entry>
+	    <entry>1</entry>
+	    <entry>String, from STATIONS.NAME</entry>
+	  </row>
+	  <row>
+	    <entry>Operation</entry>
+	    <entry>2</entry>
+	    <entry>Integer. 7 [RDCatchEvent::ReloadDecksOp]</entry>
+	  </row>
+	  <row>
+	    <entry>Target Hostname</entry>
+	    <entry>3</entry>
+	    <entry>String, from STATIONS.NAME</entry>
+	  </row>
+	</tbody>
+      </tgroup>
+    </table>
+  </sect2>
+
   <sect2 xml:id="sect.rdcatch_stop_deck">
     <title>Stop Deck Operation</title>
     <para>

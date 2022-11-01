@@ -519,6 +519,12 @@ void MainObject::catchEventReceivedData(RDCatchEvent *evt)
     }
     break;
 
+  case RDCatchEvent::ReloadDecksOp:
+    if(evt->targetHostName()==rda->station()->name()) {
+      LoadDeckList();
+    }
+    break;
+
   case RDCatchEvent::DeckEventProcessedOp:
   case RDCatchEvent::DeckStatusResponseOp:
   case RDCatchEvent::SetInputMonitorResponseOp:

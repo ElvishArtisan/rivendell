@@ -292,6 +292,19 @@ bool RDCatchEvent::read(const QString &str)
     }
     break;
 
+  case RDCatchEvent::ReloadDecksOp:
+    if(f0.size()!=4) {
+      return false;
+    }    
+    chan=f0.at(4).toInt(&ok);
+    if(ok&&(chan<255)) {
+      d_operation=op;
+      d_host_name=f0.at(1);
+      d_target_host_name=f0.at(3);
+      return true;
+    }
+    break;
+
   case RDCatchEvent::NullOp:
   case RDCatchEvent::LastOp:
     break;
@@ -349,6 +362,10 @@ QString RDCatchEvent::write() const
     ret+=" "+d_target_host_name;
     ret+=QString::asprintf(" %u",d_deck_channel);
     break;
+
+  case RDCatchEvent::ReloadDecksOp:
+    ret+=" "+d_target_host_name;
+    break;
   }
 
   return ret;
@@ -387,21 +404,26 @@ QString RDCatchEvent::dump() const
     ret+=QString::asprintf("cut number: %d\n",d_cut_number);
     break;
 
+  case RDCatchEvent::ReloadDecksOp:
+    ret+="operation: RDCatchEvent::ReloadDecksOp\n";
+    ret+="target hostname: "+d_target_host_name+"\n";
+    break;
+
   case RDCatchEvent::StopDeckOp:
-    ret+="operation: RDCatchEvent::DeckEventProcessedOp\n";
+    ret+="operation: RDCatchEvent::StopDeckOp\n";
     ret+="target hostname: "+d_target_host_name+"\n";
     ret+=QString::asprintf("deck channel: %u\n",d_deck_channel);
     break;
 
   case RDCatchEvent::SetInputMonitorOp:
-    ret+="operation: RDCatchEvent::DeckEventProcessedOp\n";
+    ret+="operation: RDCatchEvent::SetInputMonitorOp\n";
     ret+="target hostname: "+d_target_host_name+"\n";
     ret+=QString::asprintf("deck channel: %u\n",d_deck_channel);
     ret+=QString::asprintf("input monitor active: %u\n",d_input_monitor_active);
     break;
 
   case RDCatchEvent::SetInputMonitorResponseOp:
-    ret+="operation: RDCatchEvent::DeckEventProcessedOp\n";
+    ret+="operation: RDCatchEvent::SetInputMonitorResponseOp\n";
     ret+=QString::asprintf("deck channel: %u\n",d_deck_channel);
     ret+=QString::asprintf("input monitor active: %u\n",d_input_monitor_active);
     break;

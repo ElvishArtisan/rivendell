@@ -538,6 +538,11 @@ void EditDecks::closeData()
   WriteRecord(0);
   WriteRecord(edit_record_channel);
   WriteRecord(edit_play_channel);
+  RDCatchEvent *evt=new RDCatchEvent();
+  evt->setOperation(RDCatchEvent::ReloadDecksOp);
+  evt->setTargetHostName(edit_station->name());
+  rda->ripc()->sendCatchEvent(evt);
+  delete evt;
   done(true);
 }
 

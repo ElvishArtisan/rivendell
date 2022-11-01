@@ -32,7 +32,7 @@ class RDCatchEvent
   enum Operation {NullOp=0,DeckEventProcessedOp=1,
 		  DeckStatusQueryOp=2,DeckStatusResponseOp=3,
 		  StopDeckOp=4,SetInputMonitorOp=5,SetInputMonitorResponseOp=6,
-		  LastOp=7};
+		  ReloadDecksOp=7,LastOp=8};
   RDCatchEvent(RDDeck::Status status);
   RDCatchEvent();
   Operation operation() const;
