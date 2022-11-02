@@ -637,12 +637,14 @@ void RecordListModel::updateRow(int row,RDSqlQuery *q)
   //
   // Qt::BackgroundRole:
   //
-  if(q->value(25).toInt()==0) {
-    d_back_colors[row]=QVariant();
+  if(d_statuses.at(row)==RDDeck::Idle) {  // So we don't trump a realtime status
+    if(q->value(25).toInt()==0) {
+      d_back_colors[row]=QVariant();
+    }
+    else {
+      d_back_colors[row]=QColor(EVENT_ERROR_COLOR);
+    }      
   }
-  else {
-    d_back_colors[row]=QColor(EVENT_ERROR_COLOR);
-  }      
 
   //
   // Qt::DecorationType
@@ -949,6 +951,9 @@ QString RecordListModel::GetDestinationName(QString station,int matrix,
 
 void RecordListModel::UpdateStatus(int line)
 {
+  printf("RecordListModel::UpdateStatus(%d)\n",line);
+  printf("  using status: %u\n",d_statuses.at(line));
+
   switch(d_statuses.at(line)) {
   case RDDeck::Offline:
   case RDDeck::LastStatus:
@@ -971,6 +976,8 @@ void RecordListModel::UpdateStatus(int line)
     d_back_colors[line]=QColor(EVENT_ACTIVE_COLOR);
     break;
   }
+
+  return;
 
   RDRecording::ExitCode code=RDRecording::InternalError;
   QString err_text=tr("Unknown");

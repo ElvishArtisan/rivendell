@@ -655,14 +655,14 @@
     </table>
   </sect2>
 
-  <sect2 xml:id="sect.rdcatch_stop_deck">
-    <title>Stop Deck Operation</title>
+  <sect2 xml:id="sect.rdcatch_send_meter_levels">
+    <title>Send Meter Levels Operation</title>
     <para>
-      Emitted by <command>rdcatch</command><manvolnum>1</manvolnum> to
-      abort a Record or Play-out event.
+      Emitted by <command>rdcatchd</command><manvolnum>8</manvolnum> to
+      update audio meter levels for active record and play-out decks.
     </para>
-    <table xml:id="table.rdcatch_stop_deck" frame="all" pgwide="0">
-      <title>RDCatch Stop Deck Fields</title>
+    <table xml:id="table.rdcatch_send_meter_levels" frame="all" pgwide="0">
+      <title>RDCatch Send Meter Levels Fields</title>
       <tgroup cols="3" align="left" colsep="1" rowsep="1">
 	<colspec colname="Field" colwidth="10.0*"/>
 	<colspec colname="Offset" colwidth="2.0*"/>
@@ -686,20 +686,12 @@
 	  <row>
 	    <entry>Operation</entry>
 	    <entry>2</entry>
-	    <entry>Integer. 4 [RDCatchEvent::StopDeckOp]</entry>
+	    <entry>Integer. 8 [RDCatchEvent::SendMeterLevelsOp]</entry>
 	  </row>
 	  <row>
-	    <entry>Target Hostname</entry>
+	    <entry>Meter Entry</entry>
 	    <entry>3</entry>
-	    <entry>String, from STATIONS.NAME</entry>
-	  </row>
-	  <row>
-	    <entry>Deck Channel</entry>
-	    <entry>4</entry>
-	    <entry>
-	      Integer. Record decks have values in the range 1-127,
-	      while play decks have values in the range 128-254.
-	    </entry>
+	    <entry>String, <replaceable>chan</replaceable>:<replaceable>left-lvl</replaceable>:<replaceable>right-lvl</replaceable></entry>
 	  </row>
 	</tbody>
       </tgroup>
@@ -812,6 +804,57 @@
 	      Boolean. 0=False, 1=True.
 	    </entry>
 	  </row>	  
+	</tbody>
+      </tgroup>
+    </table>
+  </sect2>
+
+  <sect2 xml:id="sect.rdcatch_stop_deck">
+    <title>Stop Deck Operation</title>
+    <para>
+      Emitted by <command>rdcatch</command><manvolnum>1</manvolnum> to
+      abort a Record or Play-out event.
+    </para>
+    <table xml:id="table.rdcatch_stop_deck" frame="all" pgwide="0">
+      <title>RDCatch Stop Deck Fields</title>
+      <tgroup cols="3" align="left" colsep="1" rowsep="1">
+	<colspec colname="Field" colwidth="10.0*"/>
+	<colspec colname="Offset" colwidth="2.0*"/>
+	<colspec colname="Value" colwidth="10.0*"/>
+	<tbody>
+	  <row>
+	    <entry>Field</entry>
+	    <entry>Offset</entry>
+	    <entry>Value</entry>
+	  </row>
+	  <row>
+	    <entry>Keyword</entry>
+	    <entry>0</entry>
+	    <entry>CATCH</entry>
+	  </row>
+	  <row>
+	    <entry>Originating Hostname</entry>
+	    <entry>1</entry>
+	    <entry>String, from STATIONS.NAME</entry>
+	  </row>
+	  <row>
+	    <entry>Operation</entry>
+	    <entry>2</entry>
+	    <entry>Integer. 4 [RDCatchEvent::StopDeckOp]</entry>
+	  </row>
+	  <row>
+	    <entry>Target Hostname</entry>
+	    <entry>3</entry>
+	    <entry>String, from STATIONS.NAME</entry>
+	  </row>
+	  <row>
+	    <entry>Deck Channel</entry>
+	    <entry>4</entry>
+	    <entry>
+	      Integer. Record decks have values in the range 1-127,
+	      while play decks have values in the range 128-254.
+	    </entry>
+	  </row>
 	</tbody>
       </tgroup>
     </table>

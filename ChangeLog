@@ -23604,3 +23604,7 @@
 	catch command.
 2022-11-01 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'Reload Decks' operation to 'RDCatchEvent'.
+2022-11-02 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdcatch(1) and rdcatchd(8) to use the notification
+	mechanism instead for distributing meter updates instead of the
+	'Enable Metering' catch command.

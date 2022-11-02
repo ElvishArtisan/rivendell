@@ -526,6 +526,7 @@ void MainObject::catchEventReceivedData(RDCatchEvent *evt)
     break;
 
   case RDCatchEvent::DeckEventProcessedOp:
+  case RDCatchEvent::SendMeterLevelsOp:
   case RDCatchEvent::DeckStatusResponseOp:
   case RDCatchEvent::SetInputMonitorResponseOp:
   case RDCatchEvent::NullOp:
@@ -1152,7 +1153,29 @@ void MainObject::runCartData(int chan,int number,unsigned cartnum)
 void MainObject::meterData()
 {
   short levels[2];
+  QList<RDCatchMeterLevel> meter_levels;
 
+  for(int i=0;i<MAX_DECKS;i++) {
+    if(catch_record_deck_status[i]==RDDeck::Recording) {
+      rda->cae()->
+	inputMeterUpdate(catch_record_card[i],catch_record_stream[i],levels);
+      meter_levels.push_back(RDCatchMeterLevel(i,levels));
+    }
+    if(catch_playout_deck_status[i]==RDDeck::Recording) {
+      rda->cae()->
+	outputMeterUpdate(catch_playout_card[i],catch_playout_port[i],levels);
+      meter_levels.push_back(RDCatchMeterLevel(i+129,levels));
+    }
+  }
+  if(meter_levels.size()>0) {
+    RDCatchEvent *evt=new RDCatchEvent();
+    evt->setOperation(RDCatchEvent::SendMeterLevelsOp);
+    evt->setMeterLevels(meter_levels);
+    rda->ripc()->sendCatchEvent(evt);
+    delete evt;
+  }
+
+  /*
   for(int i=0;i<MAX_DECKS;i++) {
     if(catch_record_deck_status[i]==RDDeck::Recording) {
       rda->cae()->inputMeterUpdate(catch_record_card[i],catch_record_stream[i],
@@ -1166,6 +1189,7 @@ void MainObject::meterData()
       SendMeterLevel(i+129,levels);
     }
   }
+  */
 }
 
 

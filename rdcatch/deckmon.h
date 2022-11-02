@@ -43,8 +43,8 @@ class DeckMon : public RDFrame
 
  public slots:
   void setStatus(RDDeck::Status status,int id,const QString &cutname);
-  void setLeftMeter(int level);
-  void setRightMeter(int level);
+  //  void setLeftMeter(int level);
+  //  void setRightMeter(int level);
   void processCatchEvent(RDCatchEvent *evt);
 
  protected:

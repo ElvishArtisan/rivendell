@@ -90,7 +90,7 @@ class MainWidget : public RDMainWindow
   void initData(bool);
   void playedData(int);
   void playStoppedData(int);
-  void meterLevelData(int,int,int,int);
+  //  void meterLevelData(int,int,int,int);
   void selectionChangedData(const QItemSelection &before,
 			    const QItemSelection &after);
   void doubleClickedData(const QModelIndex &index);

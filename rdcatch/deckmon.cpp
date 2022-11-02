@@ -205,7 +205,7 @@ void DeckMon::setStatus(RDDeck::Status status,int id,const QString &cutname)
   }
 }
 
-
+/*
 void DeckMon::setLeftMeter(int level)
 {
   mon_left_meter->setPeakBar(level);
@@ -216,19 +216,39 @@ void DeckMon::setRightMeter(int level)
 {
   mon_right_meter->setPeakBar(level);
 }
-
+*/
 
 void DeckMon::processCatchEvent(RDCatchEvent *evt)
 {
-  if((evt->hostName()==mon_station)&&(evt->deckChannel()==mon_channel)) {
+  //  printf("processCatchEvent(): %s\n",evt->dump().toUtf8().constData());
+
+  QList<RDCatchMeterLevel> meter_levels;
+
+  if(evt->hostName()==mon_station) {
     switch(evt->operation()) {
     case RDCatchEvent::DeckEventProcessedOp:
-      mon_event_light->trigger(evt->eventNumber());
+      if(evt->deckChannel()==mon_channel) {
+	mon_event_light->trigger(evt->eventNumber());
+      }
       break;
 
     case RDCatchEvent::DeckStatusResponseOp:
-      setStatus(evt->deckStatus(),evt->eventId(),
-		RDCut::cutName(evt->cartNumber(),evt->cutNumber()));
+      if(evt->deckChannel()==mon_channel) {
+	setStatus(evt->deckStatus(),evt->eventId(),
+		  RDCut::cutName(evt->cartNumber(),evt->cutNumber()));
+      }
+      break;
+
+    case RDCatchEvent::SendMeterLevelsOp:
+      meter_levels=evt->meterLevels();
+      for(int i=0;i<meter_levels.size();i++) {
+	if(meter_levels.at(i).deckChannel()==mon_channel) {
+	  mon_left_meter->
+	    setPeakBar(meter_levels.at(i).level(RDCatchMeterLevel::Left));
+	  mon_right_meter->
+	    setPeakBar(meter_levels.at(i).level(RDCatchMeterLevel::Right));
+	}
+      }
       break;
 
     case RDCatchEvent::SetInputMonitorResponseOp:
@@ -248,6 +268,7 @@ void DeckMon::processCatchEvent(RDCatchEvent *evt)
       break;
 
     case RDCatchEvent::DeckStatusQueryOp:
+    case RDCatchEvent::ReloadDecksOp:
     case RDCatchEvent::StopDeckOp:
     case RDCatchEvent::SetInputMonitorOp:
     case RDCatchEvent::NullOp:

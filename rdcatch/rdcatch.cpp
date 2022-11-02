@@ -195,9 +195,11 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
     connect(catch_connect.back()->connector(),
 	    SIGNAL(connected(int,bool)),
 	    this,SLOT(connectedData(int,bool)));
+    /*
     connect(catch_connect.back()->connector(),
 	    SIGNAL(meterLevel(int,int,int,int)),
 	    this,SLOT(meterLevelData(int,int,int,int)));
+    */
     catch_connect.back()->connector()->
       connectHost(q->value(1).toString(),RDCATCHD_TCP_PORT,
 		  rda->config()->password());
@@ -754,6 +756,7 @@ void MainWidget::catchEventReceivedData(RDCatchEvent *evt)
 
   switch(evt->operation()) {
   case RDCatchEvent::DeckStatusResponseOp:
+    printf("catchEventReceivedData(): %s\n",evt->dump().toUtf8().constData());
     if(evt->eventId()>0) {
       if(!catch_recordings_model->refresh(evt->eventId())) {
 	catch_recordings_model->addRecord(evt->eventId());
@@ -765,6 +768,8 @@ void MainWidget::catchEventReceivedData(RDCatchEvent *evt)
   case RDCatchEvent::DeckEventProcessedOp:
   case RDCatchEvent::DeckStatusQueryOp:
   case RDCatchEvent::StopDeckOp:
+  case RDCatchEvent::ReloadDecksOp:
+  case RDCatchEvent::SendMeterLevelsOp:
   case RDCatchEvent::SetInputMonitorOp:
   case RDCatchEvent::SetInputMonitorResponseOp:
   case RDCatchEvent::NullOp:
@@ -900,7 +905,7 @@ void MainWidget::playStoppedData(int handle)
   rda->cae()->unloadPlay(catch_play_handle);
 }
 
-
+/*
 void MainWidget::meterLevelData(int serial,int deck,int l_r,int level)
 {
   DeckMon *monitor;
@@ -918,7 +923,7 @@ void MainWidget::meterLevelData(int serial,int deck,int l_r,int level)
     }
   }
 }
-
+*/
 
 void MainWidget::selectionChangedData(const QItemSelection &before,
 				      const QItemSelection &after)

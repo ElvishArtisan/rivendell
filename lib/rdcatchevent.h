@@ -21,10 +21,28 @@
 #ifndef RDCATCHEVENT_H
 #define RDCATCHEVENT_H
 
+#include <QList>
 #include <QString>
 #include <QVariant>
 
 #include <rddeck.h>
+
+class RDCatchMeterLevel
+{
+ public:
+  enum Channel {Left=0,Right=1,LastChannel=2};
+  RDCatchMeterLevel(int deck,int16_t *lvls);
+  unsigned deckChannel() const;
+  int16_t level(Channel chan) const;
+  QString dump() const;
+
+ private:
+  unsigned d_deck_channel;
+  int16_t d_levels[Channel::LastChannel];
+};
+
+
+
 
 class RDCatchEvent
 {
@@ -32,7 +50,7 @@ class RDCatchEvent
   enum Operation {NullOp=0,DeckEventProcessedOp=1,
 		  DeckStatusQueryOp=2,DeckStatusResponseOp=3,
 		  StopDeckOp=4,SetInputMonitorOp=5,SetInputMonitorResponseOp=6,
-		  ReloadDecksOp=7,LastOp=8};
+		  ReloadDecksOp=7,SendMeterLevelsOp=8,LastOp=9};
   RDCatchEvent(RDDeck::Status status);
   RDCatchEvent();
   Operation operation() const;
@@ -55,6 +73,8 @@ class RDCatchEvent
   void setDeckStatus(RDDeck::Status status);
   bool inputMonitorActive() const;
   void setInputMonitorActive(bool state);
+  QList<RDCatchMeterLevel> meterLevels() const;
+  void setMeterLevels(const QList<RDCatchMeterLevel> &lvls);
   bool read(const QString &str);
   QString write() const;
   QString dump() const;
@@ -70,6 +90,7 @@ class RDCatchEvent
   unsigned d_deck_channel;
   int d_event_number;
   bool d_input_monitor_active;
+  QList<RDCatchMeterLevel> d_meter_levels;
   RDDeck::Status d_deck_status;
 };
 

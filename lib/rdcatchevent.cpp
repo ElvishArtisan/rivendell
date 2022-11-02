@@ -23,6 +23,43 @@
 #include "rdcatchevent.h"
 #include "rdapplication.h"
 
+RDCatchMeterLevel::RDCatchMeterLevel(int deck,int16_t *lvls)
+{
+  d_deck_channel=deck;
+  for(int i=0;i<RDCatchMeterLevel::LastChannel;i++) {
+    d_levels[i]=-lvls[i];
+  }
+}
+
+
+unsigned RDCatchMeterLevel::deckChannel() const
+{
+  return d_deck_channel;
+}
+
+
+int16_t RDCatchMeterLevel::level(Channel chan) const
+{
+  return -d_levels[chan];
+}
+
+
+QString RDCatchMeterLevel::dump() const
+{
+  QString lvls;
+  QString ret;
+
+  for(int j=0;j<RDCatchMeterLevel::LastChannel;j++) {
+    lvls+=QString::asprintf(":%04X",d_levels[j]);
+  }
+  ret+=QString::asprintf("%u",d_deck_channel)+lvls;
+
+  return ret;
+}
+
+
+
+
 RDCatchEvent::RDCatchEvent(RDDeck::Status status)
 {
   clear();
@@ -157,6 +194,18 @@ void RDCatchEvent::setInputMonitorActive(bool state)
 }
 
 
+QList<RDCatchMeterLevel> RDCatchEvent::meterLevels() const
+{
+  return d_meter_levels;
+}
+
+
+void RDCatchEvent::setMeterLevels(const QList<RDCatchMeterLevel> &lvls)
+{
+  d_meter_levels=lvls;
+}
+
+
 bool RDCatchEvent::read(const QString &str)
 {
   //  printf("RDCatchEvent::read(\"%s\")\n",str.toUtf8().constData());
@@ -203,6 +252,32 @@ bool RDCatchEvent::read(const QString &str)
       d_event_number=num;
       return true;
     }
+    break;
+
+  case RDCatchEvent::SendMeterLevelsOp:
+    for(int i=2;i<f0.size();i++) {
+      QStringList f1=f0.at(i).split(":",QString::KeepEmptyParts);
+      if(f1.size()==(1+RDCatchMeterLevel::LastChannel)) {
+	chan=f1.at(0).toUInt(&ok);
+	if(chan>=255) {
+	  d_meter_levels.clear();
+	  return false;
+	}
+	int16_t lvls[RDCatchMeterLevel::LastChannel];
+	for(int j=0;j<RDCatchMeterLevel::LastChannel;j++) {
+	  int lvl=f1.at(1+j).toInt(&ok,16);
+	  if((!ok)||(lvl>0xFFFF)) {
+	    d_meter_levels.clear();
+	    return false;
+	  }
+	  lvls[j]=-(int16_t)lvl;
+	}
+	d_meter_levels.push_back(RDCatchMeterLevel(chan,lvls));
+      }
+    }
+    d_operation=op;
+    d_host_name=f0.at(1);
+    return true;
     break;
 
   case RDCatchEvent::DeckStatusQueryOp:
@@ -347,6 +422,12 @@ QString RDCatchEvent::write() const
   case RDCatchEvent::LastOp:
     break;
 
+  case RDCatchEvent::SendMeterLevelsOp:
+    for(int i=0;i<d_meter_levels.size();i++) {
+      ret+=" "+d_meter_levels.at(i).dump();
+    }
+    break;
+
   case RDCatchEvent::SetInputMonitorOp:
     ret+=" "+d_target_host_name;
     ret+=QString::asprintf(" %u",d_deck_channel);
@@ -389,6 +470,12 @@ QString RDCatchEvent::dump() const
     ret+="operation: RDCatchEvent::DeckEventProcessedOp\n";
     ret+=QString::asprintf("deck channel: %u\n",d_deck_channel);
     ret+=QString::asprintf("event number: %u\n",d_event_number);
+    break;
+
+  case RDCatchEvent::SendMeterLevelsOp:
+    for(int i=0;i<d_meter_levels.size();i++) {
+      ret+="meter level: "+d_meter_levels.at(i).dump()+"\n";
+    }
     break;
 
   case RDCatchEvent::DeckStatusQueryOp:
@@ -449,4 +536,5 @@ void RDCatchEvent::clear()
   d_event_number=0;
   d_input_monitor_active=false;
   d_deck_status=RDDeck::Offline;
+  d_meter_levels.clear();
 }
