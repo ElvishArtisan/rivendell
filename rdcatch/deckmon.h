@@ -21,8 +21,8 @@
 #ifndef DECKMON_H
 #define DECKMON_H
 
-#include <qlabel.h>
-#include <qpushbutton.h>
+#include <QLabel>
+#include <QPushButton>
 
 #include <rddeck.h>
 #include <rdframe.h>
@@ -42,9 +42,6 @@ class DeckMon : public RDFrame
   void enableMonitorButton(bool state);
 
  public slots:
-  void setStatus(RDDeck::Status status,int id,const QString &cutname);
-  //  void setLeftMeter(int level);
-  //  void setRightMeter(int level);
   void processCatchEvent(RDCatchEvent *evt);
 
  protected:
@@ -55,6 +52,7 @@ class DeckMon : public RDFrame
   void abortButtonData();
 
  private:
+  void SetStatus(RDDeck::Status status,int id,const QString &cutname);
   void SetCutInfo(int id,const QString &cutname);
   QLabel *mon_station_label;
   QLabel *mon_cut_label;

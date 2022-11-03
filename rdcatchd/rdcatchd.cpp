@@ -35,8 +35,6 @@
 #include <sched.h>
 #include <sys/mman.h>
 
-#include <vector>
-
 #include <QApplication>
 
 #include <rdapplication.h>
@@ -78,73 +76,6 @@ void SigHandler(int signum)
     return;
   }
 }
-
-
-ServerConnection::ServerConnection(int id,QTcpSocket *sock)
-{
-  conn_id=id;
-  conn_socket=sock;
-  conn_authenticated=false;
-  conn_meter_enabled=false;
-  conn_is_closing=false;
-  accum="";
-}
-
-
-ServerConnection::~ServerConnection()
-{
-  delete conn_socket;
-}
-
-
-int ServerConnection::id() const
-{
-  return conn_id;
-}
-
-
-bool ServerConnection::isAuthenticated() const
-{
-  return conn_authenticated;
-}
-
-
-void ServerConnection::setAuthenticated(bool state)
-{
-  conn_authenticated=state;
-}
-
-
-bool ServerConnection::meterEnabled() const
-{
-  return conn_meter_enabled;
-}
-
-
-void ServerConnection::setMeterEnabled(bool state)
-{
-  conn_meter_enabled=state;
-}
-
-
-QTcpSocket *ServerConnection::socket()
-{
-  return conn_socket;
-}
-
-
-bool ServerConnection::isClosing() const
-{
-  return conn_is_closing;
-}
-
-
-void ServerConnection::close()
-{
-  conn_is_closing=true;
-}
-
-
 
 
 MainObject::MainObject(QObject *parent)
@@ -240,23 +171,6 @@ MainObject::MainObject(QObject *parent)
   QTimer *timer=new QTimer(this);
   connect(timer,SIGNAL(timeout()),this,SLOT(freeEventsData()));
   timer->start(RDCATCHD_FREE_EVENTS_INTERVAL);
-
-  //
-  // Command Server
-  //
-  server=new QTcpServer(this);
-  if(!server->listen(QHostAddress::Any,RDCATCHD_TCP_PORT)) {
-    fprintf(stderr,"rdcatchd: aborting - couldn't bind socket");
-    exit(1);
-  }
-  connect(server,SIGNAL(newConnection()),this,SLOT(newConnectionData()));
-  catch_ready_mapper=new QSignalMapper(this);
-  connect(catch_ready_mapper,SIGNAL(mapped(int)),this,SLOT(socketReadyReadData(int)));
-  catch_kill_mapper=new QSignalMapper(this);
-  connect(catch_kill_mapper,SIGNAL(mapped(int)),this,SLOT(socketKillData(int)));
-  catch_garbage_timer=new QTimer(this);
-  catch_garbage_timer->setSingleShot(true);
-  connect(catch_garbage_timer,SIGNAL(timeout()),this,SLOT(garbageData()));
 
   //
   // Create RDCatchConf
@@ -534,28 +448,6 @@ void MainObject::catchEventReceivedData(RDCatchEvent *evt)
     break;
   }
 }
-
-
-void MainObject::newConnectionData()
-{
-  int i=0;
-  QTcpSocket *sock=server->nextPendingConnection();
-  while((i<catch_connections.size())&&(catch_connections[i]!=NULL)) {
-    i++;
-  }
-  if(i==catch_connections.size()) {      // Table full, create a new slot
-    catch_connections.push_back(new ServerConnection(i,sock));
-  }
-  else {
-    catch_connections[i]=new ServerConnection(i,sock);
-  }
-  connect(sock,SIGNAL(readyRead()),catch_ready_mapper,SLOT(map()));
-  catch_ready_mapper->setMapping(sock,i);
-  connect(sock,SIGNAL(disconnected()),catch_kill_mapper,SLOT(map()));
-  catch_kill_mapper->setMapping(sock,i);
-  rda->syslog(LOG_DEBUG,"created connection %d",i);
-}
-
 
 void MainObject::rmlReceivedData(RDMacro *rml)
 {
@@ -903,58 +795,6 @@ void MainObject::engineData(int id)
 }
 
 
-void MainObject::socketReadyReadData(int ch)
-{
-  ParseCommand(ch);
-}
-
-
-void MainObject::socketKillData(int conn_id)
-{
-  if(catch_connections[conn_id]!=NULL) {
-    catch_connections[conn_id]->close();
-    catch_garbage_timer->start(1);
-  }
-}
-
-
-void MainObject::garbageData()
-{
-  for(int i=0;i<catch_connections.size();i++) {
-    if(catch_connections.at(i)!=NULL) {
-      if(catch_connections.at(i)->isClosing()) {
-	delete catch_connections.at(i);
-	catch_connections[i]=NULL;
-	rda->syslog(LOG_DEBUG,"closed connection %d",i);
-      }
-    }
-  }
-}
-
-
-void MainObject::isConnectedData(bool state)
-{
-  if(state) {
-    QList<int> cards;
-    QString sql=QString("select `CARD_NUMBER` from `DECKS` where ")+
-      "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"' && "+
-      "`CARD_NUMBER`>=0";
-    RDSqlQuery *q=new RDSqlQuery(sql);
-    while(q->next()) {
-      if(!cards.contains(q->value(0).toInt())) {
-	cards.push_back(q->value(0).toInt());
-      }
-    }
-    delete q;
-    rda->cae()->enableMetering(&cards);
-  }
-  if(!state) {
-    rda->syslog(LOG_ERR,"aborting - unable to connect to Core AudioEngine");
-    exit(1);
-  }
-}
-
-
 void MainObject::recordLoadedData(int card,int stream)
 {
   int deck=GetRecordDeck(card,stream);
@@ -988,13 +828,11 @@ void MainObject::recordingData(int card,int stream)
 void MainObject::recordStoppedData(int card,int stream)
 {
   int deck=GetRecordDeck(card,stream);
-  short levels[2]={-10000,-10000};
 
   catch_record_status[deck-1]=false;
   if(debug) {
     printf("Stopped - Card: %d  Stream: %d\n",card,stream);
   }
-  SendMeterLevel(deck-1,levels);
   rda->cae()->unloadRecord(card,stream);
 }
 
@@ -1099,7 +937,6 @@ void MainObject::playingData(int handle)
 void MainObject::playStoppedData(int handle)
 {
   int deck=GetPlayoutDeck(handle);
-  short levels[2]={-10000,-10000};
 
   catch_playout_status[deck-129]=false;
   catch_playout_event_player[deck-129]->stop();
@@ -1110,7 +947,6 @@ void MainObject::playStoppedData(int handle)
 	   catch_playout_card[deck-129],
 	   catch_playout_stream[deck-129]);
   }
-  SendMeterLevel(deck,levels);
   rda->cae()->unloadPlay(handle);
 }
 
@@ -1174,22 +1010,6 @@ void MainObject::meterData()
     rda->ripc()->sendCatchEvent(evt);
     delete evt;
   }
-
-  /*
-  for(int i=0;i<MAX_DECKS;i++) {
-    if(catch_record_deck_status[i]==RDDeck::Recording) {
-      rda->cae()->inputMeterUpdate(catch_record_card[i],catch_record_stream[i],
-				  levels);
-      SendMeterLevel(i+1,levels);
-    }
-    if(catch_playout_deck_status[i]==RDDeck::Recording) {
-      rda->cae()->
-	outputMeterUpdate(catch_playout_card[i],catch_playout_port[i],
-				  levels);
-      SendMeterLevel(i+129,levels);
-    }
-  }
-  */
 }
 
 
@@ -1689,178 +1509,14 @@ void MainObject::SendFullEventResponse(const QHostAddress &addr)
 }
 
 
-void MainObject::SendMeterLevel(int deck,short levels[2])
-{
-  for(int i=0;i<catch_connections.size();i++) {
-    if(catch_connections.at(i)!=NULL) {
-      if(catch_connections.at(i)->meterEnabled()) {
-	EchoCommand(i,QString::asprintf("RM %d 0 %d!",deck,(int)levels[0]));
-	EchoCommand(i,QString::asprintf("RM %d 1 %d!",deck,(int)levels[1]));
-      }
-    }
-  }
-}
-
-
 void MainObject::SendDeckEvent(int deck,int number)
 {
-  BroadcastCommand(QString::asprintf("DE %d %d!",deck,number));
-
   RDCatchEvent *evt=new RDCatchEvent();
   evt->setOperation(RDCatchEvent::DeckEventProcessedOp);
   evt->setDeckChannel(deck);
   evt->setEventNumber(number);
   rda->ripc()->sendCatchEvent(evt);
   delete evt;
-}
-
-
-void MainObject::ParseCommand(int ch)
-{
-  char data[1501];
-  int n;
-
-  ServerConnection *conn=catch_connections.at(ch);
-  if(conn!=NULL) {
-    while((n=conn->socket()->read(data,1500))>0) {
-      data[n]=0;
-      QString line=QString::fromUtf8(data);
-      for(int i=0;i<line.length();i++) {
-	QChar c=line.at(i);
-	bool modified=false;
-	if(c==QChar('!')) {
-	  DispatchCommand(conn);
-	  conn->accum="";
-	  modified=true;
-	}
-	if((!modified)&&(c!=QChar('\r'))&&(c!=QChar('\n'))) {
-	  conn->accum+=c;
-	}
-      }
-    }
-  }
-}
-
-
-void MainObject::DispatchCommand(ServerConnection *conn)
-{
-  //  int chan;
-  //  int id;
-  //  int event;
-  //  int code;
-  QString str;
-  //  bool ok=false;
-
-  QStringList cmds=conn->accum.split(" ");
-
-  //
-  // Common Commands
-  // Authentication not required to execute these!
-  //
-  if(cmds.at(0)=="DC") {  // Drop Connection
-    socketKillData(conn->id());
-    return;
-  }
-
-  if((cmds.at(0)=="PW")&&(cmds.size()==2)) {  // Password Authenticate
-    if(cmds.at(1)==rda->config()->password()) {
-      conn->setAuthenticated(true);
-      EchoCommand(conn->id(),"PW +!");
-      return;
-    }
-    else {
-      conn->setAuthenticated(false);
-      EchoCommand(conn->id(),"PW -!");
-      return;
-    }
-  }
-
-  //
-  // Priviledged Commands
-  // Authentication required to execute these!
-  //
-  if(!conn->isAuthenticated()) {
-    EchoArgs(conn->id(),'-');
-    return;
-  }
-
-  if(cmds.at(0)=="RS") {  // Reset
-    EchoArgs(conn->id(),'+');
-    LoadEngine();
-  }
-
-  if(cmds.at(0)=="RD") {  // Load Deck List
-    EchoArgs(conn->id(),'+');
-    LoadDeckList();
-  }
-
-  if((cmds.at(0)=="RM")&&(cmds.size()==2)) {  // Enable/Disable Metering
-    conn->setMeterEnabled(cmds.at(1).trimmed()!="0");
-  }
-  /*
-  if((cmds.at(0)=="SC")&&(cmds.size()>=4)) {  // Set Exit Code
-    id=cmds.at(1).toInt(&ok);
-    if(!ok) {
-      return;
-    }
-    code=cmds.at(2).toInt(&ok);
-    if(!ok) {
-      return;
-    }
-    str="";
-    for(int i=3;i<cmds.size();i++) {
-      str+=cmds.at(i)+" ";
-      str=str.left(str.length()-1);
-    }
-    if((event=GetEvent(id))<0) {
-      return;
-    }
-    WriteExitCode(event,(RDRecording::ExitCode)code,str);
-    SendEventResponse(0,RDDeck::Idle,id,"");
-    //    BroadcastCommand(QString::asprintf("RE 0 %d %d!",RDDeck::Idle,id));
-    if((RDRecording::ExitCode)code==RDRecording::Ok) {
-      SendEventResponse(0,RDDeck::Idle,id,"");
-      //      BroadcastCommand(QString::asprintf("RE 0 %d %d!",RDDeck::Idle,id));
-    }
-    else {
-      SendEventResponse(0,RDDeck::Offline,id,"");
-      //      BroadcastCommand(QString::asprintf("RE 0 %d %d!",RDDeck::Offline,id));
-    }
-  }
-  */
-}
-
-
-void MainObject::EchoCommand(int ch,const QString &cmd)
-{
-//  LogLine(RDConfig::LogDebug,QString::asprintf("rdcatchd: EchoCommand(%d,%s)",ch,command));
-  ServerConnection *conn=catch_connections.at(ch);
-  if(conn->socket()->state()==QAbstractSocket::ConnectedState) {
-    conn->socket()->write(cmd.toUtf8());
-  }
-}
-
-
-void MainObject::BroadcastCommand(const QString &cmd,int except_ch)
-{
-//  LogLine(RDConfig::LogDebug,QString::asprintf("rdcatchd: BroadcastCommand(%s)",command));
-  for(int i=0;i<catch_connections.size();i++) {
-    if(catch_connections.at(i)!=NULL) {
-      if(i!=except_ch) {
-	EchoCommand(i,cmd);
-      }
-    }
-  }
-}
-
-
-void MainObject::EchoArgs(int ch,const char append)
-{
-  ServerConnection *conn=catch_connections.at(ch);
-  if(conn!=NULL) {
-    QString cmd=conn->accum+append+"!";
-    EchoCommand(ch,cmd);
-  }
 }
 
 
@@ -2468,13 +2124,6 @@ QString MainObject::GetFileExtension(QString filename)
   return QString();
 }
 
-/* This is an overloaded virtual function to tell a session manager not to restart this daemon. */
-/*
-void QApplication::saveState(QSessionManager &sm) {
-  sm.setRestartHint(QSessionManager::RestartNever);
-  return;
-};
-*/
 
 bool MainObject::ExecuteErrorRml(CatchEvent *event,const QString &err_desc,
 				 QString rml)

@@ -52,27 +52,6 @@ EditUpload *catch_editupload_dialog;
 int catch_audition_card=-1;
 int catch_audition_port=-1;
 
-CatchConnector::CatchConnector(RDCatchConnect *conn,const QString &station_name)
-{
-  catch_connect=conn;
-  catch_station_name=station_name;
-}
-
-
-RDCatchConnect *CatchConnector::connector() const
-{
-  return catch_connect;
-}
-
-
-QString CatchConnector::stationName()
-{
-  return catch_station_name;
-}
-
-
-
-
 MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   : RDMainWindow("rdcatch",c)
 {
@@ -187,22 +166,6 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
     "`NAME`!='DEFAULT'";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
-    catch_connect.push_back(new CatchConnector(new RDCatchConnect(catch_connect.size(),this),q->value(0).toString().toLower()));
-    connect(catch_connect.back()->connector(),
-      SIGNAL(statusChanged(int,unsigned,RDDeck::Status,int,const QString &)),
-      this,
-      SLOT(statusChangedData(int,unsigned,RDDeck::Status,int,const QString &)));
-    connect(catch_connect.back()->connector(),
-	    SIGNAL(connected(int,bool)),
-	    this,SLOT(connectedData(int,bool)));
-    /*
-    connect(catch_connect.back()->connector(),
-	    SIGNAL(meterLevel(int,int,int,int)),
-	    this,SLOT(meterLevelData(int,int,int,int)));
-    */
-    catch_connect.back()->connector()->
-      connectHost(q->value(1).toString(),RDCATCHD_TCP_PORT,
-		  rda->config()->password());
     sql=QString("select ")+
       "`CHANNEL`,"+          // 00
       "`MON_PORT_NUMBER` "+  // 01
@@ -213,29 +176,18 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
       "order by `CHANNEL`";
     q1=new RDSqlQuery(sql);
     while(q1->next()) {
-      catch_connect.back()->chan.push_back(q1->value(0).toUInt());
-      catch_connect.back()->mon_id.push_back(catch_monitor.size());
-
-      DeckMon *mon=new DeckMon(q->value(0).toString(),q1->value(0).toUInt(),
-			       catch_monitor_vbox);
+      catch_deck_monitors.
+	push_back(new DeckMon(q->value(0).toString(),q1->value(0).toUInt(),
+			      catch_monitor_vbox));
       connect(rda->ripc(),SIGNAL(catchEventReceived(RDCatchEvent *)),
-	      mon,SLOT(processCatchEvent(RDCatchEvent *)));
-      catch_monitor.push_back(new CatchMonitor());
-      catch_monitor.back()->setDeckMon(mon);
-      catch_monitor.back()->setSerialNumber(catch_connect.size()-1);
-      catch_monitor.back()->setChannelNumber(q1->value(0).toUInt());
-      catch_monitor_vbox->addWidget(catch_monitor.back()->deckMon());
-
-      catch_monitor.back()->deckMon()->
-	enableMonitorButton((q1->value(1).toInt()>=0)&&
-			    (rda->config()->stationName().toLower()==
-			     q->value(0).toString().toLower()));
-      catch_monitor.back()->deckMon()->show();
+	      catch_deck_monitors.back(),
+	      SLOT(processCatchEvent(RDCatchEvent *)));
+      catch_monitor_vbox->addWidget(catch_deck_monitors.back());
     }
     delete q1;
   }
   delete q;
-  if(catch_monitor.size()==0) {
+  if(catch_deck_monitors.size()==0) {
     catch_monitor_area->hide();
   }
 
@@ -493,14 +445,6 @@ QSizePolicy MainWidget::sizePolicy() const
 }
 
 
-void MainWidget::connectedData(int serial,bool state)
-{
-  if(state) {
-    catch_connect[serial]->connector()->enableMetering(true);
-  }
-}
-
-
 void MainWidget::nextEventData()
 {
   QTime next_time;
@@ -547,7 +491,6 @@ void MainWidget::nextEventData()
 
 void MainWidget::addData()
 {
-  int conn;
   RDNotification *notify=NULL;
   QModelIndex row;
   RDRecording::Type type=RDRecording::Recording;
@@ -565,11 +508,6 @@ void MainWidget::addData()
     row=catch_recordings_model->addRecord(rec_id);
     if(row.isValid()) {
       catch_recordings_view->selectRow(row.row());
-    }
-    conn=GetConnection(catch_recordings_model->hostName(row));
-    if(conn<0) {
-      fprintf(stderr,"rdcatch: invalid connection index!\n");
-      return;
     }
     nextEventData();
   }
@@ -648,7 +586,6 @@ void MainWidget::deleteData()
 {
   QString warning;
   QString filename;
-  int conn;
   QString sql;
   QModelIndexList rows=catch_recordings_view->selectionModel()->selectedRows();
 
@@ -663,11 +600,6 @@ void MainWidget::deleteData()
   if(QMessageBox::warning(this,tr("Delete Event"),warning,
 			  QMessageBox::Yes,QMessageBox::No)!=
      QMessageBox::Yes) {
-    return;
-  }
-  conn=GetConnection(catch_recordings_model->hostName(rows.first()));
-  if(conn<0) {
-    fprintf(stderr,"rdcatch: invalid connection index!\n");
     return;
   }
   sql=QString("delete from `RECORDINGS` where ")+
@@ -719,36 +651,6 @@ void MainWidget::ripcUserData()
 }
 
 
-void MainWidget::statusChangedData(int serial,unsigned chan,
-				   RDDeck::Status status,int id,
-				   const QString &cutname)
-{
-  // printf("statusChangedData(%d,%u,%d,%d)\n",serial,chan,status,id);
-  int mon=GetMonitor(serial,chan);
-  catch_recordings_model->setRecordStatus(id,status);
-  if(mon>=0) {
-    int waiting_count=0;
-    int active_count=0;
-    unsigned waiting_id=0;
-    catch_recordings_model->
-      channelCounts(chan,&waiting_count,&active_count,&waiting_id);
-    if(waiting_count>1) {
-      catch_monitor[mon]->deckMon()->setStatus(status,-1,cutname);
-    }
-    else {
-      if((active_count==0)||(status!=RDDeck::Idle)) {
-	catch_monitor[mon]->deckMon()->setStatus(status,id,cutname);
-      }
-      else {
-	catch_monitor[mon]->deckMon()->
-	  setStatus(RDDeck::Waiting,waiting_id,cutname);
-      }
-    }
-  }
-  nextEventData();
-}
-
-
 void MainWidget::catchEventReceivedData(RDCatchEvent *evt)
 {
   //  printf("catchEventReceivedData()\n");
@@ -756,7 +658,6 @@ void MainWidget::catchEventReceivedData(RDCatchEvent *evt)
 
   switch(evt->operation()) {
   case RDCatchEvent::DeckStatusResponseOp:
-    printf("catchEventReceivedData(): %s\n",evt->dump().toUtf8().constData());
     if(evt->eventId()>0) {
       if(!catch_recordings_model->refresh(evt->eventId())) {
 	catch_recordings_model->addRecord(evt->eventId());
@@ -813,8 +714,10 @@ void MainWidget::headButtonData()
     RDSetMixerOutputPort(rda->cae(),catch_audition_card,catch_audition_stream,
 			 catch_audition_port);
     rda->cae()->positionPlay(catch_play_handle,cut->startPoint());
-    rda->cae()->setPlayPortActive(catch_audition_card,catch_audition_port,catch_audition_stream);
-    rda->cae()->setOutputVolume(catch_audition_card,catch_audition_stream,catch_audition_port,
+    rda->cae()->setPlayPortActive(catch_audition_card,catch_audition_port,
+				  catch_audition_stream);
+    rda->cae()->setOutputVolume(catch_audition_card,catch_audition_stream,
+				catch_audition_port,
            0+cut->playGain());
     rda->cae()->play(catch_play_handle,RDCATCH_AUDITION_LENGTH,
 		    RD_TIMESCALE_DIVISOR,false);
@@ -905,25 +808,6 @@ void MainWidget::playStoppedData(int handle)
   rda->cae()->unloadPlay(catch_play_handle);
 }
 
-/*
-void MainWidget::meterLevelData(int serial,int deck,int l_r,int level)
-{
-  DeckMon *monitor;
-
-  for(unsigned i=0;i<catch_connect[serial]->chan.size();i++) {
-    if(catch_connect[serial]->chan[i]==(unsigned)deck) {
-       monitor=catch_monitor[catch_connect[serial]->mon_id[i]]->deckMon();
-       if(l_r==0) {
-	 monitor->setLeftMeter(level);
-       }
-       if(l_r==1) {
-	 monitor->setRightMeter(level);
-       }
-       return;
-    }
-  }
-}
-*/
 
 void MainWidget::selectionChangedData(const QItemSelection &before,
 				      const QItemSelection &after)
@@ -1126,11 +1010,11 @@ void MainWidget::resizeEvent(QResizeEvent *e)
 {
   assert(e);
   assert(catch_monitor_area);
-  if(catch_monitor.size()<=RDCATCH_MAX_VISIBLE_MONITORS) {
+  if(catch_deck_monitors.size()<=RDCATCH_MAX_VISIBLE_MONITORS) {
     catch_monitor_area->
-      setGeometry(10,10,e->size().width()-20,32*catch_monitor.size()+4);
+      setGeometry(10,10,e->size().width()-20,32*catch_deck_monitors.size()+4);
     catch_monitor_vbox->
-      setGeometry(0,0,e->size().width()-25,32*catch_monitor.size());
+      setGeometry(0,0,e->size().width()-25,32*catch_deck_monitors.size());
   }
   else {
     catch_monitor_area->
@@ -1139,17 +1023,16 @@ void MainWidget::resizeEvent(QResizeEvent *e)
     // This depends on the width of the scrollbar. How to reliably
     // determine such on various desktops?
     //
-    // (catch_monitor_area->verticalScrollBar()->geometry().width() is not
-    // always accurate!)
+    // N.B. catch_monitor_area->verticalScrollBar()->geometry().width() is not
+    // always accurate!
     //
     catch_monitor_vbox->
-      setGeometry(0,
-		  0,
+      setGeometry(0,0,
 		  e->size().width()-40,  // Works on XFCE, what about others?
-		  32*catch_monitor.size());
+		  32*catch_deck_monitors.size());
   }
   int deck_height=0;  
-  if (catch_monitor.size()>0){
+  if (catch_deck_monitors.size()>0){
     deck_height=catch_monitor_area->geometry().y()+
       catch_monitor_area->geometry().height();
   }
@@ -1276,37 +1159,6 @@ void MainWidget::UpdateScroll()
   }
 }
 
-
-int MainWidget::GetMonitor(int serial,int chan)
-{
-  for(unsigned i=0;i<catch_monitor.size();i++) {
-    if((catch_monitor[i]->serialNumber()==serial)&&
-       (catch_monitor[i]->channelNumber()==chan)) {
-      return i;
-    }
-  }
-  return -1;
-}
-
-
-int MainWidget::GetConnection(QString station,unsigned chan)
-{
-  for(unsigned i=0;i<catch_connect.size();i++) {
-    if(catch_connect[i]->stationName()==station.toLower()) {
-      if(chan==0) {
-	return i;
-      }
-      for(unsigned j=0;j<catch_connect[i]->chan.size();j++) {
-	if(catch_connect[i]->chan[j]==chan) {
-	  return i;
-	}
-      }
-      return -1;
-    }
-  }
-  printf("  No connection found!\n");
-  return -1;
-}
 
 QString MainWidget::GeometryFile() {
   bool home_found = false;

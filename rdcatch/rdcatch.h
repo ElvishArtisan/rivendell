@@ -23,10 +23,10 @@
 
 #include <QCheckBox>
 #include <QComboBox>
+#include <QList>
 #include <QScrollArea>
 
 #include <rdcart_dialog.h>
-#include <rdcatch_connect.h>
 #include <rdcut_dialog.h>
 #include <rdmainwindow.h>
 #include <rdtableview.h>
@@ -34,7 +34,6 @@
 #include <rdwidget.h>
 
 #include "add_recording.h"
-#include "catch_monitor.h"
 #include "catchtableview.h"
 #include "deckmon.h"
 #include "recordlistmodel.h"
@@ -48,21 +47,6 @@
 #define RDCATCH_MAX_VISIBLE_MONITORS 8
 #define RDCATCH_USAGE "[--offline-host-warnings=yes|no]\n"
 
-class CatchConnector
-{
- public:
-  CatchConnector(RDCatchConnect *conn,const QString &station_name);
-  RDCatchConnect *connector() const;
-  QString stationName();
-  std::vector<unsigned> chan;
-  std::vector<unsigned> mon_id;
-
- private:
-  RDCatchConnect *catch_connect;
-  QString catch_station_name;
-};
-
-
 class MainWidget : public RDMainWindow
 {
   Q_OBJECT
@@ -72,15 +56,12 @@ class MainWidget : public RDMainWindow
   QSizePolicy sizePolicy() const;
   
  private slots:
-  void connectedData(int serial,bool state);
   void nextEventData();
   void addData();
   void editData();
   void deleteData();
   void ripcConnectedData(bool);
   void ripcUserData();
-  void statusChangedData(int,unsigned,RDDeck::Status,int,
-			 const QString &cutname);
   void catchEventReceivedData(RDCatchEvent *evt);
   void scrollButtonData();
   void reportsButtonData();
@@ -90,7 +71,6 @@ class MainWidget : public RDMainWindow
   void initData(bool);
   void playedData(int);
   void playStoppedData(int);
-  //  void meterLevelData(int,int,int,int);
   void selectionChangedData(const QItemSelection &before,
 			    const QItemSelection &after);
   void doubleClickedData(const QModelIndex &index);
@@ -110,13 +90,9 @@ class MainWidget : public RDMainWindow
   void ProcessNewRecords(std::vector<int> *adds);
   void EnableScroll(bool state);
   void UpdateScroll();
-  int GetMonitor(int serial,int chan);
-  int GetConnection(QString station,unsigned chan=0);
   QString GeometryFile();
-  std::vector<CatchMonitor *> catch_monitor;
   QScrollArea *catch_monitor_area;
   VBox *catch_monitor_vbox;
-  std::vector<CatchConnector *> catch_connect;
   QSqlDatabase *catch_db;
   int catch_audition_stream;
   int catch_play_handle;
@@ -154,6 +130,7 @@ class MainWidget : public RDMainWindow
   int catch_time_offset;
   bool catch_host_warnings;
   AddRecording *catch_add_recording_dialog;
+  QList<DeckMon *> catch_deck_monitors;
 };
 
 

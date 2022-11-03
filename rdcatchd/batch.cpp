@@ -55,21 +55,10 @@
 
 #include "rdcatchd.h"
 
-void MainObject::catchConnectedData(int serial,bool state)
-{
-  if(!state) {
-    rda->syslog(LOG_ERR,"unable to connect to rdcatchd(8) daemon");
-    exit(256);
-  }
-
-  connect(rda,SIGNAL(userChanged()),this,SLOT(userChangedData()));
-  rda->ripc()->
-    connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
-}
-
-
 void MainObject::userChangedData()
 {
+  disconnect(rda,SIGNAL(userChanged()),this,SLOT(userChangedData()));
+
   //
   // Dispatch Handler
   //
@@ -160,13 +149,11 @@ void MainObject::RunBatch(RDCmdSwitch *cmd)
   delete q;
 
   //
-  // Open Status Connection
+  // Connect to ripcd(8)
   //
-  catch_connect=new RDCatchConnect(0,this);
-  connect(catch_connect,SIGNAL(connected(int,bool)),
-	  this,SLOT(catchConnectedData(int,bool)));
-  catch_connect->
-    connectHost("localhost",RDCATCHD_TCP_PORT,rda->config()->password());
+  connect(rda,SIGNAL(userChanged()),this,SLOT(userChangedData()));
+  rda->ripc()->
+    connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 }
 
 

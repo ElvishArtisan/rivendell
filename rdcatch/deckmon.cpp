@@ -140,84 +140,6 @@ void DeckMon::enableMonitorButton(bool state)
 }
 
 
-void DeckMon::setStatus(RDDeck::Status status,int id,const QString &cutname)
-{
-  if(id==0) {
-    mon_status_label->setText(tr("IDLE"));
-    SetCutInfo(0,"");
-    mon_left_meter->setPeakBar(-10000);
-    mon_right_meter->setPeakBar(-10000);
-    mon_abort_button->setDisabled(true);
-    mon_event_light->setDisabled(true);
-    return;
-  }
-  switch(status) {
-  case RDDeck::Offline:
-    mon_status_label->setText(tr("OFFLINE"));
-    SetCutInfo(0,"");
-    mon_left_meter->setPeakBar(-10000);
-    mon_right_meter->setPeakBar(-10000);
-    mon_abort_button->setDisabled(true);
-    mon_event_light->setDisabled(true);
-    break;
-
-  case RDDeck::Idle:
-    mon_status_label->setText(tr("IDLE"));
-    SetCutInfo(0,"");
-    mon_left_meter->setPeakBar(-10000);
-    mon_right_meter->setPeakBar(-10000);
-    mon_abort_button->setDisabled(true);
-    mon_event_light->setDisabled(true);
-    break;
-
-  case RDDeck::Ready:
-    mon_status_label->setText(tr("READY"));
-    SetCutInfo(id,"");
-    mon_left_meter->setPeakBar(-10000);
-    mon_right_meter->setPeakBar(-10000);
-    mon_abort_button->setEnabled(true);
-    mon_event_light->setDisabled(true);
-    break;
-
-  case RDDeck::Waiting:
-    mon_status_label->setText(tr("WAITING"));
-    SetCutInfo(id,"");
-    mon_left_meter->setPeakBar(-10000);
-    mon_right_meter->setPeakBar(-10000);
-    mon_abort_button->setEnabled(true);
-    mon_event_light->setDisabled(true);
-    break;
-
-  case RDDeck::Recording:
-    if((mon_channel>0)&&(mon_channel<(MAX_DECKS+1))) {
-      mon_status_label->setText(tr("RECORDING"));
-    }
-    if((mon_channel>128)&&(mon_channel<(MAX_DECKS+129))) {
-      mon_status_label->setText(tr("PLAYING"));
-    }
-    SetCutInfo(id,cutname);
-    mon_abort_button->setEnabled(true);
-    mon_event_light->setEnabled(true);
-    break;
-
-  case RDDeck::LastStatus:
-    break;
-  }
-}
-
-/*
-void DeckMon::setLeftMeter(int level)
-{
-  mon_left_meter->setPeakBar(level);
-}
-
-
-void DeckMon::setRightMeter(int level)
-{
-  mon_right_meter->setPeakBar(level);
-}
-*/
-
 void DeckMon::processCatchEvent(RDCatchEvent *evt)
 {
   //  printf("processCatchEvent(): %s\n",evt->dump().toUtf8().constData());
@@ -234,7 +156,7 @@ void DeckMon::processCatchEvent(RDCatchEvent *evt)
 
     case RDCatchEvent::DeckStatusResponseOp:
       if(evt->deckChannel()==mon_channel) {
-	setStatus(evt->deckStatus(),evt->eventId(),
+	SetStatus(evt->deckStatus(),evt->eventId(),
 		  RDCut::cutName(evt->cartNumber(),evt->cutNumber()));
       }
       break;
@@ -303,7 +225,72 @@ void DeckMon::abortButtonData()
   rda->ripc()->sendCatchEvent(evt);
 
   delete evt;
-  //  emit abortClicked();
+}
+
+
+void DeckMon::SetStatus(RDDeck::Status status,int id,const QString &cutname)
+{
+  if(id==0) {
+    mon_status_label->setText(tr("IDLE"));
+    SetCutInfo(0,"");
+    mon_left_meter->setPeakBar(-10000);
+    mon_right_meter->setPeakBar(-10000);
+    mon_abort_button->setDisabled(true);
+    mon_event_light->setDisabled(true);
+    return;
+  }
+  switch(status) {
+  case RDDeck::Offline:
+    mon_status_label->setText(tr("OFFLINE"));
+    SetCutInfo(0,"");
+    mon_left_meter->setPeakBar(-10000);
+    mon_right_meter->setPeakBar(-10000);
+    mon_abort_button->setDisabled(true);
+    mon_event_light->setDisabled(true);
+    break;
+
+  case RDDeck::Idle:
+    mon_status_label->setText(tr("IDLE"));
+    SetCutInfo(0,"");
+    mon_left_meter->setPeakBar(-10000);
+    mon_right_meter->setPeakBar(-10000);
+    mon_abort_button->setDisabled(true);
+    mon_event_light->setDisabled(true);
+    break;
+
+  case RDDeck::Ready:
+    mon_status_label->setText(tr("READY"));
+    SetCutInfo(id,"");
+    mon_left_meter->setPeakBar(-10000);
+    mon_right_meter->setPeakBar(-10000);
+    mon_abort_button->setEnabled(true);
+    mon_event_light->setDisabled(true);
+    break;
+
+  case RDDeck::Waiting:
+    mon_status_label->setText(tr("WAITING"));
+    SetCutInfo(id,"");
+    mon_left_meter->setPeakBar(-10000);
+    mon_right_meter->setPeakBar(-10000);
+    mon_abort_button->setEnabled(true);
+    mon_event_light->setDisabled(true);
+    break;
+
+  case RDDeck::Recording:
+    if((mon_channel>0)&&(mon_channel<(MAX_DECKS+1))) {
+      mon_status_label->setText(tr("RECORDING"));
+    }
+    if((mon_channel>128)&&(mon_channel<(MAX_DECKS+129))) {
+      mon_status_label->setText(tr("PLAYING"));
+    }
+    SetCutInfo(id,cutname);
+    mon_abort_button->setEnabled(true);
+    mon_event_light->setEnabled(true);
+    break;
+
+  case RDDeck::LastStatus:
+    break;
+  }
 }
 
 

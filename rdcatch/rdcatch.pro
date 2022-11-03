@@ -32,8 +32,8 @@ x11 {
   SOURCES += edit_upload.cpp
   SOURCES += eventlight.cpp
   SOURCES += eventwidget.cpp
-  SOURCES += rdcatch.cpp
   SOURCES += list_reports.cpp
+  SOURCES += rdcatch.cpp
   SOURCES += recordlistmodel.cpp
 }
 
@@ -50,8 +50,8 @@ x11 {
   HEADERS += edit_upload.h
   HEADERS += eventlight.h
   HEADERS += eventwidget.h
-  HEADERS += rdcatch.h
   HEADERS += list_reports.h
+  HEADERS += rdcatch.h
   HEADERS += recordlistmodel.h
 }
 

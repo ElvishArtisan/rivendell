@@ -29,7 +29,6 @@
 #include <rd.h>
 #include <rdcart.h>
 #include <rdcatch_conf.h>
-#include <rdcatch_connect.h>
 #include <rdcatchevent.h>
 #include <rdcmd_switch.h>
 #include <rddeck.h>
@@ -51,32 +50,6 @@
 #define RDCATCHD_HEARTBEAT_INTERVAL 10000
 #define RDCATCHD_ERROR_ID_OFFSET 1000000
 
-class ServerConnection
-{
- public:
-  ServerConnection(int id,QTcpSocket *sock);
-  ~ServerConnection();
-  int id() const;
-  bool isAuthenticated() const;
-  void setAuthenticated(bool state);
-  bool meterEnabled() const;
-  void setMeterEnabled(bool state);
-  QTcpSocket *socket();
-  bool isClosing() const;
-  void close();
-  QString accum;
-
- private:
-  int conn_id;
-  bool conn_authenticated;
-  bool conn_meter_enabled;
-  QTcpSocket *conn_socket;
-  bool conn_is_closing;
-};
-
-
-
-
 class MainObject : public QObject
 {
   Q_OBJECT
@@ -87,16 +60,11 @@ class MainObject : public QObject
   //
   // rdcatchd.cpp
   //
-  void newConnectionData();
   void rmlReceivedData(RDMacro *rml);
   void gpiStateChangedData(int matrix,int line,bool state);
   void startTimerData(int id);
   void offsetTimerData(int id);
   void engineData(int);
-  void socketReadyReadData(int conn_id);
-  void socketKillData(int conn_id);
-  void garbageData();
-  void isConnectedData(bool state);
   void recordLoadedData(int card,int stream);
   void recordingData(int card,int stream);
   void recordStoppedData(int card,int stream);
@@ -117,7 +85,7 @@ class MainObject : public QObject
   //
   // batch.cpp
   //
-  void catchConnectedData(int serial,bool state);
+  //  void catchConnectedData(int serial,bool state);
   void userChangedData();
   void exitData();
 
@@ -148,13 +116,7 @@ class MainObject : public QObject
   void SendEventResponse(int chan,RDDeck::Status status,int id,
 			 const QString &cutname);
   void SendFullEventResponse(const QHostAddress &addr);
-  void SendMeterLevel(int deck,short levels[2]);
   void SendDeckEvent(int deck,int number);
-  void ParseCommand(int);
-  void DispatchCommand(ServerConnection *conn);
-  void EchoCommand(int,const QString &cmd);
-  void BroadcastCommand(const QString &cmd,int except_ch=-1);
-  void EchoArgs(int,const char);
   void LoadEngine(bool adv_day=false);
   QString LoadEventSql();
   void LoadEvent(RDSqlQuery *q,CatchEvent *e,bool add);
@@ -195,8 +157,6 @@ class MainObject : public QObject
   RDTimeEngine *catch_engine;
   int16_t tcp_port;
   QTcpServer *server;
-  RDCatchConnect *catch_connect;
-  QList<ServerConnection *> catch_connections;
   QSignalMapper *catch_ready_mapper;
   QSignalMapper *catch_kill_mapper;
   QTimer *catch_garbage_timer;

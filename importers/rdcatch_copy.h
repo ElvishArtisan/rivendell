@@ -2,7 +2,7 @@
 //
 // An RDCatch event copier.
 //
-//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,13 +21,11 @@
 #ifndef RDCATCH_COPY_H
 #define RDCATCH_COPY_H
 
-#include <qobject.h>
-#include <qapplication.h>
-#include <qsqldatabase.h>
+#include <QObject>
+#include <QApplication>
 
 #include <rdstation.h>
 #include <rdripc.h>
-#include <rdcatch_connect.h>
 #include <rdstation.h>
 #include <rdconfig.h>
 

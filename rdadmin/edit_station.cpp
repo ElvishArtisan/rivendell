@@ -21,7 +21,6 @@
 #include <QMessageBox>
 
 #include <rdapplication.h>
-#include <rdcatch_connect.h>
 #include <rdcart_dialog.h>
 #include <rdconf.h>
 #include <rddb.h>
@@ -62,9 +61,6 @@ EditStation::EditStation(QString sname,QWidget *parent)
   setWindowTitle("RDAdmin - "+tr("Host: ")+sname);
 
   GetPrivateProfileString(RD_CONF_FILE,"Identity","Password",temp,"",255);
-  station_catch_connect=new RDCatchConnect(0,this);
-  station_catch_connect->connectHost(station_station->address().toString(),
-				     RDCATCHD_TCP_PORT,temp);
 
   //
   // Validators
@@ -811,7 +807,9 @@ void EditStation::editDropboxesData()
 {
   ListDropboxes *list_conf=new ListDropboxes(station_station->name(),this);
   list_conf->exec();
-  station_catch_connect->reloadDropboxes();
+  //
+  // FIXME: reload the dropbox!
+  //
   delete list_conf;
 }
 

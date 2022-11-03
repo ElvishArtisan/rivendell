@@ -2,7 +2,7 @@
 ##
 ## Automake.am for rivendell/rdcatch
 ##
-## (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -41,7 +41,6 @@ all:
 bin_PROGRAMS = rdcatch
 
 dist_rdcatch_SOURCES = add_recording.cpp add_recording.h\
-                       catch_monitor.cpp catch_monitor.h\
                        catchtableview.cpp catchtableview.h\
                        colors.h\
                        deckmon.cpp deckmon.h\

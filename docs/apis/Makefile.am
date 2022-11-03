@@ -33,8 +33,6 @@
 
 all-local:	cae.html\
                 cae.pdf\
-                catchd.html\
-                catchd.pdf\
                 fonts.html\
                 fonts.rdcastmanager.list_carts.png\
                 fonts.pdf\
@@ -54,9 +52,6 @@ all-local:	cae.html\
 EXTRA_DIST = cae.html\
              cae.pdf\
              cae.xml\
-             catchd.html\
-             catchd.pdf\
-             catchd.xml\
              fonts.html\
              fonts.pdf\
              fonts.xml\

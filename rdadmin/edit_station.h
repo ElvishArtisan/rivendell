@@ -31,7 +31,6 @@
 
 #include <rddialog.h>
 #include <rdcardselector.h>
-#include <rdcatch_connect.h>
 #include <rdcombobox.h>
 #include <rdripc.h>
 #include <rdstation.h>
@@ -80,7 +79,6 @@ class EditStation : public RDDialog
    QString HostPart(QString);
    RDStation *station_station;
    RDStation *station_cae_station;
-   RDCatchConnect *station_catch_connect;
    QLabel *station_name_label;
    QLineEdit *station_name_edit;
    QLabel *station_short_name_label;
