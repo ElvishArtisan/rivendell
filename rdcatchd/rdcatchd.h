@@ -65,6 +65,7 @@ class MainObject : public QObject
   void startTimerData(int id);
   void offsetTimerData(int id);
   void engineData(int);
+  void caeConnectedData(bool state);
   void recordLoadedData(int card,int stream);
   void recordingData(int card,int stream);
   void recordStoppedData(int card,int stream);

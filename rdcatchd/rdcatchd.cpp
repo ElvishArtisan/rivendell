@@ -26,7 +26,6 @@
 #include <netdb.h>
 #include <ctype.h>
 #include <pwd.h>
-#include <syslog.h>
 #include <grp.h>
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -210,7 +209,7 @@ MainObject::MainObject(QObject *parent)
   // CAE Connection
   //
   connect(rda->cae(),SIGNAL(isConnected(bool)),
-	  this,SLOT(isConnectedData(bool)));
+	  this,SLOT(caeConnectedData(bool)));
   connect(rda->cae(),SIGNAL(recordLoaded(int,int)),
 	  this,SLOT(recordLoadedData(int,int)));
   connect(rda->cae(),SIGNAL(recording(int,int)),
@@ -795,6 +794,29 @@ void MainObject::engineData(int id)
 }
 
 
+void MainObject::caeConnectedData(bool state)
+{
+  if(state) {
+    QList<int> cards;
+    QString sql=QString("select `CARD_NUMBER` from `DECKS` where ")+
+      "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"' && "+
+      "`CARD_NUMBER`>=0";
+    RDSqlQuery *q=new RDSqlQuery(sql);
+    while(q->next()) {
+      if(!cards.contains(q->value(0).toInt())) {
+	cards.push_back(q->value(0).toInt());
+      }
+    }
+    delete q;
+    rda->cae()->enableMetering(&cards);
+  }
+  if(!state) {
+    rda->syslog(LOG_ERR,"aborting - unable to connect to Core AudioEngine");
+    exit(1);
+  }
+}
+
+
 void MainObject::recordLoadedData(int card,int stream)
 {
   int deck=GetRecordDeck(card,stream);
@@ -1163,7 +1185,7 @@ bool MainObject::StartRecording(int event)
     str=rml->toString();
     rda->ripc()->sendRml(rml);
     rda->syslog(LOG_INFO,"sending switcher command: \"%s\"",
-		(const char *)str.toUtf8());
+		str.toUtf8().constData());
     delete rml;
   }
 
@@ -2020,7 +2042,6 @@ void MainObject::WriteExitCode(int event,RDRecording::ExitCode code,
     QString::asprintf("`EXIT_CODE`=%d,",code)+
     "`EXIT_TEXT`='"+RDEscapeString(err_text)+"' where "+
     QString::asprintf("`ID`=%d",catch_events[event].id());
-  rda->syslog(LOG_NOTICE,"WriteExitCode SQL: %s",sql.toUtf8().constData());
   RDSqlQuery::apply(sql);
   switch(code) {
   case RDRecording::Ok:
@@ -2064,7 +2085,6 @@ void MainObject::WriteExitCode(CatchEvent *ce,RDRecording::ExitCode code,
     QString::asprintf("`EXIT_CODE`=%d,",code)+
     "`EXIT_TEXT`='"+RDEscapeString(err_text)+"' where "+
     QString::asprintf("`ID`=%d",ce->id());
-  rda->syslog(LOG_NOTICE,"WriteExitCode SQL: %s",sql.toUtf8().constData());
   RDSqlQuery::apply(sql);
   switch(code) {
   case RDRecording::Ok:

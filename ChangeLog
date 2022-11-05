@@ -23610,3 +23610,6 @@
 	'Enable Metering' catch command.
 2022-11-03 Fred Gleason <fredg@paravelsystems.com>
 	* Removed vestigal code for RDCatch control via TCP connection.
+2022-11-05 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdcatch(1) that broke record and play-out
+	metering.
