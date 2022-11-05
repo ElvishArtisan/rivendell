@@ -147,7 +147,12 @@ QString RDUser::password() const
 void RDUser::setPassword(const QString &password)
 {
   user_password=password;
-  SetRow("PASSWORD",QString(password.toUtf8().toBase64()));
+  if(password.isEmpty()) {
+    SetRowNull("PASSWORD");
+  }
+  else {
+    SetRow("PASSWORD",QString(password.toUtf8().toBase64()));
+  }
 }
 
 
@@ -830,4 +835,15 @@ void RDUser::SetRow(const QString &param,int value) const
 void RDUser::SetRow(const QString &param,bool value) const
 {
   SetRow(param,RDYesNo(value));
+}
+
+
+void RDUser::SetRowNull(const QString &param) const
+{
+    QString sql;
+
+  sql=QString("update `USERS` set `")+
+    param+"`=NULL where "+
+    "`LOGIN_NAME`='"+RDEscapeString(user_name)+"'";
+  RDSqlQuery::apply(sql);
 }

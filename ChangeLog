@@ -23613,3 +23613,6 @@
 2022-11-05 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdcatch(1) that broke record and play-out
 	metering.
+2022-11-05 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdadmin(1) that incorrectly handled changing
+	a password to an empty value.

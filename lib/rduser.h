@@ -118,6 +118,7 @@ class RDUser
   void SetRow(const QString &param,const QString &value) const;
   void SetRow(const QString &param,int value) const;
   void SetRow(const QString &param,bool value) const;
+  void SetRowNull(const QString &param) const;
   QString user_name;
   QString user_password;
 };
