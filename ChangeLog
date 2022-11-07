@@ -23629,3 +23629,5 @@
 	on Ubuntu-22.04.
 2022-11-07 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the build package list for Ubuintu 22.04 in 'INSTALL'.
+2022-11-07 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression that broke the 'make deb' target.

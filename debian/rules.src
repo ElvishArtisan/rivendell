@@ -25,7 +25,6 @@ binary:
 	mv debian/tmp/usr/bin/wings_filter debian/rivendell-importers/usr/bin/
 	mv debian/tmp/usr/bin/rivendell_filter debian/rivendell-importers/usr/bin/
 	mv debian/tmp/usr/bin/nexgen_filter debian/rivendell-importers/usr/bin/
-	mv debian/tmp/usr/bin/sas_filter debian/rivendell-importers/usr/bin/
 	mv debian/tmp/usr/bin/crc-unity4k.sh debian/rivendell-importers/usr/bin/
 	mv debian/tmp/usr/bin/rdcatch_copy debian/rivendell-importers/usr/bin/
 	mv debian/tmp/usr/bin/panel_copy debian/rivendell-importers/usr/bin/
