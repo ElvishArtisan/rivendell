@@ -538,7 +538,7 @@ void RecordListModel::updateModel(const QString &filter_sql)
   d_feed_images.clear();
   sql=QString("select ")+
     "`ID`,"+    // 00
-    "`DATA` "+  // 01
+    "`DATA_SMALL_THUMB` "+  // 01
     "from `FEED_IMAGES`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
@@ -546,9 +546,13 @@ void RecordListModel::updateModel(const QString &filter_sql)
       d_feed_images[q->value(0).toUInt()]=QVariant();
     }
     else {
+      /*
       d_feed_images[q->value(0).toUInt()]=
 	QImage::fromData(q->value(1).toByteArray()).
 	scaled(22,22,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+      */
+      d_feed_images[q->value(0).toUInt()]=
+	QImage::fromData(q->value(1).toByteArray());
     }
   }
   delete q;

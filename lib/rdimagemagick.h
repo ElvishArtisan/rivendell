@@ -1,8 +1,8 @@
-// dbversion.h
+// rdimagemagick.h
 //
-// The Current Database Schema Version for Rivendell
+// ImageMagick operations for Rivendell
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,13 +18,13 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef DBVERSION_H
-#define DBVERSION_H
+#ifndef RDIMAGEMAGICK_H
+#define RDIMAGEMAGICK_H
 
-/*
- * Current Database Version
- */
-#define RD_VERSION_DATABASE 365
+#include <QByteArray>
+#include <QSize>
+
+QByteArray RDIMResizeImage(const QByteArray &src_image,const QSize &size);
 
 
-#endif  // DBVERSION_H
+#endif  // RDIMAGEMAGICK_H

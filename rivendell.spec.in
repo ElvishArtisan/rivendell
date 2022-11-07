@@ -507,7 +507,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/wings_filter
 %{_bindir}/rivendell_filter
 %{_bindir}/nexgen_filter
-%{_bindir}/sas_filter
 %{_bindir}/crc-unity4k.sh
 %{_bindir}/rdcatch_copy
 %{_bindir}/panel_copy

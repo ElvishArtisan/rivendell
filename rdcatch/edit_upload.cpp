@@ -74,16 +74,10 @@ EditUpload::EditUpload(QString *filter,QWidget *parent)
   edit_feed_label=new QLabel(tr("RSS Feed:"),this);
   edit_feed_label->setFont(labelFont());
   edit_feed_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  /*
-   * FIXME: Causes Broken pipe errors with large DBs. Why?
-   *
   edit_feed_model=new RDFeedListModel(true,true,this);
   edit_feed_model->setFont(defaultFont());
   edit_feed_box->setModel(edit_feed_model);
-  */
   edit_feed_box->insertItem(0,tr("[none]"));
-  edit_feed_label->setDisabled(true);
-  edit_feed_box->setDisabled(true);
 
   //
   // Url
@@ -612,10 +606,6 @@ void EditUpload::Save()
     edit_recording->setNormalizationLevel(1);
   }
 
-  //
-  // FIXME: The indexing schema for feeds is lame and fundamentally broken.
-  //
-  /*
   int feed_id=edit_feed_model->
     feedId(edit_feed_model->index(edit_feed_box->currentIndex(),0));
   if(feed_id==0) {
@@ -624,7 +614,6 @@ void EditUpload::Save()
   else {
     edit_recording->setFeedId(feed_id);
   }
-  */
 }
 
 

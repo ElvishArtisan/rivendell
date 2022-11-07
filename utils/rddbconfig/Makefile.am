@@ -1,6 +1,6 @@
 ## Makefile.am
 ##
-## (C) Copyright 2009-2021 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2009-2022 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +18,7 @@
 ##   Use automake to process this into a Makefile.in
 ##
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -Wno-strict-aliasing -std=c++11 -fPIC -I$(top_srcdir)/lib -I$(top_srcdir)/rdhpi @QT5_CFLAGS@ @MUSICBRAINZ_CFLAGS@
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -Wno-strict-aliasing -std=c++11 -fPIC -I$(top_srcdir)/lib -I$(top_srcdir)/rdhpi @QT5_CFLAGS@ @MUSICBRAINZ_CFLAGS@ @IMAGEMAGICK_CFLAGS@
 LIBS = -L$(top_srcdir)/lib -L$(top_srcdir)/rdhpi
 MOC = @QT_MOC@
 
@@ -33,7 +33,7 @@ dist_rddbconfig_SOURCES = rddbconfig.cpp rddbconfig.h mysql_login.cpp mysql_logi
 
 nodist_rddbconfig_SOURCES = moc_rddbconfig.cpp moc_mysql_login.cpp
 
-rddbconfig_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @LIBALSA@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@
+rddbconfig_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @LIBALSA@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@ @IMAGEMAGICK_LIBS@
 
 CLEANFILES = *~\
              *.qm\

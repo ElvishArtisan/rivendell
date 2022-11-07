@@ -42,6 +42,16 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
+  // Revert 365
+  //
+  if((cur_schema==365)&&(set_schema<cur_schema)) {
+    DropColumn("FEED_IMAGES","DATA_SMALL_THUMB");
+    DropColumn("FEED_IMAGES","DATA_MID_THUMB");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 364
   //
   if((cur_schema==364)&&(set_schema<cur_schema)) {

@@ -23616,3 +23616,11 @@
 2022-11-05 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdadmin(1) that incorrectly handled changing
 	a password to an empty value.
+2022-11-07 Fred Gleason <fredg@paravelsystems.com>
+	* Added a dependency for ImageMagick's 'Magick++' library interface.
+	* Added a 'FEED_IMAGES.DATA_MID_THUMB' field to the database.
+	* Added a 'FEED_IMAGES.DATA_SMALL_THUMB' field to the database.
+	* Incremented the database version to 365.
+	* Optimized loading of thumbnail image data in rdadmin(1),
+	rdcastmanager(1) and rdcatch(1).
+	* Re-enabled uploads to RSS feeds in rdcatch(1).

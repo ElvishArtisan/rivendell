@@ -18,6 +18,10 @@ ID3Lib
 An audio metadata tag library. Included in most distros, or available at 
 http://id3lib.sourceforge.net/.
 
+ImageMagick v6 (Magick++ C++ Language Interface)
+A incredibly versatile library/utility for manipulating all sorts of graphical
+and visual data. Available at https://imagemagick.org/script/index.php.
+
 LibCurl, v7.19.0 or later
 A client-side URL transfer library. Included with most distros, or
 available at: http://curl.haxx.se/libcurl/.
@@ -271,7 +275,7 @@ DISTRO-SPECIFIC NOTES
 ---------------------
 1) RedHat Enterprise Linux 7
 
-Required build packages: git gcc-c++ automake autoconf libtool qt5-qtbase-devel qt5-qtbase-mysql libcurl-devel cdparanoia-devel hpklinux-devel alsa-lib-devel jack-audio-connection-kit-devel libsamplerate-devel libsndfile-devel id3lib-devel libvorbis-devel flac-devel pam-devel soundtouch-devel twolame-devel libmad-devel lame-devel rpm-build createrepo fop docbook5-style-xsl libxslt kernel-devel rpm-sign man-pages openssl-devel taglib-devel libmusicbrainz5-devel libdiscid-devel libcoverart libcoverart-devel
+Required build packages: git gcc-c++ automake autoconf libtool qt5-qtbase-devel qt5-qtbase-mysql libcurl-devel cdparanoia-devel hpklinux-devel alsa-lib-devel jack-audio-connection-kit-devel libsamplerate-devel libsndfile-devel id3lib-devel libvorbis-devel flac-devel pam-devel soundtouch-devel twolame-devel libmad-devel lame-devel rpm-build createrepo fop docbook5-style-xsl libxslt kernel-devel rpm-sign man-pages openssl-devel taglib-devel libmusicbrainz5-devel libdiscid-devel libcoverart libcoverart-devel ImageMagick-c++-devel
 
 Configure script invocation: ./configure --prefix=/usr --libdir=/usr/lib64 --libexecdir=/var/www/rd-bin --sysconfdir=/etc/httpd/conf.d
 

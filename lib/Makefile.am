@@ -20,7 +20,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" @QT5_CFLAGS@ @MUSICBRAINZ_CFLAGS@ -Wno-strict-aliasing -std=c++11 -fPIC -I/usr/include/taglib
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" @QT5_CFLAGS@ @MUSICBRAINZ_CFLAGS@ -Wno-strict-aliasing -std=c++11 -fPIC -I/usr/include/taglib @IMAGEMAGICK_CFLAGS@
 MOC = @QT_MOC@
 CWRAP = ../helpers/cwrap
 
@@ -156,6 +156,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdhostvarlistmodel.cpp rdhostvarlistmodel.h\
                         rdidvalidator.cpp rdidvalidator.h\
                         rdiconengine.cpp rdiconengine.h\
+                        rdimagemagick.cpp rdimagemagick.h\
                         rdimagepickerbox.cpp rdimagepickerbox.h\
                         rdimagepickermodel.cpp rdimagepickermodel.h\
                         rdimport_audio.cpp rdimport_audio.h\

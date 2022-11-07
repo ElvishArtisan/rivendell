@@ -655,6 +655,12 @@
 #define RD_LISTWIDGET_ITEM_WIDTH_PADDING 20
 
 /*
+ * Thumbnail image sizes
+ */
+#define RD_MID_THUMB_SIZE QSize(32,32)
+#define RD_SMALL_THUMB_SIZE QSize(22,22)
+
+/*
  * Date/Time Formats
  */
 #define RD_DEFAULT_LONG_DATE_FORMAT "dddd, MMMM d yyyy"

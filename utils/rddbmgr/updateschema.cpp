@@ -22,6 +22,7 @@
 #include <rddb.h>
 #include <rdescape_string.h>
 #include <rdfeed.h>
+#include <rdimagemagick.h>
 #include <rdpaths.h>
 
 #include "rddbmgr.h"
@@ -11275,6 +11276,40 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
+  if((cur_schema<365)&&(set_schema>cur_schema)) {
+    sql=QString("alter table `FEED_IMAGES` ")+
+      "add column `DATA_MID_THUMB` longblob after `DATA`";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table `FEED_IMAGES` ")+
+      "add column `DATA_SMALL_THUMB` longblob after `DATA_MID_THUMB`";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("select ")+
+      "`ID`,"+    // 00
+      "`DATA` "+  // 01
+      "from `FEED_IMAGES`";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("update `FEED_IMAGES` set ")+
+	"`DATA_MID_THUMB`="+
+	RDEscapeBlob(RDIMResizeImage(q->value(1).toByteArray(),
+				     RD_MID_THUMB_SIZE))+","+
+	"`DATA_SMALL_THUMB`="+
+	RDEscapeBlob(RDIMResizeImage(q->value(1).toByteArray(),
+				     RD_SMALL_THUMB_SIZE))+" "+
+	QString::asprintf("where `ID`=%u",q->value(0).toUInt());
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+	return false;
+      }
+    }
+    delete q;
 
     WriteSchemaVersion(++cur_schema);
   }

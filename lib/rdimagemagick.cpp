@@ -1,8 +1,8 @@
-// dbversion.h
+// rdimagemagick.cpp
 //
-// The Current Database Schema Version for Rivendell
+// ImageMagick operations for Rivendell
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,13 +18,18 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef DBVERSION_H
-#define DBVERSION_H
+#include <Magick++.h>
 
-/*
- * Current Database Version
- */
-#define RD_VERSION_DATABASE 365
+#include "rdimagemagick.h"
 
+QByteArray RDIMResizeImage(const QByteArray &src_image,const QSize &size)
+{
+  Magick::Image img(Magick::Blob(src_image.constData(),src_image.size()));
+  Magick::Geometry dst_size(size.width(),size.height());
+  Magick::Blob dst_blob;
 
-#endif  // DBVERSION_H
+  img.zoom(Magick::Geometry(size.width(),size.height()));
+  img.write(&dst_blob);
+
+  return QByteArray((const char *)dst_blob.data(),dst_blob.length());
+}

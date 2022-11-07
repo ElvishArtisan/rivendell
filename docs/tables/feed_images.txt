@@ -13,4 +13,7 @@ HEIGHT               int(11) signed    Pixels
 DEPTH                int(11) signed    Bits/pixel
 DESCRIPTION          varchar(191)
 FILE_EXTENSION       varchar(10)
-DATA                 longblob
+DATA                 longblob          Data for full-size image
+DATA_MID_THUMB       longblob          Data for image, scaled to 32x32
+DATA_SMALL_THUMB     longblob          Data for image, scaled to 22x22
+

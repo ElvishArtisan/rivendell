@@ -33,6 +33,7 @@
 #include "rddelete.h"
 #include "rdescape_string.h"
 #include "rdfeed.h"
+#include "rdimagemagick.h"
 #include "rdlibrary_conf.h"
 #include "rdlog.h"
 #include "rdpodcast.h"
@@ -755,10 +756,6 @@ int RDFeed::importImageFile(const QString &pathname,QString *err_msg,
   }
 
   //
-  // FIXME: Upload to remote file store here...
-  //
-
-  //
   // Write it to the DB
   //
   QStringList f0=pathname.split(".",QString::SkipEmptyParts);
@@ -770,10 +767,14 @@ int RDFeed::importImageFile(const QString &pathname,QString *err_msg,
     QString::asprintf("`DEPTH`=%d,",img->depth())+
     "`DESCRIPTION`='"+RDEscapeString(desc)+"',"+
     "`FILE_EXTENSION`='"+RDEscapeString(f0.last().toLower())+"',"+
-    "`DATA`="+RDEscapeBlob(data);
+    "`DATA`="+RDEscapeBlob(data)+","+
+    "`DATA_MID_THUMB`="+
+    RDEscapeBlob(RDIMResizeImage(data,RD_MID_THUMB_SIZE))+","+
+    "`DATA_SMALL_THUMB`="+
+    RDEscapeBlob(RDIMResizeImage(data,RD_SMALL_THUMB_SIZE));
   ret=RDSqlQuery::run(sql,&ok).toInt();
   if(!ok) {
-    *err_msg="Unable to write to database";
+    *err_msg="Unable to write images to database";
     return -1;
   }
 

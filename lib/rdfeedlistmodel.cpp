@@ -563,9 +563,12 @@ void RDFeedListModel::updateRow(int row,RDSqlQuery *q)
       applicationIcon(RDIconEngine::RdCastManager,32);
   }
   else {
+    d_icons[row][0]=QImage::fromData(q->value(12).toByteArray());
+    /*
     d_icons[row][0]=
       QImage::fromData(q->value(12).toByteArray()).
       scaled(32,32,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+    */
   }
   d_texts[row][1]=q->value(2);  // Title
   if(q->value(4).toString()=="Y") {
@@ -646,7 +649,7 @@ QString RDFeedListModel::sqlFields() const
     "`PODCASTS`.`ITEM_TITLE`,"+           // 09
     "`PODCASTS`.`STATUS`,"+               // 10
     "`PODCASTS`.`ORIGIN_DATETIME`,"+      // 11
-    "`FEED_IMAGES`.`DATA` "+              // 12
+    "`FEED_IMAGES`.`DATA_MID_THUMB` "+    // 12
     "from `FEEDS` left join `FEED_IMAGES` "+
     "on `FEEDS`.`CHANNEL_IMAGE_ID`=`FEED_IMAGES`.`ID` left join `PODCASTS` "+
     "on `FEEDS`.`ID`=`PODCASTS`.`FEED_ID` ";
