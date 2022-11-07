@@ -23627,3 +23627,5 @@
 2022-11-07 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed regressions in 'tests/Makefile.am' that broke the build
 	on Ubuntu-22.04.
+2022-11-07 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the build package list for Ubuintu 22.04 in 'INSTALL'.
