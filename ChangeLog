@@ -23624,3 +23624,6 @@
 	* Optimized loading of thumbnail image data in rdadmin(1),
 	rdcastmanager(1) and rdcatch(1).
 	* Re-enabled uploads to RSS feeds in rdcatch(1).
+2022-11-07 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed regressions in 'tests/Makefile.am' that broke the build
+	on Ubuntu-22.04.
