@@ -23638,3 +23638,6 @@
 2022-11-09 Fred Gleason <fredg@paravelsystems.com>
 	* Added an image format check to rddbmgr(8) to prevent it from
 	attempting to generate thumbnail images from non-JPEG/PNG images.
+2022-11-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'Edit Image' dialog in rdadmin(1) that could
+	cause the image display to be incorrectly scaled/positioned.

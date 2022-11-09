@@ -2,7 +2,7 @@
 //
 // View a pixmap image and modify its metadata
 //
-//   (C) Copyright 2020-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2020-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -35,6 +35,7 @@ EditImage::EditImage(QWidget *parent)
   setMinimumHeight(150);
 
   c_image_label=new QLabel(this);
+  c_image_label->setScaledContents(true);
 
   c_description_label=new QLabel(tr("Description")+":",this);
   c_description_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -167,7 +168,7 @@ void EditImage::resizeEvent(QResizeEvent *e)
   int h=size().height();
 
   c_image_label->
-    setGeometry(10,2,w-EDIT_IMAGE_WIDTH_OFFSET,h-EDIT_IMAGE_HEIGHT_OFFSET);
+    setGeometry(10,2,w-EDIT_IMAGE_WIDTH_OFFSET,h-EDIT_IMAGE_HEIGHT_OFFSET-20);
   c_image_label->setPixmap(QPixmap::fromImage(c_image.
 			 scaled(c_image_label->size(),Qt::KeepAspectRatio)));
 
