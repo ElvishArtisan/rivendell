@@ -23631,3 +23631,7 @@
 	* Updated the build package list for Ubuintu 22.04 in 'INSTALL'.
 2022-11-07 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression that broke the 'make deb' target.
+2022-11-09 Fred Gleason <fredg@paravelsystems.com>
+	* Added a file format check to the 'Image Manager' dialog in
+	rdadmin(1) to ensure that only JPEG or PNG formatted image files can
+	be imported.

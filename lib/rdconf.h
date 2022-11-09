@@ -111,6 +111,7 @@ QList<pid_t> RDGetPids(const QString &program);
 int RDCheckExitCode(const QString &msg,int exit_code);
 int RDCheckExitCode(RDConfig *config,const QString &msg,int exit_code);
 int RDCheckReturnCode(const QString &msg,int code,int ok_value);
+QString RDMimeType(const QString &filename,bool *ok);
 
 
 #endif   // RDCONF_H

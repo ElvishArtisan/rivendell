@@ -30,6 +30,8 @@
 #include <time.h>
 
 #include <QDir>
+#include <QProcess>
+#include <QStringList>
 
 #include <rdapplication.h>
 
@@ -1121,4 +1123,29 @@ int RDCheckReturnCode(const QString &msg,int code,int ok_value)
 		msg.toUtf8().constData(),code,ok_value);
   }
   return code;
+}
+
+
+QString RDMimeType(const QString &filename,bool *ok)
+{
+  QStringList args;
+  QString ret;
+
+  args.push_back("--mime-type");
+  args.push_back(filename);
+  QProcess *proc=new QProcess();
+  proc->start("/usr/bin/file",args);
+  proc->waitForFinished();
+  if((proc->exitStatus()!=QProcess::NormalExit)||(proc->exitCode()!=0)) {
+    *ok=false;
+    delete proc;
+    return ret;
+  }
+  *ok=true;
+  ret=QString(proc->readAllStandardOutput()).
+    split(":",QString::SkipEmptyParts).last().trimmed();
+
+  delete proc;
+
+  return ret;
 }

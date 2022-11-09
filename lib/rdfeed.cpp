@@ -714,6 +714,19 @@ int RDFeed::importImageFile(const QString &pathname,QString *err_msg,
   *err_msg="OK";
 
   //
+  // Check the file type
+  //
+  QString mimetype=RDMimeType(pathname,&ok);
+  if(!ok) {
+    *err_msg=tr("Error validating image file.");
+    return -1;
+  }
+  if((mimetype!="image/jpeg")&&(mimetype!="image/png")) {
+    *err_msg=tr("Unsupported image file format.");
+    return -1;
+  }
+
+  //
   // Load the image
   //
   QFile file(pathname);
