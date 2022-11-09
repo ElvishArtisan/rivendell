@@ -449,7 +449,7 @@ int RDMarkerView::shrinkFactor() const
 
 bool RDMarkerView::canShrinkTime() const
 {
-  return d_shrink_factor>1;
+  return d_shrink_factor>d_min_shrink_factor;
 }
 
 
@@ -682,10 +682,23 @@ bool RDMarkerView::setCut(QString *err_msg,unsigned cartnum,int cutnum)
   }
   d_audio_length=(int)((int64_t)d_wave_factory->energySize()*1152000/
 		       ((int64_t)d_sample_rate));
+  //
+  // Maximum Shrink Factor
+  //
   d_max_shrink_factor=1;
   while(d_wave_factory->energySize()>=(d_width*d_max_shrink_factor)) {
     d_max_shrink_factor=d_max_shrink_factor*2;
   }
+
+  //
+  // Minimum Shrink Factor
+  //
+  int min_shrink=d_wave_factory->energySize()/(32768);
+  d_min_shrink_factor=1;
+  while(d_min_shrink_factor<min_shrink) {
+    d_min_shrink_factor*=2;
+  }
+
   d_pad_size=64+(d_width*d_max_shrink_factor-d_wave_factory->energySize())/d_max_shrink_factor-1;
   d_shrink_factor=d_max_shrink_factor;
   WriteWave();

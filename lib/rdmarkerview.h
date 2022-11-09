@@ -165,6 +165,7 @@ class RDMarkerView : public RDWidget
   int d_height;
   int d_shrink_factor;
   int d_max_shrink_factor;
+  int d_min_shrink_factor;
   int d_pad_size;
   int d_audio_gain;
   unsigned d_sample_rate;
