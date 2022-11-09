@@ -23641,3 +23641,6 @@
 2022-11-09 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the 'Edit Image' dialog in rdadmin(1) that could
 	cause the image display to be incorrectly scaled/positioned.
+2022-11-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdcartslots(1) that caused it to play double audio
+	when sent multiple 'Play Slot' ['DP'] RMLs.

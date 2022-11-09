@@ -271,7 +271,8 @@ void RDCartSlot::unload()
 bool RDCartSlot::play()
 {
   bool ret=false;
-  if(slot_logline->cartNumber()!=0) {
+  if((slot_deck->state()==RDPlayDeck::Stopped)&&
+     (slot_logline->cartNumber()!=0)) {
     if(slot_deck->setCart(slot_logline,true)) {
       if(slot_options->hookMode()&&(slot_logline->hookStartPoint()>=0)) {
 	slot_deck->playHook();
