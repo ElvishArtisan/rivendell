@@ -1149,3 +1149,33 @@ QString RDMimeType(const QString &filename,bool *ok)
 
   return ret;
 }
+
+
+QString RDMimeType(const QByteArray &data,bool *ok)
+{
+  QStringList args;
+  QString ret;
+  QByteArray ret_data;
+
+  args.push_back("--mime-type");
+  args.push_back("-");
+  QProcess *proc=new QProcess();
+  proc->start("/usr/bin/file",args);
+  proc->waitForStarted();
+  proc->write(data);
+  proc->closeWriteChannel();
+  proc->waitForFinished();
+  if((proc->exitStatus()!=QProcess::NormalExit)||(proc->exitCode()!=0)) {
+    *ok=false;
+    delete proc;
+    return ret;
+  }
+  *ok=true;
+
+  ret=QString(proc->readAllStandardOutput()).
+    split(":",QString::SkipEmptyParts).last().trimmed();
+
+  delete proc;
+
+  return ret;
+}

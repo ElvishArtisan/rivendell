@@ -19,6 +19,7 @@
 //
 
 #include <rdcart.h>
+#include <rdconf.h>
 #include <rddb.h>
 #include <rdescape_string.h>
 #include <rdfeed.h>
@@ -36,6 +37,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
   QString tablename;
   RDCart *cart;
   bool length_update_required=false;
+  bool ok=false;
 
   if(!db_start_datetime.isNull()) {
     QDateTime now=QDateTime::currentDateTime();
@@ -11292,21 +11294,36 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       return false;
     }
     sql=QString("select ")+
-      "`ID`,"+    // 00
-      "`DATA` "+  // 01
+      "`ID`,"+            // 00
+      "`DATA`,"+          // 01
+      "`FEED_KEY_NAME`,"  // 02
+      "`DESCRIPTION` "+   // 03
       "from `FEED_IMAGES`";
     q=new RDSqlQuery(sql);
     while(q->next()) {
-      sql=QString("update `FEED_IMAGES` set ")+
-	"`DATA_MID_THUMB`="+
-	RDEscapeBlob(RDIMResizeImage(q->value(1).toByteArray(),
-				     RD_MID_THUMB_SIZE))+","+
-	"`DATA_SMALL_THUMB`="+
-	RDEscapeBlob(RDIMResizeImage(q->value(1).toByteArray(),
-				     RD_SMALL_THUMB_SIZE))+" "+
-	QString::asprintf("where `ID`=%u",q->value(0).toUInt());
-      if(!RDSqlQuery::apply(sql,err_msg)) {
+      QString mimetype=RDMimeType(q->value(1).toByteArray(),&ok);
+      if(!ok) {
+	*err_msg=tr("unable to determine image file type");
 	return false;
+      }
+      if((mimetype=="image/jpeg")||(mimetype=="image/png")) {
+	sql=QString("update `FEED_IMAGES` set ")+
+	  "`DATA_MID_THUMB`="+
+	  RDEscapeBlob(RDIMResizeImage(q->value(1).toByteArray(),
+				       RD_MID_THUMB_SIZE))+","+
+	  "`DATA_SMALL_THUMB`="+
+	  RDEscapeBlob(RDIMResizeImage(q->value(1).toByteArray(),
+				       RD_SMALL_THUMB_SIZE))+" "+
+	  QString::asprintf("where `ID`=%u",q->value(0).toUInt());
+	if(!RDSqlQuery::apply(sql,err_msg)) {
+	  return false;
+	}
+      }
+      else {
+	fprintf(stderr,"rddbmgr: image %u:\"%s\" in RSS feed \"%s\" is not in JPEG or PNG format, skipping thumbnail generation\n",
+		q->value(0).toUInt(),
+		q->value(3).toString().toUtf8().constData(),
+		q->value(2).toString().toUtf8().constData());
       }
     }
     delete q;

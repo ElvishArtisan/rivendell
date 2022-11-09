@@ -23635,3 +23635,6 @@
 	* Added a file format check to the 'Image Manager' dialog in
 	rdadmin(1) to ensure that only JPEG or PNG formatted image files can
 	be imported.
+2022-11-09 Fred Gleason <fredg@paravelsystems.com>
+	* Added an image format check to rddbmgr(8) to prevent it from
+	attempting to generate thumbnail images from non-JPEG/PNG images.
