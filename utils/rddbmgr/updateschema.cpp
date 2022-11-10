@@ -11306,7 +11306,31 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 	*err_msg=tr("unable to determine image file type");
 	return false;
       }
+      QString blob_err;
+      QByteArray mid_blob=
+	RDIMResizeImage(q->value(1).toByteArray(),RD_MID_THUMB_SIZE,&blob_err);
+      if(!blob_err.isEmpty()) {
+	fprintf(stderr,"rddbmgr: image %u:\"%s\" in RSS feed \"%s\": %s\n",
+		q->value(0).toUInt(),
+		q->value(3).toString().toUtf8().constData(),
+		q->value(2).toString().toUtf8().constData(),
+		blob_err.toUtf8().constData());
+      }
+      QByteArray small_blob=RDIMResizeImage(q->value(1).toByteArray(),
+					    RD_SMALL_THUMB_SIZE,&blob_err);
+      if(!blob_err.isEmpty()) {
+	fprintf(stderr,"rddbmgr: image %u:\"%s\" in RSS feed \"%s\": %s\n",
+		q->value(0).toUInt(),
+		q->value(3).toString().toUtf8().constData(),
+		q->value(2).toString().toUtf8().constData(),
+		blob_err.toUtf8().constData());
+      }
       if((mimetype=="image/jpeg")||(mimetype=="image/png")) {
+	sql=QString("update `FEED_IMAGES` set ")+
+	  "`DATA_MID_THUMB`="+RDEscapeBlob(mid_blob)+","+
+	  "`DATA_SMALL_THUMB`="+RDEscapeBlob(small_blob)+" "+
+	  QString::asprintf("where `ID`=%u",q->value(0).toUInt());
+	/*
 	sql=QString("update `FEED_IMAGES` set ")+
 	  "`DATA_MID_THUMB`="+
 	  RDEscapeBlob(RDIMResizeImage(q->value(1).toByteArray(),
@@ -11315,6 +11339,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 	  RDEscapeBlob(RDIMResizeImage(q->value(1).toByteArray(),
 				       RD_SMALL_THUMB_SIZE))+" "+
 	  QString::asprintf("where `ID`=%u",q->value(0).toUInt());
+	*/
 	if(!RDSqlQuery::apply(sql,err_msg)) {
 	  return false;
 	}

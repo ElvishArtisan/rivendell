@@ -23648,3 +23648,6 @@
 	* Fixed a bug in the 'Edit Audio' dialog in rdlibrary(1) that could
 	cause the right end of the audio waveform to be truncated when
 	viewing long cuts.
+2022-11-10 Fred Gleason <fredg@paravelsystems.com>
+	* Added code to catch warning exception when processing image
+	conversions in 'RDIMResizeImage()'.

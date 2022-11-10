@@ -771,6 +771,8 @@ int RDFeed::importImageFile(const QString &pathname,QString *err_msg,
   //
   // Write it to the DB
   //
+  QString im_err;
+
   QStringList f0=pathname.split(".",QString::SkipEmptyParts);
   sql=QString("insert into `FEED_IMAGES` set ")+
     QString::asprintf("`FEED_ID`=%u,",id())+
@@ -782,9 +784,9 @@ int RDFeed::importImageFile(const QString &pathname,QString *err_msg,
     "`FILE_EXTENSION`='"+RDEscapeString(f0.last().toLower())+"',"+
     "`DATA`="+RDEscapeBlob(data)+","+
     "`DATA_MID_THUMB`="+
-    RDEscapeBlob(RDIMResizeImage(data,RD_MID_THUMB_SIZE))+","+
+    RDEscapeBlob(RDIMResizeImage(data,RD_MID_THUMB_SIZE,&im_err))+","+
     "`DATA_SMALL_THUMB`="+
-    RDEscapeBlob(RDIMResizeImage(data,RD_SMALL_THUMB_SIZE));
+    RDEscapeBlob(RDIMResizeImage(data,RD_SMALL_THUMB_SIZE,&im_err));
   ret=RDSqlQuery::run(sql,&ok).toInt();
   if(!ok) {
     *err_msg="Unable to write images to database";

@@ -24,7 +24,8 @@
 #include <QByteArray>
 #include <QSize>
 
-QByteArray RDIMResizeImage(const QByteArray &src_image,const QSize &size);
+QByteArray RDIMResizeImage(const QByteArray &src_image,const QSize &size,
+			   QString *err_msg);
 
 
 #endif  // RDIMAGEMAGICK_H

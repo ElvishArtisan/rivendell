@@ -18,18 +18,29 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <QString>
+
 #include <Magick++.h>
 
 #include "rdimagemagick.h"
 
-QByteArray RDIMResizeImage(const QByteArray &src_image,const QSize &size)
+QByteArray RDIMResizeImage(const QByteArray &src_image,const QSize &size,
+			   QString *err_msg)
 {
-  Magick::Image img(Magick::Blob(src_image.constData(),src_image.size()));
-  Magick::Geometry dst_size(size.width(),size.height());
   Magick::Blob dst_blob;
+  *err_msg="";
+  
+  try {
+    Magick::Image img(Magick::Blob(src_image.constData(),src_image.size()));
+    Magick::Geometry dst_size(size.width(),size.height());
 
-  img.zoom(Magick::Geometry(size.width(),size.height()));
-  img.write(&dst_blob);
+    img.zoom(Magick::Geometry(size.width(),size.height()));
+    img.write(&dst_blob);
+  }
+  catch (Magick::WarningCoder &warn) {
+    *err_msg=QString::fromUtf8(warn.what());
+    fprintf(stderr,"Magick: %s\n",warn.what());
+  }
 
   return QByteArray((const char *)dst_blob.data(),dst_blob.length());
 }
