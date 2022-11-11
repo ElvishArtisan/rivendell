@@ -23651,3 +23651,6 @@
 2022-11-10 Fred Gleason <fredg@paravelsystems.com>
 	* Added code to catch warning exception when processing image
 	conversions in 'RDIMResizeImage()'.
+2022-11-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a fencepost bug in rdcatchd(8) that caused meter level
+	updates to sent to the incorrect deck channel.

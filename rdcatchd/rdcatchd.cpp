@@ -1017,7 +1017,7 @@ void MainObject::meterData()
     if(catch_record_deck_status[i]==RDDeck::Recording) {
       rda->cae()->
 	inputMeterUpdate(catch_record_card[i],catch_record_stream[i],levels);
-      meter_levels.push_back(RDCatchMeterLevel(i,levels));
+      meter_levels.push_back(RDCatchMeterLevel(i+1,levels));
     }
     if(catch_playout_deck_status[i]==RDDeck::Recording) {
       rda->cae()->
