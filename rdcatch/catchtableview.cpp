@@ -76,6 +76,9 @@ void CatchTableView::editAudioMenuData()
   if(d_marker_dialog->
      exec(RDCut::cartNumber(cutname),RDCut::cutNumber(cutname))) {
     rdcart->updateLength();
+    mod->refresh(mod->index(d_mouse_row,0));
+    SendNotification(RDNotification::ModifyAction,
+		     mod->recordId(mod->index(d_mouse_row,0)));
   }
 
   delete rdcart;
@@ -94,4 +97,14 @@ void CatchTableView::mousePressEvent(QMouseEvent *e)
     }
   }
   QTableView::mousePressEvent(e);
+}
+
+
+void CatchTableView::SendNotification(RDNotification::Action action,
+				      unsigned rec_id) const
+{
+  RDNotification *notify=
+    new RDNotification(RDNotification::CatchEventType,action,rec_id);
+  rda->ripc()->sendNotification(*notify);
+  delete notify;
 }

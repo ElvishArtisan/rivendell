@@ -23658,3 +23658,6 @@
 	* Removed debugging printf() statements from rdcatch(1).
 2022-11-11 Fred Gleason <fredg@paravelsystems.com>
 	* Removed debugging statements from 'lib/rdripc.cpp'.
+2022-11-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdcatch(1) that marker modification made
+	via the mouse menu to fail to notify remote instances of changes.

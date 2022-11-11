@@ -42,6 +42,7 @@ class CatchTableView : public RDTableView
   void mousePressEvent(QMouseEvent *e);
 
  private:
+  void SendNotification(RDNotification::Action action,unsigned rec_id) const;
   QMenu *d_mouse_menu;
   QAction *d_edit_audio_action;
   QString catch_cutname;

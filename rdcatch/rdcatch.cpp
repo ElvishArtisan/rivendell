@@ -298,8 +298,6 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   }
   delete q;
 
-  QTime start=QTime::currentTime();
-
   //
   // Cart List
   //
