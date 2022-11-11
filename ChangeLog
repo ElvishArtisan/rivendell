@@ -23654,3 +23654,5 @@
 2022-11-11 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a fencepost bug in rdcatchd(8) that caused meter level
 	updates to sent to the incorrect deck channel.
+2022-11-11 Fred Gleason <fredg@paravelsystems.com>
+	* Removed debugging printf() statements from rdcatch(1).

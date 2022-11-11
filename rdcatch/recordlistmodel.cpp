@@ -955,9 +955,6 @@ QString RecordListModel::GetDestinationName(QString station,int matrix,
 
 void RecordListModel::UpdateStatus(int line)
 {
-  printf("RecordListModel::UpdateStatus(%d)\n",line);
-  printf("  using status: %u\n",d_statuses.at(line));
-
   switch(d_statuses.at(line)) {
   case RDDeck::Offline:
   case RDDeck::LastStatus:
