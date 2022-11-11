@@ -150,7 +150,6 @@ void RDRipc::sendNotification(const RDNotification &notify)
 void RDRipc::sendCatchEvent(RDCatchEvent *evt)
 {
   SendCommand("ON "+evt->write()+"!");
-  rda->syslog(LOG_NOTICE,"sent catch event: %s\n",evt->write().toUtf8().constData());
 }
 
 

@@ -23656,3 +23656,5 @@
 	updates to sent to the incorrect deck channel.
 2022-11-11 Fred Gleason <fredg@paravelsystems.com>
 	* Removed debugging printf() statements from rdcatch(1).
+2022-11-11 Fred Gleason <fredg@paravelsystems.com>
+	* Removed debugging statements from 'lib/rdripc.cpp'.
