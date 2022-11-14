@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell RDCatch Recording
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -51,11 +51,6 @@ EditRecording::EditRecording(QString *filter,QWidget *parent)
   // Text Validator
   //
   RDTextValidator *validator=new RDTextValidator(this);
-
-  //
-  // The Recording Record
-  //
-  //  edit_recording=new RDRecording(id);
 
   //
   // Event Widget
@@ -327,7 +322,6 @@ EditRecording::~EditRecording()
 
 QSize EditRecording::sizeHint() const
 {
-  //  return QSize(560,619);
   return QSize(640,619);
 } 
 
@@ -414,9 +408,9 @@ int EditRecording::exec(int id,std::vector<int> *adds)
   locationChangedData(edit_event_widget->stationName(),
 		      edit_event_widget->deckNumber());
 
-  QString source=GetSourceName(edit_recording->switchSource());
+  int inputnum=edit_recording->switchSource();
   for(int i=0;i<edit_source_box->count();i++) {
-    if(edit_source_box->itemData(i).toString()==source) {
+    if(edit_source_box->itemData(i).toInt()==inputnum) {
       edit_source_box->setCurrentIndex(i);
     }
   }
@@ -462,13 +456,18 @@ void EditRecording::locationChangedData(const QString &station,int decknum)
     edit_channels_box->setCurrentIndex(edit_deck->defaultChannels()-1);
   }
   edit_source_box->clear();
-  QString sql=QString("select `NAME` from `INPUTS` where ")+
+  QString sql=QString("select ")+
+    "`NAME`,"+   // 00
+    "`NUMBER` "+  // 01
+    "from `INPUTS` where "+
     "(`STATION_NAME`='"+RDEscapeString(edit_deck->switchStation())+"')&&"+
     QString::asprintf("(`MATRIX`=%d)",edit_deck->switchMatrix());
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
     edit_source_box->
-      insertItem(edit_source_box->count(),q->value(0).toString());
+      insertItem(edit_source_box->count(),
+		 rda->iconEngine()->listIcon(RDIconEngine::Input),
+		 q->value(0).toString(),q->value(1));
   }
   delete q;
 }
@@ -719,19 +718,10 @@ void EditRecording::Save()
   edit_recording->setDescription(edit_description_edit->text());
   edit_recording->setCutName(edit_cutname);
   edit_dow_selector->toRecording(edit_recording->id());
-  edit_recording->setSwitchSource(GetSource());
+  edit_recording->setSwitchSource(edit_source_box->
+		  itemData(edit_source_box->currentIndex()).toInt());
   edit_recording->setStartdateOffset(edit_startoffset_box->value());
   edit_recording->setEnddateOffset(edit_endoffset_box->value());
-  /*
-  edit_recording->setFormat(edit_deck->defaultFormat());
-  if(edit_deck->defaultFormat()>0) {
-    edit_recording->setBitrate(edit_deck->defaultBitrate()*
-			       (edit_channels_box->currentIndex()+1));
-  }
-  else {
-    edit_recording->setBitrate(0);
-  }
-  */
   edit_recording->setChannels(edit_channels_box->currentIndex()+1);
   if(edit_autotrim_box->isChecked()) {
     edit_recording->setTrimThreshold(-100*edit_autotrim_spin->value());
@@ -1014,40 +1004,4 @@ bool EditRecording::CheckEvent(bool include_myself)
   }
 
   return res;
-}
-
-
-QString EditRecording::GetSourceName(int input)
-{
-  if(edit_deck==NULL) {
-    return QString("[unknown]");
-  }
-  QString input_name;
-  QString sql=QString("select `NAME` from `INPUTS` where ")+
-    "(`STATION_NAME`='"+RDEscapeString(edit_deck->switchStation())+"')&&"+
-    QString::asprintf("(`MATRIX`=%d)&&",edit_deck->switchMatrix())+
-    QString::asprintf("(`NUMBER`=%d)",input);
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  if(q->first()) {
-    input_name=q->value(0).toString();
-  }
-  delete q;
-  return input_name;
-}
-
-
-int EditRecording::GetSource()
-{
-  int source=-1;
-
-  QString sql=QString("select `NUMBER` from `INPUTS` where ")+
-    "(`STATION_NAME`='"+RDEscapeString(edit_deck->switchStation())+"')&&"+
-    QString::asprintf("(`MATRIX`=%d)&&",edit_deck->switchMatrix())+
-    "(`NAME`='"+RDEscapeString(edit_source_box->currentText())+"')";
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  if(q->first()) {
-    source=q->value(0).toInt();
-  }
-  delete q;
-  return source;
 }

@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Netcatch Recording
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -68,10 +68,7 @@ class EditRecording : public RDDialog
  private:
   void Save();
   bool CheckEvent(bool include_myself);
-  QString GetSourceName(int input);
-  int GetSource();
   RDDeck *edit_deck;
-  //  RDCutDialog *edit_cut_dialog;
   RDRecording *edit_recording;
   EventWidget *edit_event_widget;
   QGroupBox *edit_start_groupbox;
