@@ -23666,3 +23666,6 @@
 2022-11-14 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdcatch(1) that caused the 'Edit Recording'
 	dialog to load an incorrect value for the 'Source:' control.
+2022-11-14 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a race condition with calculating the effect start time
+	of events in rdcatchd(8).

@@ -553,10 +553,9 @@ void MainObject::engineData(int id)
   int event=GetEvent(id);
 
   //
-  // Generate Effective Date
+  // Generate Effective Date/Time
   //
-  QDate date=QDate::currentDate();
-  QTime current_time=QTime::currentTime();
+  QDateTime now=QDateTime::currentDateTime();
 
   //
   // Ignore inactive or non-existent events
@@ -569,7 +568,7 @@ void MainObject::engineData(int id)
     rda->syslog(LOG_DEBUG,"event %d is marked inactive, ignoring",id);
     return;
   }
-  if(!catch_events[event].dayOfWeek(date.dayOfWeek())) {
+  if(!catch_events[event].dayOfWeek(now.date().dayOfWeek())) {
     rda->syslog(LOG_DEBUG,"event %d is not valid for this DOW, ignoring",id);
     return;
   }
@@ -659,7 +658,7 @@ void MainObject::engineData(int id)
     case RDRecording::GpiStart:
       catch_events[event].gpiStartTimer()->
 	start(catch_events[event].startLength()-
-	      (QTime(0,0,0).msecsTo(current_time)-
+	      (QTime(0,0,0).msecsTo(now.time())-
 	       QTime(0,0,0).msecsTo(catch_events[event].startTime())));
       catch_record_deck_status[catch_events[event].channel()-1]=
 	RDDeck::Waiting;
@@ -771,8 +770,9 @@ void MainObject::engineData(int id)
     delete q;
     catch_events[event].
       setResolvedUrl(RDDateTimeDecode(catch_events[event].url(),
-		QDateTime(date.addDays(catch_events[event].eventdateOffset()),
-			  current_time),rda->station(),RDConfiguration()));
+			  QDateTime(now.date().
+			  addDays(catch_events[event].eventdateOffset()),
+			  now.time()),rda->station(),RDConfiguration()));
     StartDownloadEvent(event);
     break;
 
