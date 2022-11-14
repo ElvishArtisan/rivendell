@@ -654,11 +654,13 @@ bool MainObject::DispatchCommand(RipcdConnection *conn)
       BroadcastCommand("ON "+msg+"!",conn->id());
       ripcd_notification_mcaster->
 	send(msg,rda->system()->notificationAddress(),RD_NOTIFICATION_PORT);
-      rda->syslog(LOG_DEBUG,"sent catch event: \"%s\" to %s:%d",
-		  msg.toUtf8().constData(),
-		  rda->system()->notificationAddress().
-		  toString().toUtf8().constData(),
-		  RD_NOTIFICATION_PORT);
+      if(evt->operation()!=RDCatchEvent::SendMeterLevelsOp) {
+	rda->syslog(LOG_DEBUG,"sent catch event: \"%s\" to %s:%d",
+		    msg.toUtf8().constData(),
+		    rda->system()->notificationAddress().
+		    toString().toUtf8().constData(),
+		    RD_NOTIFICATION_PORT);
+      }
       delete evt;
     }
   }

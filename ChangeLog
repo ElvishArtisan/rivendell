@@ -23661,3 +23661,5 @@
 2022-11-11 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdcatch(1) that marker modification made
 	via the mouse menu to fail to notify remote instances of changes.
+2022-11-14 Fred Gleason <fredg@paravelsystems.com>
+	* Modified ripcd(8) to suppress logging 'Send Meter Levels' messages.
