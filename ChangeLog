@@ -23669,3 +23669,6 @@
 2022-11-14 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a race condition with calculating the effect start time
 	of events in rdcatchd(8).
+2022-11-14 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdcatchd(8) that caused conflicting play-out
+	events to deadlock.

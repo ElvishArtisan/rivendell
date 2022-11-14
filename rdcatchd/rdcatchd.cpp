@@ -577,14 +577,14 @@ void MainObject::engineData(int id)
   // Check for Playout Deck Availability
   //
   if(catch_events[event].type()==RDRecording::Playout) {
+    rda->syslog(LOG_NOTICE,"checking channel: %d: %d",catch_events[event].channel(),catch_playout_deck_status[catch_events[event].channel()-129]);
     if(catch_playout_deck_status[catch_events[event].channel()-129]!=
        RDDeck::Idle) {
       rda->syslog(LOG_WARNING,"playout deck P%d is busy for event %d, skipping",
 		  catch_events[event].channel()-128,
 		  catch_events[event].id());
       WriteExitCode(event,RDRecording::DeviceBusy);
-      SendEventResponse(0,RDDeck::Recording,catch_events[event].id(),
-			catch_events[event].cutName());
+      return;
     }
   }
 
@@ -2038,9 +2038,13 @@ void MainObject::WriteExitCode(int event,RDRecording::ExitCode code,
 			       const QString &err_text)
 {
   RDDeck::Status status=RDDeck::Offline;
+  QString err_txt=err_text;
+  if(err_text.isEmpty()) {
+    err_txt=RDRecording::exitString(code);
+  }
   QString sql=QString("update `RECORDINGS` set ")+
     QString::asprintf("`EXIT_CODE`=%d,",code)+
-    "`EXIT_TEXT`='"+RDEscapeString(err_text)+"' where "+
+    "`EXIT_TEXT`='"+RDEscapeString(err_txt)+"' where "+
     QString::asprintf("`ID`=%d",catch_events[event].id());
   RDSqlQuery::apply(sql);
   switch(code) {
@@ -2081,9 +2085,13 @@ void MainObject::WriteExitCode(CatchEvent *ce,RDRecording::ExitCode code,
 				   const QString &err_text)
 {
   RDDeck::Status status=RDDeck::Offline;
+  QString err_txt=err_text;
+  if(err_text.isEmpty()) {
+    err_txt=RDRecording::exitString(code);
+  }
   QString sql=QString("update `RECORDINGS` set ")+
     QString::asprintf("`EXIT_CODE`=%d,",code)+
-    "`EXIT_TEXT`='"+RDEscapeString(err_text)+"' where "+
+    "`EXIT_TEXT`='"+RDEscapeString(err_txt)+"' where "+
     QString::asprintf("`ID`=%d",ce->id());
   RDSqlQuery::apply(sql);
   switch(code) {
