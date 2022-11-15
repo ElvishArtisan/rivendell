@@ -956,7 +956,23 @@ bool EditRecording::CheckEvent(bool include_myself)
     break;
   }
 
-  QString sql=QString("select `ID` from `RECORDINGS` where ")+
+  //
+  // Check for Conflicting Events
+  //
+  int dows=0;
+  for(int i=0;i<7;i++) {
+    if(edit_dow_selector->dayOfWeekEnabled(i)) {
+      dows++;
+    }
+  }
+  if(dows==0) {  // No days scheduled
+    return true;
+  }
+
+  QString sql=QString("select ")+
+    "`ID`,"+           // 00
+    "`DESCRIPTION` "+  // 01
+    "from `RECORDINGS` where "+
     "(`STATION_NAME`='"+RDEscapeString(edit_event_widget->stationName())+"')&&"+
     QString::asprintf("(`TYPE`=%d)&&",RDRecording::Recording)+
     "(`START_TIME`='"+RDEscapeString(edit_starttime_edit->time().toString("hh:mm:ss"))+"')&&"+
@@ -971,36 +987,45 @@ bool EditRecording::CheckEvent(bool include_myself)
 			   edit_startline_spin->value());
     break;
   }
-  if(edit_dow_selector->dayOfWeekEnabled(7)) {
-    sql+="&&(`SUN`='Y')";
+  sql+="&&(";
+  if(edit_dow_selector->dayOfWeekEnabled(0)) {
+    sql+="(`MON`='Y')||";
   }
   if(edit_dow_selector->dayOfWeekEnabled(1)) {
-    sql+="&&(`MON`='Y')";
+    sql+="(`TUE`='Y')||";
   }
   if(edit_dow_selector->dayOfWeekEnabled(2)) {
-    sql+="&&(`TUE`='Y')";
+    sql+="(`WED`='Y')||";
   }
   if(edit_dow_selector->dayOfWeekEnabled(3)) {
-    sql+="&&(`WED`='Y')";
+    sql+="(`THU`='Y')||";
   }
   if(edit_dow_selector->dayOfWeekEnabled(4)) {
-    sql+="&&(`THU`='Y')";
+    sql+="(`FRI`='Y')||";
   }
   if(edit_dow_selector->dayOfWeekEnabled(5)) {
-    sql+="&&(`FRI`='Y')";
+    sql+="(`SAT`='Y')||";
   }
   if(edit_dow_selector->dayOfWeekEnabled(6)) {
-    sql+="&&(`SAT`='Y')";
+    sql+="(`SUN`='Y')||";
   }
+  sql=sql.left(sql.length()-2)+")";
   if(!include_myself) {
     sql+=QString::asprintf("&&(`ID`!=%d)",edit_recording->id());
   }
   RDSqlQuery *q=new RDSqlQuery(sql);
-  bool res=!q->first();
+  bool res=true;
+  QString descriptions;
+  if(q->first()) {
+    res=false;
+    descriptions="\""+q->value(1).toString()+"\""+
+      QString::asprintf(" [ID: %u]",q->value(0).toUInt());
+  }
   delete q;
   if(!res) {
-    QMessageBox::warning(this,tr("Duplicate Event"),
-			 tr("An event with these parameters already exists!"));
+    QMessageBox::warning(this,tr("Conflicting Event"),
+			 tr("The parameters of this event conflict with")+"\n"+
+			 descriptions+".");
   }
 
   return res;
