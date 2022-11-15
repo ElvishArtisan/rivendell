@@ -23678,3 +23678,6 @@
 2022-11-15 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdcatch(1) that could erroneously detect conflicts
 	between events in the 'Edit Recording' dialog.
+2022-11-15 Fred Gleason <fredg@paravelsystems.com>
+	* Added a check for conflicting events to the 'Edit Playout' dialog
+	in rdcatch(1).

@@ -19,8 +19,10 @@
 //
 
 #include <QGroupBox>
+#include <QMessageBox>
 
 #include <rdcut_path.h>
+#include <rdescape_string.h>
 #include <rdtextvalidator.h>
 
 #include "edit_playout.h"
@@ -207,6 +209,9 @@ void EditPlayout::selectCutData()
 
 void EditPlayout::saveasData()
 {
+  if(!CheckEvent(true)) {
+    return;
+  }
   delete edit_recording;
   edit_recording=new RDRecording(-1,true);
   edit_added_events->push_back(edit_recording->id());
@@ -216,6 +221,9 @@ void EditPlayout::saveasData()
 
 void EditPlayout::okData()
 {
+  if(!CheckEvent(false)) {
+    return;
+  }
   Save();
   done(true);
 }
@@ -280,4 +288,82 @@ void EditPlayout::Save()
   edit_recording->setCutName(edit_cutname);
   edit_dow_selector->toRecording(edit_recording->id());
   edit_recording->setOneShot(edit_oneshot_box->isChecked());
+}
+
+
+bool EditPlayout::CheckEvent(bool include_myself)
+{
+  //
+  // Source Cut
+  //
+  if(edit_cutname.isEmpty()) {
+    QMessageBox::warning(this,tr("Missing Cut"),
+			 tr("You must assign a source cut!"));
+    return false;
+  }
+
+  //
+  // Check for Conflicting Events
+  //
+  int dows=0;
+  for(int i=0;i<7;i++) {
+    if(edit_dow_selector->dayOfWeekEnabled(i)) {
+      dows++;
+    }
+  }
+  if(dows==0) {  // No days scheduled
+    return true;
+  }
+
+  QString sql=QString("select ")+
+    "`ID`,"+           // 00
+    "`DESCRIPTION` "+  // 01
+    "from `RECORDINGS` where "+
+    "(`STATION_NAME`='"+RDEscapeString(edit_event_widget->stationName())+"')&&"+
+    QString::asprintf("(`TYPE`=%d)&&",RDRecording::Playout)+
+    "(`START_TIME`='"+RDEscapeString(edit_event_widget->startTime().
+				     toString("hh:mm:ss"))+"')&&"+
+    QString::asprintf("(`CHANNEL`=%d)",128+edit_event_widget->deckNumber());
+  sql+="&&(";
+  if(edit_dow_selector->dayOfWeekEnabled(0)) {
+    sql+="(`MON`='Y')||";
+  }
+  if(edit_dow_selector->dayOfWeekEnabled(1)) {
+    sql+="(`TUE`='Y')||";
+  }
+  if(edit_dow_selector->dayOfWeekEnabled(2)) {
+    sql+="(`WED`='Y')||";
+  }
+  if(edit_dow_selector->dayOfWeekEnabled(3)) {
+    sql+="(`THU`='Y')||";
+  }
+  if(edit_dow_selector->dayOfWeekEnabled(4)) {
+    sql+="(`FRI`='Y')||";
+  }
+  if(edit_dow_selector->dayOfWeekEnabled(5)) {
+    sql+="(`SAT`='Y')||";
+  }
+  if(edit_dow_selector->dayOfWeekEnabled(6)) {
+    sql+="(`SUN`='Y')||";
+  }
+  sql=sql.left(sql.length()-2)+")";
+  if(!include_myself) {
+    sql+=QString::asprintf("&&(`ID`!=%d)",edit_recording->id());
+  }
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  bool res=true;
+  QString descriptions;
+  if(q->first()) {
+    res=false;
+    descriptions="\""+q->value(1).toString()+"\""+
+      QString::asprintf(" [ID: %u]",q->value(0).toUInt());
+  }
+  delete q;
+  if(!res) {
+    QMessageBox::warning(this,"RDCatch - "+tr("Conflicting Event"),
+			 tr("The parameters of this event conflict with")+"\n"+
+			 descriptions+".");
+  }
+
+  return res;
 }
