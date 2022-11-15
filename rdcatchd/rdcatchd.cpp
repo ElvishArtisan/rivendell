@@ -1310,7 +1310,8 @@ bool MainObject::StartRecording(int event)
 			cut_name,
 			format,
 			catch_events[event].channels(),
-			catch_events[event].sampleRate(),
+			 //			catch_events[event].sampleRate(),
+			 rda->system()->sampleRate(),
 			catch_events[event].bitrate());
   rda->cae()->record(catch_record_card[deck-1],catch_record_stream[deck-1],
 		    length,0);
@@ -1351,7 +1352,7 @@ bool MainObject::StartRecording(int event)
 	break;
   }
   cut->setChannels(catch_events[event].channels());
-  cut->setSampleRate(catch_events[event].sampleRate());
+  cut->setSampleRate(rda->system()->sampleRate());
   cut->setBitRate(catch_events[event].bitrate());
   cut->setPlayCounter(0);
   cut->setSegueStartPoint(-1);
@@ -2330,7 +2331,7 @@ void MainObject::CheckInRecording(QString cutname,CatchEvent *evt,
   RDCut *cut=new RDCut(cutname);
   RDSettings *s=new RDSettings();
   s->setFormat((RDSettings::Format)evt->format());
-  s->setSampleRate(evt->sampleRate());
+  s->setSampleRate(rda->system()->sampleRate());
   s->setBitRate(evt->bitrate());
   s->setChannels(evt->channels());
   cut->checkInRecording(rda->config()->stationName(),"",

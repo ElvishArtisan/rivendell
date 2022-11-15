@@ -222,7 +222,7 @@ void RDCae::loadRecord(int card,int stream,QString name,
 		       int bit_rate)
 {
   // printf("RDCae::loadRecord(%d,%d,%s,%d,%d,%d,%d)\n",
-  //	 card,stream,(const char *)name,coding,chan,samp_rate,bit_rate);
+  //    card,stream,(const char *)name,coding,chan,samp_rate,bit_rate);
   SendCommand(QString().sprintf("LR %d %d %d %d %d %d %s!",
 				card,stream,(int)coding,chan,samp_rate,
 				bit_rate,(const char *)name));

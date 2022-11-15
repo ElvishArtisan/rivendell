@@ -20951,3 +20951,6 @@
 2022-11-15 Fred Gleason <fredg@paravelsystems.com>
 	* Applied a PR from Robert Chipperfield that broke waveform
 	generation on ARM architectures.
+2022-11-15 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdcatchd(8) that caused record events to be
+	captured with the incorrect sampling rate.
