@@ -574,10 +574,23 @@ void MainObject::engineData(int id)
   }
 
   //
+  // Check for Record Deck Availability
+  //
+  if(catch_events[event].type()==RDRecording::Recording) {
+    if(catch_record_deck_status[catch_events[event].channel()-1]!=
+       RDDeck::Idle) {
+      rda->syslog(LOG_WARNING,"record deck R%d is busy for event %d, skipping",
+		  catch_events[event].channel(),
+		  catch_events[event].id());
+      WriteExitCode(event,RDRecording::DeviceBusy);
+      return;
+    }
+  }
+
+  //
   // Check for Playout Deck Availability
   //
   if(catch_events[event].type()==RDRecording::Playout) {
-    rda->syslog(LOG_NOTICE,"checking channel: %d: %d",catch_events[event].channel(),catch_playout_deck_status[catch_events[event].channel()-129]);
     if(catch_playout_deck_status[catch_events[event].channel()-129]!=
        RDDeck::Idle) {
       rda->syslog(LOG_WARNING,"playout deck P%d is busy for event %d, skipping",
