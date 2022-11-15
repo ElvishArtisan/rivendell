@@ -220,8 +220,8 @@ void RDWavePainter::drawWaveByMsecs(int x,int w,int startmsecs,int endmsecs,
 				    int startclip,int endclip)
 {
   drawWaveBySamples(x,w,
-	     (unsigned)((double)startmsecs*(double)wave_sample_rate/1000.0),
-	     (unsigned)((double)endmsecs*(double)wave_sample_rate/1000.0),
+	     (int)((double)startmsecs*(double)wave_sample_rate/1000.0),
+	     (int)((double)endmsecs*(double)wave_sample_rate/1000.0),
 	     gain,channel,color,
 	     (int)((double)startclip*(double)wave_sample_rate/1000.0),
 	     (int)((double)endclip*(double)wave_sample_rate/1000.0));
