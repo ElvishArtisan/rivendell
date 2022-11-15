@@ -23681,3 +23681,6 @@
 2022-11-15 Fred Gleason <fredg@paravelsystems.com>
 	* Added a check for conflicting events to the 'Edit Playout' dialog
 	in rdcatch(1).
+2022-11-15 David Klann <dklann@broadcasttool.com>
+	* Implemented sorting of the dropbox list in the 'Rivendell
+	Dropbox List' dialog in rdadmin(1).

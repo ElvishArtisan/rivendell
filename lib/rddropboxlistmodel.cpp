@@ -26,7 +26,20 @@ RDDropboxListModel::RDDropboxListModel(const QString &hostname,QObject *parent)
   : QAbstractTableModel(parent)
 {
   d_hostname=hostname;
-
+  d_sort_column=0;
+  d_sort_order=Qt::AscendingOrder;
+  d_column_fields.push_back("`ID`");
+  d_column_fields.push_back("`GROUP_NAME`");
+  d_column_fields.push_back("`PATH`");
+  d_column_fields.push_back("`NORMALIZATION_LEVEL`");
+  d_column_fields.push_back("`AUTOTRIM_LEVEL`");
+  d_column_fields.push_back("`TO_CART`");
+  d_column_fields.push_back("`FORCE_TO_MONO`");
+  d_column_fields.push_back("`USE_CARTCHUNK_ID`");
+  d_column_fields.push_back("`DELETE_CUTS`");
+  d_column_fields.push_back("`METADATA_PATTERN`");
+  d_column_fields.push_back("`SET_USER_DEFINED`");
+  
   //
   // Column Attributes
   //
@@ -161,6 +174,16 @@ QVariant RDDropboxListModel::data(const QModelIndex &index,int role) const
 }
 
 
+void RDDropboxListModel::sort(int col,Qt::SortOrder order)
+{
+  if((col!=d_sort_column)||(order!=d_sort_order)) {
+    d_sort_column=col;
+    d_sort_order=order;
+    updateModel();
+  }
+}
+
+
 int RDDropboxListModel::dropboxId(const QModelIndex &row) const
 {
   return d_box_ids.at(row.row());
@@ -251,8 +274,13 @@ void RDDropboxListModel::updateModel()
   QList<QVariant> texts; 
   RDSqlQuery *q=NULL;
   QString sql=sqlFields()+
-    "where `DROPBOXES`.`STATION_NAME`='"+RDEscapeString(d_hostname)+"' "+
-    "order by `DROPBOXES`.`ID` ";
+    "where `DROPBOXES`.`STATION_NAME`='"+RDEscapeString(d_hostname)+"' "; //+
+    // "order by `DROPBOXES`.`ID` ";
+  sql+="order by "+d_column_fields.at(d_sort_column)+" ";
+  if(d_sort_order==Qt::DescendingOrder) {
+    sql+="desc ";
+  }
+
   beginResetModel();
   d_box_ids.clear();
   d_group_colors.clear();
