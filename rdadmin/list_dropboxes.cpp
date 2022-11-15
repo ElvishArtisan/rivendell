@@ -84,6 +84,8 @@ ListDropboxes::ListDropboxes(const QString &stationname,QWidget *parent)
   // Dropbox List
   //
   list_dropboxes_view=new RDTableView(this);
+  list_dropboxes_view->setSortingEnabled(true);
+  list_dropboxes_view->sortByColumn(0,Qt::AscendingOrder);
   list_dropboxes_model=new RDDropboxListModel(stationname,this);
   list_dropboxes_model->setFont(defaultFont());
   list_dropboxes_model->setPalette(palette());

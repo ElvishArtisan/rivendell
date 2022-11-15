@@ -43,6 +43,7 @@ class RDDropboxListModel : public QAbstractTableModel
   QVariant headerData(int section,Qt::Orientation orient,
 		      int role=Qt::DisplayRole) const;
   QVariant data(const QModelIndex &index,int role=Qt::DisplayRole) const;
+  void sort(int col,Qt::SortOrder order=Qt::AscendingOrder);
   int dropboxId(const QModelIndex &row) const;
   QModelIndex addDropbox(int box_id);
   void removeDropbox(const QModelIndex &row);
@@ -67,6 +68,9 @@ class RDDropboxListModel : public QAbstractTableModel
   QList<QVariant> d_group_colors;
   QList<int> d_box_ids;
   QString d_hostname;
+  QStringList d_column_fields;
+  int d_sort_column;
+  Qt::SortOrder d_sort_order;
 };
 
 
