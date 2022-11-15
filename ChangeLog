@@ -23689,3 +23689,5 @@
 	generation on ARM architectures.
 2022-11-15 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a typo in 'lib/rdcut.cpp' that broke cut copy/pasting.
+2022-11-15 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdcatchd(8) that broke download events.

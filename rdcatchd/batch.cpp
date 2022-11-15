@@ -168,7 +168,6 @@ void MainObject::RunImport(CatchEvent *evt)
 void MainObject::RunDownload(CatchEvent *evt)
 {
   RDDownload::ErrorCode conv_err;
-  int event=GetEvent(evt->id());
 
   //
   // Resolve Wildcards
@@ -218,8 +217,7 @@ void MainObject::RunDownload(CatchEvent *evt)
     exit(0);
 
   default:
-    WriteExitCode(event,RDRecording::ServerError,
-			       RDDownload::errorText(conv_err));
+    WriteExitCode(evt,RDRecording::ServerError,RDDownload::errorText(conv_err));
     qApp->processEvents();
     rda->syslog(LOG_WARNING,"download of %s returned an error: \"%s\", id=%d",
 		(const char *)evt->tempName().toUtf8(),
@@ -235,13 +233,13 @@ void MainObject::RunDownload(CatchEvent *evt)
   // Execute Import
   //
   if(Import(evt)) {
-    WriteExitCode(event,RDRecording::Ok,tr("OK"));
+    WriteExitCode(evt,RDRecording::Ok,tr("OK"));
     qApp->processEvents();
   }
   rda->syslog(LOG_INFO,"deleting file %s, id=%d",
 	      (const char *)evt->tempName().toUtf8(),evt->id());
   unlink(evt->tempName().toUtf8());
-  WriteExitCode(event,RDRecording::Ok,"OK");
+  WriteExitCode(evt,RDRecording::Ok,"OK");
 }
 
 
