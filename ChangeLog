@@ -23687,3 +23687,5 @@
 2022-11-15 Fred Gleason <fredg@paravelsystems.com>
 	* Applied a PR from Robert Chipperfield that broke waveform
 	generation on ARM architectures.
+2022-11-15 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a typo in 'lib/rdcut.cpp' that broke cut copy/pasting.

@@ -988,7 +988,7 @@ bool RDCut::copyTo(RDStation *station,RDUser *user,
   // Copy the Cut Events
   //
   sql=QString("select `NUMBER`,`POINT` from `CUT_EVENTS` ")+
-    "where `CUT_NAME`='"+cutName()+"i";
+    "where `CUT_NAME`='"+cutName()+"'";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     sql=QString("insert into `CUT_EVENTS` set ")+
