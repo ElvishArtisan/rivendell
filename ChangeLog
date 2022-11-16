@@ -23691,3 +23691,8 @@
 	* Fixed a typo in 'lib/rdcut.cpp' that broke cut copy/pasting.
 2022-11-15 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdcatchd(8) that broke download events.
+2022-11-16 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'QString *err_msg' argument to 'RDDownload::runDownload()'.
+	* Added a 'QString *err_msg' argument to 'RDDownload::runUpload()'.
+	* Fixed regression in rdcatch(1) that caused upload and download
+	events to fail to show exit status correctly.

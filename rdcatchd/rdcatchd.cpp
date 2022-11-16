@@ -583,6 +583,8 @@ void MainObject::engineData(int id)
 		  catch_events[event].channel(),
 		  catch_events[event].id());
       WriteExitCode(event,RDRecording::DeviceBusy);
+      SendEventResponse(catch_events[event].channel(),RDDeck::Idle,
+			catch_events[event].id(),"");
       return;
     }
   }
@@ -597,6 +599,8 @@ void MainObject::engineData(int id)
 		  catch_events[event].channel()-128,
 		  catch_events[event].id());
       WriteExitCode(event,RDRecording::DeviceBusy);
+      SendEventResponse(catch_events[event].channel(),RDDeck::Idle,
+			catch_events[event].id(),"");
       return;
     }
   }
@@ -1059,6 +1063,7 @@ void MainObject::eventFinishedData(int id)
 	return;
       }
       catch_events[event].setStatus(RDDeck::Idle);
+      rda->syslog(LOG_NOTICE,"HERE1");
       SendEventResponse(0,RDDeck::Idle,catch_macro_event_id[id],"");
       if(catch_events[event].oneShot()) {
 	PurgeEvent(event);
@@ -1086,17 +1091,15 @@ void MainObject::updateXloadsData()
   std::vector<int>::iterator it;
   for(unsigned i=0;i<catch_active_xloads.size();i++) {
     switch(ReadExitCode(catch_active_xloads[i])) {
-	case RDRecording::Ok:
-	case RDRecording::ServerError:
-	case RDRecording::InternalError:
-	  it=catch_active_xloads.begin()+i;
-	  SendEventResponse(0,RDDeck::Idle,
-			    catch_events[catch_active_xloads[i]].id(),"");
-	  catch_active_xloads.erase(it,it+1);
-	  break;
+    case RDRecording::Ok:
+    case RDRecording::ServerError:
+    case RDRecording::InternalError:
+      it=catch_active_xloads.begin()+i;
+      catch_active_xloads.erase(it,it+1);
+      break;
 
-	default:
-	  break;
+    default:
+      break;
     }
   }
   if(catch_active_xloads.size()==0) {
@@ -2050,54 +2053,13 @@ RDRecording::ExitCode MainObject::ReadExitCode(int event)
 void MainObject::WriteExitCode(int event,RDRecording::ExitCode code,
 			       const QString &err_text)
 {
-  RDDeck::Status status=RDDeck::Offline;
-  QString err_txt=err_text;
-  if(err_text.isEmpty()) {
-    err_txt=RDRecording::exitString(code);
-  }
-  QString sql=QString("update `RECORDINGS` set ")+
-    QString::asprintf("`EXIT_CODE`=%d,",code)+
-    "`EXIT_TEXT`='"+RDEscapeString(err_txt)+"' where "+
-    QString::asprintf("`ID`=%d",catch_events[event].id());
-  RDSqlQuery::apply(sql);
-  switch(code) {
-  case RDRecording::Ok:
-    status=RDDeck::Idle;
-    break;
-
-  case RDRecording::Downloading:
-  case RDRecording::Uploading:
-  case RDRecording::RecordActive:
-  case RDRecording::PlayActive:
-    status=RDDeck::Recording;
-    break;
-
-  case RDRecording::Waiting:
-    status=RDDeck::Waiting;
-    break;
-
-  case RDRecording::ServerError:
-  case RDRecording::InternalError:
-    ExecuteErrorRml(&catch_events[event],
-		     RDRecording::exitString(code)+": "+err_text,
-		     catch_conf->errorRml());
-    status=RDDeck::Offline;
-    break;
-
-  default:
-    ExecuteErrorRml(&catch_events[event],RDRecording::exitString(code),
-		     catch_conf->errorRml());
-    status=RDDeck::Offline;
-    break;
-  }
-  SendEventResponse(0,status,catch_events[event].id(),"");
+  WriteExitCode(&(catch_events[event]),code,err_text);
 }
 
 
 void MainObject::WriteExitCode(CatchEvent *ce,RDRecording::ExitCode code,
 				   const QString &err_text)
 {
-  RDDeck::Status status=RDDeck::Offline;
   QString err_txt=err_text;
   if(err_text.isEmpty()) {
     err_txt=RDRecording::exitString(code);
@@ -2107,35 +2069,6 @@ void MainObject::WriteExitCode(CatchEvent *ce,RDRecording::ExitCode code,
     "`EXIT_TEXT`='"+RDEscapeString(err_txt)+"' where "+
     QString::asprintf("`ID`=%d",ce->id());
   RDSqlQuery::apply(sql);
-  switch(code) {
-  case RDRecording::Ok:
-    status=RDDeck::Idle;
-    break;
-
-  case RDRecording::Downloading:
-  case RDRecording::Uploading:
-  case RDRecording::RecordActive:
-  case RDRecording::PlayActive:
-    status=RDDeck::Recording;
-    break;
-
-  case RDRecording::Waiting:
-    status=RDDeck::Waiting;
-    break;
-
-  case RDRecording::ServerError:
-  case RDRecording::InternalError:
-    ExecuteErrorRml(ce,RDRecording::exitString(code)+": "+err_text,
-		    catch_conf->errorRml());
-    status=RDDeck::Offline;
-    break;
-
-  default:
-    ExecuteErrorRml(ce,RDRecording::exitString(code),catch_conf->errorRml());
-    status=RDDeck::Offline;
-    break;
-  }
-  SendEventResponse(0,status,ce->id(),"");
 }
 
 

@@ -306,8 +306,8 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   catch_recordings_model->setFont(defaultFont());
   catch_recordings_model->setPalette(palette());
   connect(rda->ripc(),SIGNAL(notificationReceived(RDNotification *)),
-	  catch_recordings_model
-	  ,SLOT(notificationReceivedData(RDNotification *)));
+	  catch_recordings_model,
+	  SLOT(notificationReceivedData(RDNotification *)));
   catch_recordings_view->setModel(catch_recordings_model);
   catch_recordings_view->setSortingEnabled(true);
   catch_recordings_view->sortByColumn(2,Qt::AscendingOrder);
@@ -654,7 +654,7 @@ void MainWidget::ripcUserData()
 void MainWidget::catchEventReceivedData(RDCatchEvent *evt)
 {
   //  printf("catchEventReceivedData()\n");
-  //  printf("%s\n",evt->dump().toUtf8().constData());
+  //  printf("CatchEvent: %s\n",evt->dump().toUtf8().constData());
 
   switch(evt->operation()) {
   case RDCatchEvent::DeckStatusResponseOp:

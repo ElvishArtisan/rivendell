@@ -44,6 +44,7 @@ class RDUpload : public RDTransfer
 				const QString &password,
 				const QString &id_filename,
 				bool use_id_filename,
+				QString *err_msg,
 				bool log_debug);
   bool aborting() const;
   static QString errorText(RDUpload::ErrorCode err);

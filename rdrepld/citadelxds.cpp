@@ -2,7 +2,7 @@
 //
 // Replicator implementation for the Citadel XDS Portal
 //
-//   (C) Copyright 2010-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -365,6 +365,7 @@ bool CitadelXds::PostCut(const QString &cutname,const QString &filename)
   //
   // Upload File
   //
+  QString err_msg;
   RDUpload *upload=new RDUpload(rda->config());
   upload->setSourceFile(tempfile);
   upload->setDestinationUrl(config()->url()+"/"+filename);
@@ -372,14 +373,14 @@ bool CitadelXds::PostCut(const QString &cutname,const QString &filename)
   // FIXME: Finish implementing ssh(1) id keys!
   //
   switch(upload_err=upload->runUpload(config()->urlUsername(),
-				      config()->urlPassword(),"",false,
+				      config()->urlPassword(),"",false,&err_msg,
 				      rda->config()->logXloadDebugData())) {
   case RDUpload::ErrorOk:
     break;
 
   default:
     rda->syslog(LOG_WARNING,"CitadelXds: audio upload failed: %s",
-		(const char *)RDUpload::errorText(upload_err).toUtf8());
+		err_msg.toUtf8().constData());
     unlink(tempfile.toUtf8());
     delete upload;
     return false;

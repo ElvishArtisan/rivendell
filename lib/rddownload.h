@@ -2,7 +2,7 @@
 //
 // Download a File
 //
-//   (C) Copyright 2010-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -45,6 +45,7 @@ class RDDownload : public RDTransfer
 				    const QString &password,
 				    const QString &id_filename,
 				    bool use_id_filename,
+				    QString *curl_err_msg,
 				    bool log_debug);
   bool aborting() const;
   static QString errorText(RDDownload::ErrorCode err);

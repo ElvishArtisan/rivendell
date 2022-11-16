@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal -- Podcast services
 //
-//   (C) Copyright 2010-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -271,12 +271,13 @@ void Xport::PostPodcast()
   if((upload_err=upload->
       runUpload(feed->purgeUsername(),feed->purgePassword(),
 		rda->station()->sshIdentityFile(),feed->purgeUseIdFile(),
-		rda->config()->logXloadDebugData()))!=RDUpload::ErrorOk) {
+		&err_msg,rda->config()->logXloadDebugData()))!=
+     RDUpload::ErrorOk) {
     delete upload;
     delete feed;
     delete cast;
-    XmlExit(QString("Upload to \"")+desturl+"\" failed ["+
-	    RDUpload::errorText(upload_err)+"]",500,"podcasts.cpp",LINE_NUMBER);
+    XmlExit(QString("Upload to \"")+desturl+"\" failed ["+err_msg+"]",500,
+	    "podcasts.cpp",LINE_NUMBER);
   }
   delete upload;
 

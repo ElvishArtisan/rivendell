@@ -96,12 +96,12 @@ class MainObject : public QObject
   //
   void RunBatch(RDCmdSwitch *cmd);
   void RunImport(CatchEvent *evt);
-  void RunDownload(CatchEvent *evt);
-  void RunUpload(CatchEvent *evt);
+  bool RunDownload(CatchEvent *evt,QString *err_msg);
+  bool RunUpload(CatchEvent *evt,QString *err_msg);
   CatchEvent *batch_event;
-  bool Export(CatchEvent *evt);
+  bool Export(CatchEvent *evt,QString *err_msg);
   QString GetExportCmd(CatchEvent *evt,QString *tempname);
-  bool Import(CatchEvent *evt);
+  bool Import(CatchEvent *evt,QString *err_msg);
   QString GetImportCmd(CatchEvent *evt,QString *tempname);
 
   //

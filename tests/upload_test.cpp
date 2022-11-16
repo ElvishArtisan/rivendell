@@ -2,7 +2,7 @@
 //
 // Test Rivendell file uploading.
 //
-//   (C) Copyright 2010-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -96,14 +96,16 @@ MainObject::MainObject(QObject *parent)
   //
   // Run the Test
   //
+  err_msg="";
   RDUpload *conv=new RDUpload(rda->config(),this);
   conv->setSourceFile(source_filename);
   conv->setDestinationUrl(destination_url);
   printf("Uploading...\n");
   conv_err=conv->
     runUpload(username,password,ssh_identity_filename,use_identity_file,
-	      rda->config()->logXloadDebugData());
-  printf("Result: %s\n",RDUpload::errorText(conv_err).toUtf8().constData());
+	      &err_msg,rda->config()->logXloadDebugData());
+  printf("Result: %s [%s]\n",RDUpload::errorText(conv_err).toUtf8().constData(),
+	 err_msg.toUtf8().constData());
   delete conv;
 
   exit(0);

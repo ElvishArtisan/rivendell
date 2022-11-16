@@ -116,6 +116,7 @@ RDUpload::ErrorCode RDUpload::runUpload(const QString &username,
 					const QString &password,
 					const QString &id_filename,
 					bool use_id_filename,
+					QString *err_msg,
 					bool log_debug)
 {
   CURL *curl=NULL;
@@ -238,6 +239,7 @@ RDUpload::ErrorCode RDUpload::runUpload(const QString &username,
     ret=RDUpload::ErrorUnspecified;
     break;
   }
+  *err_msg=curl_easy_strerror(curl_err);
   if(user!=NULL) {
     RDCheckExitCode("RDUpload::runUpload seteuid",seteuid(getuid()));
     RDCheckExitCode("RDUpload::runUpload setegid",setegid(getgid()));

@@ -31,6 +31,7 @@ MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
   QString err_msg;
+  QString curl_err_msg;
 
   username="";
   password="";
@@ -102,8 +103,9 @@ MainObject::MainObject(QObject *parent)
   printf("Downloading...\n");
   conv_err=conv->
     runDownload(username,password,ssh_identity_filename,use_identity_file,
-		rda->config()->logXloadDebugData());
+		&curl_err_msg,rda->config()->logXloadDebugData());
   printf("Result: %s\n",RDDownload::errorText(conv_err).toUtf8().constData());
+  printf("CURL Msg: %s\n",curl_err_msg.toUtf8().constData());
   delete conv;
 
   exit(0);
