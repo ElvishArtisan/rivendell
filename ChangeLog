@@ -23696,3 +23696,10 @@
 	* Added a 'QString *err_msg' argument to 'RDDownload::runUpload()'.
 	* Fixed regression in rdcatch(1) that caused upload and download
 	events to fail to show exit status correctly.
+2022-11-17 Fred Gleason <fredg@paravelsystems.com>
+	* Simplified error return descriptions for the podcast methods in
+	the Web API.
+	* Removed the 'RDFeed::Error' enumeration.
+	* Removed the 'RDFeed::errorString()' method.
+	* Fixed bugs in rdcatchd(8) in handling errors when posting to
+	RSS feeds.

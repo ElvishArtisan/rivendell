@@ -179,15 +179,14 @@ QSizePolicy ListCasts::sizePolicy() const
 
 void ListCasts::addCartData()
 {
+  QString err_msg;
   QString cutname;
   if(!list_cut_dialog->exec(&cutname)) {
     return;
   }
-  RDFeed::Error err;
-  unsigned cast_id=list_feed->postCut(cutname,&err);
-  if(err!=RDFeed::ErrorOk) {
-    QMessageBox::warning(this,"RDCastManager - "+tr("Posting Error"),
-			 RDFeed::errorString(err));
+  unsigned cast_id=list_feed->postCut(cutname,&err_msg);
+  if(cast_id==0) {
+    QMessageBox::warning(this,"RDCastManager - "+tr("Posting Error"),err_msg);
     return;
   }
   EditCast *d=new EditCast(cast_id,this);
@@ -208,6 +207,8 @@ void ListCasts::addCartData()
 
 void ListCasts::addFileData()
 {
+  QString err_msg;
+
   QString srcfile=
     QFileDialog::getOpenFileName(this,"RDCastManager - "+
 				 tr("Select Audio File"),"",
@@ -215,11 +216,9 @@ void ListCasts::addFileData()
   if(srcfile.isNull()) {
     return;
   }
-  RDFeed::Error err;
-  unsigned cast_id=list_feed->postFile(srcfile,&err);
-  if(err!=RDFeed::ErrorOk) {
-    QMessageBox::warning(this,"RDCastManager - "+tr("Posting Error"),
-			 RDFeed::errorString(err));
+  unsigned cast_id=list_feed->postFile(srcfile,&err_msg);
+  if(cast_id==0) {
+    QMessageBox::warning(this,"RDCastManager - "+tr("Posting Error"),err_msg);
     return;
   }
   EditCast *d=new EditCast(cast_id,this);
@@ -241,7 +240,7 @@ void ListCasts::addFileData()
 void ListCasts::addLogData()
 {
   QString logname;
-  RDFeed::Error err=RDFeed::ErrorOk; 
+  QString err_msg;
   unsigned cast_id=0;
 
   RDListLogs *lld=
@@ -257,7 +256,7 @@ void ListCasts::addLogData()
     if(list_render_dialog->exec(model,&start_time,&ignore_stops,
 				&start_line,&end_line)) {
       if((cast_id=list_feed->postLog(logname,start_time,ignore_stops,
-				     start_line,end_line,&err))!=0) {
+				     start_line,end_line,&err_msg))!=0) {
 	EditCast *cast=new EditCast(cast_id,this);
 	cast->exec();
 	QModelIndex row=list_casts_model->addCast(cast_id);
@@ -273,7 +272,7 @@ void ListCasts::addLogData()
       }
       else {
 	QMessageBox::warning(this,"RDCastManager - "+tr("Posting Error"),
-			     RDFeed::errorString(err));
+			     err_msg);
 	delete lld;
 	delete model;
 	return;

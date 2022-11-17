@@ -2,7 +2,7 @@
 //
 // List Rivendell Feeds
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -283,6 +283,7 @@ void ListFeeds::doubleClickedData(const QModelIndex &index)
 
 void ListFeeds::repostData()
 {
+  QString err_msg;
   QString sql;
   RDSqlQuery *q=NULL;
   RDFeed *feed=NULL;
@@ -330,7 +331,8 @@ void ListFeeds::repostData()
   // Post Item Data
   //
   sql=QString("select ")+
-    "`ID` "+              // 00
+    "`ID`,"+        // 00
+    "`KEY_NAME` "+  // 01
     "from `PODCASTS` where "+
     QString::asprintf("`FEED_ID`=%u",feed->id());
   q=new RDSqlQuery(sql);
@@ -339,7 +341,12 @@ void ListFeeds::repostData()
   count=0;
   pd->setValue(0);
   while(q->next()) {
-    feed->postPodcast(q->value(0).toUInt());
+    if(!feed->postPodcast(q->value(0).toUInt(),&err_msg)) {
+      QMessageBox::warning(this,"RDAdmin - "+tr("Error"),
+			   tr("Error posting to feed")+" \""+
+			   q->value(1).toString()+"\"\n"+
+			   "["+err_msg+"].");
+    }
     pd->setValue(++count);
   }
   delete q;

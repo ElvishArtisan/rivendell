@@ -276,8 +276,7 @@ void Xport::PostPodcast()
     delete upload;
     delete feed;
     delete cast;
-    XmlExit(QString("Upload to \"")+desturl+"\" failed ["+err_msg+"]",500,
-	    "podcasts.cpp",LINE_NUMBER);
+    XmlExit(err_msg,500,"podcasts.cpp",LINE_NUMBER);
   }
   delete upload;
 
@@ -335,8 +334,7 @@ void Xport::RemovePodcast()
     delete del;
     delete feed;
     delete cast;
-    XmlExit(QString("Deletion of \"")+desturl+"\" failed ["+
-	    RDDelete::errorText(del_err)+"]",500,"podcasts.cpp",LINE_NUMBER);
+    XmlExit(RDDelete::errorText(del_err),500,"podcasts.cpp",LINE_NUMBER);
   }
   delete del;
 
@@ -531,8 +529,7 @@ void Xport::RemoveRss()
 		rda->config()->logXloadDebugData()))!=RDDelete::ErrorOk) {
     delete del;
     delete feed;
-    XmlExit(QString("Deletion of \"")+desturl+"\" failed ["+
-	    RDDelete::errorText(del_err)+"]",500,"podcasts.cpp",LINE_NUMBER);
+    XmlExit(RDDelete::errorText(del_err),500,"podcasts.cpp",LINE_NUMBER);
   }
   delete del;
 
@@ -715,8 +712,7 @@ void Xport::RemoveImage()
 		rda->config()->logXloadDebugData()))!=RDDelete::ErrorOk) {
     delete del;
     delete feed;
-    XmlExit(QString("Deletion of image \"")+desturl+"\" failed ["+
-	    RDDelete::errorText(del_err)+"]",500,"podcasts.cpp",LINE_NUMBER);
+    XmlExit(RDDelete::errorText(del_err),500,"podcasts.cpp",LINE_NUMBER);
   }
   delete del;
 

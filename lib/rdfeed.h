@@ -39,9 +39,6 @@ class RDFeed : public QObject
 {
   Q_OBJECT;
  public:
-  enum Error {ErrorOk=0,ErrorNoFile=1,ErrorCannotOpenFile=2,
-	      ErrorUnsupportedType=3,ErrorUploadFailed=4,ErrorGeneral=5,
-	      ErrorNoLog=6,ErrorRenderError=7};
   RDFeed(const QString &keyname,RDConfig *config,QObject *parent=0);
   RDFeed(unsigned id,RDConfig *config,QObject *parent=0);
   QString keyName() const;
@@ -135,7 +132,7 @@ class RDFeed : public QObject
   int importImageFile(const QString &pathname,QString *err_msg,
 		      QString desc="") const;
   bool deleteImage(int img_id,QString *err_msg);
-  bool postPodcast(unsigned cast_id) const;
+  bool postPodcast(unsigned cast_id,QString *err_msg);
   QString audioUrl(unsigned cast_id);
   QString imageUrl(int img_id) const;
   bool postXml();
@@ -144,14 +141,14 @@ class RDFeed : public QObject
   bool postImage(int img_id) const;
   bool removeImage(int img_id) const;
   void removeAllImages();
-  unsigned postCut(const QString &cutname,Error *err);
-  unsigned postFile(const QString &srcfile,Error *err);
+  unsigned postCut(const QString &cutname,QString *err_msg);
+  unsigned postFile(const QString &srcfile,QString *err_msg);
   unsigned postLog(const QString &logname,const QTime &start_time,
-		   bool stop_at_stop,int start_line,int end_line,Error *err);
+		   bool stop_at_stop,int start_line,int end_line,
+		   QString *err_msg);
   QString rssXml(QString *err_msg,const QDateTime &now,bool *ok=NULL);
   static unsigned create(const QString &keyname,bool enable_users,
 			 QString *err_msg);
-  static QString errorString(RDFeed::Error err);
   static QString imageFilename(int feed_id,int img_id,const QString &ext);
   static QString publicUrl(const QString &base_url,const QString &keyname);
   static QString itunesCategoryXml(const QString &category,
@@ -166,8 +163,10 @@ class RDFeed : public QObject
   void renderLineStartedData(int lineno,int total_lines);
 
  private:
-  bool SavePodcast(unsigned cast_id,const QString &src_filename) const;
+  bool SavePodcast(unsigned cast_id,const QString &src_filename,
+		   QString *err_msg);
   unsigned CreateCast(QString *filename,int bytes,int msecs) const;
+  void AbandonCast(unsigned cast_id) const;
   QString ResolveChannelWildcards(const QString &tmplt,RDSqlQuery *chan_q,
 				  const QDateTime &build_datetime);
   QString ResolveItemWildcards(const QString &tmplt,RDSqlQuery *item_q,
@@ -188,6 +187,7 @@ class RDFeed : public QObject
   int feed_xml_ptr;
   int feed_render_start_line;
   int feed_render_end_line;
+  QByteArray feed_curl_write_buffer;
 };
 
 

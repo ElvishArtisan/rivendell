@@ -345,21 +345,17 @@ bool MainObject::RunUpload(CatchEvent *evt,QString *err_msg)
   }
   else {  // Podcast upload
     unsigned cast_id;
-    RDFeed::Error feed_err=RDFeed::ErrorOk;
-
     RDFeed *feed=new RDFeed(evt->feedId(),rda->config(),this);
     rda->syslog(LOG_INFO,"starting post of %s to feed \"%s\", id=%d",
 		evt->tempName().toUtf8().constData(),
 		feed->keyName().toUtf8().constData(),
 		evt->id());
-    if((cast_id=feed->postCut(evt->cutName(),&feed_err))==0) {
+    if((cast_id=feed->postCut(evt->cutName(),err_msg))==0) {
       rda->syslog(LOG_WARNING,"post of %s to feed \"%s\" failed [%s], id=%d",
 		  evt->cutName().toUtf8().constData(),
 		  feed->keyName().toUtf8().constData(),
-		  RDFeed::errorString(feed_err).toUtf8().constData(),
+		  err_msg->toUtf8().constData(),
 		  evt->id());
-      //      WriteExitCode(batch_event,RDRecording::ServerError,
-      //	    RDFeed::errorString(feed_err));
       delete feed;
       return false;
     }
