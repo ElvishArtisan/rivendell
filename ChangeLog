@@ -23706,3 +23706,6 @@
 2022-11-18 Fred Gleason <fredg@paravelsystems.com>
 	* Added the 'ImageMagick-c++-devel' package to the list of required
 	build packages for RHEL-8 and RHEL-9.
+2022-11-18 Fred Gleason <fredg@paravelsystems.com>
+	* Added the 'fop-static' package to the list of required
+	build packages for RHEL-8 and RHEL-9.
