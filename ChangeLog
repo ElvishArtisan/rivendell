@@ -23703,3 +23703,6 @@
 	* Removed the 'RDFeed::errorString()' method.
 	* Fixed bugs in rdcatchd(8) in handling errors when posting to
 	RSS feeds.
+2022-11-18 Fred Gleason <fredg@paravelsystems.com>
+	* Added the 'ImageMagick-c++-devel' package to the list of required
+	build packages for RHEL-8 and RHEL-9.
