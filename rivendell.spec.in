@@ -21,7 +21,7 @@
 ##
 
 # So python bytecompilation works correctly
-%define __python /usr/bin/python3.6
+%define __python /usr/bin/python3
 
 Summary: Radio Broadcast Automation System
 Name: rivendell
@@ -33,7 +33,7 @@ Source: rivendell-@VERSION@.tar.gz
 Requires: @MYSQL_PKG@ @QT_MYSQL_PKG@ @APACHE_PKG@ curl @USERMODE_PKG@ rsyslog qt5-qtstyleplugins qt5-qttranslations @PYPAD_DEPS@ libxslt icedax
 BuildRequires: qt5-qtbase-devel qt5-linguist
 BuildRoot: /var/tmp/rivendell-@VERSION@
-Obsoletes: rivendell-base rivendell-opsguide rivendell-pypad
+Obsoletes: rivendell-base < 4.0.0 rivendell-opsguide < 4.0.0 rivendell-pypad < 4.0.0
 Conflicts: rivendell-opsguide
 
 %package importers
@@ -112,7 +112,7 @@ This package contains the WebGet audio fetching tool for Rivendell.
 
 
 %build
-export PYTHON=/usr/bin/python3.6
+export PYTHON=/usr/bin/python3
 %configure --libexecdir=@libexecdir@ --sysconfdir=@sysconfdir@ @RDXPORTDEBUG@
 make -j @CPUS_AVAIL@
 
@@ -218,7 +218,7 @@ cp scripts/engine_conv.py $RPM_BUILD_ROOT/@DOC_PATH@
 cp scripts/init_template_host.py $RPM_BUILD_ROOT/@DOC_PATH@
 rm -f $RPM_BUILD_ROOT/etc/auto.rd.audiostore
 rm -rf $RPM_BUILD_ROOT%{_libdir}/rivendell/pypad/__pycache__
-rm -rf $RPM_BUILD_ROOT%{_libdir}/python3.6/site-packages/__pycache__
+rm -rf $RPM_BUILD_ROOT%{_libdir}/python@PYTHON_VERSION@/site-packages/__pycache__
 
 
 %post
@@ -476,7 +476,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/librd.la
 %{_libdir}/librd.so
 %{_libdir}/rivendell/pypad/*
-%{_libdir}/python3.6/site-packages/rivendellaudio/*
+%{_libdir}/python@PYTHON_VERSION@/site-packages/rivendellaudio/*
 %{_sbindir}/rdservice
 %{_sbindir}/caed
 %{_sbindir}/ripcd

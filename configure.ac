@@ -386,8 +386,6 @@ if test $DOCBOOK_STYLESHEETS ; then
    ln -s $DOCBOOK_STYLESHEETS helpers/docbook
 fi
 
-#AC_SUBST(DOCBOOK_STYLESHEETS,$DOCBOOK_STYLESHEETS)
-
 #
 # RDXport Debug
 #
@@ -432,8 +430,8 @@ fi
 # Setup Sound API Dependencies
 #
 AC_CHECK_HEADER(asihpi/hpi.h,[HPI_FOUND=yes],[])
-AC_CHECK_HEADER(jack/jack.h,[JACK_FOUND=yes],[])
-AC_CHECK_HEADER(alsa/asoundlib.h,[ALSA_FOUND=yes],[])
+PKG_CHECK_MODULES(LIBJACK,jack,[JACK_FOUND=yes],[])
+PKG_CHECK_MODULES(ASOUNDLIB,alsa,[ALSA_FOUND=yes],[])
 if test $HPI_FOUND ; then
   if test -z $HPI_DISABLED ; then
     USING_HPI=yes
@@ -465,14 +463,15 @@ if test $JACK_FOUND ; then
       AC_MSG_ERROR([*** libsamplerate not found, but is needed for JACK support ***])
     fi
     AC_DEFINE(JACK,yes)
-    AC_SUBST(LIBJACK,-ljack)
     SRC_NEEDED=yes
     USING_JACK=yes
-  else 
-    AC_SUBST(LIBJACK,"")
-  fi
+  else
+     AC_SUBST(JACK_CFLAGS,"")
+     AC_SUBST(JACK_LIBS,"")
+fi
 else 
-  AC_SUBST(LIBJACK,"")
+     AC_SUBST(JACK_CFLAGS,"")
+     AC_SUBST(JACK_LIBS,"")
 fi
 
 if test $ALSA_FOUND ; then

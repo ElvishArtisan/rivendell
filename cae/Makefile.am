@@ -19,7 +19,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -I$(top_srcdir)/lib -I$(top_srcdir)/rdhpi -Wno-strict-aliasing -std=c++11 -fPIC @QT5_CFLAGS@ @MUSICBRAINZ_CFLAGS@ @IMAGEMAGICK_CFLAGS@
+AM_CPPFLAGS = -Wall -I$(top_srcdir)/lib -I$(top_srcdir)/rdhpi -Wno-strict-aliasing -std=c++11 -fPIC @QT5_CFLAGS@ @MUSICBRAINZ_CFLAGS@ @IMAGEMAGICK_CFLAGS@ @LIBJACK_CFLAGS@
 LIBS = -L$(top_srcdir)/lib -L$(top_srcdir)/rdhpi
 MOC = @QT_MOC@
 
@@ -46,7 +46,7 @@ nodist_caed_SOURCES = moc_cae.cpp\
 caed_LDADD = @LIB_RDLIBS@\
              @LIBALSA@\
              @LIBHPI@\
-             @LIBJACK@\
+             @LIBJACK_LIBS@\
              @LIBSRC@\
              @LIBVORBIS@\
              @QT5_LIBS@\

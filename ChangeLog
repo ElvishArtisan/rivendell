@@ -23709,3 +23709,6 @@
 2022-11-18 Fred Gleason <fredg@paravelsystems.com>
 	* Added the 'fop-static' package to the list of required
 	build packages for RHEL-8 and RHEL-9.
+2022-11-21 Fred Gleason <fredg@paravelsystems.com>
+	* Modified build system to use pkg-config(1) to detect ALSA and
+	JACK support elements in 'configure'.
