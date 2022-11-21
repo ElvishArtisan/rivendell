@@ -1,6 +1,25 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
+v3.6.6int0 -- 21 November 2022
+
+Changes:
+   Fixed a bug in the podcasting subsystem that caused superfeeds to fail
+   validation against the 'direct' name space.
+
+   Fixed a bug in rdcatchd(8)  that caused record events to be captured with
+   the incorrect sampling rate.
+
+   Fixed a bug that cause waveform generation to break on ARM architectures.
+
+Database Update:
+   This version of Rivendell uses database schema version 347, and will
+   automatically upgrade any earlier versions. To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
+   to allow any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
 v3.6.6 -- 2 October 2022
 
 Changes:

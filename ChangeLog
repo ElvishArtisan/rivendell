@@ -20957,3 +20957,5 @@
 2022-11-21 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the podcasting subsystem that broke validation
 	of the 'direct' name space.
+2022-11-21 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.6.6int0.
