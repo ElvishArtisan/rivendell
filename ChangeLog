@@ -20954,3 +20954,6 @@
 2022-11-15 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdcatchd(8) that caused record events to be
 	captured with the incorrect sampling rate.
+2022-11-21 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the podcasting subsystem that broke validation
+	of the 'direct' name space.

@@ -63,7 +63,7 @@ RDRssSchemas::RDRssSchemas()
   c_header_templates.push_back("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rss version=\"2.0\" xmlns:itunes=\"http://www.itunes.com/dtds/podcast-1.0.dtd\" xmlns:content=\"http://purl.org/rss/1.0/modules/content/\" xmlns:atom=\"http://www.w3.org/2005/Atom\" xmlns:direct=\"http://www.rivendellaudio.org/dtds/direct-0.1.dtd\">");
 
   // AppleSuperfeedSchema
-  c_header_templates.push_back("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rss version=\"2.0\" xmlns:itunes=\"http://www.itunes.com/dtds/podcast-1.0.dtd\" xmlns:content=\"http://purl.org/rss/1.0/modules/content/\" xmlns:atom=\"http://www.w3.org/2005/Atom\" xmlns:superfeed=\"http://www.rivendellaudio.org/dtds/superfeed-0.1.dtd\"> xmlns:direct=\"http://www.rivendellaudio.org/dtds/direct-0.1.dtd\">");
+  c_header_templates.push_back("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rss version=\"2.0\" xmlns:itunes=\"http://www.itunes.com/dtds/podcast-1.0.dtd\" xmlns:content=\"http://purl.org/rss/1.0/modules/content/\" xmlns:atom=\"http://www.w3.org/2005/Atom\" xmlns:superfeed=\"http://www.rivendellaudio.org/dtds/superfeed-0.1.dtd\" xmlns:direct=\"http://www.rivendellaudio.org/dtds/direct-0.1.dtd\">");
 
   //
   // Channel Templates
