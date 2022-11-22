@@ -215,7 +215,11 @@ case "$ar_distro_id" in
        if test $ar_distro_major -lt 8 ; then
        	  AC_SUBST(PYPAD_DEPS,"python36 python36-pycurl python36-requests python36-pyserial python36-mysql python36-urllib3")
        else
-       	  AC_SUBST(PYPAD_DEPS,"python3 python3-pycurl python3-requests python3-pyserial python3-mysql python3-urllib3")
+          if test $ar_distro_major -lt 9 ; then
+	     AC_SUBST(PYPAD_DEPS,"python3 python3-pycurl python3-requests python3-pyserial python3-mysql python3-urllib3")
+	  else
+	     AC_SUBST(PYPAD_DEPS,"python3 python3-pycurl python3-requests python3-pyserial python3-mysqlclient python3-urllib3")
+          fi
        fi
        AC_SUBST(RIVENDELL_PAM_FILE,"rivendell-rhel.pam")  
        ;;
