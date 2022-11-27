@@ -23720,3 +23720,5 @@
 	dump when attempting to print an error message.
 	* Fixed a regression in the 'pypad-tunein' plug-in threw a stack
 	dump when attempting to print an error message.
+2022-11-27 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.0.0rc0int2.
