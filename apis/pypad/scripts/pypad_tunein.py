@@ -32,6 +32,9 @@ except ModuleNotFoundError:
     import pypad  # Rivendell v3.x style
 import configparser
 
+def eprint(*args,**kwargs):
+    print(*args,file=sys.stderr,**kwargs)
+
 def ProcessPad(update):
     if update.hasPadType(pypad.TYPE_NOW):
         n=1

@@ -23715,3 +23715,8 @@
 2022-11-22 Fred Gleason <fredg@paravelsystems.com>
 	* Changed the 'python3-mysql' dependency to 'python3-mysqlclient'
 	in the RPM package for RHEL9 and above.
+2022-11-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the 'pypad-icecast2' plug-in threw a stack
+	dump when attempting to print an error message.
+	* Fixed a regression in the 'pypad-tunein' plug-in threw a stack
+	dump when attempting to print an error message.
