@@ -2,7 +2,7 @@
 //
 // Multi-interface multicast transciever
 //
-//   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -24,6 +24,8 @@
 #include <netinet/ip.h>
 #include <net/if.h>
 #include <unistd.h>
+
+#include <QNetworkDatagram>
 
 #include "rdmulticaster.h"
 
@@ -101,18 +103,10 @@ void RDMulticaster::send(const QString &msg,const QHostAddress &m_addr,
 
 void RDMulticaster::readyReadData()
 {
-  struct sockaddr_in sa;
-  socklen_t sa_len=sizeof(struct sockaddr_in);
-  char data[1501];
-  int n;
-
-  memset(&sa,0,sizeof(sa));
-  while((n=recvfrom(multi_socket->socketDescriptor(),data,1500,MSG_DONTWAIT,
-		    (sockaddr *)&sa,&sa_len))>0) {
-    data[n]=0;
-    QString msg(data);
-    emit received(msg,QHostAddress(ntohl(sa.sin_addr.s_addr)));
-    sa_len=sizeof(struct sockaddr_in);
+  while(multi_socket->hasPendingDatagrams()) {
+    QNetworkDatagram dg=multi_socket->receiveDatagram();
+    printf("emitting: %s",dg.data().constData());
+    emit received(QString::fromUtf8(dg.data()),dg.senderAddress());
   }
 }
 

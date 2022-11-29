@@ -203,3 +203,7 @@ TranscodingDelay=0
 ;
 ; Default action is to not save files.
 ; SaveWebgetFilesDirectory=
+
+; Suppress meter update messages on the notification multicast channel.
+;
+;SuppressRdcatchMeterUpdates=No

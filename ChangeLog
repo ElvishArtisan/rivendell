@@ -23722,3 +23722,8 @@
 	dump when attempting to print an error message.
 2022-11-27 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.0.0rc0int2.
+2022-11-29 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'SuppressRdcatchMeterUpdates=' directive to '[Hacks]'
+	section of rd.conf(5).
+	* Fixed a regression in the RDCatch subsystem that caused remote
+	deck indication to break.

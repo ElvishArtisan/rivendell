@@ -366,7 +366,7 @@ void MainObject::notificationReceivedData(RDNotification *notify)
 void MainObject::catchEventReceivedData(RDCatchEvent *evt)
 {
   //  rda->syslog(LOG_NOTICE,"catchEventReceivedData(): %s",
-  //	      evt->dump().toUtf8().constData());
+  //  	      evt->dump().toUtf8().constData());
 
   RDCatchEvent *resp=NULL;
 
@@ -1030,24 +1030,26 @@ void MainObject::meterData()
   short levels[2];
   QList<RDCatchMeterLevel> meter_levels;
 
-  for(int i=0;i<MAX_DECKS;i++) {
-    if(catch_record_deck_status[i]==RDDeck::Recording) {
-      rda->cae()->
-	inputMeterUpdate(catch_record_card[i],catch_record_stream[i],levels);
-      meter_levels.push_back(RDCatchMeterLevel(i+1,levels));
+  if(!rda->config()->suppressRdcatchMeterUpdates()) {
+    for(int i=0;i<MAX_DECKS;i++) {
+      if(catch_record_deck_status[i]==RDDeck::Recording) {
+	rda->cae()->
+	  inputMeterUpdate(catch_record_card[i],catch_record_stream[i],levels);
+	meter_levels.push_back(RDCatchMeterLevel(i+1,levels));
+      }
+      if(catch_playout_deck_status[i]==RDDeck::Recording) {
+	rda->cae()->
+	  outputMeterUpdate(catch_playout_card[i],catch_playout_port[i],levels);
+	meter_levels.push_back(RDCatchMeterLevel(i+129,levels));
+      }
     }
-    if(catch_playout_deck_status[i]==RDDeck::Recording) {
-      rda->cae()->
-	outputMeterUpdate(catch_playout_card[i],catch_playout_port[i],levels);
-      meter_levels.push_back(RDCatchMeterLevel(i+129,levels));
+    if(meter_levels.size()>0) {
+      RDCatchEvent *evt=new RDCatchEvent();
+      evt->setOperation(RDCatchEvent::SendMeterLevelsOp);
+      evt->setMeterLevels(meter_levels);
+      rda->ripc()->sendCatchEvent(evt);
+      delete evt;
     }
-  }
-  if(meter_levels.size()>0) {
-    RDCatchEvent *evt=new RDCatchEvent();
-    evt->setOperation(RDCatchEvent::SendMeterLevelsOp);
-    evt->setMeterLevels(meter_levels);
-    rda->ripc()->sendCatchEvent(evt);
-    delete evt;
   }
 }
 

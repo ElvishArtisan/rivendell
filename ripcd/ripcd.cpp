@@ -238,8 +238,8 @@ void MainObject::newConnectionData()
 void MainObject::notificationReceivedData(const QString &msg,
 					  const QHostAddress &addr)
 {
-  QStringList f0=msg.split(msg,QString::SkipEmptyParts);
-  if(msg.at(0)=="NOTIFY") {
+  QStringList f0=msg.split(" ",QString::SkipEmptyParts);
+  if(f0.at(0)=="NOTIFY") {
     RDNotification *notify=new RDNotification();
     if(!notify->read(msg)) {
       rda->syslog(LOG_INFO,"invalid notification received from %s",
@@ -251,7 +251,7 @@ void MainObject::notificationReceivedData(const QString &msg,
     BroadcastCommand("ON "+msg+"!");
     delete notify;
   }
-  if(msg.at(0)=="CATCH") {
+  if(f0.at(0)=="CATCH") {
     RDCatchEvent *evt=new RDCatchEvent();
     if(!evt->read(msg)) {
       rda->syslog(LOG_INFO,"invalid catch event received from %s",

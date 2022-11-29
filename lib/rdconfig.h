@@ -104,6 +104,7 @@ class RDConfig
   int meterBasePort() const;
   int meterPortRange() const;
   QString saveWebgetFilesDirectory() const;
+  bool suppressRdcatchMeterUpdates() const;
   bool enableMixerLogging() const;
   uid_t uid() const;
   gid_t gid() const;
@@ -176,6 +177,7 @@ class RDConfig
   bool conf_disable_maint_checks;
   bool conf_lock_rdairplay_memory;
   QString conf_save_webget_files_directory;
+  bool conf_suppress_rdcatch_meter_updates;
   int conf_meter_base_port;
   int conf_meter_port_range;
   std::vector<QString> conf_jack_ports[2];

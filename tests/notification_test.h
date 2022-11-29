@@ -1,6 +1,6 @@
 // upload_test.h
 //
-// Test Rivendell Notifications
+// Test Rivendell RDNotification class
 //
 //   (C) Copyright 2019 Fred Gleason <fredg@paravelsystems.com>
 //
