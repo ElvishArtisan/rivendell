@@ -23727,3 +23727,5 @@
 	section of rd.conf(5).
 	* Fixed a regression in the RDCatch subsystem that caused remote
 	deck indication to break.
+2022-11-30 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.0.0rc0int3.
