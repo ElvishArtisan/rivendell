@@ -371,7 +371,6 @@ RDMarkerView::RDMarkerView(int width,int height,QWidget *parent)
   clear();
 
   d_view=new QGraphicsView(this);
-
   d_wave_factory=new RDWaveFactory(RDWaveFactory::MultiTrack);
 
   d_pointer_fields.push_back("`START_POINT`");
@@ -403,6 +402,13 @@ RDMarkerView::RDMarkerView(int width,int height,QWidget *parent)
     addAction(tr("Add Fade Up Marker"),this,SLOT(addFadeupData()));
   d_add_fadedown_action=d_main_menu->
     addAction(tr("Add Fade Down Marker"),this,SLOT(addFadedownData()));
+
+  //
+  // The Home Timer
+  //
+  d_home_timer=new QTimer(this);
+  d_home_timer->setSingleShot(true);
+  connect(d_home_timer,SIGNAL(timeout()),this,SLOT(gotoHome()));
 }
 
 
@@ -587,7 +593,6 @@ void RDMarkerView::setSelectedMarkers(RDMarkerHandle::PointerRole start_role,
 	setSelected(d_selected_markers[1]==RDMarkerHandle::FadeUp);
     }
   }
-
   emit selectedMarkersChanged(d_selected_markers[0],d_selected_markers[1]);
 }
 
@@ -704,6 +709,8 @@ bool RDMarkerView::setCut(QString *err_msg,unsigned cartnum,int cutnum)
   WriteWave();
 
   updateInterlocks();
+
+  d_home_timer->start(0);
 
   return true;
 }

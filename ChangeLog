@@ -23732,3 +23732,6 @@
 2022-11-30 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'Linux Mint' to the set of recognized distros in the
 	'AR_GET_DISTRO()' macro.
+2022-12-01 Fred Gleason <fredg@paravelsystems.com>
+	* Modifed the 'Edit Audio' dialog in rdlibrary(1) so the waveform
+	display is initially fully scrolled to the left.

@@ -28,6 +28,7 @@
 #include <QList>
 #include <QMenu>
 #include <QPolygonF>
+#include <QTimer>
 
 #include <rdcut.h>
 #include <rdwavefactory.h>
@@ -195,6 +196,7 @@ class RDMarkerView : public RDWidget
   RDMarkerHandle::PointerRole d_selected_markers[2];
   int d_wheel_angle;
   QGraphicsLineItem *d_reference_line_items[2][2];
+  QTimer *d_home_timer;
 };
 
 
