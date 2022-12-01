@@ -23729,3 +23729,6 @@
 	deck indication to break.
 2022-11-30 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.0.0rc0int3.
+2022-11-30 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'Linux Mint' to the set of recognized distros in the
+	'AR_GET_DISTRO()' macro.

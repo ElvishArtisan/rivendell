@@ -170,6 +170,24 @@ case "$ar_distro_id" in
        AC_SUBST(RIVENDELL_PAM_FILE,"rivendell-ubuntu.pam")  
      ;;
 
+     linuxmint)
+       AC_MSG_NOTICE([Distro is Debian-ish])
+       DISTRO_FAMILY="|                       Distribution Family ... Debian    |"
+       DISTRO_IS_DEBIANISH=yes
+       DISTRO_NAME="|                         Distribution Name ... Linux Mint|"
+       AC_SUBST(APACHE_PKG,"apache2")
+       AC_SUBST(APACHE_CONFIG_DIR,"/etc/apache2/conf.d")
+       AC_SUBST(USERMODE_PKG,"")
+       AC_SUBST(MYSQL_PKG,"mariadb-client")
+       AC_SUBST(QT_MYSQL_PKG,"libqt5sql5-mysql")
+       AC_SUBST(DOC_PATH,"/usr/share/doc/rivendell")
+       AC_SUBST(HAVE_USERMODE,"no")
+       AC_SUBST(RDALSACONFIG_DESKTOP_FILE,"rivendell-rdalsaconfig-sudo.desktop")
+       AC_SUBST(RDDBCONFIG_DESKTOP_FILE,"rivendell-rddbconfig-sudo.desktop")
+       AC_SUBST(PYPAD_DEPS,"python3 python3-pycurl python3-requests python3-pyserial python3-mysql python3-urllib3")
+       AC_SUBST(RIVENDELL_PAM_FILE,"rivendell-ubuntu.pam")
+     ;;
+
      ubuntu)
        AC_MSG_NOTICE([Distro is Debian-ish])
        DISTRO_FAMILY="|                       Distribution Family ... Debian    |"
