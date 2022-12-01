@@ -133,6 +133,9 @@ RDLibraryModel::RDLibraryModel(QObject *parent)
   d_headers.push_back(tr("Owned By"));          // 20
   d_alignments.push_back(left);
   d_order_columns.push_back("`CART`.`OWNER`");
+
+  connect(rda->ripc(),SIGNAL(notificationReceived(RDNotification *)),
+	  this,SLOT(processNotification(RDNotification *)));
 }
 
 
@@ -417,45 +420,50 @@ QString RDLibraryModel::cartOwnedBy(const QModelIndex &index)
 
 QModelIndex RDLibraryModel::addCart(unsigned cartnum)
 {
-  //
-  // Find the insertion offset
-  //
-  int offset=d_texts.size();
-  for(int i=0;i<d_texts.size();i++) {
-    if(cartnum<d_cart_numbers.at(i)) {
-      offset=i;
-      break;
+  if(d_cart_numbers.contains(cartnum)) {
+    return refreshCart(cartnum);
+  }
+  else {
+    //
+    // Find the insertion offset
+    //
+    int offset=d_texts.size();
+    for(int i=0;i<d_texts.size();i++) {
+      if(cartnum<d_cart_numbers.at(i)) {
+	offset=i;
+	break;
+      }
     }
-  }
   
-  beginInsertRows(QModelIndex(),offset,offset);
-  QList<QVariant> list;
-  for(int i=0;i<columnCount();i++) {
-    list.push_back(QVariant());
-  }
-  QList<QList<QVariant> > list_list;
-  list_list.push_back(list);
-  d_icons.insert(offset,list);
-  d_texts.insert(offset,list);
-  d_notes.insert(offset,QVariant());
-  d_cart_numbers.insert(offset,0);
-  d_cut_texts.insert(offset,list_list);
-  d_cut_cutnames.insert(offset,QStringList());
-  d_background_colors.insert(offset,QVariant());
-  d_cart_types.insert(offset,RDCart::All);
+    beginInsertRows(QModelIndex(),offset,offset);
+    QList<QVariant> list;
+    for(int i=0;i<columnCount();i++) {
+      list.push_back(QVariant());
+    }
+    QList<QList<QVariant> > list_list;
+    list_list.push_back(list);
+    d_icons.insert(offset,list);
+    d_texts.insert(offset,list);
+    d_notes.insert(offset,QVariant());
+    d_cart_numbers.insert(offset,0);
+    d_cut_texts.insert(offset,list_list);
+    d_cut_cutnames.insert(offset,QStringList());
+    d_background_colors.insert(offset,QVariant());
+    d_cart_types.insert(offset,RDCart::All);
 
-  QString sql=sqlFields()+
-    "where "+
-    QString::asprintf("`CART`.`NUMBER`=%u",cartnum);
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  if(q->first()) {
-    updateRow(offset,q);
-  }
-  delete q;
-  endInsertRows();
-  emit rowCountChanged(d_texts.size());
+    QString sql=sqlFields()+
+      "where "+
+      QString::asprintf("`CART`.`NUMBER`=%u",cartnum);
+    RDSqlQuery *q=new RDSqlQuery(sql);
+    if(q->first()) {
+      updateRow(offset,q);
+    }
+    delete q;
+    endInsertRows();
+    emit rowCountChanged(d_texts.size());
 
-  return createIndex(offset,0,(quintptr)0);
+    return createIndex(offset,0,(quintptr)0);
+  }
 }
 
 
@@ -509,7 +517,7 @@ void RDLibraryModel::refreshRow(const QModelIndex &index)
 }
 
 
-void RDLibraryModel::refreshCart(unsigned cartnum)
+QModelIndex RDLibraryModel::refreshCart(unsigned cartnum)
 {
   QString cartnum_str=QString::asprintf("%06u",cartnum);
   for(int i=0;i<d_texts.size();i++) {
@@ -517,8 +525,10 @@ void RDLibraryModel::refreshCart(unsigned cartnum)
       updateCartLine(i);
       emit dataChanged(createIndex(i,0,(quintptr)0),
 		       createIndex(i,columnCount(),(quintptr)0));
+      return createIndex(i,0);
     }
   }
+  return QModelIndex();
 }
 
 
@@ -558,6 +568,43 @@ void RDLibraryModel::setFilterSql(const QString &sql,int cart_limit)
   d_filter_set=true;
 
   updateModel(fsql);
+}
+
+
+void RDLibraryModel::processNotification(RDNotification *notify)
+{
+  QString sql;
+  RDSqlQuery *q=NULL;
+
+  if(notify->type()==RDNotification::CartType) {
+    switch(notify->action()) {
+    case RDNotification::AddAction:
+      sql=QString("select ")+
+	"`NUMBER` "+  // 00
+	"from `CART` "+
+	d_filter_sql+
+	QString::asprintf(" && `CART`.`NUMBER`=%u",notify->id().toUInt());
+      q=new RDSqlQuery(sql);
+      if(q->first()) {
+	addCart(notify->id().toUInt());
+      }
+      delete q;
+      break;
+
+    case RDNotification::ModifyAction:
+      refreshCart(notify->id().toUInt());
+      break;
+
+    case RDNotification::DeleteAction:
+      removeCart(notify->id().toUInt());
+      break;
+
+    case RDNotification::NoAction:
+    case RDNotification::LastAction:
+      break;
+
+    }
+  }
 }
 
 

@@ -64,7 +64,7 @@ class RDLibraryModel : public QAbstractItemModel
   void removeCart(const QModelIndex &index);
   void removeCart(unsigned cartnum);
   void refreshRow(const QModelIndex &index);
-  void refreshCart(unsigned cartnum);
+  QModelIndex refreshCart(unsigned cartnum);
   bool showNotes() const;
   int cartLimit() const;
 
@@ -74,6 +74,9 @@ class RDLibraryModel : public QAbstractItemModel
  public slots:
   void setShowNotes(int state);
   void setFilterSql(const QString &sql,int cart_limit);
+
+ private slots:
+  void processNotification(RDNotification *notify);
 
  protected:
   void updateModel(const QString &filter_sql);

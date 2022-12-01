@@ -23735,3 +23735,5 @@
 2022-12-01 Fred Gleason <fredg@paravelsystems.com>
 	* Modifed the 'Edit Audio' dialog in rdlibrary(1) so the waveform
 	display is initially fully scrolled to the left.
+2022-12-01 Fred Gleason <fredg@paravelsystems.com>
+	* Added notification support to the 'RDLibraryModel' class.
