@@ -69,6 +69,9 @@ RDLogListModel::RDLogListModel(QObject *parent)
 
   d_headers.push_back(tr("Last Modified"));
   d_alignments.push_back(left);
+
+  connect(rda->ripc(),SIGNAL(notificationReceived(RDNotification *)),
+	  this,SLOT(processNotification(RDNotification *)));
 }
 
 
@@ -163,18 +166,42 @@ QString RDLogListModel::logName(const QModelIndex &row) const
 
 QModelIndex RDLogListModel::addLog(const QString &name)
 {
-  QList<QVariant> list;
+  QModelIndex ret;
 
-  beginInsertRows(QModelIndex(),d_texts.size(),d_texts.size());
-  d_icons.push_back(list);
+  //
+  // Ensure we haven't already been added
+  //
+  for(int i=0;i<d_texts.size();i++) {
+    if(d_texts.at(i).at(0)==name) {
+      return ret;
+    }
+  }
 
-  list.push_back(name);
-  d_texts.push_back(list);
+  //
+  // Make sure we match the current filter
+  //
+  QString sql=QString("select ")+
+    "`NAME` "+  // 00
+    "from `LOGS` where "+
+    "`NAME`='"+RDEscapeString(name)+"' "+
+    d_filter_sql;
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    QList<QVariant> list;
 
-  updateRowLine(d_texts.size()-1);
-  endInsertRows();
+    beginInsertRows(QModelIndex(),d_texts.size(),d_texts.size());
+    d_icons.push_back(list);
 
-  return createIndex(d_texts.size()-1,0);
+    list.push_back(name);
+    d_texts.push_back(list);
+
+    updateRowLine(d_texts.size()-1);
+    endInsertRows();
+    ret=createIndex(d_texts.size()-1,0);
+  }
+  delete q;
+
+  return ret;
 }
 
 
@@ -230,12 +257,34 @@ void RDLogListModel::refresh(const QString &logname)
 
 void RDLogListModel::setFilterSql(const QString &sql)
 {
-  updateModel(sql);
+  if(d_filter_sql!=sql) {
+    updateModel(sql);
+    d_filter_sql=sql;
+  }
 }
 
 
 void RDLogListModel::processNotification(RDNotification *notify)
 {
+  if(notify->type()==RDNotification::LogType) {
+    switch(notify->action()) {
+    case RDNotification::AddAction:
+      addLog(notify->id().toString());
+      break;
+
+    case RDNotification::ModifyAction:
+      refresh(notify->id().toString());
+      break;
+
+    case RDNotification::DeleteAction:
+      removeLog(notify->id().toString());
+      break;
+
+    case RDNotification::NoAction:
+    case RDNotification::LastAction:
+      break;
+    }
+  }
 }
 
 

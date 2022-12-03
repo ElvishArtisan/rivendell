@@ -53,6 +53,8 @@ class RDLogListModel : public QAbstractTableModel
 
  public slots:
   void setFilterSql(const QString &sql);
+
+ private slots:
   void processNotification(RDNotification *notify);
 
  protected:
@@ -69,6 +71,7 @@ class RDLogListModel : public QAbstractTableModel
   QList<QList<QVariant> > d_texts;
   QList<QList<QVariant> > d_icons;
   QList<QVariant> d_alignments;
+  QString d_filter_sql;
 };
 
 

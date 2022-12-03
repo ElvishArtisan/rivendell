@@ -208,7 +208,6 @@ QSizePolicy MainWidget::sizePolicy() const
 
 void MainWidget::loadLocalSettings(RDProfile *p)
 {
-  printf("RDLogEdit loadLocalSettings()\n");
   global_start_time_style=
     p->intValue("rdlogedit","StartTimeStyle",(int)RDLogModel::Estimated);
 }
@@ -216,7 +215,6 @@ void MainWidget::loadLocalSettings(RDProfile *p)
 
 void MainWidget::saveLocalSettings(FILE *f) const
 {
-  printf("RDLogEdit saveLocalSettings()\n");
   fprintf(f,"StartTimeStyle=%d\n",global_start_time_style);
 }
 
@@ -287,7 +285,6 @@ void MainWidget::addData()
     LockList();
     SendNotification(RDNotification::AddAction,logname);
     log_edit_dialog->exec(logname,&newlogs);
-    row=log_log_model->addLog(logname);
     log_log_view->selectRow(row.row());
     UnlockList();
   }
