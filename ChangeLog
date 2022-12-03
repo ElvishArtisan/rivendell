@@ -23740,3 +23740,5 @@
 2022-12-02 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed bugs in the notification subsystem that cause multiple
 	entries to appear in log listings when a new log was created.
+2022-12-02 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.0.0rc0int4.
