@@ -2,7 +2,7 @@
 //
 // Render a Rivendell log to a single audio object.
 //
-//   (C) Copyright 2017-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -539,7 +539,9 @@ bool RDRenderer::Render(const QString &outfile,RDLogModel *model,RDSettings *s,
 	sf_writef_float(sf_out,pcm,frames);
 	delete pcm;
 	pcm=NULL;
-	lls.at(i)->setRamp(lls.at(i+1)->transType(),lls.at(i)->segueGain());
+	if(lls.at(i)->source()!=RDLogLine::Tracker) { // Don't fade voicetracks
+	  lls.at(i)->setRamp(lls.at(i+1)->transType(),lls.at(i)->segueGain());
+	}
       }
       else {
 	if(i<(lls.size()-1)) {

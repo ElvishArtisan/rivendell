@@ -23742,3 +23742,6 @@
 	entries to appear in log listings when a new log was created.
 2022-12-03 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.0.0rc0int4.
+2022-12-05 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the log rendering code that caused voicetracks to
+	be faded during the trailing transition.
