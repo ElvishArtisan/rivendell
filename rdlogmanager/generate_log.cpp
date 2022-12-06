@@ -76,6 +76,7 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
     services_list.append( q->value(0).toString() );
   }
   delete q;
+  gen_service_box->insertItem(0,tr("[select service]"));
   for ( QStringList::Iterator it = services_list.begin(); 
         it != services_list.end();
         ++it ) {
@@ -198,21 +199,18 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   connect(timer,SIGNAL(timeout()),this,SLOT(fileScanData()));
   timer->start(GENERATE_LOG_FILESCAN_INTERVAL);
  
-  if(cmdswitch==1 && cmdservicefit)
-    {
+  if(cmdswitch==1 && cmdservicefit) {
     gen_service_box->setCurrentText(*cmdservice);
     createData();
-    }
-  if(cmdswitch==2 && cmdservicefit)
-    {
+  }
+  if(cmdswitch==2 && cmdservicefit) {
     gen_service_box->setCurrentText(*cmdservice);
     musicData();
-    }
-  if(cmdswitch==3 && cmdservicefit)
-    {
+  }
+  if(cmdswitch==3 && cmdservicefit) {
     gen_service_box->setCurrentText(*cmdservice);
     trafficData();
-    }
+  }
 }
 
 
@@ -502,54 +500,56 @@ void GenerateLog::trafficData()
 
 void GenerateLog::fileScanData()
 {
-  RDSvc *svc=
-    new RDSvc(gen_service_box->currentText(),rda->station(),rda->config(),this);
-  QString logname=RDDateDecode(svc->nameTemplate(),gen_date_edit->date(),
-			       rda->station(),rda->config(),svc->name());
-  RDLog *log=new RDLog(logname);
-  if(gen_music_enabled) {
-    if(QFile::exists(svc->
-		     importFilename(RDSvc::Music,gen_date_edit->date()))) {
-      gen_music_button->
-	setEnabled(log->includeImportMarkers(RDLog::SourceMusic)||
-		   (log->linkState(RDLog::SourceMusic)==RDLog::LinkMissing));
-      gen_mus_avail_label->
-	setPixmap(rda->iconEngine()->listIcon(RDIconEngine::GreenBall));
+  if(gen_service_box->currentIndex()>0) {
+    RDSvc *svc=new RDSvc(gen_service_box->currentText(),rda->station(),
+			 rda->config(),this);
+    QString logname=RDDateDecode(svc->nameTemplate(),gen_date_edit->date(),
+				 rda->station(),rda->config(),svc->name());
+    RDLog *log=new RDLog(logname);
+    if(gen_music_enabled) {
+      if(QFile::exists(svc->
+		       importFilename(RDSvc::Music,gen_date_edit->date()))) {
+	gen_music_button->
+	  setEnabled(log->includeImportMarkers(RDLog::SourceMusic)||
+		     (log->linkState(RDLog::SourceMusic)==RDLog::LinkMissing));
+	gen_mus_avail_label->
+	  setPixmap(rda->iconEngine()->listIcon(RDIconEngine::GreenBall));
+      }
+      else {
+	gen_music_button->setDisabled(true);
+	gen_mus_avail_label->
+	  setPixmap(rda->iconEngine()->listIcon(RDIconEngine::RedBall));
+      }
     }
     else {
-      gen_music_button->setDisabled(true);
       gen_mus_avail_label->
-	setPixmap(rda->iconEngine()->listIcon(RDIconEngine::RedBall));
+	setPixmap(rda->iconEngine()->listIcon(RDIconEngine::WhiteBall));
     }
-  }
-  else {
-    gen_mus_avail_label->
-      setPixmap(rda->iconEngine()->listIcon(RDIconEngine::WhiteBall));
-  }
-  if(gen_traffic_enabled) {
-    if(QFile::exists(svc->
-		     importFilename(RDSvc::Traffic,gen_date_edit->date()))) {
-      gen_traffic_button->
-	setEnabled(((!gen_music_enabled)||
-		    (log->linkState(RDLog::SourceMusic)==RDLog::LinkDone))&&
-		   (log->includeImportMarkers(RDLog::SourceTraffic)||
-		    (log->linkState(RDLog::SourceTraffic)==
-		     RDLog::LinkMissing)));
-      gen_tfc_avail_label->
-	setPixmap(rda->iconEngine()->listIcon(RDIconEngine::GreenBall));
+    if(gen_traffic_enabled) {
+      if(QFile::exists(svc->
+		       importFilename(RDSvc::Traffic,gen_date_edit->date()))) {
+	gen_traffic_button->
+	  setEnabled(((!gen_music_enabled)||
+		      (log->linkState(RDLog::SourceMusic)==RDLog::LinkDone))&&
+		     (log->includeImportMarkers(RDLog::SourceTraffic)||
+		      (log->linkState(RDLog::SourceTraffic)==
+		       RDLog::LinkMissing)));
+	gen_tfc_avail_label->
+	  setPixmap(rda->iconEngine()->listIcon(RDIconEngine::GreenBall));
+      }
+      else {
+	gen_traffic_button->setDisabled(true);
+	gen_tfc_avail_label->
+	  setPixmap(rda->iconEngine()->listIcon(RDIconEngine::RedBall));
+      }
     }
     else {
-      gen_traffic_button->setDisabled(true);
       gen_tfc_avail_label->
-	setPixmap(rda->iconEngine()->listIcon(RDIconEngine::RedBall));
+	setPixmap(rda->iconEngine()->listIcon(RDIconEngine::WhiteBall));
     }
+    delete log;
+    delete svc;
   }
-  else {
-    gen_tfc_avail_label->
-      setPixmap(rda->iconEngine()->listIcon(RDIconEngine::WhiteBall));
-  }
-  delete log;
-  delete svc;
 }
 
 
@@ -583,60 +583,77 @@ void GenerateLog::resizeEvent(QResizeEvent *e)
 
 void GenerateLog::UpdateControls()
 {
-  RDSvc *svc=
-    new RDSvc(gen_service_box->currentText(),rda->station(),rda->config(),this);
-  QString logname=RDDateDecode(svc->nameTemplate(),gen_date_edit->date(),
-			       rda->station(),rda->config(),svc->name());
-  RDLog *log=new RDLog(logname);
-  if(log->exists()) {
-    if(log->linkQuantity(RDLog::SourceMusic)>0) {
-      gen_music_enabled=true;
-      if(log->linkState(RDLog::SourceMusic)==RDLog::LinkDone) {
-	gen_mus_merged_label->
-	  setPixmap(rda->iconEngine()->listIcon(RDIconEngine::GreenBall));
+  gen_date_label->setDisabled(gen_service_box->currentIndex()==0);
+  gen_date_edit->setDisabled(gen_service_box->currentIndex()==0);
+  gen_select_button->setDisabled(gen_service_box->currentIndex()==0);
+  gen_create_button->setDisabled(gen_service_box->currentIndex()==0);
+  gen_import_label->setDisabled(gen_service_box->currentIndex()==0);
+  gen_available_label->setDisabled(gen_service_box->currentIndex()==0);
+  gen_merged_label->setDisabled(gen_service_box->currentIndex()==0);
+  gen_mus_avail_label->setDisabled(gen_service_box->currentIndex()==0);
+  gen_mus_merged_label->setDisabled(gen_service_box->currentIndex()==0);
+  gen_tfc_avail_label->setDisabled(gen_service_box->currentIndex()==0);
+  gen_tfc_merged_label->setDisabled(gen_service_box->currentIndex()==0);
+  if(gen_service_box->currentIndex()==0) {
+    gen_music_button->setDisabled(true);
+    gen_traffic_button->setDisabled(true);
+  }
+  else {
+    RDSvc *svc=new RDSvc(gen_service_box->currentText(),rda->station(),
+			 rda->config(),this);
+    QString logname=RDDateDecode(svc->nameTemplate(),gen_date_edit->date(),
+				 rda->station(),rda->config(),svc->name());
+    RDLog *log=new RDLog(logname);
+    if(log->exists()) {
+      if(log->linkQuantity(RDLog::SourceMusic)>0) {
+	gen_music_enabled=true;
+	if(log->linkState(RDLog::SourceMusic)==RDLog::LinkDone) {
+	  gen_mus_merged_label->
+	    setPixmap(rda->iconEngine()->listIcon(RDIconEngine::GreenBall));
+	}
+	else {
+	  gen_mus_merged_label->
+	    setPixmap(rda->iconEngine()->listIcon(RDIconEngine::RedBall));
+	}
       }
       else {
+	gen_music_enabled=false;
+	gen_music_button->setDisabled(true);
 	gen_mus_merged_label->
-	  setPixmap(rda->iconEngine()->listIcon(RDIconEngine::RedBall));
+	  setPixmap(rda->iconEngine()->listIcon(RDIconEngine::WhiteBall));
+      }
+      if(log->linkQuantity(RDLog::SourceTraffic)>0) {
+	gen_traffic_enabled=true;
+	if(log->linkState(RDLog::SourceTraffic)==RDLog::LinkDone) {
+	  gen_tfc_merged_label->
+	    setPixmap(rda->iconEngine()->listIcon(RDIconEngine::GreenBall));
+	}
+	else {
+	  gen_tfc_merged_label->
+	    setPixmap(rda->iconEngine()->listIcon(RDIconEngine::RedBall));
+	}
+      }
+      else {
+	gen_traffic_enabled=false;
+	gen_traffic_button->setDisabled(true);
+	gen_tfc_merged_label->
+	  setPixmap(rda->iconEngine()->listIcon(RDIconEngine::WhiteBall));
       }
     }
     else {
-      gen_music_enabled=false;
       gen_music_button->setDisabled(true);
       gen_mus_merged_label->
 	setPixmap(rda->iconEngine()->listIcon(RDIconEngine::WhiteBall));
-    }
-    if(log->linkQuantity(RDLog::SourceTraffic)>0) {
-      gen_traffic_enabled=true;
-      if(log->linkState(RDLog::SourceTraffic)==RDLog::LinkDone) {
-	gen_tfc_merged_label->
-	  setPixmap(rda->iconEngine()->listIcon(RDIconEngine::GreenBall));
-      }
-      else {
-	gen_tfc_merged_label->
-	  setPixmap(rda->iconEngine()->listIcon(RDIconEngine::RedBall));
-      }
-    }
-    else {
-      gen_traffic_enabled=false;
       gen_traffic_button->setDisabled(true);
       gen_tfc_merged_label->
 	setPixmap(rda->iconEngine()->listIcon(RDIconEngine::WhiteBall));
+      gen_music_enabled=false;
+      gen_traffic_enabled=false;
     }
+    delete log;
+    delete svc;
+    fileScanData();
   }
-  else {
-    gen_music_button->setDisabled(true);
-    gen_mus_merged_label->
-      setPixmap(rda->iconEngine()->listIcon(RDIconEngine::WhiteBall));
-    gen_traffic_button->setDisabled(true);
-    gen_tfc_merged_label->
-      setPixmap(rda->iconEngine()->listIcon(RDIconEngine::WhiteBall));
-    gen_music_enabled=false;
-    gen_traffic_enabled=false;
-  }
-  delete log;
-  delete svc;
-  fileScanData();
 }
 
 

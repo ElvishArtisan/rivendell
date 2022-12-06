@@ -23753,3 +23753,6 @@
 2022-12-06 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'RDCutDialog' that caused item selections to fail
 	to be cleared when calling 'exec()' to start a new session.
+2022-12-06 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the 'Generate Log' dialog in rdlogmanager(1) to require the
+	target service to be selected explicitly.
