@@ -209,6 +209,7 @@ class RDLogLine
   void setExtCartName(const QString &name);
   QString extData() const;
   void setExtData(const QString &data);
+  QString linkSummaryText() const;
   QString extEventId() const;
   void setExtEventId(const QString &id);
   QString extAnncType() const;

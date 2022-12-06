@@ -1393,6 +1393,14 @@ void RDLogLine::setExtData(const QString &data)
 }
 
 
+QString RDLogLine::linkSummaryText() const
+{
+  return QObject::tr("Name")+": "+linkEventName()+", "+
+    QObject::tr("Start")+": "+linkStartTime().toString("hh:mm:ss")+", "+
+    QObject::tr("Len")+": "+RDGetTimeLength(linkLength(),false,false);
+}
+
+
 QString RDLogLine::extEventId() const
 {
   return log_ext_event_id;

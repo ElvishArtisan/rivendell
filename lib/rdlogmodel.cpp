@@ -1135,7 +1135,7 @@ int RDLogModel::LoadLines(const QString &logname,int id_offset,bool track_ptrs)
     "`CART`.`PUBLISHER`,"+               // 44
     "`CART`.`COMPOSER`,"+                // 45
     "`CART`.`USAGE_CODE`,"+              // 46
-    "`CART`.`AVERAGE_SEGUE_LENGTH`,"+    // 47
+    "`CART`.`AVERAGE_SEGUE_LENGTH`,"+    // 47 
     "`LOG_LINES`.`LINK_EVENT_NAME`,"+    // 48
     "`LOG_LINES`.`LINK_START_TIME`,"+    // 49
     "`LOG_LINES`.`LINK_LENGTH`,"+        // 50
@@ -1635,7 +1635,22 @@ QString RDLogModel::cellText(int col,int line,RDLogLine *ll) const
     return RDLogLine::sourceText(ll->source());
 
   case 11:  // Ext Data
-    return ll->extData();
+    switch(ll->type()) {
+    case RDLogLine::MusicLink:
+    case RDLogLine::TrafficLink:
+      return ll->linkSummaryText();
+
+    case RDLogLine::Cart:
+    case RDLogLine::Marker:
+    case RDLogLine::Macro:
+    case RDLogLine::OpenBracket:
+    case RDLogLine::CloseBracket:
+    case RDLogLine::Chain:
+    case RDLogLine::Track:
+    case RDLogLine::UnknownType:
+      return ll->extData();
+    }
+    break;
 
   case 12:  // Line ID
     return QString::asprintf("%d",ll->id());
