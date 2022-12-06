@@ -178,7 +178,10 @@ int RDCutDialog::exec(QString *cutname)
   cart_cutname=cutname;
   cart_ok_button->setEnabled(false);
 
-  if(cart_cutname!=NULL) {
+  if((cart_cutname==NULL)||(cart_cutname->isEmpty())) {
+    cart_cart_view->selectionModel()->clearSelection();
+  }
+  else {
     QModelIndex index=cart_cart_model->cartRow(RDCut::cartNumber(*cutname));
     if(index.isValid()) {
       cart_cart_view->setExpanded(index,true);

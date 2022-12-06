@@ -23750,3 +23750,6 @@
 	feed items to be listed twice in the 'Podcast Item List' dialog.
 	* Fixed a bug in 'RDPodcastListModel' that broke item delete
 	notifications.
+2022-12-06 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'RDCutDialog' that caused item selections to fail
+	to be cleared when calling 'exec()' to start a new session.
