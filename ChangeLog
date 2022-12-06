@@ -23745,3 +23745,8 @@
 2022-12-05 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the log rendering code that caused voicetracks to
 	be faded during the trailing transition.
+2022-12-06 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdcastmanager(1) that caused newly added
+	feed items to be listed twice in the 'Podcast Item List' dialog.
+	* Fixed a bug in 'RDPodcastListModel' that broke item delete
+	notifications.

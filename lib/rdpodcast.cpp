@@ -48,19 +48,22 @@ int __RDPodcast_Debug_Callback(CURL *handle,curl_infotype type,char *data,
 RDPodcast::RDPodcast(RDConfig *config,unsigned id)
 {
   podcast_config=config;
+  podcast_feed_id=0;
 
   RDSqlQuery *q;
   QString sql;
 
   podcast_id=id;
   sql=QString("select ")+
-    "`FEEDS`.KEY_NAME "+
+    "`FEEDS`.`ID`,"+      // 00
+    "`FEEDS`.KEY_NAME "+  // 01
     "from `PODCASTS` left join `FEEDS` "+
     "on (`PODCASTS`.`FEED_ID`=`FEEDS`.`ID`) "+
     QString::asprintf("where `PODCASTS`.`ID`=%u",id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
-    podcast_keyname=q->value(0).toString();
+    podcast_feed_id=q->value(0).toUInt();
+    podcast_keyname=q->value(1).toString();
   }
   delete q;
 }
@@ -86,8 +89,7 @@ bool RDPodcast::exists() const
 
 unsigned RDPodcast::feedId() const
 {
-  return RDGetSqlValue("PODCASTS","ID",podcast_id,"FEED_ID").
-    toUInt();
+  return podcast_feed_id;
 }
 
 

@@ -185,18 +185,23 @@ unsigned RDPodcastListModel::castId(const QModelIndex &row) const
 
 QModelIndex RDPodcastListModel::addCast(unsigned cast_id)
 {
-  beginInsertRows(QModelIndex(),0,0);
-  QList<QVariant> list;
-  for(int i=0;i<columnCount();i++) {
-    list.push_back(QVariant());
-  }
-  d_cast_ids.insert(0,cast_id);
-  d_texts.insert(0,list);
-  d_icons.insert(0,list);
-  updateRowLine(0);
-  endInsertRows();
+  QModelIndex ret;
 
-  return createIndex(0,0);
+  if(!d_cast_ids.contains(cast_id)) {
+    beginInsertRows(QModelIndex(),0,0);
+    QList<QVariant> list;
+    for(int i=0;i<columnCount();i++) {
+      list.push_back(QVariant());
+    }
+    d_cast_ids.insert(0,cast_id);
+    d_texts.insert(0,list);
+    d_icons.insert(0,list);
+    updateRowLine(0);
+    endInsertRows();
+    ret=createIndex(0,0);
+  }
+
+  return ret;
 }
 
 
@@ -268,25 +273,22 @@ void RDPodcastListModel::processNotification(RDNotification *notify)
   if(notify->type()==RDNotification::FeedItemType) {
     cast_id=notify->id().toUInt();
     cast=new RDPodcast(rda->config(),cast_id);
-    if(cast->feedId()==d_feed_id) {
-      switch(notify->action()) {
-      case RDNotification::AddAction:
-	addCast(cast_id);
-	break;
+    switch(notify->action()) {
+    case RDNotification::AddAction:
+      addCast(cast_id);
+      break;
 
-      case RDNotification::DeleteAction:
-	removeCast(cast_id);
-	break;
+    case RDNotification::DeleteAction:
+      removeCast(cast_id);
+      break;
 
-      case RDNotification::ModifyAction:
-	refresh(cast_id);
-	break;
+    case RDNotification::ModifyAction:
+      refresh(cast_id);
+      break;
 
-      case RDNotification::LastAction:
-      case RDNotification::NoAction:
-	break;
-	
-      }
+    case RDNotification::LastAction:
+    case RDNotification::NoAction:
+      break;
     }
     delete cast;
   }

@@ -92,6 +92,7 @@ class RDPodcast
   void SetRow(const QString &param,const QDateTime &datetime,
 	      const QString &value) const;
   QString podcast_keyname;
+  unsigned podcast_feed_id;
   unsigned podcast_id;
   RDConfig *podcast_config;
 };
