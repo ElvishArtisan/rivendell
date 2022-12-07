@@ -23767,3 +23767,6 @@
 2022-12-07 Fred Gleason <fredg@paravelsystems.com>
 	* Extended the 'LogSearchStrings=' directive in rd.conf(5) to
 	include searches for logs.
+2022-12-07 Fred Gleason <fredg@paravelsystems.com>
+	* Extended the 'LogSearchStrings=' directive in rd.conf(5) to
+	include searches for podcast items.

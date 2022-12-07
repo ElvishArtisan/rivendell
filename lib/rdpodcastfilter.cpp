@@ -2,7 +2,7 @@
 //
 // Filter widget for podcasts.
 //
-//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -112,6 +112,12 @@ QString RDPodcastFilter::searchString(const QString &filter,bool active_only)
 
 void RDPodcastFilter::filterChangedData(const QString &str)
 {
+  if(rda->config()->logSearchStrings()) {
+    rda->syslog(rda->config()->logSearchStringsLevel(),
+		"searching podcast items by string: \"%s\" [%s]",
+		d_filter_edit->text().toUtf8().constData(),
+		RDConfig::hexify(d_filter_edit->text()).toUtf8().constData());
+  }
   emit filterChanged(filterSql());
 }
 
