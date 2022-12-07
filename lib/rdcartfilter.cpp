@@ -740,6 +740,12 @@ void RDCartFilter::UpdateModel()
   if((filterSql()!=d_model_filter_sql)||(cartLimit()!=d_model_cart_limit)) {
     d_model_filter_sql=filterSql();
     d_model_cart_limit=cartLimit();
+    if(rda->config()->logSearchStrings()) {
+      rda->syslog(rda->config()->logSearchStringsLevel(),
+		  "searching cart library by string: \"%s\" [%s]",
+		  d_filter_edit->text().toUtf8().constData(),
+		  RDConfig::hexify(d_filter_edit->text()).toUtf8().constData());
+    }
     emit filterChanged(d_model_filter_sql,d_model_cart_limit);
   }
 }

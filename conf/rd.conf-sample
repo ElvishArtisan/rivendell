@@ -207,3 +207,11 @@ TranscodingDelay=0
 ; Suppress meter update messages on the notification multicast channel.
 ;
 ;SuppressRdcatchMeterUpdates=No
+
+[Debugging]
+; Log all filter search strings to the syslog, at the specified priority level.
+; See the 'level' parameter in the syslog(3) man page for the set of available
+; priority levels. An empty argument disables logging. 
+;
+; LogSearchStrings=LOG_DEBUG
+LogSearchStrings=

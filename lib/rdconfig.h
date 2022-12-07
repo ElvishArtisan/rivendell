@@ -105,6 +105,8 @@ class RDConfig
   int meterPortRange() const;
   QString saveWebgetFilesDirectory() const;
   bool suppressRdcatchMeterUpdates() const;
+  bool logSearchStrings() const;
+  int logSearchStringsLevel() const;
   bool enableMixerLogging() const;
   uid_t uid() const;
   gid_t gid() const;
@@ -126,8 +128,11 @@ class RDConfig
   void clear();
   static QString createTablePostfix(const QString &engine);
   static QString rdselectExitCodeText(RDSelectExitCode code);
+  static QString hexify(const QByteArray &data);
+  static QString hexify(const QString &str);
 
  private:
+  int SyslogPriorityLevel(const QString &str,bool *ok) const;
   QString conf_filename;
   QString conf_module_name;
   QString conf_mysql_hostname;
@@ -175,6 +180,8 @@ class RDConfig
   int conf_font_default_size;
   QString conf_http_user_agent;
   bool conf_disable_maint_checks;
+  bool conf_log_search_strings;
+  int conf_log_search_strings_level;
   bool conf_lock_rdairplay_memory;
   QString conf_save_webget_files_directory;
   bool conf_suppress_rdcatch_meter_updates;

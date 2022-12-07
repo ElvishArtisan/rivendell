@@ -23761,3 +23761,6 @@
 	fail to appear in the 'Ext Data' column of the 'Edit Log' dialog.
 2022-12-06 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.0.0rc0int5.
+2022-12-07 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'LogSearchStrings=' directive to the '[Debugging]'
+	section of rd.conf(5).

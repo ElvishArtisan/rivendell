@@ -399,6 +399,18 @@ bool RDConfig::suppressRdcatchMeterUpdates() const
 }
 
 
+bool RDConfig::logSearchStrings() const
+{
+  return conf_log_search_strings;
+}
+
+
+int RDConfig::logSearchStringsLevel() const
+{
+  return conf_log_search_strings_level;
+}
+
+
 int RDConfig::meterBasePort() const
 {
   return conf_meter_base_port;
@@ -625,6 +637,9 @@ bool RDConfig::load()
     profile->boolValue("Hacks","DisableMaintChecks",false);
   conf_suppress_rdcatch_meter_updates=
     profile->boolValue("Hacks","SuppressRdcatchMeterUpdates",false);
+  conf_log_search_strings_level=
+    SyslogPriorityLevel(profile->stringValue("Debugging","LogSearchStrings",""),
+			&conf_log_search_strings);
   conf_meter_base_port=
     profile->intValue("Hacks","MeterPortBaseNumber",RD_DEFAULT_METER_SOCKET_BASE_UDP_PORT);
   conf_meter_port_range=
@@ -754,6 +769,8 @@ void RDConfig::clear()
   conf_disable_maint_checks=false;
   conf_save_webget_files_directory="";
   conf_suppress_rdcatch_meter_updates=false;
+  conf_log_search_strings=false;
+  conf_log_search_strings_level=LOG_DEBUG;
   conf_lock_rdairplay_memory=false;
   conf_meter_base_port=RD_DEFAULT_METER_SOCKET_BASE_UDP_PORT;
   conf_meter_port_range=RD_METER_SOCKET_PORT_RANGE;
@@ -850,6 +867,49 @@ QString RDConfig::rdselectExitCodeText(RDSelectExitCode code)
 
   case RDConfig::RDSelectLast:
     break;
+  }
+
+  return ret;
+}
+
+
+QString RDConfig::hexify(const QByteArray &data)
+{
+  QString ret;
+
+  for(int i=0;i<data.length();i++) {
+    ret+=QString::asprintf("%02X ",0xff&data.at(i));
+  }
+
+  return ret.trimmed();
+}
+
+
+QString RDConfig::hexify(const QString &str)
+{
+  return RDConfig::hexify(str.toUtf8());
+}
+
+
+int RDConfig::SyslogPriorityLevel(const QString &str,bool *ok) const
+{
+  QMap<QString,int> levels;
+
+  levels["LOG_EMERG"]=LOG_EMERG;
+  levels["LOG_ALERT"]=LOG_ALERT;
+  levels["LOG_CRIT"]=LOG_CRIT;
+  levels["LOG_ERR"]=LOG_ERR;
+  levels["LOG_WARNING"]=LOG_WARNING;
+  levels["LOG_NOTICE"]=LOG_NOTICE;
+  levels["LOG_INFO"]=LOG_INFO;
+  levels["LOG_DEBUG"]=LOG_DEBUG;
+  int ret=levels.value(str.trimmed().toUpper(),-1);
+  if(ret<0) {
+    ret=LOG_DEBUG;
+    *ok=false;
+  }
+  else {
+    *ok=true;
   }
 
   return ret;
