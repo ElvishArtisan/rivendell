@@ -623,6 +623,11 @@ bool RDLogPlay::refresh()
   int running;
   int first_non_holdover = 0;
 
+  if(rda->config()->logLogRefresh()) {
+    rda->syslog(rda->config()->logLogRefreshLevel(),"log refresh begins...");
+    DumpToSyslog(rda->config()->logLogRefreshLevel(),"before refresh:");
+  }
+
   if(play_macro_running) {
     play_refresh_pending=true;
     return true;
@@ -767,6 +772,11 @@ bool RDLogPlay::refresh()
   }
 
   emit refreshStatusChanged(false);
+
+  if(rda->config()->logLogRefresh()) {
+    DumpToSyslog(rda->config()->logLogRefreshLevel(),"after refresh:");
+    rda->syslog(rda->config()->logLogRefreshLevel(),"...log refresh ends");
+  }
 
   return true;
 }
@@ -3384,4 +3394,44 @@ void RDLogPlay::LogTraffic(RDLogLine *logline,RDLogLine::PlaySource src,
     "`OUTCUE`='"+RDEscapeString(logline->outcue())+"',"+
     "`ISCI`='"+RDEscapeString(logline->isci())+"'";
   RDSqlQuery::apply(sql);
+}
+
+
+void RDLogPlay::DumpToSyslog(int prio_lvl,const QString &hdr) const
+{
+  QString str;
+
+  for(int i=0;i<lineCount();i++) {
+    RDLogLine *ll=logLine(i);
+    str+=QString::asprintf("count: %d: ",i);
+    str+="type: "+RDLogLine::typeText(ll->type())+" ";
+    switch(ll->type()) {
+    case RDLogLine::Cart:
+    case RDLogLine::Macro:
+      str+=QString::asprintf("cartnum: %06u ",ll->cartNumber());
+      str+="title: "+ll->title()+" ";
+      break;
+
+    case RDLogLine::Marker:
+    case RDLogLine::Track:
+    case RDLogLine::Chain:
+      str+="comment: "+ll->markerComment()+" ";
+      break;
+
+    case RDLogLine::MusicLink:
+    case RDLogLine::TrafficLink:
+      str+="event: "+ll->linkEventName()+" ";
+      str+="start time: "+ll->linkStartTime().toString("hh:mm:ss")+" ";
+      str+="length: "+RDGetTimeLength(ll->linkLength(),false,false)+" ";
+      break;
+
+    case RDLogLine::OpenBracket:
+    case RDLogLine::CloseBracket:
+    case RDLogLine::UnknownType:
+      break;
+    }
+    str+="\n";
+  }
+  rda->syslog(prio_lvl,"%s\n%s",hdr.toUtf8().constData(),
+	      str.toUtf8().constData());
 }

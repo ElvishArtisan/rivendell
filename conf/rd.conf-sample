@@ -209,9 +209,20 @@ TranscodingDelay=0
 ;SuppressRdcatchMeterUpdates=No
 
 [Debugging]
+; IMPORTANT NOTE:
+; The directives in this section can send large amounts of data to the
+; syslog. These directives should be enabled for debugging purposes only! 
+
 ; Log all filter search strings to the syslog, at the specified priority level.
 ; See the 'level' parameter in the syslog(3) man page for the set of available
 ; priority levels. An empty argument disables logging. 
 ;
 ; LogSearchStrings=LOG_DEBUG
 LogSearchStrings=
+
+; Send detailed debugging information to the syslog whenever a log refresh
+; is performed in rdairplay(1) or rdvairplayd(8).
+; See the 'level' parameter in the syslog(3) man page for the set of available
+; priority levels. An empty argument disables logging. 
+; LogLogRefresh=LOG_DEBUG
+LogLogRefresh=

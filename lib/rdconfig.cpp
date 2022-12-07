@@ -411,6 +411,18 @@ int RDConfig::logSearchStringsLevel() const
 }
 
 
+bool RDConfig::logLogRefresh() const
+{
+  return conf_log_log_refresh;
+}
+
+
+int RDConfig::logLogRefreshLevel() const
+{
+  return conf_log_log_refresh_level;
+}
+
+
 int RDConfig::meterBasePort() const
 {
   return conf_meter_base_port;
@@ -640,6 +652,9 @@ bool RDConfig::load()
   conf_log_search_strings_level=
     SyslogPriorityLevel(profile->stringValue("Debugging","LogSearchStrings",""),
 			&conf_log_search_strings);
+  conf_log_log_refresh_level=
+    SyslogPriorityLevel(profile->stringValue("Debugging","LogLogRefresh",""),
+			&conf_log_log_refresh);
   conf_meter_base_port=
     profile->intValue("Hacks","MeterPortBaseNumber",RD_DEFAULT_METER_SOCKET_BASE_UDP_PORT);
   conf_meter_port_range=
@@ -771,6 +786,8 @@ void RDConfig::clear()
   conf_suppress_rdcatch_meter_updates=false;
   conf_log_search_strings=false;
   conf_log_search_strings_level=LOG_DEBUG;
+  conf_log_log_refresh=false;
+  conf_log_log_refresh_level=LOG_DEBUG;
   conf_lock_rdairplay_memory=false;
   conf_meter_base_port=RD_DEFAULT_METER_SOCKET_BASE_UDP_PORT;
   conf_meter_port_range=RD_METER_SOCKET_PORT_RANGE;
