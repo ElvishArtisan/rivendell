@@ -23764,3 +23764,6 @@
 2022-12-07 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'LogSearchStrings=' directive to the '[Debugging]'
 	section of rd.conf(5).
+2022-12-07 Fred Gleason <fredg@paravelsystems.com>
+	* Extended the 'LogSearchStrings=' directive in rd.conf(5) to
+	include searches for logs.

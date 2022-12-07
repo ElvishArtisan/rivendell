@@ -59,6 +59,7 @@ class RDLogFilter : public QWidget
   void resizeEvent(QResizeEvent *e);
 
  private:
+  void LogSearchString(const QString &str);
   FilterMode filter_filter_mode;
   QLabel *filter_service_label;
   QComboBox *filter_service_box;

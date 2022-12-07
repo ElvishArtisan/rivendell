@@ -193,12 +193,14 @@ void RDLogFilter::changeUser()
 
 void RDLogFilter::filterChangedData(const QString &str)
 {
+  LogSearchString(filter_filter_edit->text());
   emit filterChanged(whereSql());
 }
 
 
 void RDLogFilter::filterChangedData()
 {
+  LogSearchString(filter_filter_edit->text());
   emit filterChanged(whereSql());
 }
 
@@ -212,6 +214,7 @@ void RDLogFilter::filterClearedData()
 
 void RDLogFilter::serviceChangedData(int n)
 {
+  LogSearchString(filter_filter_edit->text());
   emit filterChanged(whereSql());
 }
 
@@ -228,4 +231,15 @@ void RDLogFilter::resizeEvent(QResizeEvent *e)
   
   filter_recent_check->setGeometry(275,27,15,15);
   filter_recent_label->setGeometry(295,25,200,20);
+}
+
+
+void RDLogFilter::LogSearchString(const QString &str)
+{
+  if(rda->config()->logSearchStrings()) {
+    rda->syslog(rda->config()->logSearchStringsLevel(),
+		"searching log list by string: \"%s\" [%s]",
+		str.toUtf8().constData(),
+		RDConfig::hexify(str).toUtf8().constData());
+  }
 }
