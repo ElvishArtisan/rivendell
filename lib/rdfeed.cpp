@@ -62,7 +62,7 @@ size_t __RDFeed_Write_Callback(char *ptr,size_t size,size_t nmemb,
 {
   static QByteArray *buffer=(QByteArray *)userdata;
 
-  *buffer+=QByteArray(ptr,size*nmemb);
+  buffer->append(QByteArray(ptr,size*nmemb));
 
   return size*nmemb;
 }
