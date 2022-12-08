@@ -2,7 +2,7 @@
 //
 // Data model for Rivendell podcast episodes
 //
-//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,6 +30,8 @@ RDPodcastListModel::RDPodcastListModel(unsigned feed_id,QObject *parent)
   d_feed_id=feed_id;
   d_font_metrics=NULL;
   d_bold_font_metrics=NULL;
+  d_sort_column=0;
+  d_sort_order=Qt::AscendingOrder;
 
   //
   // Column Attributes
@@ -40,30 +42,39 @@ RDPodcastListModel::RDPodcastListModel(unsigned feed_id,QObject *parent)
 
   d_headers.push_back(tr("Title"));       // 00
   d_alignments.push_back(left);
+  d_column_fields.push_back("`PODCASTS`.`ITEM_TITLE`");
 
   d_headers.push_back(tr("Status"));      // 01
   d_alignments.push_back(center);
+  d_column_fields.push_back("`PODCASTS`.`STATUS`");
 
   d_headers.push_back(tr("Start"));       // 02
   d_alignments.push_back(left);
+  d_column_fields.push_back("`PODCASTS`.`EFFECTIVE_DATETIME`");
 
   d_headers.push_back(tr("Expiration"));  // 03
   d_alignments.push_back(left);
+  d_column_fields.push_back("`PODCASTS`.`EXPIRATION_DATETIME`");
 
   d_headers.push_back(tr("Length"));      // 04
   d_alignments.push_back(right);
+  d_column_fields.push_back("`PODCASTS`.`AUDIO_LENGTH`");
 
   d_headers.push_back(tr("Feed"));        // 05
   d_alignments.push_back(center);
+  d_column_fields.push_back("`FEEDS`.`KEY_NAME`");
 
   d_headers.push_back(tr("Category"));    // 06
   d_alignments.push_back(left);
+  d_column_fields.push_back("`FEEDS`.`CHANNEL_CATEGORY`");
 
   d_headers.push_back(tr("Posted By"));   // 07
   d_alignments.push_back(left);
+  d_column_fields.push_back("`PODCASTS`.`ORIGIN_LOGIN_NAME`");
 
   d_headers.push_back(tr("SHA1"));        // 08
   d_alignments.push_back(left);
+  d_column_fields.push_back("`PODCASTS`.`SHA1_HASH`");
 
   updateModel();
 }
@@ -174,6 +185,16 @@ QVariant RDPodcastListModel::data(const QModelIndex &index,int role) const
   }
 
   return QVariant();
+}
+
+
+void RDPodcastListModel::sort(int col,Qt::SortOrder order)
+{
+  if((col!=d_sort_column)||(order!=d_sort_order)) {
+    d_sort_column=col;
+    d_sort_order=order;
+    updateModel();
+  }
 }
 
 
@@ -304,7 +325,11 @@ void RDPodcastListModel::updateModel()
     "where "+
     QString::asprintf("`PODCASTS`.`FEED_ID`=%u ",d_feed_id)+
     d_filter_sql+
-    " order by `PODCASTS`.`ORIGIN_DATETIME` desc";
+    " order by "+d_column_fields.at(d_sort_column)+" ";
+  if(d_sort_order==Qt::DescendingOrder) {
+    sql+="desc ";
+  }
+
   beginResetModel();
   d_cast_ids.clear();
   d_texts.clear();

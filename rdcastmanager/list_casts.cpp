@@ -81,6 +81,8 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
   list_casts_label->setFont(bigLabelFont());
   list_casts_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   list_casts_view=new RDTableView(this);
+  list_casts_view->setSortingEnabled(true);
+  list_casts_view->sortByColumn(2,Qt::DescendingOrder);
   list_casts_model=new RDPodcastListModel(feed_id,this);
   list_casts_model->setFont(font());
   list_casts_model->setPalette(palette());

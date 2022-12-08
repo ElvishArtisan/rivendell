@@ -23781,3 +23781,5 @@
 2022-12-08 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdcastmanager(1) that could cause a segfault when
 	uploading a new item.
+2022-12-08 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented column sorting for item lists in rdcastmanager(1).
