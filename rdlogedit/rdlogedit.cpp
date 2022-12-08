@@ -105,31 +105,30 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // Log Filter
   //
-  log_filter_widget=
-    new RDLogFilter(RDLogFilter::UserFilter,this);
-  connect(log_filter_widget,SIGNAL(filterChanged(const QString &)),
-	  this,SLOT(filterChangedData(const QString &)));
+  log_filter_widget=new RDLogFilter(RDLogFilter::UserFilter,this);
 
   //
   // Dialogs
   //
   log_edit_dialog=
     new EditLog(&log_filter,&log_group,&log_schedcode,&log_clipboard,this);
-
   log_tracker_dialog=new VoiceTracker(&log_import_path,this);
   
   //
   // Log List
   //
   log_log_view=new RDTableView(this);
+  log_log_view->setSortingEnabled(true);
+  log_log_view->sortByColumn(0,Qt::AscendingOrder);
   log_log_view->setSelectionMode(QAbstractItemView::ExtendedSelection);
   log_log_model=new RDLogListModel(this);
   log_log_model->setFont(defaultFont());
   log_log_model->setPalette(palette());
   log_log_view->setModel(log_log_model);
   log_log_view->resizeColumnsToContents();
-  connect(log_filter_widget,SIGNAL(filterChanged(const QString &)),
-	  log_log_model,SLOT(setFilterSql(const QString &)));
+  connect(log_filter_widget,
+	  SIGNAL(filterChanged(const QString &,const QString &)),
+	  log_log_model,SLOT(setFilterSql(const QString &,const QString &)));
   connect(log_log_view,SIGNAL(doubleClicked(const QModelIndex &)),
 	  this,SLOT(doubleClickedData(const QModelIndex &)));
   connect(log_log_view->selectionModel(),
@@ -240,9 +239,9 @@ void MainWidget::userData()
 		 rda->ripc()->user());
 
   log_filter_widget->changeUser();
-  log_log_model->setFilterSql(log_filter_widget->whereSql());
+  log_log_model->setFilterSql(log_filter_widget->whereSql(),
+			      log_filter_widget->limitSql());
   log_log_view->resizeColumnsToContents();
-  //  RefreshList();
  
   //
   // Set Control Perms
@@ -573,12 +572,6 @@ void MainWidget::reportData()
   delete q;
 
   RDTextFile(report);
-}
-
-
-void MainWidget::filterChangedData(const QString &str)
-{
-  //  RefreshList();
 }
 
 

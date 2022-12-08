@@ -2,7 +2,7 @@
 //
 // Select a Rivendell Log
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -50,8 +50,9 @@ RDListLogs::RDListLogs(QString *logname,RDLogFilter::FilterMode mode,
   list_log_model->setPalette(palette());
   list_log_view->setModel(list_log_model);
   list_log_view->resizeColumnsToContents();
-  connect(list_filter_widget,SIGNAL(filterChanged(const QString &)),
-	  list_log_model,SLOT(setFilterSql(const QString &)));
+  connect(list_filter_widget,SIGNAL(filterChanged(const QString &,
+						  const QString &)),
+	  list_log_model,SLOT(setFilterSql(const QString &,const QString &)));
   connect(list_log_view,SIGNAL(doubleClicked(const QModelIndex &)),
 	  this,SLOT(doubleClickedData(const QModelIndex &)));
   connect(list_log_model,SIGNAL(modelReset()),this,SLOT(modelResetData()));
@@ -73,7 +74,8 @@ RDListLogs::RDListLogs(QString *logname,RDLogFilter::FilterMode mode,
   list_cancel_button->setDefault(true);
   connect(list_cancel_button,SIGNAL(clicked()),this,SLOT(cancelButtonData()));
 
-  list_log_model->setFilterSql(list_filter_widget->whereSql());
+  list_log_model->setFilterSql(list_filter_widget->whereSql(),
+			       list_filter_widget->limitSql());
 }
 
 

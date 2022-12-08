@@ -42,12 +42,13 @@ class RDLogFilter : public QWidget
   QString filterServiceName() const;
   QString filterText() const;
   QString whereSql() const;
+  QString limitSql() const;
 
  public slots:
   void changeUser();
 
  signals:
-  void filterChanged(const QString &where_sql);
+  void filterChanged(const QString &where_sql,const QString &limit_sql);
 
  private slots:
   void filterChangedData(const QString &str);

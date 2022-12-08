@@ -60,7 +60,6 @@ class MainWidget : public RDMainWindow
   void deleteData();
   void trackData();
   void reportData();
-  void filterChangedData(const QString &str);
   void selectionChangedData(const QItemSelection &selected,
 			    const QItemSelection &deselected);
   void doubleClickedData(const QModelIndex &index);

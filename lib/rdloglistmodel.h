@@ -44,6 +44,7 @@ class RDLogListModel : public QAbstractTableModel
   QVariant headerData(int section,Qt::Orientation orient,
 		      int role=Qt::DisplayRole) const;
   QVariant data(const QModelIndex &index,int role=Qt::DisplayRole) const;
+  void sort(int col,Qt::SortOrder order=Qt::AscendingOrder);
   QString logName(const QModelIndex &row) const;
   QModelIndex addLog(const QString &name);
   void removeLog(const QModelIndex &row);
@@ -52,13 +53,13 @@ class RDLogListModel : public QAbstractTableModel
   void refresh(const QString &logname);
 
  public slots:
-  void setFilterSql(const QString &sql);
+   void setFilterSql(const QString &where_sql,const QString &limit_sql);
 
  private slots:
   void processNotification(RDNotification *notify);
 
  protected:
-  void updateModel(const QString &filter_sql);
+  void updateModel(const QString &where_sql,const QString &limit_sql);
   void updateRowLine(int line);
   void updateRow(int row,RDSqlQuery *q);
   QString sqlFields() const;
@@ -71,7 +72,11 @@ class RDLogListModel : public QAbstractTableModel
   QList<QList<QVariant> > d_texts;
   QList<QList<QVariant> > d_icons;
   QList<QVariant> d_alignments;
-  QString d_filter_sql;
+  QString d_filter_where_sql;
+  QString d_filter_limit_sql;
+  int d_sort_column;
+  Qt::SortOrder d_sort_order;
+  QStringList d_column_fields;
 };
 
 

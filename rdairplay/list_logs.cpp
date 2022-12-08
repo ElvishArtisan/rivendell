@@ -52,8 +52,9 @@ ListLogs::ListLogs(RDLogPlay *log,QWidget *parent)
   list_log_model->setPalette(palette());
   list_log_view->setModel(list_log_model);
   list_log_view->resizeColumnsToContents();
-  connect(list_filter_widget,SIGNAL(filterChanged(const QString &)),
-	  list_log_model,SLOT(setFilterSql(const QString &)));
+  connect(list_filter_widget,
+	  SIGNAL(filterChanged(const QString &,const QString &)),
+	  list_log_model,SLOT(setFilterSql(const QString &,const QString &)));
   connect(list_log_view,SIGNAL(doubleClicked(const QModelIndex &)),
 	  this,SLOT(doubleClickedData(const QModelIndex &)));
   connect(list_log_model,SIGNAL(modelReset()),this,SLOT(modelResetData()));
@@ -123,7 +124,8 @@ int ListLogs::exec(QString *logname,QString *svcname,RDLogLock **log_lock)
     services_list.push_back(q->value(0).toString());
   }
   delete q;
-  list_log_model->setFilterSql(list_filter_widget->whereSql());
+  list_log_model->setFilterSql(list_filter_widget->whereSql(),
+			       list_filter_widget->limitSql());
 
   return QDialog::exec();
 }

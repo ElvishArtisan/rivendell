@@ -23775,3 +23775,6 @@
 	section of rd.conf(5).
 2022-12-07 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.0.0rc0int6.
+2022-12-08 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented column sorting for log lists in rdadmin(1),rdairplay(1),
+	rdcastmanager(1) and rdlogedit(1).

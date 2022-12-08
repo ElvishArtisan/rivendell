@@ -163,11 +163,20 @@ QString RDLogFilter::whereSql() const
       sql+="(`LOGS`.`DESCRIPTION` like '%%"+RDEscapeString(filter)+"%%'))";
     }
   }
+
+  return sql;
+}
+
+
+QString RDLogFilter::limitSql() const
+{
+  QString sql=" ";
+
   if(filter_recent_check->isChecked()) {
-    sql+=QString::asprintf("order by `LOGS`.`ORIGIN_DATETIME` desc limit %d",
- 			   RD_LOGFILTER_LIMIT_QUAN);
+    sql+=", `LOGS`.`ORIGIN_DATETIME` desc ";
+    sql+=QString::asprintf("limit %d ",RD_LOGFILTER_LIMIT_QUAN);
   }
-  
+
   return sql;
 }
 
@@ -194,14 +203,14 @@ void RDLogFilter::changeUser()
 void RDLogFilter::filterChangedData(const QString &str)
 {
   LogSearchString(filter_filter_edit->text());
-  emit filterChanged(whereSql());
+  emit filterChanged(whereSql(),limitSql());
 }
 
 
 void RDLogFilter::filterChangedData()
 {
   LogSearchString(filter_filter_edit->text());
-  emit filterChanged(whereSql());
+  emit filterChanged(whereSql(),limitSql());
 }
 
 
@@ -215,7 +224,7 @@ void RDLogFilter::filterClearedData()
 void RDLogFilter::serviceChangedData(int n)
 {
   LogSearchString(filter_filter_edit->text());
-  emit filterChanged(whereSql());
+  emit filterChanged(whereSql(),limitSql());
 }
 
 

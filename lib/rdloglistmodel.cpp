@@ -2,7 +2,7 @@
 //
 // Data model for Rivendell log metadata
 //
-//   (C) Copyright 2020-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2020-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,6 +25,8 @@
 RDLogListModel::RDLogListModel(QObject *parent)
   : QAbstractTableModel(parent)
 {
+  d_sort_column=0;
+  d_sort_order=Qt::AscendingOrder;
   d_service_names.push_back(tr("ALL"));
 
   //
@@ -36,39 +38,51 @@ RDLogListModel::RDLogListModel(QObject *parent)
 
   d_headers.push_back(tr("Log Name"));
   d_alignments.push_back(left);
+  d_column_fields.push_back("`NAME`");
 
   d_headers.push_back(tr("Description"));
   d_alignments.push_back(left);
+  d_column_fields.push_back("`DESCRIPTION`");
 
   d_headers.push_back(tr("Service"));
   d_alignments.push_back(left);
+  d_column_fields.push_back("`SERVICE`");
 
   d_headers.push_back(tr("Music"));
   d_alignments.push_back(center);
+  d_column_fields.push_back("`MUSIC_LINKED`");
 
   d_headers.push_back(tr("Traffic"));
   d_alignments.push_back(center);
+  d_column_fields.push_back("`TRAFFIC_LINKED`");
 
   d_headers.push_back(tr("Tracks"));
   d_alignments.push_back(center);
+  d_column_fields.push_back("`SCHEDULED_TRACKS`");
 
   d_headers.push_back(tr("Valid From"));
   d_alignments.push_back(left);
+  d_column_fields.push_back("`START_DATE`");
 
   d_headers.push_back(tr("Valid To"));
   d_alignments.push_back(left);
+  d_column_fields.push_back("`END_DATE`");
 
   d_headers.push_back(tr("Auto Refresh"));
   d_alignments.push_back(center);
+  d_column_fields.push_back("`AUTO_REFRESH`");
 
   d_headers.push_back(tr("Origin"));
   d_alignments.push_back(left);
+  d_column_fields.push_back("`ORIGIN_USER`");
 
   d_headers.push_back(tr("Last Linked"));
   d_alignments.push_back(left);
+  d_column_fields.push_back("`LINK_DATETIME`");
 
   d_headers.push_back(tr("Last Modified"));
   d_alignments.push_back(left);
+  d_column_fields.push_back("`MODIFIED_DATETIME`");
 
   connect(rda->ripc(),SIGNAL(notificationReceived(RDNotification *)),
 	  this,SLOT(processNotification(RDNotification *)));
@@ -158,6 +172,16 @@ QVariant RDLogListModel::data(const QModelIndex &index,int role) const
 }
 
 
+void RDLogListModel::sort(int col,Qt::SortOrder order)
+{
+  if((col!=d_sort_column)||(order!=d_sort_order)) {
+    d_sort_column=col;
+    d_sort_order=order;
+    updateModel(d_filter_where_sql,d_filter_limit_sql);
+  }
+}
+
+
 QString RDLogListModel::logName(const QModelIndex &row) const
 {
   return d_texts.at(row.row()).at(0).toString();
@@ -184,7 +208,7 @@ QModelIndex RDLogListModel::addLog(const QString &name)
     "`NAME` "+  // 00
     "from `LOGS` where "+
     "`NAME`='"+RDEscapeString(name)+"' "+
-    d_filter_sql;
+    d_filter_where_sql;
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     QList<QVariant> list;
@@ -255,11 +279,13 @@ void RDLogListModel::refresh(const QString &logname)
 }
 
 
-void RDLogListModel::setFilterSql(const QString &sql)
+void RDLogListModel::setFilterSql(const QString &where_sql,
+				  const QString &limit_sql)
 {
-  if(d_filter_sql!=sql) {
-    updateModel(sql);
-    d_filter_sql=sql;
+  if((d_filter_where_sql!=where_sql)||(d_filter_limit_sql!=limit_sql)) {
+    updateModel(where_sql,limit_sql);
+    d_filter_where_sql=where_sql;
+    d_filter_limit_sql=limit_sql;
   }
 }
 
@@ -288,15 +314,21 @@ void RDLogListModel::processNotification(RDNotification *notify)
 }
 
 
-void RDLogListModel::updateModel(const QString &filter_sql)
+void RDLogListModel::updateModel(const QString &where_sql,
+				 const QString &limit_sql)
 {
   RDSqlQuery *q=NULL;
   QString sql=sqlFields()+
-    "where "+
+    " where "+
     "(`TYPE`=0)&&"+        
     "(`LOG_EXISTS`='Y') "+
-    filter_sql;
-    //    "order by `NAME` ";
+    where_sql+" ";
+  sql+="order by "+d_column_fields.at(d_sort_column)+" ";
+  if(d_sort_order==Qt::DescendingOrder) {
+    sql+="desc ";
+  }
+  sql+=limit_sql;
+
   beginResetModel();
   d_texts.clear();
   d_icons.clear();
