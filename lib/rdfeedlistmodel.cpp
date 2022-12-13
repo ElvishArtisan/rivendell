@@ -425,18 +425,18 @@ void RDFeedListModel::changeUser()
 
   if(d_is_admin) {
     sql=QString("select ")+
-      "`KEY_NAME` "+  // 00
+      "`FEEDS`.`KEY_NAME` "+  // 00
       "from `FEEDS`";
   }
   else {
     sql=QString("select ")+
-      "`KEY_NAME` "+  // 00
+      "`FEED_PERMS`.`KEY_NAME` "+  // 00
       "from `FEED_PERMS` where "+
-      "`USER_NAME`='"+RDEscapeString(rda->user()->name())+"'";
+      "`FEED_PERMS`.`USER_NAME`='"+RDEscapeString(rda->user()->name())+"'";
   }
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    filter_sql+="(`KEY_NAME`='"+RDEscapeString(q->value(0).toString())+"')||";
+    filter_sql+="(`FEEDS`.`KEY_NAME`='"+RDEscapeString(q->value(0).toString())+"')||";
   }
   delete q;
   filter_sql=filter_sql.left(filter_sql.length()-2);
