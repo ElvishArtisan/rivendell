@@ -23797,3 +23797,7 @@
 	* Cleaned up filtering SQL in 'RDLogListModel'.
 2022-12-13 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up filtering SQL in 'RDFeedListModel'.
+2022-12-13 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdlogedit(1) that caused a newly inserted
+	log event to be assigned the start time parameters of the previously
+	edited event.

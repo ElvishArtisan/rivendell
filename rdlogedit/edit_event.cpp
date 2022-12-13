@@ -106,13 +106,8 @@ EditEvent::EditEvent(QWidget *parent)
 int EditEvent::exec()
 {
   edit_time_edit->setTime(edit_logline->startTime(RDLogLine::Logged));
-  if(edit_logline->timeType()==RDLogLine::Hard) {
-    edit_timetype_box->setChecked(true);
-    timeToggledData(true);
-  }
-  else {
-    timeToggledData(false);
-  }
+  edit_timetype_box->setChecked(edit_logline->timeType()==RDLogLine::Hard);
+  timeToggledData(edit_logline->timeType()==RDLogLine::Hard);
   timeChangedData(edit_time_edit->time());
   switch(edit_logline->graceTime()) {
   case -1:

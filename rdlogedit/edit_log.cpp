@@ -677,13 +677,13 @@ void EditLog::insertCartButtonData()
 
   edit_log_model->insert(line,1);
   edit_log_model->logLine(line)->setTransType(edit_default_trans);
-  edit_log_model->logLine(line)->setFadeupGain(-3000);
-  edit_log_model->logLine(line)->setFadedownGain(-3000);
+
   int ret=edit_logline_dialog->
     exec(edit_service_box->currentText(),edit_log_model,
 	 edit_log_model->logLine(line),line);
   if(ret>=0) {
     edit_log_model->update(line);
+    timestyleChangedData(global_start_time_style);
     SetLogModified(true);
   }
   else {

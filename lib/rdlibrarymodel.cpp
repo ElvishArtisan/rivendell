@@ -573,8 +573,6 @@ void RDLibraryModel::setFilterSql(const QString &sql,int cart_limit)
 
 void RDLibraryModel::processNotification(RDNotification *notify)
 {
-  printf("RDLibraryModel::processNotification()\n");
-
   QString sql;
   RDSqlQuery *q=NULL;
 
