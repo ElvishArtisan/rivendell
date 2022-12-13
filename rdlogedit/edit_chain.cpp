@@ -39,7 +39,7 @@ EditChain::EditChain(QWidget *parent)
   setMaximumSize(sizeHint());
 
   //
-  // Label
+  // Log Name
   //
   edit_label_edit=new QLineEdit(this);
   edit_label_edit->setMaxLength(64);
@@ -110,13 +110,14 @@ void EditChain::labelChangedData(const QString &logname)
     QString("select `DESCRIPTION` from `LOGS` where ")+
     "`NAME`='"+RDEscapeString(logname)+"'";
   RDSqlQuery *q=new RDSqlQuery(sql);
-  if(!q->first()) {
-    delete q;
-    edit_comment_edit->clear();
-    return;
+  if(q->first()) {
+    edit_comment_edit->setText(q->value(0).toString());
   }
-  edit_comment_edit->setText(q->value(0).toString());
+  else {
+    edit_comment_edit->clear();
+  }
   delete q;
+  setOkEnabled(!logname.trimmed().isEmpty());
 }
 
 

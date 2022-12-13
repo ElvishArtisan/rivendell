@@ -23804,3 +23804,6 @@
 2022-12-13 Fred Gleason <fredg@paravelsystems.com>
 	* Added logic to the 'Edit Log Entry' dialog in rdlogedit(1) to
 	prevent entry of an invalid cart number.
+2022-12-13 Fred Gleason <fredg@paravelsystems.com>
+	* Added logic to the 'Edit Log Chain' dialog in rdlogedit(1) to
+	prevent entry of an empty log name.
