@@ -23813,3 +23813,5 @@
 2022-12-13 Fred Gleason <fredg@paravelsystems.com>
 	* Added logic to the 'Edit Log Marker' dialog in rdlogedit(1)
 	to prevent entry of an empty comment.
+2022-12-13 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.0.0rc0int8
