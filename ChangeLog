@@ -23791,3 +23791,5 @@
 2022-12-13 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'RDLog::create()' that threw a SQL error when
 	attempting to create a log with a name that already existed.
+2022-12-13 Fred Gleason <fredg@paravelsystems.com>
+	* Purged vestigal code from rdlogedit(1).

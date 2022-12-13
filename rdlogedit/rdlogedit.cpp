@@ -252,12 +252,6 @@ void MainWidget::userData()
 }
 
 
-void MainWidget::recentData(bool state)
-{
-  //  RefreshList();
-}
-
-
 void MainWidget::addData()
 {
   QString logname;

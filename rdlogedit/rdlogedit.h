@@ -54,7 +54,6 @@ class MainWidget : public RDMainWindow
  private slots:
   void caeConnectedData(bool state);
   void userData();
-  void recentData(bool state);
   void addData();
   void editData();
   void deleteData();
