@@ -23784,4 +23784,7 @@
 2022-12-08 Fred Gleason <fredg@paravelsystems.com>
 	* Implemented column sorting for item lists in rdcastmanager(1).
 2022-12-08 Fred Gleason <fredg@paravelsystems.com>
-	* Incremented the package version to 4.0.0rc0int7.
+	* Incremented the package version to 4.0.0rc0int7
+2022-12-13 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'RDLibraryModel' that could throw a SQL
+	error when processing notifications for added carts.

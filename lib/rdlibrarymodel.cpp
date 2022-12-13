@@ -573,15 +573,15 @@ void RDLibraryModel::setFilterSql(const QString &sql,int cart_limit)
 
 void RDLibraryModel::processNotification(RDNotification *notify)
 {
+  printf("RDLibraryModel::processNotification()\n");
+
   QString sql;
   RDSqlQuery *q=NULL;
 
   if(notify->type()==RDNotification::CartType) {
     switch(notify->action()) {
     case RDNotification::AddAction:
-      sql=QString("select ")+
-	"`NUMBER` "+  // 00
-	"from `CART` "+
+      sql=sqlFields()+
 	d_filter_sql+
 	QString::asprintf(" && `CART`.`NUMBER`=%u",notify->id().toUInt());
       q=new RDSqlQuery(sql);
