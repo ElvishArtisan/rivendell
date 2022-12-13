@@ -23788,3 +23788,6 @@
 2022-12-13 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in 'RDLibraryModel' that could throw a SQL
 	error when processing notifications for added carts.
+2022-12-13 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'RDLog::create()' that threw a SQL error when
+	attempting to create a log with a name that already existed.

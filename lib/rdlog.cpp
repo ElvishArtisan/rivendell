@@ -534,6 +534,11 @@ bool RDLog::create(const QString &name,const QString &svc_name,
   RDSvc::ShelflifeOrigin shelforigin;
   QString desc_tmpl;
 
+  if(RDLog::exists(name)) {
+    *err_msg=QObject::tr("Log already exists!");
+    return false;
+  }
+
   sql=QString("select ")+
     "`DEFAULT_LOG_SHELFLIFE`,"+  // 00
     "`LOG_SHELFLIFE_ORIGIN`,"+   // 01
@@ -578,7 +583,7 @@ bool RDLog::create(const QString &name,const QString &svc_name,
   }
   q=new RDSqlQuery(sql);
   if(!q->isActive()) {
-    *err_msg=QObject::tr("Log already exists!");
+    *err_msg=QObject::tr("Insertion into LOGS table failed!");
     delete q;
     return false;
   }
