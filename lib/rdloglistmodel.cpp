@@ -204,11 +204,10 @@ QModelIndex RDLogListModel::addLog(const QString &name)
   //
   // Make sure we match the current filter
   //
-  QString sql=QString("select ")+
-    "`NAME` "+  // 00
-    "from `LOGS` where "+
+  QString sql=sqlFields()+"where "+
     "`NAME`='"+RDEscapeString(name)+"' "+
     d_filter_where_sql;
+  printf("ADD SQL: %s\n",sql.toUtf8().constData());
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     QList<QVariant> list;

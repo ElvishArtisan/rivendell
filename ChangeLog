@@ -23793,3 +23793,5 @@
 	attempting to create a log with a name that already existed.
 2022-12-13 Fred Gleason <fredg@paravelsystems.com>
 	* Purged vestigal code from rdlogedit(1).
+2022-12-13 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up filtering SQL in 'RDLogListModel'.
