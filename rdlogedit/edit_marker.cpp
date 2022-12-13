@@ -42,6 +42,8 @@ EditMarker::EditMarker(QWidget *parent)
   QLabel *label=new QLabel(tr("Comment"),this);
   label->setFont(labelFont());
   label->setGeometry(12,100,70,14);
+  connect(edit_comment_edit,SIGNAL(textChanged(const QString &)),
+	  this,SLOT(commentChangedData(const QString &)));
 
   //
   // Label
@@ -72,8 +74,15 @@ int EditMarker::exec(RDLogLine *ll)
   setLogLine(ll);
   edit_comment_edit->setText(logLine()->markerComment());
   edit_label_edit->setText(logLine()->markerLabel());
+  commentChangedData(edit_comment_edit->text());
 
   return EditEvent::exec();
+}
+
+
+void EditMarker::commentChangedData(const QString &str)
+{
+  setOkEnabled(!str.trimmed().isEmpty());
 }
 
 

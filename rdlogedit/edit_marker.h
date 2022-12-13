@@ -36,6 +36,9 @@ class EditMarker : public EditEvent
  public slots:
   int exec(RDLogLine *ll);
 
+ private slots:
+  void commentChangedData(const QString &str);
+
  protected:
   bool saveData();
 
