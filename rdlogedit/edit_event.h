@@ -47,6 +47,7 @@ class EditEvent : public RDDialog
 
  protected:
   int exec();
+  void setOkEnabled(bool state);
   RDLogLine *logLine();
   void setLogLine(RDLogLine *ll);
   virtual bool saveData()=0;

@@ -58,10 +58,13 @@ EditLogLine::EditLogLine(QString *filter,QString *group,QString *schedcode,
   // Cart Number
   //
   edit_cart_edit=new QLineEdit(this);
+  edit_cart_edit->setMaxLength(6);
   edit_cart_edit->setGeometry(10,138,60,18);
   QLabel *label=new QLabel(tr("Cart"),this);
   label->setFont(labelFont());
   label->setGeometry(12,122,60,14);
+  connect(edit_cart_edit,SIGNAL(textChanged(const QString &)),
+	  this,SLOT(cartNumberChangedData(const QString &)));
 
   //
   // Title 
@@ -138,6 +141,7 @@ int EditLogLine::exec(const QString &svcname,LogModel *model,
     edit_overlap_label->setEnabled(false);
   }  
   FillCart(logLine()->cartNumber());
+  cartNumberChangedData(edit_cart_edit->text());
 
   return EditEvent::exec();
 }
@@ -153,6 +157,15 @@ void EditLogLine::selectCartData()
   if(edit_cart_dialog->exec(&cartnum,RDCart::All,edit_service,NULL)) {
     FillCart(cartnum);
   }
+}
+
+
+void EditLogLine::cartNumberChangedData(const QString &str)
+{
+  bool ok=false;
+  unsigned cartnum=str.toUInt(&ok);
+
+  setOkEnabled(ok&&(cartnum>0)&&(cartnum<=RD_MAX_CART_NUMBER));
 }
 
 

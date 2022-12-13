@@ -41,6 +41,7 @@ class EditLogLine : public EditEvent
 
  private slots:
   void selectCartData();
+  void cartNumberChangedData(const QString &str);
 
  protected:
   bool saveData();

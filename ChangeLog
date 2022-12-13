@@ -23801,3 +23801,6 @@
 	* Fixed a regression in rdlogedit(1) that caused a newly inserted
 	log event to be assigned the start time parameters of the previously
 	edited event.
+2022-12-13 Fred Gleason <fredg@paravelsystems.com>
+	* Added logic to the 'Edit Log Entry' dialog in rdlogedit(1) to
+	prevent entry of an invalid cart number.

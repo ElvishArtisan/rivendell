@@ -132,6 +132,12 @@ int EditEvent::exec()
 }
 
 
+void EditEvent::setOkEnabled(bool state)
+{
+  edit_ok_button->setEnabled(state);
+}
+
+
 void EditEvent::timeChangedData(const QTime &time)
 {
   if(edit_timetype_box->isChecked()) {
