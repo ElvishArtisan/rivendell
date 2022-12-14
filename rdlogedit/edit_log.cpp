@@ -532,6 +532,7 @@ int EditLog::exec(const QString &logname,QStringList *new_logs)
   serviceActivatedData(edit_service_box->currentText());
   SetLogModified(false);
   UpdateTracks();
+  timestyleChangedData(edit_timestyle_box->currentIndex());
 
   //
   // Set Control Perms

@@ -118,9 +118,11 @@ void RDLogLine::clear()
   log_pass=0;
   log_source=RDLogLine::Manual;
   log_cart_number=0;
-  for(int i=0;i<5;i++) {
-    log_start_time[i]=QTime(0,0,0);
-  }
+  log_start_time[RDLogLine::Imported]=QTime(0,0,0);
+  log_start_time[RDLogLine::Logged]=QTime(0,0,0);
+  log_start_time[RDLogLine::Predicted]=QTime();
+  log_start_time[RDLogLine::Actual]=QTime(0,0,0);
+  log_start_time[RDLogLine::Initial]=QTime(0,0,0);
   log_time_type=RDLogLine::Relative;
   log_origin_user="";
   log_origin_datetime=QDateTime();
