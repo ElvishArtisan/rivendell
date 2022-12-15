@@ -20959,3 +20959,5 @@
 	of the 'direct' name space.
 2022-11-21 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.6.6int0.
+2022-12-15 Robert Chipperfield <robert@syxis.co.uk>
+	* Supported selection of cuts that have a start, but no end date
