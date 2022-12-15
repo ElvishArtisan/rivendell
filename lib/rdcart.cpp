@@ -117,9 +117,8 @@ bool RDCart::selectCut(QString *cut,const QTime &time) const
       "LOCAL_COUNTER,"+
       "LAST_PLAY_DATETIME "+
       "from CUTS  where ("+
-      "((START_DATETIME<=\""+datetime_str+"\")&&"+
-      "(END_DATETIME>=\""+datetime_str+"\"))||"+
-      "(START_DATETIME is null))&&"+
+      "(START_DATETIME is null || START_DATETIME<=\""+datetime_str+"\")&&"+
+      "(END_DATETIME is null || END_DATETIME>=\""+datetime_str+"\"))&&"+
       "(((START_DAYPART<=\""+time_str+"\")&&"+
       "(END_DAYPART>=\""+time_str+"\")||"+
       "START_DAYPART is null))&&"+
