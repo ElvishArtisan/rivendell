@@ -226,3 +226,10 @@ LogSearchStrings=
 ; priority levels. An empty argument disables logging. 
 ; LogLogRefresh=LOG_DEBUG
 LogLogRefresh=
+
+; Send all SQL queries (including 'select' queries) to the syslog at the
+; specified priority level.
+; See the 'level' parameter in the syslog(3) man page for the set of available
+; priority levels. An empty argument disables logging. 
+; LogSqlQueries=LOG_DEBUG
+LogSqlQueries=

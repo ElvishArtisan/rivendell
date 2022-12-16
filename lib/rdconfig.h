@@ -109,6 +109,8 @@ class RDConfig
   int logSearchStringsLevel() const;
   bool logLogRefresh() const;
   int logLogRefreshLevel() const;
+  bool logSqlQueries() const;
+  int logSqlQueriesLevel() const;
   bool enableMixerLogging() const;
   uid_t uid() const;
   gid_t gid() const;
@@ -186,6 +188,8 @@ class RDConfig
   int conf_log_search_strings_level;
   bool conf_log_log_refresh;
   int conf_log_log_refresh_level;
+  bool conf_log_sql_queries;
+  int conf_log_sql_queries_level;
   bool conf_lock_rdairplay_memory;
   QString conf_save_webget_files_directory;
   bool conf_suppress_rdcatch_meter_updates;

@@ -65,6 +65,10 @@ RDSqlQuery::RDSqlQuery (const QString &query,bool reconnect):
   }
 
   if(isActive()) {
+    if((rda!=NULL)&&(rda->config()->logSqlQueries())) {
+      rda->syslog(rda->config()->logSqlQueriesLevel(),
+		  "SQL: %s",query.toUtf8().constData());
+    }
     //printf("QUERY: %s\n",(const char *)query.toUtf8());
     QStringList f0=query.split(" ");
     if(f0[0].toLower()=="select") {
