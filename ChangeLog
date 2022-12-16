@@ -23823,3 +23823,5 @@
 	section of rd.conf(5).
 2022-12-16 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.0.0rc0int9
+2022-12-16 Fred Gleason <fredg@paravelsystems.com>
+	* Removed stale debugging printf() from 'RDLogListModel'.
