@@ -23828,3 +23828,8 @@
 2022-12-16 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'qt5-linguist' to the list of required build packages for
 	RHEL-7 in 'INSTALL'.
+2022-12-19 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdcastmanager(1) that could cause items from
+	non-selected feeds to appear in the 'Podcast Item List' dialog.
+	* Fixed a regression in rdcastmanager(1) that could cause a segfault
+	when posting a new item.
