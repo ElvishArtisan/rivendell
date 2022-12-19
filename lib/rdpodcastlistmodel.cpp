@@ -292,11 +292,14 @@ void RDPodcastListModel::processNotification(RDNotification *notify)
   RDPodcast *cast=NULL;
 
   if(notify->type()==RDNotification::FeedItemType) {
-    cast_id=notify->id().toUInt();
-    cast=new RDPodcast(rda->config(),cast_id);
     switch(notify->action()) {
     case RDNotification::AddAction:
-      addCast(cast_id);
+      cast_id=notify->id().toUInt();
+      cast=new RDPodcast(rda->config(),cast_id);
+      if(cast->feedId()==d_feed_id) {
+	addCast(cast_id);
+      }
+      delete cast;
       break;
 
     case RDNotification::DeleteAction:
@@ -311,7 +314,6 @@ void RDPodcastListModel::processNotification(RDNotification *notify)
     case RDNotification::NoAction:
       break;
     }
-    delete cast;
   }
 }
 

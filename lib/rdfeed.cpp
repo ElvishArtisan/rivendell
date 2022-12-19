@@ -60,7 +60,7 @@ int __RDFeed_Debug_Callback(CURL *handle,curl_infotype type,char *data,
 size_t __RDFeed_Write_Callback(char *ptr,size_t size,size_t nmemb,
 			       void *userdata)
 {
-  static QByteArray *buffer=(QByteArray *)userdata;
+  QByteArray *buffer=(QByteArray *)userdata;
 
   buffer->append(QByteArray(ptr,size*nmemb));
 
@@ -867,9 +867,9 @@ bool RDFeed::postPodcast(unsigned cast_id,QString *err_msg)
     return false;
   }
   QStringList *err_msgs=SetupCurlLogging(curl);
+  QByteArray write_buffer;
   curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,__RDFeed_Write_Callback);
-  feed_curl_write_buffer.clear();
-  curl_easy_setopt(curl,CURLOPT_WRITEDATA,&feed_curl_write_buffer);
+  curl_easy_setopt(curl,CURLOPT_WRITEDATA,&write_buffer);
   curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
 		   rda->config()->userAgent().toUtf8().constData());
@@ -906,7 +906,7 @@ bool RDFeed::postPodcast(unsigned cast_id,QString *err_msg)
   if((response_code<200)||(response_code>299)) {
     ProcessCurlLogging("RDFeed::postPodcast()",err_msgs);
     RDWebResult *wr=new RDWebResult();
-    if(wr->readXml(QString::fromUtf8(feed_curl_write_buffer))) {
+    if(wr->readXml(QString::fromUtf8(write_buffer))) {
       *err_msg=wr->text();
     }
     else {
@@ -1353,7 +1353,6 @@ unsigned RDFeed::postCut(const QString &cutname,QString *err_msg)
   }
   delete settings;
   delete conv;
-  postProgressChanged(2);
 
   //
   // Save to Audio Store
@@ -1379,7 +1378,6 @@ unsigned RDFeed::postCut(const QString &cutname,QString *err_msg)
     emit postProgressChanged(5);
     return 0;
   }
-  postProgressChanged(3);
 
   //
   // Set default cast parameters
@@ -1492,7 +1490,6 @@ unsigned RDFeed::postFile(const QString &srcfile,QString *err_msg)
     emit postProgressChanged(6);
     return 0;
   }
-  postProgressChanged(4);
 
   //
   // Set default cast parameters
@@ -1921,9 +1918,9 @@ bool RDFeed::SavePodcast(unsigned cast_id,const QString &src_filename,
     return false;
   }
   QStringList *err_msgs=SetupCurlLogging(curl);
-  feed_curl_write_buffer.clear();
+  QByteArray write_buffer;
   curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,__RDFeed_Write_Callback);
-  curl_easy_setopt(curl,CURLOPT_WRITEDATA,&feed_curl_write_buffer);
+  curl_easy_setopt(curl,CURLOPT_WRITEDATA,&write_buffer);
   curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
 		   rda->config()->userAgent().toUtf8().constData());
@@ -1957,7 +1954,7 @@ bool RDFeed::SavePodcast(unsigned cast_id,const QString &src_filename,
   //
   if((response_code<200)||(response_code>299)) {
     ProcessCurlLogging("RDFeed::postPodcast()",err_msgs);
-    *err_msg=QString::fromUtf8(feed_curl_write_buffer);
+    *err_msg=QString::fromUtf8(write_buffer);
     return false;
   }
   delete err_msgs;

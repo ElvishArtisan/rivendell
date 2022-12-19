@@ -23825,3 +23825,8 @@
 	* Incremented the package version to 4.0.0rc0int9
 2022-12-16 Fred Gleason <fredg@paravelsystems.com>
 	* Removed stale debugging printf() from 'RDLogListModel'.
+2022-12-19 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdcastmanager(1) that could cause items from
+	non-selected feeds to appear in the 'Podcast Item List' dialog.
+	* Fixed a regression in rdcastmanager(1) that could cause a segfault
+	when posting a new item.

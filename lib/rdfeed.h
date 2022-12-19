@@ -187,7 +187,6 @@ class RDFeed : public QObject
   int feed_xml_ptr;
   int feed_render_start_line;
   int feed_render_end_line;
-  QByteArray feed_curl_write_buffer;
 };
 
 
