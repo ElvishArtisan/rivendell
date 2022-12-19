@@ -23833,3 +23833,5 @@
 	non-selected feeds to appear in the 'Podcast Item List' dialog.
 	* Fixed a regression in rdcastmanager(1) that could cause a segfault
 	when posting a new item.
+2022-12-19 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.0.0rc0int10.
