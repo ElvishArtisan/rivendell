@@ -23825,3 +23825,6 @@
 	* Incremented the package version to 4.0.0rc0int9
 2022-12-16 Fred Gleason <fredg@paravelsystems.com>
 	* Removed stale debugging printf() from 'RDLogListModel'.
+2022-12-16 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'qt5-linguist' to the list of required build packages for
+	RHEL-7 in 'INSTALL'.
