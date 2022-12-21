@@ -2,7 +2,7 @@
 //
 // Routines for --check for rddbmgr(8)
 //
-//   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -150,6 +150,23 @@ bool MainObject::Check(QString *err_msg)
   if((db_check_all)&&!db_rehash.isEmpty()) {
     printf("Checking hashes...\n");
     Rehash(db_rehash);
+    printf("done.\n\n");
+  }
+
+  //
+  // Check Log Line IDs
+  //
+  if(db_check_all||db_check_log_line_ids) {
+    printf("Checking log line IDs...\n");
+    QString sql=QString("select ")+
+      "`NAME` "+  // 00
+      "from `LOGS` "+
+      "order by `NAME`";
+    RDSqlQuery *q=new RDSqlQuery(sql);
+    while(q->next()) {
+      CheckLogLineIds(q->value(0).toString());
+    }
+    delete q;
     printf("done.\n\n");
   }
 
@@ -850,6 +867,65 @@ void MainObject::CheckOrphanedAudio() const
       }
     }
   }
+}
+
+
+void MainObject::CheckLogLineIds(const QString &logname) const
+{
+  QString sql;
+  RDSqlQuery *q=NULL;
+  int prev_line_id=-1;
+
+  sql=QString("select ")+
+    "`ID`,"+       // 00
+    "`COUNT`,"+    // 01
+    "`LINE_ID` "+  // 02
+    "from `LOG_LINES` where "+
+    "`LOG_NAME`='"+RDEscapeString(logname)+"' "+
+    "order by `LINE_ID`";
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    if(q->value(2).toInt()==prev_line_id) {
+      printf("  Duplicate line ID found in log \"%s\" at line %d\n",
+	      logname.toUtf8().constData(),q->value(1).toInt());
+      printf("  Repair it (y/N)?");
+      if(UserResponse()) {
+	//
+	// Calculate next unused line ID
+	//
+	int next_line_id=1;
+	sql=QString("select ")+
+	  "`LINE_ID` "+
+	  "from `LOG_LINES` where "+
+	  "`LOG_NAME`='"+RDEscapeString(logname)+"' "+
+	  "order by `LINE_ID` desc";
+	RDSqlQuery *q1=new RDSqlQuery(sql);
+	if(q1->first()) {
+	  next_line_id=q1->value(0).toInt()+1;
+	}
+	delete q1;
+
+	//
+	// Rewrite line ID
+	//
+	sql=QString("update `LOG_LINES` set ")+
+	  QString::asprintf("`LINE_ID`=%d ",next_line_id)+
+	  "where "+
+	  QString::asprintf("`ID`=%d",q->value(0).toInt());
+	RDSqlQuery::apply(sql);
+	next_line_id++;
+
+	sql=QString("update `LOGS` set ")+
+	  QString::asprintf("`NEXT_ID`=%d ",next_line_id)+
+	  "where "+
+	  "`NAME`='"+RDEscapeString(logname)+"'";
+	RDSqlQuery::apply(sql);
+	next_line_id++;
+      }
+    }
+    prev_line_id=q->value(2).toInt();
+  }
+  delete q;
 }
 
 

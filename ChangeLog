@@ -23835,3 +23835,6 @@
 	when posting a new item.
 2022-12-19 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.0.0rc0int10.
+2022-12-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added a test for duplicate log line IDs to rddbmgr(8).
+	* Added a '--check-log-line-ids' switch to rddbmgr(8).

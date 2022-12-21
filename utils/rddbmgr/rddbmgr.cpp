@@ -59,6 +59,7 @@ MainObject::MainObject(QObject *parent)
   db_check_orphaned_cuts=false;
   db_check_orphaned_tracks=false;
   db_check_strings=false;
+  db_check_log_line_ids=false;
 
   //
   // Check that we're 'root'
@@ -238,6 +239,11 @@ MainObject::MainObject(QObject *parent)
     if(cmd->key(i)=="--check-strings") {
       db_check_all=false;
       db_check_strings=true;
+      cmd->setProcessed(i,true);
+    }
+    if(cmd->key(i)=="--check-log-line-ids") {
+      db_check_all=false;
+      db_check_log_line_ids=true;
       cmd->setProcessed(i,true);
     }
 

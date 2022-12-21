@@ -63,6 +63,7 @@ class MainObject : public QObject
   void CheckOrphanedCarts() const;
   void CheckOrphanedCuts() const;
   void CheckOrphanedAudio() const;
+  void CheckLogLineIds(const QString &logname) const;
   void ValidateAudioLengths() const;
   void Rehash(const QString &arg) const;
   void RehashCart(unsigned cartnum) const;
@@ -155,6 +156,7 @@ class MainObject : public QObject
   bool db_check_orphaned_carts;
   bool db_check_orphaned_cuts;
   bool db_check_strings;
+  bool db_check_log_line_ids;
   QString db_orphan_group_name;
   QString db_dump_cuts_dir;
   QString db_rehash;
