@@ -23844,3 +23844,5 @@
 2022-12-21 Fred Gleason <fredg@paravelsystems.com>
 	* Added the database server hostname to the summary output of
 	rddbmgr(8).
+2022-12-21 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.0.0rc0int11.
