@@ -110,8 +110,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // Dialogs
   //
-  log_edit_dialog=
-    new EditLog(&log_filter,&log_group,&log_schedcode,&log_clipboard,this);
+  log_edit_dialog=new EditLog(&log_filter,&log_group,&log_schedcode,this);
   log_tracker_dialog=new VoiceTracker(&log_import_path,this);
   
   //

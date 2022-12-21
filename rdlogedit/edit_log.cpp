@@ -31,7 +31,7 @@
 #include "globals.h"
 
 EditLog::EditLog(QString *filter,QString *group,QString *schedcode,
-		 QList<RDLogLine> *clipboard,QWidget *parent)
+		 QWidget *parent)
   : RDDialog(parent)
 {
   QColor system_mid_color=palette().mid().color();
@@ -40,7 +40,6 @@ EditLog::EditLog(QString *filter,QString *group,QString *schedcode,
   edit_filter=filter;
   edit_group=group;
   edit_schedcode=schedcode;
-  edit_clipboard=clipboard;
   edit_default_trans=RDLogLine::Play;
   edit_log=NULL;
   edit_log_lock=NULL;
@@ -912,11 +911,13 @@ void EditLog::pasteButtonData()
   if((line=SingleSelectionLine())<0) {
     return;
   }
-  edit_log_model->insert(line,edit_clipboard->size());
-  for(int i=0;i<edit_clipboard->size();i++) {
-    *edit_log_model->logLine(line+i)=edit_clipboard->at(i);
+  edit_log_model->insert(line,edit_clipboard.size());
+  for(int i=0;i<edit_clipboard.size();i++) {
+    int line_id=edit_log_model->logLine(line+i)->id(); // Save the line ID
+    *edit_log_model->logLine(line+i)=edit_clipboard.at(i);
+    edit_log_model->logLine(line+i)->setId(line_id);   // So we can restore it
     edit_log_model->logLine(line+i)->setSource(RDLogLine::Manual);
-    (*edit_clipboard)[i].clearExternalData();
+    edit_clipboard[i].clearExternalData();
   }
   SetLogModified(true);
   UpdateTracks();
@@ -1065,8 +1066,8 @@ void EditLog::okData()
     DeleteTracks();
   }
   edit_player->stop();
-  for(int i=0;i<edit_clipboard->size();i++) {
-    (*edit_clipboard)[i].clearExternalData();
+  for(int i=0;i<edit_clipboard.size();i++) {
+    edit_clipboard[i].clearExternalData();
   }
   delete edit_log_lock;
   edit_log_lock=NULL;
@@ -1098,8 +1099,8 @@ void EditLog::cancelData()
     }
   }
   edit_player->stop();
-  for(int i=0;i<edit_clipboard->size();i++) {
-    (*edit_clipboard)[i].clearExternalData();
+  for(int i=0;i<edit_clipboard.size();i++) {
+    edit_clipboard[i].clearExternalData();
   }
   delete edit_log_lock;
   edit_log_lock=NULL;
@@ -1322,13 +1323,13 @@ void EditLog::LoadClipboard(bool clear_ext)
 {
   QItemSelectionModel *sel=edit_log_view->selectionModel();
 
-  edit_clipboard->clear();
+  edit_clipboard.clear();
   QModelIndexList rows=sel->selectedRows();
   for(int i=0;i<rows.size();i++) {
-    edit_clipboard->
+    edit_clipboard.
       push_back(*edit_log_model->logLine(rows.at(i).row()));
     if(clear_ext) {
-      edit_clipboard->back().clearExternalData();
+      edit_clipboard.back().clearExternalData();
     }
   }
 }

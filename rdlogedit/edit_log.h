@@ -46,8 +46,7 @@ class EditLog : public RDDialog
 {
  Q_OBJECT
  public:
-  EditLog(QString *filter,QString *group,QString *schedcode,
-	  QList<RDLogLine> *clipboard,QWidget *parent=0);
+  EditLog(QString *filter,QString *group,QString *schedcode,QWidget *parent=0);
   ~EditLog();
   QSize sizeHint() const;
 
@@ -104,7 +103,7 @@ class EditLog : public RDDialog
   void SetLogModified(bool state);
   void SendNotification(RDNotification::Action action,const QString &log_name);
   RDLog *edit_log;
-  QList<RDLogLine> *edit_clipboard;
+  QList<RDLogLine> edit_clipboard;
   std::vector<unsigned> edit_deleted_tracks;
   QStringList *edit_newlogs;
   QString edit_logname;

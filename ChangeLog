@@ -23838,3 +23838,6 @@
 2022-12-21 Fred Gleason <fredg@paravelsystems.com>
 	* Added a test for duplicate log line IDs to rddbmgr(8).
 	* Added a '--check-log-line-ids' switch to rddbmgr(8).
+2022-12-21 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdlogedit(1) that caused duplicate line IDs
+	to be used when pasting from the clipboard.

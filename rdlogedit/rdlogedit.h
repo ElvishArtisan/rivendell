@@ -81,7 +81,6 @@ class MainWidget : public RDMainWindow
   RDLogFilter *log_filter_widget;
   RDTableView *log_log_view;
   RDLogListModel *log_log_model;
-  QList<RDLogLine> log_clipboard;
   QPushButton *log_add_button;
   QPushButton *log_edit_button;
   QPushButton *log_delete_button;
