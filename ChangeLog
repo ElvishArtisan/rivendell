@@ -23841,3 +23841,6 @@
 2022-12-21 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdlogedit(1) that caused duplicate line IDs
 	to be used when pasting from the clipboard.
+2022-12-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added the database server hostname to the summary output of
+	rddbmgr(8).

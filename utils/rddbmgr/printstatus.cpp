@@ -45,14 +45,16 @@ bool MainObject::PrintStatus(QString *err_msg) const
       "from `SYSTEM`";
     q=new RDSqlQuery(sql);
     if(q->first()) {
-      printf("Rivendell database, schema %d [%s] (%s)\n",schema,
+      printf("Rivendell database, schema %d [%s] (%s @ %s)\n",schema,
 	     GetSchemaVersion(schema).toUtf8().constData(),
-	     q->value(0).toString().toUtf8().constData());
+	     q->value(0).toString().toUtf8().constData(),
+	     db_mysql_hostname.toUtf8().constData());
     }
     else {
       fprintf(stderr,"rddbmgr: WARNING - unable to read Realm value.\n");
-      printf("Rivendell database, schema %d [%s]\n",schema,
-	     GetSchemaVersion(schema).toUtf8().constData());
+      printf("Rivendell database, schema %d [%s] (@ %s)\n",schema,
+	     GetSchemaVersion(schema).toUtf8().constData(),
+	     db_mysql_hostname.toUtf8().constData());
     }
     delete q;
   }
