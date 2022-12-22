@@ -23846,3 +23846,6 @@
 	rddbmgr(8).
 2022-12-21 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.0.0rc0int11.
+2022-12-22 Fred Gleason <fredg@paravelsystems.com>
+	* Documented the '--check-log-line-ids' option in the rddbmgr(8)
+	man page.
