@@ -11330,16 +11330,6 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 	  "`DATA_MID_THUMB`="+RDEscapeBlob(mid_blob)+","+
 	  "`DATA_SMALL_THUMB`="+RDEscapeBlob(small_blob)+" "+
 	  QString::asprintf("where `ID`=%u",q->value(0).toUInt());
-	/*
-	sql=QString("update `FEED_IMAGES` set ")+
-	  "`DATA_MID_THUMB`="+
-	  RDEscapeBlob(RDIMResizeImage(q->value(1).toByteArray(),
-				       RD_MID_THUMB_SIZE))+","+
-	  "`DATA_SMALL_THUMB`="+
-	  RDEscapeBlob(RDIMResizeImage(q->value(1).toByteArray(),
-				       RD_SMALL_THUMB_SIZE))+" "+
-	  QString::asprintf("where `ID`=%u",q->value(0).toUInt());
-	*/
 	if(!RDSqlQuery::apply(sql,err_msg)) {
 	  return false;
 	}
@@ -11353,6 +11343,22 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     }
     delete q;
 
+    WriteSchemaVersion(++cur_schema);
+  }
+
+  if((cur_schema<366)&&(set_schema>cur_schema)) {
+    sql=QString("update `RDAIRPLAY` set ")+
+      "`PAUSE_ENABLED`='N' where "+
+      "`PAUSE_ENABLED` is null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table `RDAIRPLAY` ")+
+      "modify column `PAUSE_ENABLED` enum('N','Y') not null default 'N'";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
     WriteSchemaVersion(++cur_schema);
   }
 

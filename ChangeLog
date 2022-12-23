@@ -23851,3 +23851,11 @@
 	man page.
 2022-12-23 Florent Peyraud <florent@draceo.fr>
 	* Fix pypad lib which crashed when ProcessNullUpdates!=0 in conffile
+2022-12-23 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'not null' constraint to the 'RDAIRPLAY.PAUSE_ENABLED'
+	field.
+	* Changed the default value of the 'RDAIRPLAY.PAUSE_ENABLED' field
+	from NULL to 'N'.
+	* Incremented the database version to 366.
+	* Fixed a bug in rddbmgr(8) that could throw a SQL error when
+	creating a new database.
