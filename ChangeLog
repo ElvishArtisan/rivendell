@@ -23859,3 +23859,7 @@
 	* Incremented the database version to 366.
 	* Fixed a bug in rddbmgr(8) that could throw a SQL error when
 	creating a new database.
+2022-12-23 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the version of the 'rivwebpyapi' PyPI package to
+	4.0.0b4.
+	* Incremented the package version to 4.0.0rc0int12.
