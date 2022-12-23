@@ -725,11 +725,11 @@ class Update(object):
                 if self.__config.get(section,'ProcessNullUpdates')=='0':
                     result=result and True
                 if self.__config.get(section,'ProcessNullUpdates')=='1':
-                    result=result and self.hasPadType(pypad.TYPE_NOW)
+                    result=result and self.hasPadType(TYPE_NOW)
                 if self.__config.get(section,'ProcessNullUpdates')=='2':
-                    result=result and self.hasPadType(pypad.TYPE_NEXT)
+                    result=result and self.hasPadType(TYPE_NEXT)
                 if self.__config.get(section,'ProcessNullUpdates')=='3':
-                    result=result and self.hasPadType(pypad.TYPE_NOW) and self.hasPadType(pypad.TYPE_NEXT)
+                    result=result and self.hasPadType(TYPE_NOW) and self.hasPadType(TYPE_NEXT)
             else:
                 result=result and True
 
