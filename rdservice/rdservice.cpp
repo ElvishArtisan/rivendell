@@ -121,6 +121,15 @@ MainObject::MainObject(QObject *parent)
   }
 
   //
+  // Startup Delay
+  //
+  if(rda->config()->serviceStartupDelay()>0) {
+    rda->syslog(LOG_INFO,"delaying startup for %d seconds",
+		rda->config()->serviceStartupDelay());
+    sleep(rda->config()->serviceStartupDelay()); // Blunt object, but it works!
+  }
+
+  //
   // Exit Timer
   //
   ::signal(SIGINT,SigHandler);

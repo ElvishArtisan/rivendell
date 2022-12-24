@@ -519,6 +519,13 @@ QString RDConfig::tempDirectory()
   return conf_temp_directory;
 }
 
+
+int RDConfig::serviceStartupDelay() const
+{
+  return conf_service_startup_delay;
+}
+
+
 QString RDConfig::sasStation() const
 {
   return conf_sas_station;
@@ -706,6 +713,8 @@ bool RDConfig::load()
   conf_service_timeout=
     profile->intValue("Tuning","ServiceTimeout",RD_DEFAULT_SERVICE_TIMEOUT);
   conf_temp_directory=profile->stringValue("Tuning","TempDirectory","");
+  conf_service_startup_delay=profile->intValue("Tuning","ServiceStartupDelay",
+					     RD_DEFAULT_SERVICE_STARTUP_DELAY);
   conf_sas_station=profile->stringValue("SASFilter","Station","");
   conf_sas_matrix=profile->intValue("SASFilter","Matrix",0);
   conf_sas_base_cart=profile->intValue("SASFilter","BaseCart",0);
@@ -820,6 +829,7 @@ void RDConfig::clear()
   conf_transcoding_delay=0;
   conf_service_timeout=RD_DEFAULT_SERVICE_TIMEOUT;
   conf_temp_directory="";
+  conf_service_startup_delay=RD_DEFAULT_SERVICE_STARTUP_DELAY;
   conf_sas_station="";
   conf_sas_matrix=-1;
   conf_sas_base_cart=1;

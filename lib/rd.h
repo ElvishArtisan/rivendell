@@ -627,6 +627,11 @@
 #define RD_DEFAULT_SERVICE_TIMEOUT 30
 
 /*
+ * Default 'ServiceStartupDelay=' value in rd.conf(5) [seconds]
+ */
+#define RD_DEFAULT_SERVICE_STARTUP_DELAY 5
+
+/*
  * File Extension for RSS XML Feed Files
  */
 #define RD_RSS_XML_FILE_EXTENSION "rss"

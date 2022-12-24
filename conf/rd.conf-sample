@@ -176,6 +176,11 @@ TranscodingDelay=0
 ; then '/tmp' will be used.
 ;TempDirectory=/tmp
 
+; Seconds to wait before rdservice(8) launches the caed(8) daemon. Needed
+; in some setups to allow other subsystems --e.g. ALSA -- to stabilize after
+; bootup.
+;ServiceStartupDelay=5 
+
 [Hacks]
 ; Completely disable maintenance checks on this host.
 ; DisableMaintChecks=Yes

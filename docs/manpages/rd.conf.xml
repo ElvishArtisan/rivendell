@@ -6,7 +6,7 @@
   <refmeta>
     <refentrytitle>rd.conf</refentrytitle>
     <manvolnum>5</manvolnum>
-    <refmiscinfo class='source'>October 2019</refmiscinfo>
+    <refmiscinfo class='source'>December 2022</refmiscinfo>
     <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
   </refmeta>
   <refnamediv>
@@ -717,6 +717,21 @@
        <variablelist>
 	 <varlistentry>
 	   <term>
+	     <userinput>ServiceStartDelay = <replaceable>secs</replaceable></userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       Instruct <command>rdservice</command><manvolnum>8</manvolnum>
+	       to wait for <replaceable>secs</replaceable> seconds before
+	       initiating service startup. Useful for giving certain
+	       subsystems --e.g. ALSA -- time to reach a stable state during
+	       system bootup (but see BUGS below). Default value is
+	       <userinput>5</userinput>.
+	     </para>
+	   </listitem>
+	 </varlistentry>
+	 <varlistentry>
+	   <term>
 	     <userinput>ServiceTimeout = <replaceable>secs</replaceable></userinput>
 	   </term>
 	   <listitem>
@@ -865,6 +880,15 @@
      </listitem>
    </varlistentry>
  </variablelist>
+</refsect1>
+
+<refsect1 id='bugs'><title>Bugs</title>
+<para>
+  In a perfect world, the <userinput>ServiceStartDelay=</userinput> parameter
+  would not be required. It is present to work around shortcomings in
+  <command>systemd</command><manvolnum>1</manvolnum>'s
+  <userinput>sound.target</userinput> service synchronization.
+</para>
 </refsect1>
 
 <refsect1 id='see_also'><title>See Also</title>
