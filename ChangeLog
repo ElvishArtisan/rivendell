@@ -23868,3 +23868,5 @@
 	of rd.conf(5).
 	* Added 'sound.target' to the 'After=' directive in
 	'systemd/rivendell.service.in'.
+2022-12-24 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.0.0rc0int13.
