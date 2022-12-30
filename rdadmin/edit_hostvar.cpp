@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Host Variable
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,6 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <QMessageBox>
 #include <QPushButton>
 
 #include <rdescape_string.h>
@@ -42,7 +43,6 @@ EditHostvar::EditHostvar(QWidget *parent)
   //
   edit_name_edit=new QLineEdit(this);
   edit_name_edit->setGeometry(125,11,120,19);
-  edit_name_edit->setReadOnly(true);
   QLabel *label=new QLabel(tr("Variable Name:"),this);
   label->setGeometry(10,11,110,19);
   label->setFont(labelFont());
@@ -133,7 +133,24 @@ int EditHostvar::exec(int id)
 
 void EditHostvar::okData()
 {
-  QString sql=QString("update `HOSTVARS` set ")+
+  QString sql;
+  RDSqlQuery *q=NULL;
+
+  sql=QString("select ")+
+    "`ID` "+  // 00
+    "from `HOSTVARS` where "+
+    "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"' && "+
+    "`NAME`='"+RDEscapeString(edit_name_edit->text())+"' && "+
+    QString::asprintf("`ID`!=%d",edit_id);
+  q=new RDSqlQuery(sql);
+  if(q->first()) {
+    QMessageBox::warning(this,"RDAdmin - "+tr("Error"),
+			 tr("The variable name is already in use!"));
+    delete q;
+    return;
+  }
+
+  sql=QString("update `HOSTVARS` set ")+
     "`NAME`='"+RDEscapeString(edit_name_edit->text())+"',"+
     "`VARVALUE`='"+RDEscapeString(edit_varvalue_edit->text())+"',"+
     "`REMARK`='"+RDEscapeString(edit_remark_edit->text())+"' "+

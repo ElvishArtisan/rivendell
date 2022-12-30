@@ -23890,3 +23890,6 @@
 	* Added a 'wmctrl' dependency to the 'rivendell' RPM package.
 2022-12-30 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'wmctrl' dependency to the 'rivendell' DEB package.
+2022-12-30 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdadmin(1) that made it impossible to set the
+	name of newly created host variables.
