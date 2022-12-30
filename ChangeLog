@@ -23888,3 +23888,5 @@
 	only a single instance to run at a time.
 	* Added an rdsinglestart(1) utility.
 	* Added a 'wmctrl' dependency to the 'rivendell' RPM package.
+2022-12-30 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'wmctrl' dependency to the 'rivendell' DEB package.
