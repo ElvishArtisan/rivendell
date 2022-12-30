@@ -87,11 +87,22 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   // Open the Database
   //
   rda=new RDApplication("RDLibrary","rdlibrary",RDLIBRARY_USAGE,this);
-  if(!rda->open(&err_msg)) {
+  if(!rda->open(&err_msg,NULL,true)) {
     QMessageBox::critical(this,"RDLibrary - "+tr("Error"),err_msg);
     exit(1);
   }
   setWindowIcon(rda->iconEngine()->applicationIcon(RDIconEngine::RdLibrary,22));
+
+  if(rda->libraryConf()->isSingleton()) {
+    //
+    // Ensure that we're the only instance
+    //
+    if(!rda->makeSingleInstance(&err_msg)) {
+      QMessageBox::critical(this,"RDLibrary - "+tr("Error"),
+			    tr("Startup error")+": "+err_msg+".");
+      exit(RDCoreApplication::ExitPriorInstance);
+    }
+  }
 
   //
   // Read Command Options

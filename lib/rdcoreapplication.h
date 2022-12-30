@@ -58,7 +58,7 @@ class RDCoreApplication : public QObject
   RDCoreApplication(const QString &module_name,const QString &cmdname,
 		const QString &usage,QObject *parent=0);
   ~RDCoreApplication();
-  bool open(QString *err_msg,ErrorType *err_type=NULL,bool check_svc=true);
+  bool open(QString *err_msg,ErrorType *err_type,bool check_svc);
   RDAirPlayConf *airplayConf();
   RDCae *cae();
   RDCmdSwitch *cmdSwitch();
@@ -93,6 +93,10 @@ class RDCoreApplication : public QObject
 
  signals:
   void userChanged();
+
+ protected:
+  QString moduleName() const;
+  QString commandName() const;
 
  private:
   bool CheckService(QString *err_msg);

@@ -370,6 +370,19 @@ void RDLibraryConf::setSearchLimited(bool state) const
 }
 
 
+bool RDLibraryConf::isSingleton() const
+{
+  return RDBool(RDGetSqlValue("RDLIBRARY","ID",lib_id,"IS_SINGLETON").
+		toString());
+}
+
+
+void RDLibraryConf::setIsSingleton(bool state) const
+{
+  SetRow("IS_SINGLETON",RDYesNo(state));
+}
+
+
 void RDLibraryConf::getSettings(RDSettings *s) const
 {
   QString sql;

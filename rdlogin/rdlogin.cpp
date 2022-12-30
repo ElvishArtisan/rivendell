@@ -2,7 +2,7 @@
 //
 // The User Login/Logout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -44,12 +44,24 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   setMinimumSize(sizeHint());
   setMaximumHeight(sizeHint().height());
 
+  //
+  // Open the database
+  //
   rda=new RDApplication("RDLogin","rdlogin",RDLOGIN_USAGE,this);
-  if(!rda->open(&err_msg)) {
+  if(!rda->open(&err_msg,NULL,true)) {
     QMessageBox::critical(this,"RDLogin - "+tr("Error"),err_msg);
     exit(1);
   }
   setWindowIcon(rda->iconEngine()->applicationIcon(RDIconEngine::Rivendell,22));
+
+  //
+  // Ensure that we're the only instance
+  //
+  if(!rda->makeSingleInstance(&err_msg)) {
+    QMessageBox::critical(this,"RDLogin - "+tr("Error"),
+			  tr("Startup error")+": "+err_msg+".");
+    exit(RDCoreApplication::ExitPriorInstance);
+  }
 
   //
   // Read Command Options

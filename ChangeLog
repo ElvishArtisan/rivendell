@@ -23873,3 +23873,18 @@
 2022-12-27 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.0.0rc1.
 	* Incremented the Python API version to 4.0.0rc1.
+2022-12-30 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'RDLIBRARY.IS_SINGLETON' field to the database.
+	* Added a 'RDLOGEDIT.IS_SINGLETON' field to the database.
+	* Incremented the database version to 367.
+	* Added 'RDLibraryConf::isSingleton()' and
+	'RDLibraryConf::setIsSingleton()' methods.
+	* Added 'RDLogeditConf::isSingleton()' and
+	'RDLogeditConf::setIsSingleton()' methods.
+	* Modified rdcartslots(1), rdcastmanager(1), rdcatch(1),
+	rdlogmanager(1) and rdpanel(1) to allow only a single instance to
+	run at a time.
+	* Modified rdlibrary(1) and rdlogedit(1) to conditionally allow
+	only a single instance to run at a time.
+	* Added an rdsinglestart(1) utility.
+	* Added a 'wmctrl' dependency to the 'rivendell' RPM package.

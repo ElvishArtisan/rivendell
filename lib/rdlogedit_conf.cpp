@@ -328,6 +328,19 @@ void RDLogeditConf::getSettings(RDSettings *s) const
 }
 
 
+bool RDLogeditConf::isSingleton() const
+{
+  return RDBool(RDGetSqlValue("RDLOGEDIT","STATION",lib_station,"IS_SINGLETON").
+		toString());
+}
+
+
+void RDLogeditConf::setIsSingleton(bool state) const
+{
+  SetRow("IS_SINGLETON",RDYesNo(state));
+}
+
+
 void RDLogeditConf::SetRow(const QString &param,int value) const
 {
   RDSqlQuery *q;

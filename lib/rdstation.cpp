@@ -843,6 +843,20 @@ bool RDStation::create(const QString &name,QString *err_msg,
 	QString::asprintf("`MACHINE`=%d",i);
       RDSqlQuery::apply(sql);
     }
+
+    //
+    // RDLibrary Parameters
+    //
+    sql=QString("insert into `RDLIBRARY` set ")+
+      "`STATION`='"+RDEscapeString(name)+"'";
+    RDSqlQuery::apply(sql);
+
+    //
+    // RDLogEdit Parameters
+    //
+    sql=QString("insert into `RDLOGEDIT` set ")+
+      "`STATION`='"+RDEscapeString(name)+"'";
+    RDSqlQuery::apply(sql);
   }
   else {    // Use Template Host
     sql=QString("select ")+
@@ -964,7 +978,8 @@ bool RDStation::create(const QString &name,QString *err_msg,
       "`ENABLE_EDITOR`,"+        // 20
       "`SRC_CONVERTER`,"+        // 21
       "`LIMIT_SEARCH`,"+         // 22
-      "`SEARCH_LIMITED` "+       // 23
+      "`SEARCH_LIMITED`,"+       // 23
+      "`IS_SINGLETON` "+         // 24
       "from `RDLIBRARY` where "+
       "`STATION`='"+RDEscapeString(exemplar)+"'";
     q=new RDSqlQuery(sql);
@@ -994,6 +1009,7 @@ bool RDStation::create(const QString &name,QString *err_msg,
 	QString::asprintf("`SRC_CONVERTER`=%d,",q->value(21).toInt())+
 	QString::asprintf("`LIMIT_SEARCH`=%d,",q->value(22).toInt())+
 	"`SEARCH_LIMITED`='"+RDEscapeString(q->value(23).toString())+"',"+
+	"`IS_SINGLETON`='"+q->value(24).toString()+"',"+
 	"`STATION`='"+RDEscapeString(name)+"'";
       RDSqlQuery::apply(sql);
     }
@@ -1020,7 +1036,8 @@ bool RDStation::create(const QString &name,QString *err_msg,
       "`TRIM_THRESHOLD`,"+      // 14
       "`RIPPER_LEVEL`,"+        // 15
       "`DEFAULT_TRANS_TYPE`,"+  // 16
-      "`ENABLE_SECOND_START` "+ // 17
+      "`ENABLE_SECOND_START`,"+ // 17
+      "`IS_SINGLETON` "+        // 18
       "from `RDLOGEDIT` where "+
       "`STATION`='"+RDEscapeString(exemplar)+"'";
     q=new RDSqlQuery(sql);
@@ -1044,7 +1061,8 @@ bool RDStation::create(const QString &name,QString *err_msg,
 	QString::asprintf("`TRIM_THRESHOLD`=%d,",q->value(14).toInt())+
 	QString::asprintf("`RIPPER_LEVEL`=%d,",q->value(15).toInt())+
 	QString::asprintf("`DEFAULT_TRANS_TYPE`=%d,",q->value(16).toInt())+
-	"`ENABLE_SECOND_START`='"+RDEscapeString(q->value(17).toString())+"'";
+	"`ENABLE_SECOND_START`='"+RDEscapeString(q->value(17).toString())+"',"+
+	"`IS_SINGLETON`='"+q->value(18).toString()+"'";
       RDSqlQuery::apply(sql);
     }
     delete q;

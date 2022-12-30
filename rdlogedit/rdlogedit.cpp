@@ -61,11 +61,22 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   // Open the Database
   //
   rda=new RDApplication("RDLogEdit","rdlogedit",RDLOGEDIT_USAGE,this);
-  if(!rda->open(&err_msg)) {
+  if(!rda->open(&err_msg,NULL,true)) {
     QMessageBox::critical(this,"RDLogEdit - "+tr("Error"),err_msg);
     exit(1);
   }
   log_import_path=RDGetHomeDir();
+
+  if(rda->logeditConf()->isSingleton()) {
+    //
+    // Ensure that we're the only instance
+    //
+    if(!rda->makeSingleInstance(&err_msg)) {
+      QMessageBox::critical(this,"RDLogEdit - "+tr("Error"),
+			    tr("Startup error")+": "+err_msg+".");
+      exit(RDCoreApplication::ExitPriorInstance);
+    }
+  }
 
   //
   // Read Command Options

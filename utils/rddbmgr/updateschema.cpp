@@ -11359,6 +11359,25 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
+  if((cur_schema<367)&&(set_schema>cur_schema)) {
+    sql=QString("alter table `RDLIBRARY` ")+
+      "add column `IS_SINGLETON` enum('N','Y') not null default 'Y' "+
+      "after `SEARCH_LIMITED`";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table `RDLOGEDIT` ")+
+      "add column `IS_SINGLETON` enum('N','Y') not null default 'Y' "+
+      "after `DEFAULT_TRANS_TYPE`";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
     WriteSchemaVersion(++cur_schema);
   }
 

@@ -67,9 +67,18 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   // Open the Database
   //
   rda=new RDApplication("RDCatch","rdcatch",RDCATCH_USAGE,this);
-  if(!rda->open(&err_msg)) {
+  if(!rda->open(&err_msg,NULL,true)) {
     QMessageBox::critical(this,"RDCatch - "+tr("Error"),err_msg);
     exit(1);
+  }
+
+  //
+  // Ensure that we're the only instance
+  //
+  if(!rda->makeSingleInstance(&err_msg)) {
+    QMessageBox::critical(this,"RDCatch - "+tr("Error"),
+			  tr("Startup error")+": "+err_msg+".");
+    exit(RDCoreApplication::ExitPriorInstance);
   }
 
   //

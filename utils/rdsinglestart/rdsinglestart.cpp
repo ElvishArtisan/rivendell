@@ -1,8 +1,8 @@
-// rdapplication.cpp
+// rdsinglestart.cpp
 //
-// Base GUI Application Class
+//  Start a program so as to allow only a single instance.
 //
-//   (C) Copyright 2021-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,61 +18,63 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <stdlib.h>
+#include <unistd.h>
+
+#include <QApplication>
 #include <QProcess>
 
-#include "rdapplication.h"
+#include "rdsinglestart.h"
 
-RDApplication *rda=NULL;
-
-RDApplication::RDApplication(const QString &module_name,const QString &cmdname,
-			     const QString &usage,QObject *parent)
-  : RDCoreApplication(module_name,cmdname,usage,parent)
+MainObject::MainObject(QObject *parent)
+  :QObject(parent)
 {
-  app_icon_engine=new RDIconEngine();
-}
+  QStringList args;
+  QProcess *proc=NULL;
 
+  //
+  // Read Command Options
+  //
+  RDCmdSwitch *cmd=new RDCmdSwitch("rdsinglestart",RDSINGLESTART_USAGE);
+  if(cmd->keys()<1) {
+    perror("missing argument");
+    exit(1);
+  }
+  for(unsigned i=0;i<(cmd->keys()-1);i++) {
+  }
+  QStringList f0=cmd->key(cmd->keys()-1).split("/",QString::SkipEmptyParts);
+  QString program=f0.last().trimmed();
 
-RDApplication::~RDApplication()
-{
-  delete app_icon_engine;
-}
-
-
-bool RDApplication::makeSingleInstance(QString *err_msg)
-{
   //
   // If we're already running, then just raise the window.
   //
-  QStringList args;
   args.clear();
   args.push_back("-l");
-  QProcess *proc=new QProcess(this);
+  proc=new QProcess(this);
   proc->start("wmctrl",args);
   proc->waitForFinished();
   if(proc->exitStatus()!=QProcess::NormalExit) {
-    *err_msg=tr("wmctrl(1) process crashed");
-    delete proc;
-    return false;
+    perror("wmctrl(1) process crashed");
+    exit(1);
   }
   if(proc->exitCode()!=0) {
     QString errs=QString::fromUtf8(proc->readAllStandardError());
     if(errs.isEmpty()) {
-      *err_msg=tr("wmctrl(1) not found\n");
+      fprintf(stderr,"rdsinglestart: wmctrl(1) not found\n");
     }
     else {
-      *err_msg=QString::asprintf("wmctrl(1) process returned error [%s]",
-				 errs.toUtf8().constData());
+      fprintf(stderr,"rdsinglestart: wmctrl(1) process returned error [%s]\n",
+	      errs.toUtf8().constData());
     }
-    delete proc;
-    return false;
+    exit(1);
   }
   bool found=false;
-  QStringList f0=QString::fromUtf8(proc->readAllStandardOutput()).
+  f0=QString::fromUtf8(proc->readAllStandardOutput()).
     split("\n",QString::SkipEmptyParts);
   for(int i=0;i<f0.size();i++) {
     QStringList f1=f0.at(i).split(" ",QString::SkipEmptyParts);
     if(f1.size()>=4) {
-      if(f1.at(3).trimmed().toLower()==commandName()) {
+      if(f1.at(3).trimmed().toLower()==program) {
 	Raise(f1.at(0));
 	found=true;
       }
@@ -82,28 +84,17 @@ bool RDApplication::makeSingleInstance(QString *err_msg)
   if(found) {
     exit(0);
   }
-  return true;
+
+  //
+  // Otherwise, start a new process
+  //
+  Start(cmd);
+
+  exit(0);
 }
 
 
-RDIconEngine *RDApplication::iconEngine() const
-{
-  return app_icon_engine;
-}
-
-
-QString RDApplication::locale()
-{
-  QString ret;
-
-  if(getenv("LANG")!=NULL) {
-    ret=getenv("LANG");
-  }
-  return ret;
-}
-
-
-void RDApplication::Raise(const QString win_id)
+void MainObject::Raise(const QString win_id)
 {
   QStringList args;
   QProcess *proc=NULL;
@@ -130,4 +121,29 @@ void RDApplication::Raise(const QString win_id)
     exit(1);
   }
   delete proc;
+}
+
+
+void MainObject::Start(RDCmdSwitch *cmd)
+{
+  char *args[cmd->keys()+1];
+  memset(args,0,sizeof(char *)*(cmd->keys()+1));
+
+  for(unsigned i=0;i<cmd->keys();i++) {
+    args[i]=(char *)malloc(cmd->key(i).toUtf8().size()+1);
+    strcpy(args[i],cmd->key(i).toUtf8().constData());
+  }
+  if(fork()==0) {
+    execvp(args[0],args);
+    perror("rdsinglestart");
+  }
+  exit(0);
+}
+
+
+int main(int argc,char *argv[])
+{
+  QApplication a(argc,argv,false);
+  new MainObject();
+  return a.exec();
 }

@@ -59,12 +59,21 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   rda=new RDApplication("RDCastManager","rdcastmanager",RDCASTMANAGER_USAGE,
 			this);
-  if(!rda->open(&err_msg)) {
+  if(!rda->open(&err_msg,NULL,true)) {
     QMessageBox::critical(this,"RDCastManager - "+tr("Error"),err_msg);
     exit(1);
   }
   setWindowIcon(rda->iconEngine()->
 		applicationIcon(RDIconEngine::RdCastManager,22));
+
+  //
+  // Ensure that we're the only instance
+  //
+  if(!rda->makeSingleInstance(&err_msg)) {
+    QMessageBox::critical(this,"RDCastManager - "+tr("Error"),
+			  tr("Startup error")+": "+err_msg+".");
+    exit(RDCoreApplication::ExitPriorInstance);
+  }
 
   //
   // Read Command Options

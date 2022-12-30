@@ -31,3 +31,4 @@ ENABLE_EDITOR        enum('N','Y')
 SRC_CONVERTER        int(11)
 LIMIT_SEARCH         int(11)           0 = No, 1 = Yes, 2 = Previous
 SEARCH_LIMITED       enum('N','Y')
+IS_SINGLETON         enum('N','Y')

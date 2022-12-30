@@ -1,13 +1,10 @@
-## automake.am
+## Makefile.am
 ##
-## Automake.am for rivendell/utils
-##
-##   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+##   (C) Copyright 2022 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
-##   it under the terms of the GNU General Public License as
-##   published by the Free Software Foundation; either version 2 of
-##   the License, or (at your option) any later version.
+##   it under the terms of the GNU General Public License version 2 as
+##   published by the Free Software Foundation.
 ##
 ##   This program is distributed in the hope that it will be useful,
 ##   but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -20,43 +17,22 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-if ALSA_RD_AM
-  ALSACONFIG_RD_OPT = rdalsaconfig
-endif
-SUBDIRS = $(ALSACONFIG_RD_OPT)\
-          rdcheckcuts\
-          rdcleandirs\
-          rdclilogedit\
-          rdcollect\
-          rdconvert\
-          rddbconfig\
-          rddbmgr\
-          rddelete\
-          rdexport\
-          rdgen\
-          rdgpimon\
-          rdimport\
-          rdmaint\
-          rdmarkerset\
-          rdmetadata\
-          rdpopup\
-          rdrender\
-          rdselect_helper\
-          rdsinglestart\
-          rdsoftkeys\
-          rmlsend
-
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -DQTDIR=\"@QT_DIR@\" @QT_CXXFLAGS@ -I$(top_srcdir)/lib
-LIBS = @QT_LIBS@ -L$(top_srcdir)/lib
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -Wno-strict-aliasing -std=c++11 -fPIC -I$(top_srcdir)/lib @QT5_CFLAGS@ @MUSICBRAINZ_CFLAGS@ @IMAGEMAGICK_CFLAGS@
+LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
 
 # The dependency for qt's Meta Object Compiler (moc)
 moc_%.cpp:	%.h
 	$(MOC) $< -o $@
 
-EXTRA_DIST = utils.pro
+bin_PROGRAMS = rdsinglestart
+
+dist_rdsinglestart_SOURCES = rdsinglestart.cpp rdsinglestart.h
+
+rdsinglestart_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@ @IMAGEMAGICK_LIBS@
 
 CLEANFILES = *~\
+             *.exe\
              *.idb\
              *ilk\
              *.obj\

@@ -703,6 +703,7 @@ AC_CONFIG_FILES([rivendell.spec \
     utils/rdpopup/Makefile \
     utils/rdrender/Makefile \
     utils/rdselect_helper/Makefile \
+    utils/rdsinglestart/Makefile \
     utils/rdsoftkeys/Makefile \
     utils/rmlsend/Makefile \
     xdg/Makefile \

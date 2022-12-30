@@ -83,6 +83,8 @@ class RDLibraryConf
   void setLimitSearch(RDLibraryConf::SearchLimit lmt) const;
   bool searchLimited() const;
   void setSearchLimited(bool state) const;
+  bool isSingleton() const;
+  void setIsSingleton(bool state) const;
   static QString cdServerTypeText(CdServerType type);
   static QPixmap cdServerLogo(CdServerType type);
 

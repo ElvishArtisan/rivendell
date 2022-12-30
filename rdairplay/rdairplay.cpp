@@ -67,19 +67,18 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   // Open the Database
   //
   rda=new RDApplication("RDAirPlay","rdairplay",RDAIRPLAY_USAGE,this);
-  if(!rda->open(&err_msg)) {
+  if(!rda->open(&err_msg,NULL,true)) {
     QMessageBox::critical(this,"RDAirPlay - "+tr("Error"),err_msg);
     exit(1);
   }
 
   //
-  // Ensure Single Instance
+  // Ensure that we're the only instance
   //
-  air_lock=new RDInstanceLock(RDHomeDir()+"/.rdairplaylock");
-  if(!air_lock->lock()) {
-    QMessageBox::information(this,tr("RDAirPlay"),
-			     tr("Multiple instances not allowed!"));
-    exit(1);
+  if(!rda->makeSingleInstance(&err_msg)) {
+    QMessageBox::critical(this,"RDAirPlay - "+tr("Error"),
+			  tr("Startup error")+": "+err_msg+".");
+    exit(RDCoreApplication::ExitPriorInstance);
   }
 
   //
@@ -1767,7 +1766,6 @@ void MainWidget::closeEvent(QCloseEvent *e)
     }
     rda->airplayConf()->setExitCode(RDAirPlayConf::ExitClean);
     rda->syslog(LOG_INFO,"RDAirPlay exiting");
-    air_lock->unlock();
     saveSettings();
     exit(0);
   }
@@ -1782,7 +1780,6 @@ void MainWidget::closeEvent(QCloseEvent *e)
   }
   rda->airplayConf()->setExitCode(RDAirPlayConf::ExitClean);
   rda->syslog(LOG_INFO,"RDAirPlay exiting");
-  air_lock->unlock();
   saveSettings();
   exit(0);
 }

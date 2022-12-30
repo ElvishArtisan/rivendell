@@ -39,7 +39,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   // Open the Database
   //
   rda=new RDApplication("RDGpiMon","rdgpimon",RDGPIMON_USAGE,this);
-  if(!rda->open(&err_msg)) {
+  if(!rda->open(&err_msg,NULL,true)) {
     QMessageBox::critical(this,"RDGpiMon - "+tr("Error"),err_msg);
     exit(1);
   }

@@ -68,7 +68,7 @@ MainObject::MainObject(QObject *parent)
   // Open the Database
   //
   rda=static_cast<RDApplication *>(new RDCoreApplication("rdrender","rdrender",RDRENDER_USAGE,this));
-  if(!rda->open(&err_msg)) {
+  if(!rda->open(&err_msg,NULL,true)) {
     fprintf(stderr,"rdrender: %s\n",(const char *)err_msg.toUtf8());
     exit(1);
   }

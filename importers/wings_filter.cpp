@@ -51,7 +51,7 @@ MainObject::MainObject(QObject *parent)
   // Open the Database
   //
   rda=static_cast<RDApplication *>(new RDCoreApplication("wings_filter","wings_filter",WINGS_FILTER_USAGE,this));
-  if(!rda->open(&err_msg)) {
+  if(!rda->open(&err_msg,NULL,false)) {
     fprintf(stderr,"wings_filter: %s\n",err_msg.toUtf8().constData());
     exit(1);
   }

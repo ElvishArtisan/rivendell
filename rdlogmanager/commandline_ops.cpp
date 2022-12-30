@@ -45,8 +45,9 @@ int RunReportOperation(int argc,char *argv[],const QString &rptname,
     return 256;
   }
 
-  rda=static_cast<RDApplication *>(new RDCoreApplication("RDLogManager","rdlogmanager",RDLOGMANAGER_USAGE));
-  if(!rda->open(&err_msg)) {
+  rda=static_cast<RDApplication *>(new RDCoreApplication("RDLogManager",
+					   "rdlogmanager",RDLOGMANAGER_USAGE));
+  if(!rda->open(&err_msg,NULL,true)) {
     fprintf(stderr,"rdlogmanager: %s\n",err_msg.toUtf8().constData());
     exit(RDApplication::ExitNoDb);
   }

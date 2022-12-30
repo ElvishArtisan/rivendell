@@ -2,7 +2,7 @@
 //
 // Test the Rivendell multicast receiver routines
 //
-//   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -41,7 +41,7 @@ MainObject::MainObject(QObject *parent)
   //
   rda=new RDApplication("metadata_wildcard_test","metadata_wildcard_test",
 			METADATA_WILDCARD_TEST_USAGE,this);
-  if(!rda->open(&err_msg)) {
+  if(!rda->open(&err_msg,NULL,true)) {
     fprintf(stderr,"metadata_wildcard_test: %s\n",(const char *)err_msg.toUtf8());
     exit(1);
   }

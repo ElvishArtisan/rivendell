@@ -63,7 +63,7 @@ MainObject::MainObject(QObject *parent)
   // Open the Database
   //
   rda=static_cast<RDApplication *>(new RDCoreApplication("nexgen_filter","nexgen_filter",NEXGEN_FILTER_USAGE,this));
-  if(!rda->open(&err_msg)) {
+  if(!rda->open(&err_msg,NULL,false)) {
     fprintf(stderr,"nexgen_filter: %s\n",err_msg.toUtf8().constData());
     exit(1);
   }

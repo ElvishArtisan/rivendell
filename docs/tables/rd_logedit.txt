@@ -24,3 +24,4 @@ REC_STOP_CART        int(10) unsigned
 TRIM_THRESHOLD       int(11)
 RIPPER_LEVEL         int(11)
 DEFAULT_TRANS_TYPE   int(11)
+IS_SINGLETON         enum('N','Y')

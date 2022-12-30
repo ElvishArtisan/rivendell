@@ -70,6 +70,8 @@ class RDLogeditConf
   RDLogLine::TransType defaultTransType() const;
   void setDefaultTransType(RDLogLine::TransType type);
   void getSettings(RDSettings *s) const;
+  bool isSingleton() const;
+  void setIsSingleton(bool state) const;
   
  private:
   void SetRow(const QString &param,int value) const;

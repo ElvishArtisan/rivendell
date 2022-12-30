@@ -2,7 +2,7 @@
 //
 // Test harness for RDWaveScene
 //
-//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -43,7 +43,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   rda=new RDApplication("wavescene_test","wavescene_test",WAVESCENE_TEST_USAGE,
 			this);
-  if(!rda->open(&err_msg)) {
+  if(!rda->open(&err_msg,NULL,true)) {
     QMessageBox::critical(this,"wavescene_test - "+tr("Error"),err_msg);
     exit(RDApplication::ExitNoDb);
   }

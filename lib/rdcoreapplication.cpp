@@ -620,6 +620,18 @@ void RDCoreApplication::userChangedData()
 }
 
 
+QString RDCoreApplication::moduleName() const
+{
+  return app_module_name;
+}
+
+
+QString RDCoreApplication::commandName() const
+{
+  return app_command_name;
+}
+
+
  bool RDCoreApplication::CheckService(QString *err_msg)
 {
   bool ret=false;

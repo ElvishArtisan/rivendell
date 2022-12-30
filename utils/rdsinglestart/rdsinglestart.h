@@ -1,8 +1,8 @@
-// rdapplication.h
+// rdsinglestart.h
 //
-// Base GUI Application Class
+//  Start a program so as to allow only a single instance.
 //
-//   (C) Copyright 2021-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,29 +18,24 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef RDAPPLICATION_H
-#define RDAPPLICATION_H
+#ifndef RDSINGLESTART_H
+#define RDSINGLESTART_H
 
-#include <rdcoreapplication.h>
-#include <rdiconengine.h>
+#include <QObject>
 
-class RDApplication : public RDCoreApplication
+#include <rdcmd_switch.h>
+
+#define RDSINGLESTART_USAGE "<program>\n"
+
+class MainObject : public QObject
 {
-  Q_OBJECT;
  public:
-  RDApplication(const QString &module_name,const QString &cmdname,
-		const QString &usage,QObject *parent);
-  ~RDApplication();
-  bool makeSingleInstance(QString *err_msg);
-  RDIconEngine *iconEngine() const;
-  static QString locale();
+  MainObject(QObject *parent=0);
 
  private:
   void Raise(const QString win_id);
-  bool app_singleton;
-  RDIconEngine *app_icon_engine;
+  void Start(RDCmdSwitch *cmd);
 };
 
-extern RDApplication *rda;
 
-#endif  // RDAPPLICATION_H
+#endif  // RDSINGLESTART_H

@@ -2,7 +2,7 @@
 //
 // Test the Rivendell file format exporter.
 //
-//   (C) Copyright 2010-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -45,7 +45,7 @@ MainObject::MainObject(QObject *parent)
   // Open the Database
   //
   rda=static_cast<RDApplication *>(new RDCoreApplication("audio_export_test","audio_export_test",AUDIO_EXPORT_TEST_USAGE,this));
-  if(!rda->open(&err_msg)) {
+  if(!rda->open(&err_msg,NULL,true)) {
     fprintf(stderr,"audio_export_test: %s\n",err_msg.toUtf8().constData());
     exit(1);
   }

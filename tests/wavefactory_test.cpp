@@ -2,7 +2,7 @@
 //
 // Test harness for RDWavefactory
 //
-//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -44,7 +44,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   rda=new RDApplication("wavefactory_test","wavefactory_test",WAVEFACTORY_TEST_USAGE,
 			this);
-  if(!rda->open(&err_msg)) {
+  if(!rda->open(&err_msg,NULL,true)) {
     QMessageBox::critical(this,"wavefactory_test - "+tr("Error"),err_msg);
     exit(RDApplication::ExitNoDb);
   }

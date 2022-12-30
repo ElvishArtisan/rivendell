@@ -1024,7 +1024,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdadmin.configure_rdlibrary_dialog.png" width="87mm" depth="140mm"/>
+	    <imagedata align="center" fileref="rdadmin.configure_rdlibrary_dialog.png" width="87mm"/>
 	  </imageobject>
 	  <caption>
 	    <para>The Configure RDLibrary Dialog</para>
@@ -1176,6 +1176,12 @@
 	</computeroutput> box will cause the
 	<computeroutput>Show Only First 100 Matches</computeroutput> box
 	to be ticked when starting a new instance of rdlibrary(1).
+      </para>
+      <para>
+	The <computeroutput>Allow Multiple Instances</computeroutput>, if set
+	to <userinput>Yes</userinput>, will allow multiple, independent
+	instances of <command>rdlibrary</command><manvolnum>1</manvolnum> to
+	be run simultaneously.
       </para>
       <para>
 	The <computeroutput>Channels:</computeroutput> dropdown sets the
@@ -1658,7 +1664,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdadmin.configure_rdlogedit_dialog.png" width="67mm" depth="89mm"/>
+	    <imagedata align="center" fileref="rdadmin.configure_rdlogedit_dialog.png" width="67mm"/>
 	  </imageobject>
 	  <caption>
 	    <para>The Configure RDLogEdit Dialog</para>
@@ -1732,6 +1738,12 @@
 	The <computeroutput>Default Transition</computeroutput> indicates
 	the transition type to use by default when adding a new log
 	event.
+      </para>
+      <para>
+	The <computeroutput>Allow Multiple Instances</computeroutput>, if set
+	to <userinput>Yes</userinput>, will allow multiple, independent
+	instances of <command>rdlogedit</command><manvolnum>1</manvolnum> to
+	be run simultaneously.
       </para>
     </sect2>
     <sect2 xml:id="sect.rdadmin.manage_hosts.configuring_rdcartslots">

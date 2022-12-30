@@ -22,7 +22,6 @@
 #define RDAIRPLAY_H
 
 #include <rdemptycart.h>
-#include <rdinstancelock.h>
 #include <rdmainwindow.h>
 #include <rdmeterstrip.h>
 
@@ -142,7 +141,6 @@ class MainWidget : public RDMainWindow
   int air_cue_card;
   int air_cue_port;
   RDLogLine::TransType air_default_trans_type;
-  RDInstanceLock *air_lock;
   bool air_clear_filter;
   RDAirPlayConf::BarAction air_bar_action;
   bool air_pause_enabled;

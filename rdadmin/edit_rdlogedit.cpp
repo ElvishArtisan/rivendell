@@ -283,6 +283,20 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   lib_default_transtype_box->insertItem(2,tr("Stop"));
 
   //
+  // Allow Multiple Instances
+  //
+  lib_singleton_box=new QComboBox(this);
+  lib_singleton_box->setGeometry(180,434,100,19);
+  QLabel *lib_singleton_label=
+    new QLabel(tr("Allow Multiple Instances")+":",this);
+  lib_singleton_label->setFont(labelFont());
+  lib_singleton_label->setGeometry(0,434,175,19);
+  lib_singleton_label->
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  lib_singleton_box->insertItem(0,tr("No"));
+  lib_singleton_box->insertItem(1,tr("Yes"));
+
+  //
   //  Ok Button
   //
   QPushButton *ok_button=new QPushButton(this);
@@ -365,6 +379,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   ShowBitRates(lib_format_box->currentIndex(),lib_lib->bitrate());
   lib_enable_second_start_box->setCurrentIndex(lib_lib->enableSecondStart());
   lib_default_transtype_box->setCurrentIndex(lib_lib->defaultTransType());
+  lib_singleton_box->setCurrentIndex(!lib_lib->isSingleton());
 }
 
 
@@ -381,7 +396,7 @@ EditRDLogedit::~EditRDLogedit()
 
 QSize EditRDLogedit::sizeHint() const
 {
-  return QSize(395,500);
+  return QSize(395,524);
 } 
 
 
@@ -493,6 +508,8 @@ void EditRDLogedit::okData()
   lib_lib->setEnableSecondStart(lib_enable_second_start_box->currentIndex());
   lib_lib->setDefaultTransType(
     (RDLogLine::TransType)lib_default_transtype_box->currentIndex());
+  lib_lib->setIsSingleton(lib_singleton_box->currentIndex()==0);
+
   done(0);
 }
 

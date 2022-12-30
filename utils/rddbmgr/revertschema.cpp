@@ -42,6 +42,16 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
+  // Revert 367
+  //
+  if((cur_schema==367)&&(set_schema<cur_schema)) {
+    DropColumn("RDLIBRARY","IS_SINGLETON");
+    DropColumn("RDLOGEDIT","IS_SINGLETON");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 366
   //
   if((cur_schema==366)&&(set_schema<cur_schema)) {

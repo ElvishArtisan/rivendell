@@ -198,6 +198,7 @@ utils/rdselect_helper/rdconfig.h
 utils/rdselect_helper/rdprofile.cpp
 utils/rdselect_helper/rdprofile.h
 utils/rdselect_helper/rdselect_helper
+utils/rdsinglestart/rdsinglestart
 utils/sas_shim/sas_shim
 xdg/install_usermode.sh
 xdg/rdalsaconfig-root-consolehelper

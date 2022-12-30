@@ -30,7 +30,7 @@ MainObject::MainObject(QObject *parent)
   QString err_msg;
 
   rda=new RDApplication("notification_test","notification_test",NOTIFICATION_TEST_USAGE,this);
-  if(!rda->open(&err_msg)) {
+  if(!rda->open(&err_msg,NULL,true)) {
     fprintf(stderr,"notification_test: %s\n",err_msg.toUtf8().constData());
     exit(1);
   }

@@ -362,7 +362,7 @@ Autogen::Autogen()
   //
   // Open the Database
   //
-  rda=new RDApplication("RDAlsaConfig","rdalsaconfig",RDALSACONFIG_USAGE);
+  rda=new RDApplication("RDAlsaConfig","rdalsaconfig",RDALSACONFIG_USAGE,this);
   if(!rda->open(&err_msg,NULL,false)) {
     fprintf(stderr,"rdalsaconfig: unable to open database [%s]\n",
 	    (const char *)err_msg.toUtf8());

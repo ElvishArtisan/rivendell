@@ -53,13 +53,22 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   // Open the Database
   //
   rda=new RDApplication("RDLogManager","rdlogmanager",RDLOGMANAGER_USAGE,this);
-  if(!rda->open(&err_msg)) {
+  if(!rda->open(&err_msg,NULL,true)) {
     QMessageBox::critical(this,"RDLogManager - "+tr("Error"),err_msg);
     exit(RDApplication::ExitNoDb);
   }
   setWindowIcon(rda->iconEngine()->
 		applicationIcon(RDIconEngine::RdLogManager,22));
   setWindowTitle(tr("RDLogManager"));
+
+  //
+  // Ensure that we're the only instance
+  //
+  if(!rda->makeSingleInstance(&err_msg)) {
+    QMessageBox::critical(this,"RDLogManager - "+tr("Error"),
+			  tr("Startup error")+": "+err_msg+".");
+    exit(RDCoreApplication::ExitPriorInstance);
+  }
 
   //
   // CAE Connection

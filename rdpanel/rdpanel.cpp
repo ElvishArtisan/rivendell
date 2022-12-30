@@ -54,11 +54,20 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   // Open the Database
   //
   rda=new RDApplication("RDPanel","rdpanel",RDPANEL_USAGE,this);
-  if(!rda->open(&err_msg)) {
+  if(!rda->open(&err_msg,NULL,true)) {
     QMessageBox::critical(this,"RDPanel - "+tr("Error"),err_msg);
     exit(1);
   }
   setWindowIcon(rda->iconEngine()->applicationIcon(RDIconEngine::RdPanel,22));
+
+  //
+  // Ensure that we're the only instance
+  //
+  if(!rda->makeSingleInstance(&err_msg)) {
+    QMessageBox::critical(this,"RDPanel - "+tr("Error"),
+			  tr("Startup error")+": "+err_msg+".");
+    exit(RDCoreApplication::ExitPriorInstance);
+  }
 
   //
   // Read Command Options
@@ -191,14 +200,12 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
     int next_output=1;
     for(int i=0;i<RD_SOUNDPANEL_MAX_OUTPUTS;i++) {
       bool unique=true;
-      int output=next_output;
       QString label=
 	rda->portNames()->portName(panel_panel->card(i),panel_panel->port(i));
       for(int j=0;j<i;j++) {
 	if((panel_panel->card(i)==panel_panel->card(j))&&
 	   (panel_panel->port(i)==panel_panel->port(j))) {
 	  unique=false;
-	  output=panel_panel->outputText(j).toInt();
 	}
       }
       if(unique) {
