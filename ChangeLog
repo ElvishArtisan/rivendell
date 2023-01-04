@@ -23896,3 +23896,9 @@
 2023-01-04 Fred Gleason <fredg@paravelsystems.com>
 	* Corrected inaccuracies in the description of the 'Dropbox Instances'
 	notification type in the Notifications protocol documentation.
+2023-01-04 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdpadengined(8) that caused two instances of a
+	pypad script to be started when adding a single instance in
+	rdadmin(1).
+	* Fixed a bug in rdpadengined(8) that caused failed to clean up
+	properly after a failed pypad script startup.

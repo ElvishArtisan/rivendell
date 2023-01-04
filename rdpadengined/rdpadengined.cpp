@@ -149,15 +149,17 @@ void MainObject::notificationReceivedData(RDNotification *notify)
     int id=notify->id().toUInt();
     switch(notify->action()) {
     case RDNotification::AddAction: 
-      sql=QString("select `ID` from `PYPAD_INSTANCES` where ")+
-	QString::asprintf("`ID`=%u && ",id)+
-	"STATION_NAME='"+RDEscapeString(rda->station()->name())+"'";
-      q=new RDSqlQuery(sql);
-      if(q->first()) {
-	StartScript(id);
+      if(pad_instances.value(id)==NULL) {
+	sql=QString("select `ID` from `PYPAD_INSTANCES` where ")+
+	  QString::asprintf("`ID`=%u && ",id)+
+	  "STATION_NAME='"+RDEscapeString(rda->station()->name())+"'";
+	q=new RDSqlQuery(sql);
+	if(q->first()) {
+	  StartScript(id);
+	}
+	delete q;
       }
-      delete q;
-     break;
+      break;
 
     case RDNotification::DeleteAction:
       pad_instances.value(id)->setPrivateData((void *)true);  // No Restart
@@ -183,7 +185,13 @@ void MainObject::notificationReceivedData(RDNotification *notify)
 
 void MainObject::instanceStartedData(int id)
 {
+  RDProcess *proc=NULL;
+
   SetRunStatus(id,true);
+  if((proc=pad_instances.value(id))!=NULL) {
+    rda->syslog(LOG_INFO,"%s",(QString("started: ")+proc->program()+" "+
+			   proc->arguments().join(" ")).toUtf8().constData());
+  }
 }
 
 
@@ -201,6 +209,8 @@ void MainObject::instanceFinishedData(int id)
   if(proc->process()->exitCode()==0) {
     SetRunStatus(id,false);
     bool no_restart=(bool)proc->privateData();
+    rda->syslog(LOG_INFO,"%s",(QString("stopped: ")+proc->program()+" "+
+			   proc->arguments().join(" ")).toUtf8().constData());
     proc->deleteLater();
     pad_instances.remove(id);
     if(!no_restart) {
@@ -214,6 +224,8 @@ void MainObject::instanceFinishedData(int id)
       SetRunStatus(id,false,proc->process()->exitCode(),
 		   proc->standardErrorData());
     }
+    proc->deleteLater();
+    pad_instances.remove(id);
   }
 }
 
@@ -271,8 +283,8 @@ void MainObject::StartScript(unsigned id)
     args.push_back(QString::asprintf("%u",RD_PAD_CLIENT_TCP_PORT));
     args.push_back(QString::asprintf("$%u",id));
     pad_instances.value(id)->start(RD_PYPAD_PYTHON_PATH,args);
-    rda->syslog(LOG_INFO,"%s",(QString("starting: ")+proc->program()+" "+
-			       proc->arguments().join(" ")).toUtf8().constData());
+    rda->syslog(LOG_DEBUG,"%s",(QString("starting: ")+proc->program()+" "+
+			   proc->arguments().join(" ")).toUtf8().constData());
   }
   delete q;
 }

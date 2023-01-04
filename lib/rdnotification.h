@@ -2,7 +2,7 @@
 //
 // A container class for a Rivendell Notification message.
 //
-//   (C) Copyright 2018-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,8 +21,8 @@
 #ifndef RDNOTIFICATION_H
 #define RDNOTIFICATION_H
 
-#include <qstring.h>
-#include <qvariant.h>
+#include <QString>
+#include <QVariant>
 
 class RDNotification
 {
