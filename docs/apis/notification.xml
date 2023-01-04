@@ -246,7 +246,7 @@
 	  </row>
 	  <row>
 	    <entry>Database Field</entry>
-	    <entry>DROPBOXES.ID</entry>
+	    <entry>STATIONS.NAME</entry>
 	  </row>
 	  <row>
 	    <entry>Type</entry>
@@ -254,7 +254,7 @@
 	  </row>
 	  <row>
 	    <entry>Id Data Type</entry>
-	    <entry>Integer</entry>
+	    <entry>String</entry>
 	  </row>
 	  <row>
 	    <entry>RDNotification::Type Value</entry>
@@ -263,6 +263,12 @@
 	</tbody>
       </tgroup>
     </table>
+    <note>
+      Dropbox Add/Modify/Delete actions operate at a 'per-host' granularity
+      --i.e. <emphasis>any</emphasis> notification will cause
+      <emphasis>all</emphasis> dropboxes on the target host to be killed
+      and then restarted.
+    </note>
   </sect2>
 
   <sect2 xml:id="sect.notifications.types.catch_event">

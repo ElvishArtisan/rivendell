@@ -23893,3 +23893,6 @@
 2022-12-30 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdadmin(1) that made it impossible to set the
 	name of newly created host variables.
+2023-01-04 Fred Gleason <fredg@paravelsystems.com>
+	* Corrected inaccuracies in the description of the 'Dropbox Instances'
+	notification type in the Notifications protocol documentation.
