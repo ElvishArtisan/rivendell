@@ -23902,3 +23902,6 @@
 	rdadmin(1).
 	* Fixed a bug in rdpadengined(8) that caused failed to clean up
 	properly after a failed pypad script startup.
+2023-01-07 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'qt5-style-plugins' dependency to the 'rivendell' DEB
+	package.
