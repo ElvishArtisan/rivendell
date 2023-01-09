@@ -39,6 +39,7 @@ class MySqlLogin : public RDDialog
   QSizePolicy sizePolicy() const;
 
  private slots:
+  void usernameTextChangedData(const QString &str);
   void okData();
   void cancelData();
 

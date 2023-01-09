@@ -48,7 +48,9 @@ MySqlLogin::MySqlLogin(QString *username,QString *password,RDConfig *c,
   login_name_label=new QLabel(tr("Username:"),this);
   login_name_label->setFont(labelFont());
   login_name_label->setAlignment(Qt::AlignRight);
-
+  connect(login_name_edit,SIGNAL(textChanged(const QString &)),
+	  this,SLOT(usernameTextChangedData(const QString &)));
+  
   //
   // MySql Login Password
   //
@@ -66,6 +68,7 @@ MySqlLogin::MySqlLogin(QString *username,QString *password,RDConfig *c,
   login_ok_button->setFont(buttonFont());
   login_ok_button->setText(tr("OK"));
   login_ok_button->setDefault(true);
+  login_ok_button->setDisabled(true);
   connect(login_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
@@ -94,6 +97,12 @@ QSize MySqlLogin::sizeHint() const
 QSizePolicy MySqlLogin::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+}
+
+
+void MySqlLogin::usernameTextChangedData(const QString &str)
+{
+  login_ok_button->setDisabled(str.isEmpty());
 }
 
 

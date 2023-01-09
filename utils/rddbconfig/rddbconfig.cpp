@@ -264,11 +264,6 @@ void MainWidget::createData()
 
   delete mysql_login;
 
-  if(admin_name.isEmpty()||admin_pwd.isEmpty()) {
-    QMessageBox::critical(this,tr("RDDbConfig Error"),tr("Did not specify username and/or password."));
-    return;
-  }
-
   stopDaemons();
 
   CreateDb *db_create=new CreateDb(hostname,dbname,admin_name,admin_pwd);
