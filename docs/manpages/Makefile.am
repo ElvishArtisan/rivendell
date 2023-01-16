@@ -2,7 +2,7 @@
 ##
 ## docs/manpages/automake.am for Rivendell
 ##
-## (C) Copyright 2015-2019 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2015-2023 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -33,7 +33,8 @@
 %.8:	%.xml
 	xsltproc $(DOCBOOK_STYLESHEETS)/manpages/docbook.xsl $<
 
-all-local:	rdairplay.1\
+all-local:	rdadmin.1\
+                rdairplay.1\
                 rdalsaconfig.1\
                 rdclilogedit.1\
                 rd.conf.5\
@@ -50,7 +51,8 @@ all-local:	rdairplay.1\
                 rdsinglestart.1\
                 rdsoftkeys.1
 
-man_MANS = rdairplay.1\
+man_MANS = rdadmin.1\
+           rdairplay.1\
            rdalsaconfig.1\
            rdclilogedit.1\
            rd.conf.5\
@@ -68,6 +70,8 @@ man_MANS = rdairplay.1\
            rdsoftkeys.1
 
 EXTRA_DIST = exitcodes.xml\
+             rdadmin.1\
+             rdadmin.xml\
              rdairplay.1\
              rdairplay.xml\
              rdalsaconfig.1\

@@ -32,6 +32,7 @@
 #include <rdapplication.h>
 #include <rdconf.h>
 #include <rdconfig.h>
+#include <rdescape_string.h>
 #include <rdpaths.h>
 
 #include "../../icons/rivendell-22x22.xpm"
@@ -170,7 +171,7 @@ void MainWidget::mismatchData()
     return;
   }
 
-  if (QMessageBox::question(this,tr("Database Mismatch"),QString::asprintf("Your database is version %d. Your Rivendell %s installation requires version %d. Would you like to modify your database to the current version?",db->schema(),VERSION,RD_VERSION_DATABASE),(QMessageBox::No|QMessageBox::Yes)) != QMessageBox::Yes) {
+  if (QMessageBox::question(this,tr("Database Mismatch"),QString::asprintf("Your database is version %d. Your Rivendell %s installation requires version %d. Would you like to modify your database to this version?",db->schema(),VERSION,RD_VERSION_DATABASE),(QMessageBox::No|QMessageBox::Yes)) != QMessageBox::Yes) {
     return;
   }
 
@@ -373,8 +374,38 @@ void MainWidget::restoreData()
       RDApplication::syslog(rd_config,LOG_INFO,"restored %s database from %s",
 			    rd_config->mysqlDbname().toUtf8().constData(),
 			    filename.toUtf8().constData());
+
     }
     emit updateLabels();
+
+    //
+    // Check for local host entry
+    //
+    int schema=0;
+    QString err_msg;
+    if(RDOpenDb(&schema,&err_msg,rd_config)&&(schema==RD_VERSION_DATABASE)) {
+      QString sql=QString("select ")+
+	"`NAME` "+  // 00
+	"from `STATIONS` where "+
+	"`NAME`='"+RDEscapeString(rd_config->stationName())+"'";
+      RDSqlQuery *q=new RDSqlQuery(sql);
+      if(!q->first()) {
+	if(QMessageBox::question(this,"RDDbConfig - "+
+				 tr("Missing Host Entry"),
+				 tr("This database is missing a host entry for the local system")+" [\""+rd_config->stationName()+"\"].\n"+
+				 tr("Create one?"),
+				 QMessageBox::Yes,QMessageBox::No)==
+	   QMessageBox::Yes) {
+	  QStringList args;
+	  args.push_back("--add-host-entry");
+	  QProcess *proc=new QProcess(this);
+	  proc->start("/usr/bin/rdadmin",args);
+	  proc->waitForFinished(-1);
+	}
+      }
+      delete q;
+    }
+    
     startDaemons();
   }
 }

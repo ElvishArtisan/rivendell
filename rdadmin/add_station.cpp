@@ -93,6 +93,12 @@ AddStation::AddStation(QString *stationname,QWidget *parent)
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //
+  // Set Default Station Name
+  //
+  add_name_edit->setText(*stationname);
+  add_name_edit->setReadOnly(!stationname->isEmpty());
+
+  //
   // Fill Exemplar List
   //
   add_exemplar_box->insertItem(0,tr("Empty Host Config"));

@@ -34,6 +34,7 @@
 #include <rddbheartbeat.h>
 #include <rdescape_string.h>
 
+#include "add_station.h"
 #include "edit_system.h"
 #include "globals.h"
 #include "info_dialog.h"
@@ -71,7 +72,8 @@ MainWidget::MainWidget(RDConfig *config,RDWidget *parent)
   QString str;
   QString err_msg;
   RDApplication::ErrorType err_type=RDApplication::ErrorOk;
-
+  admin_add_host_entry=false;
+  
   //
   // Fix the Window Size
   //
@@ -88,6 +90,28 @@ MainWidget::MainWidget(RDConfig *config,RDWidget *parent)
       exit(1);
     }
   }
+
+  for(int i=0;i<rda->cmdSwitch()->keys();i++) {
+    if(rda->cmdSwitch()->key(i)=="--add-host-entry") {
+      if(geteuid()==0) {
+	admin_add_host_entry=true;
+	rda->cmdSwitch()->setProcessed(i,true);
+      }
+      else {
+	QMessageBox::critical(this,"RDAdmin - "+tr("Error"),
+			      tr("The --add-host-entry option requires root permissions."));
+	exit(1);
+      }
+    }
+    if(!rda->cmdSwitch()->processed(i)) {
+      QMessageBox::critical(this,"RDAdmin - "+tr("Error"),
+			    tr("Unrecognized option")+": "+
+			    rda->cmdSwitch()->key(i)+" "+
+			    rda->cmdSwitch()->value(i));
+      exit(1);
+    }
+  }
+
   setWindowIcon(rda->iconEngine()->applicationIcon(RDIconEngine::RdAdmin,22));
   setWindowTitle(QString("RDAdmin v")+VERSION+" - "+
 		 tr("Host")+": "+rda->config()->stationName());
@@ -218,6 +242,23 @@ MainWidget::MainWidget(RDConfig *config,RDWidget *parent)
   //
   // Log In
   //
+  if(admin_add_host_entry) {
+    QString hostname=rda->config()->stationName();
+
+    AddStation *d=new AddStation(&hostname,this);
+    if(d->exec()) {
+      QMessageBox::information(this,"RDAdmin - "+tr("Debug"),
+			       tr("Success!"));
+
+    }
+    else {
+      RDStation::remove(hostname);
+      QMessageBox::information(this,"RDAdmin - "+tr("Debug"),
+			       tr("Aborted!"));
+    }
+    delete d;
+    exit(0);
+  }
   Login *login=new Login(&admin_username,&admin_password,this);
   if(!login->exec()) {
     exit(0);

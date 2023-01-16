@@ -23908,3 +23908,9 @@
 2023-01-09 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rddbconfig(8) that made it impossible to specify
 	a blank DB password.
+2023-01-16 Fred Gleason <fredg@paravelsystems.com>
+	* Added a check in rddbconfig(8) for the existence of a host entry
+	for the local host, along with an offer to create such an entry if
+	it does not exist.
+	* Added an '--add-host-entry' option to rdadmin(1).
+	* Added a rdadmin(1) man page.

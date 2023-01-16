@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry id="stdin" xmlns="http://docbook.org/ns/docbook" version="5.0">
+  <!--
+      Header
+  -->
+  <refmeta>
+    <refentrytitle>rdadmin</refentrytitle>
+    <manvolnum>1</manvolnum>
+    <refmiscinfo class='source'>January 2023</refmiscinfo>
+    <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>rdadmin</refname>
+    <refpurpose>
+      Module for configuring the Rivendell Radio Automation System
+    </refpurpose>
+  </refnamediv>
+  <info>
+    <author>
+      <personname>
+	<firstname>Fred</firstname>
+	<surname>Gleason</surname>
+	<email>fredg@paravelsystems.com</email>
+      </personname>
+      <contrib>Application Author</contrib>
+    </author>
+  </info>
+
+  <!--
+      Body
+  -->
+  <refsynopsisdiv id='synopsis'>
+    <cmdsynopsis>
+      <command>rdadmin</command>
+      <arg choice='opt'>--add-host-entry</arg>
+      <sbr/>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <refsect1 id='description'><title>Description</title>
+  <para>
+    The <command>rdadmin</command><manvolnum>1</manvolnum> module is used
+    to manage the configuration of the Rivendell Radio Automation System.
+    When started with no arguments, it will prompt for the credentials of a
+    Rivendell user that has the
+    <userinput>Administer System</userinput> or
+    <userinput>Administer RSS Feeds</userinput> permissions.
+    If authentication of those credentials is successful, it will then
+    display the main <command>rdadmin</command><manvolnum>1</manvolnum>
+    button menu.
+  </para>
+  <para>
+    If invoked by a system user with an effective user id of
+    <userinput>0</userinput>
+    --i.e. &quot;root&quot; -- and the <userinput>--add-host-entry</userinput>
+    option is specified, <command>rdadmin</command><manvolnum>1</manvolnum>
+    will bypass the login process and prompt the user to create a new host
+    entry for the local system, following which it will exit.
+  </para>
+  <para>
+    For documentation of the GUI elements of
+    <command>rdadmin</command><manvolnum>1</manvolnum>, see the
+    <userinput>Rivendell Administration</userinput> section of the
+    <userinput>Rivendell Operations Guide</userinput>.
+  </para>
+  </refsect1>
+
+  <refsect1 id='see_also'><title>See Also</title>
+  <para>
+    <citerefentry>
+      <refentrytitle>rdalsaconfig</refentrytitle><manvolnum>8</manvolnum>
+    </citerefentry>
+    <literal>, </literal>
+    <citerefentry>
+      <refentrytitle>rddbconfig</refentrytitle><manvolnum>8</manvolnum>
+    </citerefentry>
+  </para>
+  </refsect1>
+
+
+
+</refentry>
+

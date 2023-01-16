@@ -60,6 +60,7 @@ class MainWidget : public RDMainWindow
   QString admin_filter;
   QString admin_group;
   QString admin_schedcode;
+  bool admin_add_host_entry;
 };
 
 
