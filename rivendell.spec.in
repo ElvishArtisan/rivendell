@@ -455,6 +455,7 @@ rm -rf $RPM_BUILD_ROOT
 /etc/pam.d/rivendell
 /etc/fail2ban/filter.d/rivendell-webapi.conf
 /lib/systemd/system/rivendell.service
+%{_mandir}/man1/rdadmin.1.gz
 %{_mandir}/man1/rdairplay.1.gz
 %{_mandir}/man1/rdalsaconfig.1.gz
 %{_mandir}/man1/rdclilogedit.1.gz

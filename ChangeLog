@@ -23919,3 +23919,6 @@
 	consistently.
 2023-01-16 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up a warning in 'web/webget/webget.cpp'.
+2023-01-16 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'rivendell.spec.in' that broke the 'make rpm'
+	target.
