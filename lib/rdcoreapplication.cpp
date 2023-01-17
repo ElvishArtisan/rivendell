@@ -577,6 +577,10 @@ QString RDCoreApplication::exitCodeText(RDCoreApplication::ExitCode code)
     ret=tr("bad ticket");
     break;
 
+  case RDCoreApplication::ExitNoStation:
+    ret=tr("no such host");
+    break;
+
   case RDCoreApplication::ExitLast:
     break;
   }

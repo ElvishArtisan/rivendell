@@ -3,7 +3,7 @@
 // A Qt-based application to configure, backup, and restore
 // the Rivendell database.
 //
-//   (C) Copyright 2009-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2009-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -175,28 +175,25 @@ void MainWidget::mismatchData()
     return;
   }
 
-  QProcess modifyProcess(this);
+  int exit_code=-1;
+  QString err_msg;
   QStringList args;
-  args << QString("--modify");
-  QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-  modifyProcess.start(QString("%1/sbin/rddbmgr").arg(RD_PREFIX), args);
-  bool r=modifyProcess.waitForFinished(-1);
-  QApplication::restoreOverrideCursor();
-  if(r) {
-    QString stderr=modifyProcess.readAllStandardError();
-    if (modifyProcess.exitCode()) {
-      QMessageBox::critical(this,tr("RDDbConfig Error"),stderr);
+  bool result=false;
+  args.push_back("--modify");
+  if((result=RunProcess(&exit_code,&err_msg,QString("%1/sbin/rddbmgr").arg(RD_PREFIX),args))) {
+    if(exit_code!=0) {
+      QMessageBox::critical(this,tr("RDDbConfig Error"),err_msg);
     }
     else {
-      if(!stderr.isEmpty()) {
-        QMessageBox::information(this,"Database Modified with Warnings",
-          QString::asprintf("Modified database to version %d with warnings:\n\n%s",
-			    RD_VERSION_DATABASE,stderr.toUtf8().constData()));
+      if(!err_msg.isEmpty()) {
+        QMessageBox::information(this,"RDDbConfig - "+tr("Warnings"),
+				 QString::asprintf("Modified database to version %d with warnings:\n\n%s",
+			    RD_VERSION_DATABASE,err_msg.toUtf8().constData()));
       }
       else {
-        QMessageBox::information(this,"Database Modified Successfully",
-          QString::asprintf("Modified database to version %d",
-			    RD_VERSION_DATABASE));
+        QMessageBox::information(this,"RDDbConfig - "+tr("Success"),
+		     QString::asprintf("Modified database to version %d",
+				       RD_VERSION_DATABASE));
       }
       RDApplication::syslog(rd_config,LOG_INFO,
 			    "modified database to version %d",
@@ -204,12 +201,14 @@ void MainWidget::mismatchData()
 
       emit dbChanged();
     }
+
   }
   else {
-    QMessageBox::critical(this,tr("Database Update Error"),
-      QString("Error starting rddbmgr: code=%1").arg(modifyProcess.error()));
+    QMessageBox::critical(this,"RDDbConfig - "+tr("Error"),
+			  QString("Error starting rddbmgr: ")+" "+err_msg);
   }
 }
+
 
 void MainWidget::updateLabels()
 {
@@ -273,7 +272,8 @@ void MainWidget::createData()
     QMessageBox::critical(this,tr("RDDbConfig Error"),err_str);
   }
   else {
-    QMessageBox::information(this,tr("Success"),tr("A new database has been successfully created."));
+    QMessageBox::information(this,tr("Success"),
+			  tr("A new database has been successfully created."));
   }
 
   startDaemons();
@@ -289,40 +289,44 @@ void MainWidget::backupData()
   QString filename;
 
   if (!db->isOpen()) {
-    QMessageBox::critical(this,tr("RDDbConfig Error"),
-      QString::asprintf("Could not open %s database.",
-			rd_config->mysqlDbname().toUtf8().constData()));
+    QMessageBox::critical(this,"RDDbConfig - "+tr("Error"),
+			  QString::asprintf("Could not open %s database.",
+			  rd_config->mysqlDbname().toUtf8().constData()));
     return;
   }
   filename=QFileDialog::getSaveFileName(this,"RDDbConfig - "+
 					tr("Enter the MySQL Backup Filename"),
 					RDHomeDir(),
 					"MySQL files (*.sql);;All files (*.*)");
-
-  if (!filename.isEmpty()) {
-    QProcess backupProcess(this);
+  if(!filename.isEmpty()) {
+    int exit_code=-1;
+    QString err_msg;
     QStringList args;
-    args << QString::asprintf("--user=%s",rd_config->mysqlUsername().toUtf8().constData())
-	 << QString::asprintf("--password=%s",rd_config->mysqlPassword().toUtf8().constData())
-	 << QString::asprintf("--host=%s",rd_config->mysqlHostname().toUtf8().constData())
-      << rd_config->mysqlDbname();
-    backupProcess.setStandardOutputFile(filename);
-    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-    backupProcess.start("mysqldump", args);
-    backupProcess.waitForFinished(-1);
-    QApplication::restoreOverrideCursor();
-    if (backupProcess.exitCode()) {
-      QMessageBox::critical(this,tr("RDDbConfig Error"),
-        QString(backupProcess.readAllStandardError()));
+
+    args.push_back(QString::asprintf("--user=%s",
+			  rd_config->mysqlUsername().toUtf8().constData()));
+    args.push_back(QString::asprintf("--password=%s",
+			  rd_config->mysqlPassword().toUtf8().constData()));
+    args.push_back(QString::asprintf("--host=%s",
+			  rd_config->mysqlHostname().toUtf8().constData()));
+    args.push_back(rd_config->mysqlDbname());
+
+    if(RunProcess(&exit_code,&err_msg,"mysqldump",args,filename)) {
+      if(exit_code==0) {
+	QMessageBox::information(this,"RDDbConfig - "+tr("Success"),
+		     QString::asprintf("Backed up %s database to %s",
+		     rd_config->mysqlDbname().toUtf8().constData(),
+		     filename.toUtf8().constData()));
+	RDApplication::syslog(rd_config,LOG_INFO,"backed up %s database to %s",
+			      rd_config->mysqlDbname().toUtf8().constData(),
+			      filename.toUtf8().constData());
+      }
+      else {
+	QMessageBox::critical(this,"RDDbConfig - "+tr("Error"),err_msg);
+      }
     }
     else {
-      QMessageBox::information(this,"Database Backed Up Successfully",
-        QString::asprintf("Backed up %s database to %s",
-			  rd_config->mysqlDbname().toUtf8().constData(),
-			  filename.toUtf8().constData()));
-      RDApplication::syslog(rd_config,LOG_INFO,"backed up %s database to %s",
-			    rd_config->mysqlDbname().toUtf8().constData(),
-			    filename.toUtf8().constData());
+      QMessageBox::critical(this,"RDDbConfig - "+tr("Error"),err_msg);
     }
   }
 }
@@ -331,50 +335,56 @@ void MainWidget::backupData()
 void MainWidget::restoreData()
 {
   QString filename;
+  int exit_code=-1;
+  QString err_msg;
 
   if (!db->isOpen()) {
-    QMessageBox::critical(this,tr("RDDbConfig Error"),
+    QMessageBox::critical(this,"RDDbConfig - "+tr("Error"),
       tr("Could not open Rivendell database."));
     return;
   }
+
+  if(QMessageBox::question(this,"RDDbConfig - "+tr("Question"),
+			   tr("This operation will completely overwrite the existing database, replacing it with the contents being restored.")+"\n\n"+
+			   tr("Are you sure?"),
+			   QMessageBox::Yes,
+			   QMessageBox::No)!=QMessageBox::Yes) {
+      return;
+    }
+
   filename=
     QFileDialog::getOpenFileName(this,"RDDbConfig - "+
 				 tr("Choose the MySQL Backup File to Restore"),
 				 RDHomeDir(),
 				 "MySQL files (*.sql);;All files (*.*)");
-
+  qApp->processEvents();
   if(!filename.isEmpty()) {
-    if (QMessageBox::question(this,tr("Restore Entire Database"),tr("Are you sure you want to restore your entire Rivendell database?"),(QMessageBox::No|QMessageBox::Yes)) != QMessageBox::Yes) {
-      return;
-    }
-
     db->clearDatabase(rd_config->mysqlDbname());
-
-    QProcess restoreProcess(this);
     QStringList args;
-    args << QString::asprintf("--user=%s",rd_config->mysqlUsername().toUtf8().constData())
-	 << QString::asprintf("--password=%s",rd_config->mysqlPassword().toUtf8().constData())
-	 << QString::asprintf("--host=%s",rd_config->mysqlHostname().toUtf8().constData())
-      << rd_config->mysqlDbname();
-    restoreProcess.setStandardInputFile(filename);
-    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+    args.push_back(QString::asprintf("--user=%s",rd_config->mysqlUsername().toUtf8().constData()));
+    args.push_back(QString::asprintf("--password=%s",rd_config->mysqlPassword().toUtf8().constData()));
+    args.push_back(QString::asprintf("--host=%s",rd_config->mysqlHostname().toUtf8().constData()));
+    args.push_back(rd_config->mysqlDbname());
     stopDaemons();
-    restoreProcess.start("mysql", args);
-    restoreProcess.waitForFinished(-1);
-    QApplication::restoreOverrideCursor();
-    if (restoreProcess.exitCode()) {
-      QMessageBox::critical(this,tr("RDDbConfig Error"),
-      QString(restoreProcess.readAllStandardError()));
-    }
-    else {
-      QMessageBox::information(this,"Database Restored Successfully",
-        QString::asprintf("Restored %s database from %s",
-			  rd_config->mysqlDbname().toUtf8().constData(),
-			  filename.toUtf8().constData()));
+    if(RunProcess(&exit_code,&err_msg,"mysql",args,"",filename)) {
+      if(exit_code==0) {
+	QMessageBox::information(this,"RDDbConfig - "+tr("Success"),
+		     QString::asprintf("Restored %s database from %s",
+		     rd_config->mysqlDbname().toUtf8().constData(),
+		     filename.toUtf8().constData()));
       RDApplication::syslog(rd_config,LOG_INFO,"restored %s database from %s",
 			    rd_config->mysqlDbname().toUtf8().constData(),
 			    filename.toUtf8().constData());
 
+      }
+      else {
+	QMessageBox::critical(this,"RDDbConfig - "+tr("Error"),err_msg);
+	return;
+      }
+    }
+    else {
+      QMessageBox::critical(this,"RDDbConfig - "+tr("Error"),err_msg);
+      return;
     }
     emit updateLabels();
 
@@ -405,7 +415,6 @@ void MainWidget::restoreData()
       }
       delete q;
     }
-    
     startDaemons();
   }
 }
@@ -413,14 +422,10 @@ void MainWidget::restoreData()
 
 void MainWidget::resizeEvent(QResizeEvent *e)
 {
-  db_create_button->
-    setGeometry(size().width()/2-80,110,160,50);
-  db_backup_button->
-    setGeometry(size().width()/2-80,165,160,50);
-  db_restore_button->
-    setGeometry(size().width()/2-80,220,160,50);
-  db_close_button->
-    setGeometry(size().width()/2-80,275,160,50);
+  db_create_button->setGeometry(size().width()/2-80,110,160,50);
+  db_backup_button->setGeometry(size().width()/2-80,165,160,50);
+  db_restore_button->setGeometry(size().width()/2-80,220,160,50);
+  db_close_button->setGeometry(size().width()/2-80,275,160,50);
 }
 
 
@@ -462,6 +467,39 @@ void MainWidget::startDaemons()
     startProcess.waitForFinished();
   }
   QApplication::restoreOverrideCursor();
+}
+
+
+bool MainWidget::RunProcess(int *exit_code,QString *err_msg,const QString &cmd,
+			    const QStringList &args,
+			    const QString &output_filename,
+			    const QString &input_filename)
+{
+  bool ret=false;
+  *exit_code=-1;
+
+  QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+  QProcess *proc=new QProcess(this);
+  if(!output_filename.isEmpty()) {
+    proc->setStandardOutputFile(output_filename);
+  }
+  if(!input_filename.isEmpty()) {
+    proc->setStandardInputFile(input_filename);
+  }
+  proc->start(cmd,args);
+  proc->waitForFinished(-1);
+  if(proc->exitStatus()==QProcess::NormalExit) {
+    *exit_code=proc->exitCode();
+    ret=proc->exitCode()==0;
+    *err_msg=QString::fromUtf8(proc->readAllStandardError());
+  }
+  else {
+    *exit_code=-1;
+    *err_msg="\"+cmd\ "+tr("process crashed");
+  }
+  QApplication::restoreOverrideCursor();
+
+  return ret;
 }
 
 

@@ -3,7 +3,7 @@
 // A Qt-based application to configure, backup, and restore
 // the Rivendell database.
 //
-//   (C) Copyright 2009-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2009-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -59,6 +59,10 @@ class MainWidget : public RDWidget
   void resizeEvent(QResizeEvent *e);
 
  private:
+  bool RunProcess(int *exit_code,QString *err_msg,
+		  const QString &cmd,const QStringList &args,
+		  const QString &output_filename="",
+		  const QString &input_filename="");
   RDConfig *rd_config;
   bool db_manage_daemons;
   bool db_daemon_start_needed;

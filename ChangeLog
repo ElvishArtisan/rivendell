@@ -23914,3 +23914,6 @@
 	it does not exist.
 	* Added an '--add-host-entry' option to rdadmin(1).
 	* Added a rdadmin(1) man page.
+2023-01-16 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rddbconfig(8) so as to apply cursor styling
+	consistently.

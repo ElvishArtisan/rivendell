@@ -2,7 +2,7 @@
 //
 // The Administrator Utility for Rivendell.
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -87,7 +87,7 @@ MainWidget::MainWidget(RDConfig *config,RDWidget *parent)
   if(!rda->open(&err_msg,&err_type,false)) {
     if(err_type!=RDApplication::ErrorNoHostEntry) {
       QMessageBox::critical(this,"RDAdmin - "+tr("Error"),err_msg);
-      exit(1);
+      exit(RDCoreApplication::ExitNoDb);
     }
   }
 
@@ -100,7 +100,7 @@ MainWidget::MainWidget(RDConfig *config,RDWidget *parent)
       else {
 	QMessageBox::critical(this,"RDAdmin - "+tr("Error"),
 			      tr("The --add-host-entry option requires root permissions."));
-	exit(1);
+	exit(RDCoreApplication::ExitNoPerms);
       }
     }
     if(!rda->cmdSwitch()->processed(i)) {
@@ -108,7 +108,7 @@ MainWidget::MainWidget(RDConfig *config,RDWidget *parent)
 			    tr("Unrecognized option")+": "+
 			    rda->cmdSwitch()->key(i)+" "+
 			    rda->cmdSwitch()->value(i));
-      exit(1);
+      exit(RDCoreApplication::ExitInvalidOption);
     }
   }
 
@@ -247,34 +247,31 @@ MainWidget::MainWidget(RDConfig *config,RDWidget *parent)
 
     AddStation *d=new AddStation(&hostname,this);
     if(d->exec()) {
-      QMessageBox::information(this,"RDAdmin - "+tr("Debug"),
-			       tr("Success!"));
-
+      exit(RDCoreApplication::ExitOk);
     }
     else {
       RDStation::remove(hostname);
-      QMessageBox::information(this,"RDAdmin - "+tr("Debug"),
-			       tr("Aborted!"));
+      exit(RDCoreApplication::ExitNoStation);
     }
     delete d;
-    exit(0);
+    exit(RDCoreApplication::ExitOk);
   }
   Login *login=new Login(&admin_username,&admin_password,this);
   if(!login->exec()) {
-    exit(0);
+    exit(RDCoreApplication::ExitOk);
   }
   rda->user()->setName(admin_username);
   bool config_priv=rda->user()->adminConfig();
   bool rss_priv=rda->user()->adminRss();
   if(!rda->user()->checkPassword(admin_password,false)) {
     QMessageBox::warning(this,"Login Failed","Login Failed!.\n");
-    exit(1);
+    exit(RDCoreApplication::ExitNoPerms);
   }
   else {
     if((!config_priv)&&(!rss_priv)) {
       QMessageBox::warning(this,tr("Insufficient Privileges"),
          tr("This account has insufficient privileges for this operation."));
-      exit(1);
+      exit(RDCoreApplication::ExitNoPerms);
     }
   }
   name_label->setText(tr("User")+": "+rda->user()->name());
@@ -391,7 +388,7 @@ void MainWidget::podcastsData()
 void MainWidget::quitMainWidget()
 {
   saveSettings();
-  exit(0);
+  exit(RDCoreApplication::ExitOk);
 }
 
 
