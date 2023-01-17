@@ -23917,3 +23917,5 @@
 2023-01-16 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored rddbconfig(8) so as to apply cursor styling
 	consistently.
+2023-01-16 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up a warning in 'web/webget/webget.cpp'.

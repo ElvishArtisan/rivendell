@@ -518,6 +518,7 @@ void MainObject::PutAudio()
   case RDApplication::ExitInvalidCart:
   case RDApplication::ExitNoSchedCode:
   case RDApplication::ExitBadTicket:
+  case RDApplication::ExitNoStation:
     rda->syslog(LOG_WARNING,
 		"importer process returned exit code %d [cmdline: %s, client addr: %s]",
 		proc->exitCode(),
