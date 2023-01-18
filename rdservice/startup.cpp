@@ -279,7 +279,7 @@ bool MainObject::StartDropboxes(QString *err_msg)
     }
     if(q->value(22).toInt()<1) {
       args.push_back(QString::asprintf("--segue-level=%d",
-				       q->value(22).toInt()));
+				       q->value(22).toInt()/100));
       args.push_back(QString::asprintf("--segue-length=%u",
 				       q->value(23).toUInt()));
     }
