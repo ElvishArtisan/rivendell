@@ -20966,3 +20966,6 @@
 	* Fixed a bug in rdlibrary(1) that caused the field names for the
 	'FILENAME' and 'LENGTH' fields in the 'Cart Data Dump (CSV)' report
 	to be corrupted.
+2023-01-18 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdservice(8) that could cause dropboxes to be
+	instantiated with invalid segue level values.
