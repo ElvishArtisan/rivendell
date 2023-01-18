@@ -23932,3 +23932,6 @@
 	instantiated with invalid segue level values.
 2023-01-18 Fred Gleason <fredg@paravelsystems.com>
 	* Modified the 'cwrap' helper to emit C++ compatible output.
+2023-01-18 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up compiler warnings when building rdadmin(1).
+	* Cleaned up compiler warnings when building rddbconfig(8).

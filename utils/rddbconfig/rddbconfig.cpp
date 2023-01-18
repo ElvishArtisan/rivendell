@@ -495,7 +495,7 @@ bool MainWidget::RunProcess(int *exit_code,QString *err_msg,const QString &cmd,
   }
   else {
     *exit_code=-1;
-    *err_msg="\"+cmd\ "+tr("process crashed");
+    *err_msg="\"+cmd\" "+tr("process crashed");
   }
   QApplication::restoreOverrideCursor();
 

@@ -91,7 +91,7 @@ MainWidget::MainWidget(RDConfig *config,RDWidget *parent)
     }
   }
 
-  for(int i=0;i<rda->cmdSwitch()->keys();i++) {
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
     if(rda->cmdSwitch()->key(i)=="--add-host-entry") {
       if(geteuid()==0) {
 	admin_add_host_entry=true;

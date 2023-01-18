@@ -30,10 +30,10 @@ moc_%.cpp:	%.h
 	$(MOC) $< -o $@
 
 # The cwrap dependencies
-global_gpl2.c:	
-	$(CWRAP) -o global_gpl2.c gpl2.html
-global_credits.c:	
-	$(CWRAP) -o global_credits.c ../AUTHORS
+global_gpl2.cpp:	
+	$(CWRAP) -o global_gpl2.cpp gpl2.html
+global_credits.cpp:	
+	$(CWRAP) -o global_credits.cpp ../AUTHORS
 
 # I18N Stuff
 install-exec-local:	
@@ -128,8 +128,8 @@ dist_rdadmin_SOURCES = add_feed.cpp add_feed.h\
                        view_node_info.cpp view_node_info.h\
                        view_pypad_errors.cpp view_pypad_errors.h
 
-nodist_rdadmin_SOURCES = global_credits.c\
-                         global_gpl2.c\
+nodist_rdadmin_SOURCES = global_credits.cpp\
+                         global_gpl2.cpp\
                          moc_add_feed.cpp\
                          moc_add_group.cpp\
                          moc_add_matrix.cpp\
@@ -227,8 +227,8 @@ EXTRA_DIST = gpl2.html\
              xpm_info_banner2.cpp
 
 CLEANFILES = *~\
-             global_credits.c\
-             global_gpl2.c\
+             global_credits.cpp\
+             global_gpl2.cpp\
              *.qm\
              moc_*
 
