@@ -23924,3 +23924,6 @@
 	target.
 2023-01-17 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.0.0rc1int0.
+2023-01-18 Fred Gleason <fredg@paravelsystems.com>
+	* Corrected errors in the WebAPI documentation regarding the
+	argument type of the 'LINE<n>_TIME_TYPE' field in the 'SaveLog' call.
