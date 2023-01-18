@@ -600,18 +600,19 @@ void ListReports::GenerateCartDumpCsv(QString *report,bool prepend_names)
     *report+=RDCsvField("USER_DEFINED");       // 17
     *report+=RDCsvField("DESCRIPTION");        // 18
     *report+=RDCsvField("OUTCUE");             // 19
-    *report+=RDCsvField("FILENAME,LENGTH");    // 20
-    *report+=RDCsvField("START_POINT");        // 21
-    *report+=RDCsvField("END_POINT");          // 22
-    *report+=RDCsvField("SEGUE_START_POINT");  // 23
-    *report+=RDCsvField("SEGUE_END_POINT");    // 24
-    *report+=RDCsvField("HOOK_START_POINT");   // 25
-    *report+=RDCsvField("HOOK_END_POINT");     // 26
-    *report+=RDCsvField("TALK_START_POINT");   // 27
-    *report+=RDCsvField("TALK_END_POINT");     // 28
-    *report+=RDCsvField("FADEUP_POINT");       // 29
-    *report+=RDCsvField("FADEDOWN_POINT");     // 30
-    *report+=RDCsvField("SCHED_CODES",true);   // 31
+    *report+=RDCsvField("FILENAME");           // 20
+    *report+=RDCsvField("LENGTH");             // 21
+    *report+=RDCsvField("START_POINT");        // 22
+    *report+=RDCsvField("END_POINT");          // 23
+    *report+=RDCsvField("SEGUE_START_POINT");  // 24
+    *report+=RDCsvField("SEGUE_END_POINT");    // 25
+    *report+=RDCsvField("HOOK_START_POINT");   // 26
+    *report+=RDCsvField("HOOK_END_POINT");     // 27
+    *report+=RDCsvField("TALK_START_POINT");   // 28
+    *report+=RDCsvField("TALK_END_POINT");     // 29
+    *report+=RDCsvField("FADEUP_POINT");       // 30
+    *report+=RDCsvField("FADEDOWN_POINT");     // 31
+    *report+=RDCsvField("SCHED_CODES",true);   // 32
   }
 
   //

@@ -20962,3 +20962,7 @@
 2023-01-18 Fred Gleason <fredg@paravelsystems.com>
 	* Corrected errors in the WebAPI documentation regarding the
 	argument type of the 'LINE<n>_TIME_TYPE' field in the 'SaveLog' call.
+2023-01-18 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlibrary(1) that caused the field names for the
+	'FILENAME' and 'LENGTH' fields in the 'Cart Data Dump (CSV)' report
+	to be corrupted.
