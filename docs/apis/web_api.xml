@@ -3682,10 +3682,10 @@
 	    Start time type.
 	  </entry>
 	  <entry>
-	    Mandatory. One of the following key words:
+	    Mandatory. Integer enumeration, as follows:
 	    <simplelist>
-	      <member><userinput>Hard</userinput></member>
-	      <member><userinput>Relative</userinput></member>
+	      <member><userinput>0</userinput> - [Relative]</member>
+	      <member><userinput>1</userinput> - [Hard]</member>
 	    </simplelist>
 	  </entry>
 	</row>
