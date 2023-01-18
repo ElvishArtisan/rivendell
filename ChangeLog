@@ -23930,3 +23930,5 @@
 2023-01-18 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdservice(8) that could cause dropboxes to be
 	instantiated with invalid segue level values.
+2023-01-18 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the 'cwrap' helper to emit C++ compatible output.

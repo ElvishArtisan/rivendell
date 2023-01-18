@@ -1,9 +1,9 @@
 // cwrap.cpp
 //
-// A utility for wrapping arbitrary file data in C-compaibile source
+// A utility for wrapping arbitrary file data in C/C++-compatible source
 // statements.
 //
-// (C) Copyright 2003,2016 Fred Gleason <fredg@paravelsystems.com>
+// (C) Copyright 2003-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -90,11 +90,11 @@ int main(int argc,char *argv[])
   // Open Files
   //
   if((input_fd=open(input_name,O_RDONLY))<0) {
-    perror("wrapdat");
+    perror("cwrap");
     exit(1);
   }
   if((output_desc=fopen(output_name,"w"))==NULL) {
-    perror("wrapdat");
+    perror("cwrap");
     exit(1);
   }
 
@@ -103,9 +103,11 @@ int main(int argc,char *argv[])
   //
   memset(&stat,0,sizeof(struct stat));
   if(fstat(input_fd,&stat)) {
-    perror("wrapdat");
+    perror("cwrap");
     exit(1);
   }
+  fprintf(output_desc,"extern const unsigned char %s[%ld];\n",
+	  var_name,stat.st_size+1);
   fprintf(output_desc,"const unsigned char %s[%ld] = {\n",
 	  var_name,stat.st_size+1);
 
