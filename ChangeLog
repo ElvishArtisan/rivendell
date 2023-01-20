@@ -23937,3 +23937,6 @@
 	* Cleaned up compiler warnings when building rddbconfig(8).
 2023-01-20 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'xsltproc' dependency to the 'rivendell' DEB package.
+2023-01-20 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdairplay(1) that broke the 'Audition Head'
+	and 'Audition Tail' buttons in the Full Log widget.

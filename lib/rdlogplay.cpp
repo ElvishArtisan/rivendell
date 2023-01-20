@@ -132,8 +132,7 @@ RDLogPlay::RDLogPlay(int id,RDEventPlayer *player,QObject *parent)
   //
   play_audition_line=-1;
   if((rda->station()->cueCard()>=0)&&
-     (rda->station()->cuePort()>=0)&&
-     isWidgetType()) {
+     (rda->station()->cuePort()>=0)) {
     play_audition_player=
       new RDSimplePlayer(play_cae,rda->ripc(),rda->station()->cueCard(),
 			 rda->station()->cuePort(),0,0);
