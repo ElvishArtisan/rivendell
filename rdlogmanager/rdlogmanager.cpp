@@ -59,7 +59,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   }
   setWindowIcon(rda->iconEngine()->
 		applicationIcon(RDIconEngine::RdLogManager,22));
-  setWindowTitle(tr("RDLogManager"));
+  setWindowTitle(QString("RDLogManager v")+VERSION+" -");
 
   //
   // Ensure that we're the only instance

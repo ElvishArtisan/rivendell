@@ -71,8 +71,10 @@ bool RDApplication::makeSingleInstance(QString *err_msg)
     split("\n",QString::SkipEmptyParts);
   for(int i=0;i<f0.size();i++) {
     QStringList f1=f0.at(i).split(" ",QString::SkipEmptyParts);
-    if(f1.size()>=4) {
-      if(f1.at(3).trimmed().toLower()==commandName()) {
+    if(f1.size()>=6) {
+      if((f1.at(3).trimmed().toLower()==commandName())&&
+	 (f1.at(4)==(QString("v")+VERSION))&&
+	 (f1.at(5)=="-")) {
 	Raise(f1.at(0));
 	found=true;
       }

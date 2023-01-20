@@ -23940,3 +23940,6 @@
 2023-01-20 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdairplay(1) that broke the 'Audition Head'
 	and 'Audition Tail' buttons in the Full Log widget.
+2023-01-20 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'RDApplication' that could cause false detection
+	of similarly-named windows when enforcing single instances.
