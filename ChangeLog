@@ -23935,3 +23935,5 @@
 2023-01-18 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up compiler warnings when building rdadmin(1).
 	* Cleaned up compiler warnings when building rddbconfig(8).
+2023-01-20 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'xsltproc' dependency to the 'rivendell' DEB package.
