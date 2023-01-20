@@ -2,7 +2,7 @@
 ##
 ## icons/automake.am for Rivendell
 ##
-## (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -363,6 +363,8 @@ EXTRA_DIST = admin.xpm\
              rdairplay-22x22.xpm\
              rdairplay-512x512.xpm\
              rdairplay.ico\
+             rdairplay-splash.xcf\
+             rdairplay-splash.xpm\
              rdcartslots-128x128.xpm\
              rdcartslots-16x16.xpm\
              rdcartslots-22x22.xpm\

@@ -2,7 +2,7 @@
 //
 // The On Air Playout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -57,29 +57,38 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
 
   air_panel=NULL;
   air_tracker=NULL;
-  
+
+  //
+  // Splash Screen
+  //
+  air_splash_screen=new SplashScreen();
+  air_splash_screen->show();
+  air_splash_screen->showMessage(tr("Opening database..."));
+
   //
   // Get the Startup Date/Time
   //
   air_startup_datetime=QDateTime(QDate::currentDate(),QTime::currentTime());
 
   //
-  // Open the Database
-  //
-  rda=new RDApplication("RDAirPlay","rdairplay",RDAIRPLAY_USAGE,this);
-  if(!rda->open(&err_msg,NULL,true)) {
-    QMessageBox::critical(this,"RDAirPlay - "+tr("Error"),err_msg);
-    exit(1);
-  }
-
-  //
   // Ensure that we're the only instance
   //
+  rda=new RDApplication("RDAirPlay","rdairplay",RDAIRPLAY_USAGE,this);
   if(!rda->makeSingleInstance(&err_msg)) {
     QMessageBox::critical(this,"RDAirPlay - "+tr("Error"),
 			  tr("Startup error")+": "+err_msg+".");
     exit(RDCoreApplication::ExitPriorInstance);
   }
+
+  //
+  // Open the Database
+  //
+  if(!rda->open(&err_msg,NULL,true)) {
+    QMessageBox::critical(this,"RDAirPlay - "+tr("Error"),err_msg);
+    exit(1);
+  }
+
+  air_splash_screen->showMessage(tr("Reading command line options..."));
 
   //
   // Read Command Options
@@ -156,6 +165,8 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   air_master_timer=new QTimer(this);
   connect(air_master_timer,SIGNAL(timeout()),this,SLOT(masterTimerData()));
   air_master_timer->start(MASTER_TIMER_INTERVAL);
+
+  air_splash_screen->showMessage(tr("Initializing global resources..."));
 
   //
   // Allocate Global Resources
@@ -263,6 +274,8 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   // Macro Player
   //
   air_event_player=new RDEventPlayer(rda->ripc(),this);
+
+  air_splash_screen->showMessage(tr("Initializing widgets..."));
 
   //
   // Log Machines
@@ -404,6 +417,8 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   air_bug_label->setPixmap(*bug);
   delete bug;
   
+  air_splash_screen->showMessage(tr("Initializing sound panel array..."));
+
   //
   // Sound Panel Array
   //
@@ -708,6 +723,8 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   if(!loadSettings(true)) {
     showMaximized();
   }
+
+  air_splash_screen->showMessage(tr("Connecting to Rivendell services..."));
 }
 
 
@@ -818,6 +835,7 @@ void MainWidget::ripcConnectedData(bool state)
       delete q;
     }
   }
+  air_splash_screen->finish(this);
 }
 
 
@@ -2180,7 +2198,7 @@ int main(int argc,char *argv[])
     QApplication::setStyle(RD_GUI_STYLE);
   }
   QApplication a(argc,argv);
-  
+
   //
   // Start Event Loop
   //
@@ -2188,6 +2206,7 @@ int main(int argc,char *argv[])
   config->load();
   MainWidget *w=new MainWidget(config);
   w->show();
+
   return a.exec();
 }
 

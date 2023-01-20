@@ -2,7 +2,7 @@
 //
 // The On Air Playout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,6 +28,7 @@
 #include "button_log.h"
 #include "colors.h"
 #include "soundpanel.h"
+#include "splashscreen.h"
 #include "topstrip.h"
 #include "voicetracker.h"
 
@@ -168,6 +169,7 @@ class MainWidget : public RDMainWindow
   RDEventPlayer *air_event_player;
   TopStrip *air_top_strip;
   QLabel *air_bug_label;
+  SplashScreen *air_splash_screen;
 };
 
 

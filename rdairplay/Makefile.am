@@ -2,7 +2,7 @@
 ##
 ## Automake.am for rivendell/rdairplay
 ##
-## (C) 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+## (C) 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -53,6 +53,7 @@ dist_rdairplay_SOURCES = button_log.cpp button_log.h\
                          post_counter.cpp post_counter.h\
                          rdairplay.cpp rdairplay.h\
                          soundpanel.cpp soundpanel.h\
+                         splashscreen.cpp splashscreen.h\
                          start_button.cpp start_button.h\
                          stop_counter.cpp stop_counter.h\
                          topstrip.cpp topstrip.h\
@@ -72,6 +73,7 @@ nodist_rdairplay_SOURCES = moc_button_log.cpp\
                            moc_post_counter.cpp\
                            moc_rdairplay.cpp\
                            moc_soundpanel.cpp\
+                           moc_splashscreen.cpp\
                            moc_start_button.cpp\
                            moc_stop_counter.cpp\
                            moc_topstrip.cpp\
