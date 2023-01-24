@@ -343,7 +343,7 @@ void ListFeeds::repostData()
   while(q->next()) {
     if(!feed->postPodcast(q->value(0).toUInt(),&err_msg)) {
       QMessageBox::warning(this,"RDAdmin - "+tr("Error"),
-			   tr("Error posting to feed")+" \""+
+			   tr("Error posting audio to feed")+" \""+
 			   q->value(1).toString()+"\"\n"+
 			   "["+err_msg+"].");
     }
@@ -357,7 +357,12 @@ void ListFeeds::repostData()
   pd->setLabelText(tr("Posting RSS XML data..."));
   pd->setRange(0,1);
   pd->setValue(0);
-  feed->postXml();
+  if(!feed->postXml(&err_msg)) {
+    QMessageBox::warning(this,"RDAdmin - "+tr("Error"),
+			 tr("Error posting updated XML to feed")+" \""+
+			 q->value(1).toString()+"\"\n"+
+			 "["+err_msg+"].");
+  }
   pd->setValue(1);
 
   delete pd;

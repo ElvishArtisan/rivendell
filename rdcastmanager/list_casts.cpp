@@ -314,6 +314,7 @@ void ListCasts::deleteData()
 {
   QString sql;
   QString err_text;
+  QString err_msg;
   QModelIndexList rows=list_casts_view->selectionModel()->selectedRows();
 
   if(rows.size()!=1) {
@@ -361,9 +362,10 @@ void ListCasts::deleteData()
     QString::asprintf("`ID`=%u",list_feed_id);
   RDSqlQuery::apply(sql);
 
-  if(!list_feed->postXml()) {
+  if(!list_feed->postXml(&err_msg)) {
     QMessageBox::warning(this,"RDCastManager - "+tr("Remote Error"),
-			 tr("Unable to update remote XML data!"));
+			 tr("Unable to update remote XML data!")+"\n"+
+			 "["+err_msg+"]");
   }
 
   pd->reset();

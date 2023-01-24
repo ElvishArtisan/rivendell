@@ -955,11 +955,12 @@ QString RDFeed::imageUrl(int img_id) const
 }
 
 
-bool RDFeed::postXml()
+bool RDFeed::postXml(QString *err_msg)
 {
   long response_code;
   CURL *curl=NULL;
   CURLcode curl_err;
+  char curl_errorbuffer[CURL_ERROR_SIZE];
   struct curl_httppost *first=NULL;
   struct curl_httppost *last=NULL;
 
@@ -992,6 +993,7 @@ bool RDFeed::postXml()
   QStringList *err_msgs=SetupCurlLogging(curl);
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,stdout);
   curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
+  curl_easy_setopt(curl,CURLOPT_ERRORBUFFER,curl_errorbuffer);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
 		   rda->config()->userAgent().toUtf8().constData());
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
@@ -1005,6 +1007,7 @@ bool RDFeed::postXml()
   // Send it
   //
   if((curl_err=curl_easy_perform(curl))!=CURLE_OK) {
+    *err_msg=QString::fromUtf8(curl_errorbuffer);
     curl_easy_cleanup(curl);
     curl_formfree(first);
     ProcessCurlLogging("RDFeed::postPodcast()",err_msgs);
@@ -1022,6 +1025,8 @@ bool RDFeed::postXml()
   // Process the results
   //
   if((response_code<200)||(response_code>299)) {
+    *err_msg=tr("remote server returned unexpected response code")+
+      QString::asprintf(" %ld",response_code);
     ProcessCurlLogging("RDFeed::postPodcast()",err_msgs);
     return false;
   }
@@ -1033,9 +1038,11 @@ bool RDFeed::postXml()
 
 bool RDFeed::postXmlConditional(const QString &caption,QWidget *widget)
 {
-  if(!postXml()) {
+  QString err_msg;
+
+  if(!postXml(&err_msg)) {
     QMessageBox::warning(widget,caption+" - "+tr("Error"),
-			 tr("XML data upload failed!"));
+			 tr("XML data upload failed!")+"\n["+err_msg+"]");
     return false;
   }
   return true;
@@ -1393,7 +1400,7 @@ unsigned RDFeed::postCut(const QString &cutname,QString *err_msg)
   //
   // Update posted XML
   //
-  postXml();
+  postXml(err_msg);
   emit postProgressChanged(5);
   *err_msg=tr("OK");
 
@@ -1509,9 +1516,8 @@ unsigned RDFeed::postFile(const QString &srcfile,QString *err_msg)
   //
   // Update posted XML
   //
-  postXml();
+  postXml(err_msg);
   emit postProgressChanged(6);
-  //  *err=RDFeed::ErrorOk;
 
   return cast_id;
 }
@@ -1611,7 +1617,7 @@ unsigned RDFeed::postLog(const QString &logname,const QTime &start_time,
   cast->setAudioTime(log_model->length(start_line,1+end_line));
   delete log;
 
-  postXml();
+  postXml(err_msg);
   emit postProgressChanged(4+(end_line-start_line));
 
   delete cast;

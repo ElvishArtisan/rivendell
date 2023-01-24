@@ -135,7 +135,7 @@ class RDFeed : public QObject
   bool postPodcast(unsigned cast_id,QString *err_msg);
   QString audioUrl(unsigned cast_id);
   QString imageUrl(int img_id) const;
-  bool postXml();
+  bool postXml(QString *err_msg);
   bool postXmlConditional(const QString &caption,QWidget *widget);
   bool removeRss();
   bool postImage(int img_id) const;
