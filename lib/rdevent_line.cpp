@@ -926,6 +926,7 @@ bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
   //
   QString sql;
   RDSqlQuery *q;
+  RDSqlQuery *q1;
   RDLogLine *logline=NULL;
 
   //
@@ -951,6 +952,35 @@ bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
   RDLogLine::TransType trans_type=link_logline->transType();
   int grace_time=link_logline->graceTime();
   QTime time=link_logline->startTime(RDLogLine::Logged);
+
+  //
+  // Get slop factors for inline traffic breaks
+  //
+  int inline_start_slop=0;
+  int inline_end_slop=0;
+  if(event_import_source==RDEventLine::Music) {
+    sql=QString("select ")+
+      "`NESTED_EVENT` "+  // 00
+      "from `EVENTS` where "+
+      "`NAME`='"+RDEscapeString(event_name)+"'";
+    q=new RDSqlQuery(sql);
+    if(q->first()) {
+      if(!q->value(0).toString().trimmed().isEmpty()) {
+	sql=QString("select ")+
+	  "`START_SLOP`,"+  // 00
+	  "`END_SLOP` "+    // 01
+	  "from `EVENTS` where "+
+	  "`NAME`='"+RDEscapeString(q->value(0).toString().trimmed())+"'";
+	q1=new RDSqlQuery(sql);
+	if(q1->first()) {
+	  inline_start_slop=q1->value(0).toInt();
+	  inline_end_slop=q1->value(1).toInt();
+	}
+	delete q1;
+      }
+    }
+    delete q;
+  }
 
   //
   // Insert Parent Link
@@ -1047,8 +1077,8 @@ bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
 	logline->setLinkEventName(event_nested_event);
 	logline->setLinkStartTime(q->value(9).toTime());
 	logline->setLinkLength(q->value(10).toInt());
-	logline->setLinkStartSlop(link_logline->linkStartSlop());
-	logline->setLinkEndSlop(link_logline->linkEndSlop());
+	logline->setLinkStartSlop(inline_start_slop);
+	logline->setLinkEndSlop(inline_end_slop);
 	logline->setLinkId(link_logline->linkId());
 	logline->setLinkEmbedded(true);
       }

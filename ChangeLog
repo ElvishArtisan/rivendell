@@ -20969,3 +20969,7 @@
 2023-01-18 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdservice(8) that could cause dropboxes to be
 	instantiated with invalid segue level values.
+2023-01-26 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlogmanager(1) that caused the slop factors for
+	inline traffic events to fail to be applied when importing a traffic
+	log.
