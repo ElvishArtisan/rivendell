@@ -1,7 +1,7 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v3.6.6int1 -- 26 January 2023
+v3.6.7 -- 27 January 2023
 
 Changes:
    Podcasting Subsystem. Fixed a bug that caused superfeeds to fail
@@ -14,7 +14,7 @@ Changes:
    architectures.
 
    RDLogManager. Fixed a bug that caused inline traffic events to be imported
-   withour regard for the slop factors settings.
+   without regard for slop factor settings.
 
 Database Update:
    This version of Rivendell uses database schema version 347, and will
