@@ -86,6 +86,7 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
   list_casts_model=new RDPodcastListModel(feed_id,this);
   list_casts_model->setFont(font());
   list_casts_model->setPalette(palette());
+  list_casts_model->sort(2,Qt::DescendingOrder);
   list_casts_view->setModel(list_casts_model);
   connect(list_casts_model,SIGNAL(modelReset()),this,SLOT(modelResetData()));
   connect(list_casts_model,SIGNAL(rowsInserted(const QModelIndex &,int,int)),

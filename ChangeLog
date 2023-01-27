@@ -23952,3 +23952,6 @@
 	* Fixed a bug in rdlogmanager(1) that caused the slop factors for
 	inline traffic events to fail to be applied when importing a traffic
 	log.
+2023-01-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdcastmanager(1) that caused podcast items
+	to fail to be sorted chronologically by default.
