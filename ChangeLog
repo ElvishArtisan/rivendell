@@ -23958,3 +23958,7 @@
 2023-01-30 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the voice tracker widget that threw a segfault
 	when the user attempted to select the '--- end of log ---' marker.
+2023-01-30 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlogmanager(1) that would cause the pre-import
+	and post-import event lists to fail to be propagated to the
+	newly created event.

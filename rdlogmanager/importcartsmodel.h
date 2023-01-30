@@ -1,8 +1,8 @@
 // importcartsmodel.h
 //
-// Data model for rdlogmanager(1) cart stack lists
+// Data model for Rivendell rdlogmanager(1) pre- and post-import event lists
 //
-//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -40,6 +40,8 @@ class ImportCartsModel : public QAbstractTableModel
   ImportCartsModel(const QString &evt_name,ImportType type,
 		   bool auto_first_trans,QObject *parent=0);
   ~ImportCartsModel();
+  QString eventName() const;
+  void setEventName(const QString &str);
   QPalette palette();
   void setPalette(const QPalette &pal);
   void setFont(const QFont &font);

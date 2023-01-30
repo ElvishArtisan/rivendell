@@ -1,8 +1,8 @@
 // importcartsmodel.cpp
 //
-// Data model for Rivendell hosts
+// Data model for Rivendell rdlogmanager(1) pre- and post-import event lists
 //
-//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -61,6 +61,18 @@ ImportCartsModel::ImportCartsModel(const QString &evt_name,
 
 ImportCartsModel::~ImportCartsModel()
 {
+}
+
+
+QString ImportCartsModel::eventName() const
+{
+  return d_event_name;
+}
+
+
+void ImportCartsModel::setEventName(const QString &str)
+{
+  d_event_name=str;
 }
 
 

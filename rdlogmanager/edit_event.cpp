@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Log Event
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -1156,6 +1156,8 @@ void EditEvent::saveAsData()
   if(!q->first()) {
     delete event_event;
     event_event=new RDEvent(event_name,true);
+    event_preimport_model->setEventName(event_name);
+    event_postimport_model->setEventName(event_name);
     Save();
     event_new_events->push_back(event_name);
     CopyEventPerms(old_name,event_name);
