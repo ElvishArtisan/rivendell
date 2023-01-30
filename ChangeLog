@@ -23970,3 +23970,6 @@
 	'Configure RDLogEdit' dialog in rdadmin(1).
 	* Removed the wmctrl(1) dependency from the 'rivendell' DEB package.
 	* Removed the wmctrl(1) dependency from the 'rivendell' RPM package.
+2023-01-30 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored splash screen code so as not to hide the splash screen
+	until after the event loop is started.

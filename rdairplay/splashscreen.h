@@ -27,10 +27,14 @@ class SplashScreen : public QSplashScreen
 {
   Q_OBJECT;
  public:
-  SplashScreen();
+  SplashScreen(QWidget *main_win);
 
  public slots:
-   void showMessage(const QString &str);
+  void showMessage(const QString &str);
+  void finish();
+
+ private:
+  QWidget *d_main_window;
 };
 
 #endif  // SPLASHSCREEN_H

@@ -61,7 +61,7 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   //
   // Splash Screen
   //
-  air_splash_screen=new SplashScreen();
+  air_splash_screen=new SplashScreen(this);
   air_splash_screen->show();
   air_splash_screen->showMessage(tr("Opening database..."));
 
@@ -826,7 +826,11 @@ void MainWidget::ripcConnectedData(bool state)
       delete q;
     }
   }
-  air_splash_screen->finish(this);
+
+  QTimer *timer=new QTimer();
+  timer->setSingleShot(true);
+  connect(timer,SIGNAL(timeout()),air_splash_screen,SLOT(finish()));
+  timer->start(0);
 }
 
 

@@ -22,9 +22,10 @@
 
 #include "../icons/rdairplay-splash.xpm"
 
-SplashScreen::SplashScreen()
+SplashScreen::SplashScreen(QWidget *main_win)
   : QSplashScreen(QPixmap(rdairplay_splash_xpm),Qt::WindowStaysOnTopHint)
 {
+  d_main_window=main_win;
 }
 
 
@@ -33,3 +34,8 @@ void SplashScreen::showMessage(const QString &str)
   QSplashScreen::showMessage(str+" ",Qt::AlignRight|Qt::AlignBottom,Qt::white);
 }
 
+
+void SplashScreen::finish()
+{
+  QSplashScreen::finish(d_main_window);
+}
