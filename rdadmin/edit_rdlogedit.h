@@ -2,7 +2,7 @@
 //
 // Edit an RDLogEdit Configuration
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -66,7 +66,6 @@ class EditRDLogedit : public RDDialog
   QLineEdit *lib_recstartcart_edit;
   QLineEdit *lib_recendcart_edit;
   QComboBox *lib_default_transtype_box;
-  QComboBox *lib_singleton_box;
   QString lib_filter;
   QString lib_group;
 };

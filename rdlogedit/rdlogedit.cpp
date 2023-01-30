@@ -2,7 +2,7 @@
 //
 // The Log Editor Utility for Rivendell.
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -66,17 +66,6 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
     exit(1);
   }
   log_import_path=RDGetHomeDir();
-
-  if(rda->logeditConf()->isSingleton()) {
-    //
-    // Ensure that we're the only instance
-    //
-    if(!rda->makeSingleInstance(&err_msg)) {
-      QMessageBox::critical(this,"RDLogEdit - "+tr("Error"),
-			    tr("Startup error")+": "+err_msg+".");
-      exit(RDCoreApplication::ExitPriorInstance);
-    }
-  }
 
   //
   // Read Command Options

@@ -2,7 +2,7 @@
 //
 // The Log Generator Utility for Rivendell.
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -60,15 +60,6 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   setWindowIcon(rda->iconEngine()->
 		applicationIcon(RDIconEngine::RdLogManager,22));
   setWindowTitle(QString("RDLogManager v")+VERSION+" -");
-
-  //
-  // Ensure that we're the only instance
-  //
-  if(!rda->makeSingleInstance(&err_msg)) {
-    QMessageBox::critical(this,"RDLogManager - "+tr("Error"),
-			  tr("Startup error")+": "+err_msg+".");
-    exit(RDCoreApplication::ExitPriorInstance);
-  }
 
   //
   // CAE Connection

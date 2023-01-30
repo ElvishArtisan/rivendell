@@ -2,7 +2,7 @@
 //
 // Edit an RDLibrary Configuration
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -272,19 +272,6 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   lib_limit_search_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
-  // Allow Multiple Instances
-  //
-  lib_singleton_box=new QComboBox(this);
-  lib_singleton_box->setGeometry(190,422,80,19);
-  lib_singleton_box->insertItem(0,tr("No"));
-  lib_singleton_box->insertItem(1,tr("Yes"));
-  QLabel *lib_singleton_label=
-    new QLabel(tr("Allow Multiple Instances")+":",this);
-  lib_singleton_label->setFont(labelFont());
-  lib_singleton_label->setGeometry(10,422,175,19);
-  lib_singleton_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-
-  //
   // Defaults
   //
   QLabel *default_label=new QLabel(tr("Defaults"),this);
@@ -440,7 +427,6 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   lib_editor_box->setCurrentIndex(lib_lib->enableEditor());
   lib_converter_box->setCurrentIndex(lib_lib->srcConverter());
   lib_limit_search_box->setCurrentIndex((int)lib_lib->limitSearch());
-  lib_singleton_box->setCurrentIndex(!lib_lib->isSingleton());
 }
 
 
@@ -565,7 +551,6 @@ void EditRDLibrary::okData()
   lib_lib->setSrcConverter(lib_converter_box->currentIndex());
   lib_lib->setLimitSearch((RDLibraryConf::SearchLimit)
 			  lib_limit_search_box->currentIndex());
-  lib_lib->setIsSingleton(lib_singleton_box->currentIndex()==0);
   done(0);
 }
 

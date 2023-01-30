@@ -23962,3 +23962,11 @@
 	* Fixed a bug in rdlogmanager(1) that would cause the pre-import
 	and post-import event lists to fail to be propagated to the
 	newly created event.
+2023-01-30 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'single instance' requirement from all modules.
+	* Removed the 'Allow Multiple Instances' dropdown from the
+	'Configure RDLibrary' dialog in rdadmin(1).
+	* Removed the 'Allow Multiple Instances' dropdown from the
+	'Configure RDLogEdit' dialog in rdadmin(1).
+	* Removed the wmctrl(1) dependency from the 'rivendell' DEB package.
+	* Removed the wmctrl(1) dependency from the 'rivendell' RPM package.

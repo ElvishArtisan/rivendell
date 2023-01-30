@@ -96,10 +96,6 @@ TagLib Audio Meta-Data Library, v1.8 or better
 A high-quality C++ library for reading and writing a variety of audio metadata
 formats. Available at https://taglib.org/.
 
-wmctrl
-A UNIX/Linux command line tool to interact with an EWMH/NetWM compatible X
-Window Manager. Available in most distros.
-
 X11 Window System
 Virtually all Linux distros should include this.
 

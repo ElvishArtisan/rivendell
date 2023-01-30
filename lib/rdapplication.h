@@ -31,7 +31,6 @@ class RDApplication : public RDCoreApplication
   RDApplication(const QString &module_name,const QString &cmdname,
 		const QString &usage,QObject *parent);
   ~RDApplication();
-  bool makeSingleInstance(QString *err_msg);
   RDIconEngine *iconEngine() const;
   static QString locale();
 

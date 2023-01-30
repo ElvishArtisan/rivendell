@@ -71,18 +71,9 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   air_startup_datetime=QDateTime(QDate::currentDate(),QTime::currentTime());
 
   //
-  // Ensure that we're the only instance
-  //
-  rda=new RDApplication("RDAirPlay","rdairplay",RDAIRPLAY_USAGE,this);
-  if(!rda->makeSingleInstance(&err_msg)) {
-    QMessageBox::critical(this,"RDAirPlay - "+tr("Error"),
-			  tr("Startup error")+": "+err_msg+".");
-    exit(RDCoreApplication::ExitPriorInstance);
-  }
-
-  //
   // Open the Database
   //
+  rda=new RDApplication("RDAirPlay","rdairplay",RDAIRPLAY_USAGE,this);
   if(!rda->open(&err_msg,NULL,true)) {
     QMessageBox::critical(this,"RDAirPlay - "+tr("Error"),err_msg);
     exit(1);
