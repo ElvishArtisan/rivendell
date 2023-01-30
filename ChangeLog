@@ -23955,3 +23955,6 @@
 2023-01-27 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdcastmanager(1) that caused podcast items
 	to fail to be sorted chronologically by default.
+2023-01-30 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the voice tracker widget that threw a segfault
+	when the user attempted to select the '--- end of log ---' marker.

@@ -3281,14 +3281,16 @@ void RDTrackerWidget::DrawRubberBand(RDWavePainter *wp,int trackno)
         && d_loglines[trackno]->segueStartPoint()<draw_fadedown_point
         && (!d_loaded)) {
     if(trackno<2) {
-      if(d_loglines[trackno+1]->transType()==RDLogLine::Segue) {
+      if((d_loglines[trackno+1]!=NULL)&&
+	 (d_loglines[trackno+1]->transType()==RDLogLine::Segue)) {
         draw_fadedown_point=d_loglines[trackno]->segueStartPoint();
         draw_fadedown_gain=d_loglines[trackno]->segueGain();
       }
     }
   }      
   if(trackno<2) {
-    if((d_loglines[trackno+1]->transType()==RDLogLine::Segue)
+    if((d_loglines[trackno+1]!=NULL)&&
+       (d_loglines[trackno+1]->transType()==RDLogLine::Segue)
         && (!d_loaded)) {
        draw_end_point=d_loglines[trackno]->segueEndPoint();
        if(draw_fadedown_point>draw_end_point) {
@@ -3644,7 +3646,9 @@ void RDTrackerWidget::UpdateControls()
     d_record_button->setText(tr("Record"));
     d_track2_button->setDisabled(true);
     d_finished_button->setEnabled(d_changed);
-    d_reset_button->setEnabled(real_logline->hasCustomTransition());
+    if(real_logline!=NULL) {
+      d_reset_button->setEnabled(real_logline->hasCustomTransition());
+    }
     d_post_button->setDisabled(true);
     d_play_button->setEnabled(true);
     d_stop_button->setEnabled(true);
@@ -3814,6 +3818,7 @@ bool RDTrackerWidget::IsTrack(int line,bool *offset)
 bool RDTrackerWidget::CanInsertTrack()
 {
   int line;
+  bool state=false;
 
   if((line=SingleSelectionLine())<0) {
     return false;
@@ -3825,8 +3830,10 @@ bool RDTrackerWidget::CanInsertTrack()
     return d_log_model->logLine(d_log_model->lineCount()-1)->type()
       !=RDLogLine::Track;
   }
-  bool state=d_log_model->logLine(line)->type()==RDLogLine::Track;
-  if(line>0) {
+  if(d_log_model->logLine(line)!=NULL) {
+    state=d_log_model->logLine(line)->type()==RDLogLine::Track;
+  }
+  if((d_log_model->logLine(line-1)!=NULL)&&(line>0)) {
     state=state||
       (d_log_model->logLine(line-1)->type()==RDLogLine::Track);
   }
@@ -3838,11 +3845,16 @@ bool RDTrackerWidget::CanInsertTrack()
 bool RDTrackerWidget::CanDeleteTrack()
 {
   int line=SingleSelectionLine();
+  bool ret=false;
 
   if((line<0)||(line==TRACKER_MAX_LINENO)) {
     return false;
   }
-  return d_log_model->logLine(line)->type()==RDLogLine::Track;
+  if(d_log_model->logLine(line)!=NULL) {
+    ret=d_log_model->logLine(line)->type()==RDLogLine::Track;
+  }
+
+  return ret;
 }
 
 
