@@ -2,7 +2,7 @@
 //
 // List Rivendell Casts
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -56,7 +56,6 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
 
   list_cut_dialog=new RDCutDialog(&cast_filter,&cast_group,&cast_schedcode,
 				  false,false,false,"RDCastManager",false,this);
-
   list_progress_dialog=
     new QProgressDialog(tr("Uploading Audio..."),tr("Cancel"),0,1,this);
   list_progress_dialog->setValue(1);
@@ -150,10 +149,7 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
   list_close_button->setText(tr("Close"));
   connect(list_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
-  //  RefreshList();
-
   connect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userChangedData()));
-
   modelResetData();
   userChangedData();
 }

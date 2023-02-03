@@ -2,7 +2,7 @@
 //
 // Data model for Rivendell podcast episodes
 //
-//   (C) Copyright 2021-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -61,6 +61,8 @@ class RDPodcastListModel : public QAbstractTableModel
   void updateRowLine(int line);
   void updateRow(int row,RDSqlQuery *q);
   QString sqlFields() const;
+  void loadItemImage(int image_id);
+  QString imageFP(const QByteArray &img);
 
  private:
   QPalette d_palette;
@@ -73,12 +75,13 @@ class RDPodcastListModel : public QAbstractTableModel
   QList<QVariant> d_alignments;
   QList<unsigned> d_cast_ids;
   QList<QList<QVariant> > d_texts;
-  QList<QList<QVariant> > d_icons;
+  QList<int> d_item_image_ids;
   unsigned d_feed_id;
   QString d_filter_sql;
   QStringList d_column_fields;
   int d_sort_column;
   Qt::SortOrder d_sort_order;
+  QMap<int,QVariant> d_item_images;
 };
 
 

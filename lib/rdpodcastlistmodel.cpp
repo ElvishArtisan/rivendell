@@ -2,7 +2,7 @@
 //
 // Data model for Rivendell podcast episodes
 //
-//   (C) Copyright 2021-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -75,8 +75,6 @@ RDPodcastListModel::RDPodcastListModel(unsigned feed_id,QObject *parent)
   d_headers.push_back(tr("SHA1"));        // 08
   d_alignments.push_back(left);
   d_column_fields.push_back("`PODCASTS`.`SHA1_HASH`");
-
-  updateModel();
 }
 
 
@@ -148,7 +146,13 @@ QVariant RDPodcastListModel::data(const QModelIndex &index,int role) const
       return d_texts.at(row).at(col);
 
     case Qt::DecorationRole:
-      return d_icons.at(row).at(col);
+      if(col==0) {
+	return d_item_images.
+	  value(d_item_image_ids.at(row),
+		rda->iconEngine()->
+		applicationIcon(RDIconEngine::RdCastManager,32));
+      }
+      break;
 
     case Qt::TextAlignmentRole:
       return d_alignments.at(col);
@@ -169,13 +173,11 @@ QVariant RDPodcastListModel::data(const QModelIndex &index,int role) const
 
     case Qt::SizeHintRole:
       if(col==0) {
-	return QSize(RD_LISTWIDGET_ITEM_WIDTH_PADDING+
-		     (d_icons.at(row).at(col).value<QPixmap>().width())+
+	return QSize(RD_LISTWIDGET_ITEM_WIDTH_PADDING+32+
 		     d_bold_font_metrics->
 		     width(d_texts.at(row).at(col).toString()),40);
       }
       return QSize(RD_LISTWIDGET_ITEM_WIDTH_PADDING+
-		   (d_icons.at(row).at(col).value<QPixmap>().width())+
 		   d_font_metrics->
 		   width(d_texts.at(row).at(col).toString()),40);
 
@@ -216,7 +218,7 @@ QModelIndex RDPodcastListModel::addCast(unsigned cast_id)
     }
     d_cast_ids.insert(0,cast_id);
     d_texts.insert(0,list);
-    d_icons.insert(0,list);
+    d_item_image_ids.insert(0,-1);
     updateRowLine(0);
     endInsertRows();
     ret=createIndex(0,0);
@@ -232,7 +234,7 @@ void RDPodcastListModel::removeCast(const QModelIndex &row)
 
   d_cast_ids.removeAt(row.row());
   d_texts.removeAt(row.row());
-  d_icons.removeAt(row.row());
+  d_item_image_ids.removeAt(row.row());
 
   endRemoveRows();
 }
@@ -258,6 +260,7 @@ void RDPodcastListModel::refresh(const QModelIndex &row)
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(row.row(),q);
+      loadItemImage(q->value(13).toInt());
       emit dataChanged(createIndex(row.row(),0),
 		       createIndex(row.row(),columnCount()));
     }
@@ -321,6 +324,7 @@ void RDPodcastListModel::processNotification(RDNotification *notify)
 void RDPodcastListModel::updateModel()
 {
   QList<QVariant> texts;
+  QList<int> image_ids;
 
   RDSqlQuery *q=NULL;
   QString sql=sqlFields()+
@@ -335,15 +339,41 @@ void RDPodcastListModel::updateModel()
   beginResetModel();
   d_cast_ids.clear();
   d_texts.clear();
-  d_icons.clear();
+  d_item_image_ids.clear();
   q=new RDSqlQuery(sql);
   while(q->next()) {
     d_cast_ids.push_back(0);
     d_texts.push_back(texts);
-    d_icons.push_back(texts);
+    d_item_image_ids.push_back(-1);
     updateRow(d_texts.size()-1,q);
+    if(!image_ids.contains(q->value(13).toInt())) {
+      image_ids.push_back(q->value(13).toInt());
+    }
   }
   delete q;
+
+  //
+  // Load item thumbnail images
+  //
+  d_item_images.clear();
+  for(int i=0;i<image_ids.size();i++) {
+    sql=QString("select ")+
+      "`DATA_MID_THUMB` "+  // 00
+      "from `FEED_IMAGES` where "+
+      QString::asprintf("`ID`=%d",image_ids.at(i));
+    q=new RDSqlQuery(sql);
+    if(q->first()) {
+      d_item_images[image_ids.at(i)]=
+	QImage::fromData(q->value(0).toByteArray()).
+	scaled(32,32,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+    }
+    else {
+      d_item_images[image_ids.at(i)]=
+	rda->iconEngine()->applicationIcon(RDIconEngine::RdCastManager,32);
+    }
+    delete q;
+  }
+
   endResetModel();
 }
 
@@ -357,6 +387,7 @@ void RDPodcastListModel::updateRowLine(int line)
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(line,q);
+      loadItemImage(q->value(13).toInt());
     }
     delete q;
   }
@@ -370,14 +401,9 @@ void RDPodcastListModel::updateRow(int row,RDSqlQuery *q)
 
   // Title
   texts.push_back(q->value(2));
-  if(q->value(13).isNull()) {
-    icons.push_back(rda->iconEngine()->
-		    applicationIcon(RDIconEngine::RdCastManager,32));
-  }
-  else {
-    icons.push_back(QImage::fromData(q->value(13).toByteArray()).
-		 scaled(32,32,Qt::IgnoreAspectRatio,Qt::SmoothTransformation));
-  }
+
+  // Item Image ID
+  d_item_image_ids[row]=q->value(13).toInt();
 
   // Status
   texts.push_back(QVariant());
@@ -448,7 +474,6 @@ void RDPodcastListModel::updateRow(int row,RDSqlQuery *q)
 
   d_cast_ids[row]=q->value(0).toUInt();
   d_texts[row]=texts;
-  d_icons[row]=icons;
 }
 
 
@@ -468,10 +493,43 @@ QString RDPodcastListModel::sqlFields() const
     "`PODCASTS`.`ORIGIN_STATION`,"+       // 10
     "`PODCASTS`.`ORIGIN_DATETIME`,"+      // 11
     "`PODCASTS`.`SHA1_HASH`,"+            // 12
-    "`FEED_IMAGES`.`DATA` "+              // 13
+    "`PODCASTS`.`ITEM_IMAGE_ID` "+        // 13
     "from `PODCASTS` left join `FEEDS` "+
-    "on `PODCASTS`.`FEED_ID`=`FEEDS`.`ID` left join `FEED_IMAGES` "+
-    "on `PODCASTS`.`ITEM_IMAGE_ID`=`FEED_IMAGES`.`ID` ";
+    "on `PODCASTS`.`FEED_ID`=`FEEDS`.`ID` ";
 
-    return sql;
+  return sql;
+}
+
+
+void RDPodcastListModel::loadItemImage(int image_id)
+{
+  if(!d_item_images.contains(image_id)) {
+    QString sql=QString("select ")+
+      "`DATA_MID_THUMB` "+  // 00
+      "from `FEED_IMAGES` where "+
+      QString::asprintf("`ID`=%d",image_id);
+    RDSqlQuery *q=new RDSqlQuery(sql);
+    if(q->first()) {
+      d_item_images[image_id]=
+	QImage::fromData(q->value(0).toByteArray()).
+	scaled(32,32,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+    }
+    else {
+      d_item_images[image_id]=
+	rda->iconEngine()->applicationIcon(RDIconEngine::RdCastManager,32);
+    }
+    delete q;
+  }
+}
+
+
+QString RDPodcastListModel::imageFP(const QByteArray &img)
+{
+  uint32_t sum=0;
+
+  for(int i=0;i<img.size();i++) {
+    sum+=img.at(i)&0xff;
+  }
+
+  return QString::asprintf("%08X",sum);
 }
