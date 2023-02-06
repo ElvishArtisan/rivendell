@@ -23976,3 +23976,5 @@
 2023-02-03 Fred Gleason <fredg@paravelsystems.com>
 	* Optimized image loading in the 'Podcast Item List' dialog in
 	rdcastmanager(1).
+2023-02-06 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.0.0rc1int1.
