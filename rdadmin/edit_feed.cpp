@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Feed
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -487,7 +487,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
     feed_normalize_check->setChecked(true);
     feed_normalize_spin->setValue(feed_feed->normalizeLevel()/1000);
   }
-  feed_castorder_box->setCurrentIndex(feed_feed->castOrder());
+  feed_castorder_box->setCurrentIndex(feed_feed->castOrderIsAscending());
   feed_item_image_box->setCurrentImageId(feed_feed->defaultItemImageId());
 
   UpdateControlState();
@@ -707,7 +707,7 @@ void EditFeed::okData()
   else {
     feed_feed->setNormalizeLevel(1);
   }
-  feed_feed->setCastOrder(feed_castorder_box->currentIndex());
+  feed_feed->setCastOrderIsAscending(feed_castorder_box->currentIndex());
 
   if(!feed_feed->postXmlConditional("RDAdmin",this)) {
     return;

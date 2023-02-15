@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell RSS Feed
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -102,8 +102,8 @@ class RDFeed : public QObject
   QString itemXml() const;
   void setItemXml(const QString &str);
   QString feedUrl() const;
-  bool castOrder() const;
-  void setCastOrder(bool state) const;
+  bool castOrderIsAscending() const;
+  void setCastOrderIsAscending(bool state) const;
   int maxShelfLife() const;
   void setMaxShelfLife(int days);
   QDateTime lastBuildDateTime() const;

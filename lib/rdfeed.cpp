@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell RSS Feed
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -541,14 +541,14 @@ QString RDFeed::feedUrl() const
 }
 
 
-bool RDFeed::castOrder() const
+bool RDFeed::castOrderIsAscending() const
 {
   return RDBool(RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,
 			      "CAST_ORDER").toString());
 }
 
 
-void RDFeed::setCastOrder(bool state) const
+void RDFeed::setCastOrderIsAscending(bool state) const
 {
   SetRow("CAST_ORDER",RDYesNo(state));
 }
@@ -1637,10 +1637,15 @@ QString RDFeed::rssXml(QString *err_msg,const QDateTime &now,bool *ok)
   RDSqlQuery *chan_q;
   RDSqlQuery *item_q;
   RDSqlQuery *q;
+  QString item_order_sql="order by `PODCASTS`.`EFFECTIVE_DATETIME` desc ";
 
   if(ok!=NULL) {
     *ok=false;
   }
+
+  //
+  // Channel Attributes
+  //
   sql=QString("select ")+
     "`FEEDS`.`CHANNEL_TITLE`,"+        // 00
     "`FEEDS`.`CHANNEL_DESCRIPTION`,"+  // 01
@@ -1756,11 +1761,10 @@ QString RDFeed::rssXml(QString *err_msg,const QDateTime &now,bool *ok)
     "(`PODCASTS`.`EFFECTIVE_DATETIME`<=now()) && "+
     "((`PODCASTS`.`EXPIRATION_DATETIME` is null)||"+
     "(`PODCASTS`.`EXPIRATION_DATETIME`>now())) "+
-    "order by `PODCASTS`.`ORIGIN_DATETIME`";
+    "order by `PODCASTS`.`EFFECTIVE_DATETIME`";
   if(chan_q->value(20).toString()=="N") {
     sql+=" desc";
   }
-  //  printf("item_sql: %s\n",sql.toUtf8().constData());
   item_q=new RDSqlQuery(sql);
   while(item_q->next()) {
     ret+="    <item>\r\n";
