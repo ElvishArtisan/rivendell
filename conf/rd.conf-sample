@@ -48,10 +48,17 @@ Label=Default (Local)
 
 [mySQL]
 ; The connection parameters for the MySQL server.
+;
+; Replace these with values that are appropirate for your setup.
+;
 Hostname=localhost
 Loginname=rduser
-Password=letmein
+Password=hackme
 Database=Rivendell
+
+; The Qt SQL driver plug-in to use. It should seldom be necessary to
+; change this.
+;
 Driver=QMYSQL3
 
 ; The interval between 'keep-alive' queries to the MySQL server (seconds)

@@ -23982,3 +23982,6 @@
 	* Modified the podcasting system to sort items in the XML feed
 	on the basis of the 'Air Date/Time' rather than the 'Posted By'
 	datetime.
+2023-02-23 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the value of the 'Password=' directive in the '[mySQL]'
+	section of 'conf/rd.conf-sample' to 'hackme'.
