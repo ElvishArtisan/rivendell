@@ -23990,3 +23990,6 @@
 	'Configure RDLogEdit' dialog save the 'Bitrate' value to
 	'128 kbps/chan' when using 'MPEG Layer 2' format regardless of the
 	setting of the 'Bitrate' control.
+2023-02-28 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdcastmanager(1) that broke the 'Status'
+	indicators in the 'Podcast Item List' dialog.

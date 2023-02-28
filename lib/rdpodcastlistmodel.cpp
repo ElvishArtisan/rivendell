@@ -146,11 +146,14 @@ QVariant RDPodcastListModel::data(const QModelIndex &index,int role) const
       return d_texts.at(row).at(col);
 
     case Qt::DecorationRole:
-      if(col==0) {
+      if(col==0) {  // Item Icon
 	return d_item_images.
 	  value(d_item_image_ids.at(row),
 		rda->iconEngine()->
 		applicationIcon(RDIconEngine::RdCastManager,32));
+      }
+      if(col==1) {  // Status Indicator
+	return d_status_pixmaps.at(row);
       }
       break;
 
@@ -218,6 +221,7 @@ QModelIndex RDPodcastListModel::addCast(unsigned cast_id)
     }
     d_cast_ids.insert(0,cast_id);
     d_texts.insert(0,list);
+    d_status_pixmaps.insert(0,QVariant());
     d_item_image_ids.insert(0,-1);
     updateRowLine(0);
     endInsertRows();
@@ -234,6 +238,7 @@ void RDPodcastListModel::removeCast(const QModelIndex &row)
 
   d_cast_ids.removeAt(row.row());
   d_texts.removeAt(row.row());
+  d_status_pixmaps.removeAt(row.row());
   d_item_image_ids.removeAt(row.row());
 
   endRemoveRows();
@@ -339,11 +344,13 @@ void RDPodcastListModel::updateModel()
   beginResetModel();
   d_cast_ids.clear();
   d_texts.clear();
+  d_status_pixmaps.clear();
   d_item_image_ids.clear();
   q=new RDSqlQuery(sql);
   while(q->next()) {
     d_cast_ids.push_back(0);
     d_texts.push_back(texts);
+    d_status_pixmaps.push_back(QVariant());
     d_item_image_ids.push_back(-1);
     updateRow(d_texts.size()-1,q);
     if(!image_ids.contains(q->value(13).toInt())) {
@@ -410,20 +417,25 @@ void RDPodcastListModel::updateRow(int row,RDSqlQuery *q)
   switch((RDPodcast::Status)q->value(1).toUInt()) {
   case RDPodcast::StatusActive:
     if(q->value(3).toDateTime()<=QDateTime::currentDateTime()) {
-      icons.push_back(rda->iconEngine()->listIcon(RDIconEngine::GreenBall));
+      d_status_pixmaps[row]=
+	rda->iconEngine()->listIcon(RDIconEngine::GreenBall);
+    //      icons.push_back(rda->iconEngine()->listIcon(RDIconEngine::GreenBall));
     }
     else {
-      icons.push_back(rda->iconEngine()->listIcon(RDIconEngine::BlueBall));
+      d_status_pixmaps[row]=rda->iconEngine()->listIcon(RDIconEngine::BlueBall);
+      //      icons.push_back(rda->iconEngine()->listIcon(RDIconEngine::BlueBall));
     }
     break;
 
 
   case RDPodcast::StatusPending:
-    icons.push_back(rda->iconEngine()->listIcon(RDIconEngine::RedBall));
+    d_status_pixmaps[row]=rda->iconEngine()->listIcon(RDIconEngine::RedBall);
+    //    icons.push_back(rda->iconEngine()->listIcon(RDIconEngine::RedBall));
     break;
 
   case RDPodcast::StatusExpired:
-    icons.push_back(rda->iconEngine()->listIcon(RDIconEngine::WhiteBall));
+    d_status_pixmaps[row]=rda->iconEngine()->listIcon(RDIconEngine::WhiteBall);
+    //    icons.push_back(rda->iconEngine()->listIcon(RDIconEngine::WhiteBall));
   }
 
   // Start
