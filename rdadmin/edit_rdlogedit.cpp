@@ -158,11 +158,15 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   // Bitrate
   //
   lib_bitrate_box=new QComboBox(this);
-  lib_bitrate_box->setGeometry(180,220,130,19);
+  lib_bitrate_box->setGeometry(180,220,60,19);
   QLabel *lib_bitrate_label=new QLabel(tr("Bitrate:"),this);
   lib_bitrate_label->setFont(labelFont());
   lib_bitrate_label->setGeometry(25,220,150,19);
   lib_bitrate_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  QLabel *lib_bitrate_unit=new QLabel(tr("kbps/chan"),this);
+  lib_bitrate_unit->setFont(labelFont());
+  lib_bitrate_unit->setGeometry(245,220,150,19);
+  lib_bitrate_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Enable Second Start Button
@@ -515,16 +519,16 @@ void EditRDLogedit::ShowBitRates(int index,int rate)
 
   case 2:  // MPEG-1 Layer 2
     lib_bitrate_box->setEnabled(true);
-    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("32 kbps/chan"));
-    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("48 kbps/chan"));
-    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("56 kbps/chan"));
-    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("64 kbps/chan"));
-    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("80 kbps/chan"));
-    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("96 kbps/chan"));
-    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("112 kbps/chan"));
-    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("128 kbps/chan"));
-    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("160 kbps/chan"));
-    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("192 kbps/chan"));
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),"32");
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),"48");
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),"56");
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),"64");
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),"80");
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),"96");
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),"112");
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),"128");
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),"160");
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),"192");
     switch(lib_lib->bitrate()) {
     case 32000:
       lib_bitrate_box->setCurrentIndex(0);

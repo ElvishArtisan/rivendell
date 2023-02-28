@@ -23985,3 +23985,8 @@
 2023-02-23 Fred Gleason <fredg@paravelsystems.com>
 	* Changed the value of the 'Password=' directive in the '[mySQL]'
 	section of 'conf/rd.conf-sample' to 'hackme'.
+2023-02-28 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdadmin(1) that caused the
+	'Configure RDLogEdit' dialog save the 'Bitrate' value to
+	'128 kbps/chan' when using 'MPEG Layer 2' format regardless of the
+	setting of the 'Bitrate' control.

@@ -1739,12 +1739,6 @@
 	the transition type to use by default when adding a new log
 	event.
       </para>
-      <para>
-	The <computeroutput>Allow Multiple Instances</computeroutput>, if set
-	to <userinput>Yes</userinput>, will allow multiple, independent
-	instances of <command>rdlogedit</command><manvolnum>1</manvolnum> to
-	be run simultaneously.
-      </para>
     </sect2>
     <sect2 xml:id="sect.rdadmin.manage_hosts.configuring_rdcartslots">
       <title>Configuring RDCartSlots</title>
