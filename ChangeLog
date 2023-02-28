@@ -23993,3 +23993,5 @@
 2023-02-28 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdcastmanager(1) that broke the 'Status'
 	indicators in the 'Podcast Item List' dialog.
+2023-02-28 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.0.0rc2.

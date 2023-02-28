@@ -1,9 +1,9 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v4.0.0rc1int1 -- 6 February 2023
+v4.0.0rc2 -- 28 February 2023
 
-Second Release Candidate
+Third Release Candidate
 
 Major Changes Between v3.x and v4.x:
    Qt Toolkit. Rivendell v4.x uses and is fully compatibile with major
