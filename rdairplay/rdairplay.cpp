@@ -1150,8 +1150,6 @@ void MainWidget::logRenamedData(int log)
   case 0:
     air_log_button[0]->setText(tr("Main Log")+"\n["+labelname+"]");
     SetCaption();
-    if(air_panel->soundPanelWidget()) {
-    }
     break;
 
   case 1:
