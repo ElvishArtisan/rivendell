@@ -23998,3 +23998,6 @@
 2023-03-01 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdairplay(1) that caused a segfault when
 	configured to display no sound panels.
+2023-03-03 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the PyPAD API that caused incorrect date/time
+        resolutions when using the 'MMM' wildcard.
