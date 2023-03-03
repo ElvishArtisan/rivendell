@@ -2,7 +2,7 @@
 #
 # PAD processor for Rivendell
 #
-#   (C) Copyright 2018-2020 Fred Gleason <fredg@paravelsystems.com>
+#   (C) Copyright 2018-2023 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as
@@ -145,6 +145,90 @@ class Update(object):
                 return (end+2,string[start:end+1])
         return None
 
+    def __resolveDatetimeWildcards(self,dt,dt_pattern):
+        miltime=(dt_pattern.find('ap')<0)and(dt_pattern.find('AP')<0)
+
+        #
+        # Tokenization Pass
+        #
+        # Maintainer Note: These must be done in longer-to-shorter string order!
+        #
+        dt_pattern=dt_pattern.replace('MMMM',chr(1))
+        dt_pattern=dt_pattern.replace('dddd',chr(2))
+        dt_pattern=dt_pattern.replace('yyyy',chr(3))
+        dt_pattern=dt_pattern.replace('MMM',chr(4))
+        dt_pattern=dt_pattern.replace('ddd',chr(5))
+        dt_pattern=dt_pattern.replace('zzz',chr(6))
+        dt_pattern=dt_pattern.replace('MM',chr(7))
+        dt_pattern=dt_pattern.replace('dd',chr(8))
+        dt_pattern=dt_pattern.replace('yy',chr(9))
+        dt_pattern=dt_pattern.replace('hh',chr(10))
+        dt_pattern=dt_pattern.replace('mm',chr(11))
+        dt_pattern=dt_pattern.replace('ss',chr(12))
+        dt_pattern=dt_pattern.replace('M',chr(13))
+        dt_pattern=dt_pattern.replace('d',chr(14))
+        dt_pattern=dt_pattern.replace('h',chr(15))
+        dt_pattern=dt_pattern.replace('m',chr(16))
+        dt_pattern=dt_pattern.replace('s',chr(17))
+        dt_pattern=dt_pattern.replace('z',chr(18))
+        dt_pattern=dt_pattern.replace('ap',chr(19))
+        dt_pattern=dt_pattern.replace('AP',chr(20))
+
+        #
+        # Detokenization Pass
+        #
+        try:
+            dt_pattern=dt_pattern.replace(chr(1),dt.strftime('%B').upper())  # MMMM
+            dt_pattern=dt_pattern.replace(chr(2),dt.strftime('%A').upper())  # dddd
+            dt_pattern=dt_pattern.replace(chr(3),dt.strftime('%Y'))          # yyyy
+            dt_pattern=dt_pattern.replace(chr(4),dt.strftime('%b').upper())  # MMM
+            dt_pattern=dt_pattern.replace(chr(5),dt.strftime('%a').upper())  # ddd
+            dt_pattern=dt_pattern.replace(chr(6),'000')                      # zzz
+            dt_pattern=dt_pattern.replace(chr(7),dt.strftime('%m').upper())  # MM
+            dt_pattern=dt_pattern.replace(chr(8),dt.strftime('%d'))          # dd
+            dt_pattern=dt_pattern.replace(chr(9),dt.strftime('%y'))          # yy
+            if miltime:                                                      # hh
+                dt_pattern=dt_pattern.replace(chr(10),dt.strftime('%H'))
+            else:
+                dt_pattern=dt_pattern.replace(chr(10),dt.strftime('%I'))
+            dt_pattern=dt_pattern.replace(chr(11),dt.strftime('%M'))         # mm
+            dt_pattern=dt_pattern.replace(chr(12),dt.strftime('%S'))         # ss
+            dt_pattern=dt_pattern.replace(chr(13),str(dt.month))             # M
+            dt_pattern=dt_pattern.replace(chr(14),str(dt.day))               # d
+            if miltime:                                                      # h
+                dt_pattern=dt_pattern.replace(chr(15),str(dt.hour))
+            else:
+                hour=dt.hour
+                if hour==0:
+                    hour=12
+                if hour>12:
+                    hour=hour-12
+                dt_pattern=dt_pattern.replace(chr(15),str(hour))
+                dt_pattern=dt_pattern.replace(chr(16),str(dt.minute))        # m
+                dt_pattern=dt_pattern.replace(chr(17),str(dt.second))        # s
+                dt_pattern=dt_pattern.replace(chr(18),'0')                   # z
+                if not miltime:
+                    if dt.hour<12:
+                        dt_pattern=dt_pattern.replace(chr(19),'am')          # ap
+                        dt_pattern=dt_pattern.replace(chr(20),'AM')          # AP
+                    else:
+                        dt_pattern=dt_pattern.replace(chr(19),'pm')          # ap
+                        dt_pattern=dt_pattern.replace(chr(20),'PM')          # AP
+            pat=''
+            for s in dt_pattern.split(" "):
+                if (s!='am')and(s!='pm')and(s!='AM')and(s!='PM'):
+                    pat+=s.capitalize()+' '
+                else:
+                    pat+=s+' '
+            dt_pattern=pat
+
+
+        except AttributeError:
+            return ''
+
+        return dt_pattern
+
+
     def __replaceDatetimePattern(self,string,pattern):
         stype='now'
         if pattern[1]=='D':
@@ -152,65 +236,10 @@ class Update(object):
         try:
             dt=self.__fromIso8601(self.__fields['padUpdate'][stype]['startDateTime'])
         except TypeError:
-            string=string.replace(pattern,'')
-            return string
+            return string.replace(pattern,'')
 
         dt_pattern=pattern[3:-1]
-
-        try:
-            #
-            # Process Times
-            #
-            miltime=(dt_pattern.find('ap')<0)and(dt_pattern.find('AP')<0)
-            if not miltime:
-                if dt.hour<13:
-                    dt_pattern=dt_pattern.replace('ap','am')
-                    dt_pattern=dt_pattern.replace('AP','AM')
-                else:
-                    dt_pattern=dt_pattern.replace('ap','pm')
-                    dt_pattern=dt_pattern.replace('AP','PM')
-            if miltime:
-                dt_pattern=dt_pattern.replace('hh',dt.strftime('%H'))
-                dt_pattern=dt_pattern.replace('h',str(dt.hour))
-            else:
-                dt_pattern=dt_pattern.replace('hh',dt.strftime('%I'))
-                hour=dt.hour
-                if hour==0:
-                    hour=12
-                dt_pattern=dt_pattern.replace('h',str(hour))
-
-            dt_pattern=dt_pattern.replace('mm',dt.strftime('%M'))
-            dt_pattern=dt_pattern.replace('m',str(dt.minute))
-
-            dt_pattern=dt_pattern.replace('ss',dt.strftime('%S'))
-            dt_pattern=dt_pattern.replace('s',str(dt.second))
-
-            #
-            # Process Dates
-            #
-            dt_pattern=dt_pattern.replace('MMMM',dt.strftime('%B').upper())
-            dt_pattern=dt_pattern.replace('MMM',dt.strftime('%b').upper())
-            dt_pattern=dt_pattern.replace('MM',dt.strftime('%m'))
-            dt_pattern=dt_pattern.replace('M',str(dt.month))
-
-            dt_pattern=dt_pattern.replace('dddd',dt.strftime('%A').upper())
-            dt_pattern=dt_pattern.replace('ddd',dt.strftime('%a').upper())
-            dt_pattern=dt_pattern.replace('dd',dt.strftime('%d'))
-            dt_pattern=dt_pattern.replace('d',str(dt.day))
-
-            dt_pattern=dt_pattern.replace('yyyy',dt.strftime('%Y'))
-            dt_pattern=dt_pattern.replace('yy',dt.strftime('%y'))
-            pat=''
-            for s in dt_pattern.split(" "):
-                pat+=s.capitalize()+' '
-            dt_pattern=pat
-
-        except AttributeError:
-            string=string.replace(pattern,'')
-            return string
-
-        string=string.replace(pattern,dt_pattern)
-        return string
+        return string.replace(pattern,self.__resolveDatetimeWildcards(dt,dt_pattern))
 
     def __replaceDatetimePair(self,string,wildcard):
         pos=0
