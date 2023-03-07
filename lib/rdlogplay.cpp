@@ -35,7 +35,7 @@
 //#define SHOW_SLOTS
 //#define SHOW_METER_SLOTS
 
-RDLogPlay::RDLogPlay(int id,RDEventPlayer *player,QObject *parent)
+RDLogPlay::RDLogPlay(int id,RDEventPlayer *player,bool enable_cue,QObject *parent)
   : RDLogModel(parent)
 {
   //
@@ -131,7 +131,7 @@ RDLogPlay::RDLogPlay(int id,RDEventPlayer *player,QObject *parent)
   // Audition Player
   //
   play_audition_line=-1;
-  if((rda->station()->cueCard()>=0)&&
+  if(enable_cue&&(rda->station()->cueCard()>=0)&&
      (rda->station()->cuePort()>=0)) {
     play_audition_player=
       new RDSimplePlayer(play_cae,rda->ripc(),rda->station()->cueCard(),

@@ -277,7 +277,7 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   connect(rename_mapper,SIGNAL(mapped(int)),this,SLOT(logRenamedData(int)));
   QString default_svcname=rda->airplayConf()->defaultSvc();
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-    air_log[i]=new RDLogPlay(i,air_event_player,this);
+    air_log[i]=new RDLogPlay(i,air_event_player,true,this);
     air_log[i]->setDefaultServiceName(default_svcname);
     air_log[i]->setNowCart(rda->airplayConf()->logNowCart(i));
     air_log[i]->setNextCart(rda->airplayConf()->logNextCart(i));

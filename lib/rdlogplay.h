@@ -2,7 +2,7 @@
 //
 // Rivendell Log Playout Machine
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -50,7 +50,7 @@ class RDLogPlay : public RDLogModel
 {
  Q_OBJECT
  public:
-  RDLogPlay(int id,RDEventPlayer *player,QObject *parent=0);
+  RDLogPlay(int id,RDEventPlayer *player,bool enable_cue,QObject *parent);
   QString serviceName() const;
   void setServiceName(const QString &svcname);
   QString defaultServiceName() const;

@@ -119,7 +119,7 @@ MainObject::MainObject(QObject *parent)
   QSignalMapper *rename_mapper=new QSignalMapper(this);
   QString default_svcname=rda->airplayConf()->defaultSvc();
   for(int i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
-    air_logs[i]=new RDLogPlay(i+RD_RDVAIRPLAY_LOG_BASE,air_event_player,this);
+    air_logs[i]=new RDLogPlay(i+RD_RDVAIRPLAY_LOG_BASE,air_event_player,false,this);
     air_logs[i]->setDefaultServiceName(default_svcname);
     air_logs[i]->setNowCart(rda->airplayConf()->logNowCart(i));
     air_logs[i]->setNextCart(rda->airplayConf()->logNextCart(i));

@@ -24003,3 +24003,6 @@
         resolutions when using the 'MMM' wildcard.
 2023-03-07 Fred Gleason <fredg@paravelsystems.com>
 	* Corrected a maintainer's note in 'lib/rdcoreapplication.cpp'.
+2023-03-07 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdvairplayd(8) that caused a segfault on
+	startup.
