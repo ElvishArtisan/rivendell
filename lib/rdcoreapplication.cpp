@@ -55,7 +55,7 @@ RDCoreApplication::RDCoreApplication(const QString &module_name,
   //
   // Maintainer's Note
   //
-  // This for the 'ident' value passed to openlog(1). It *must*
+  // This for the 'ident' value passed to openlog(3). It *must* be
   // an actual (const char *) string stored on the heap. *Don't* pass
   // a QByteArray!
   //
