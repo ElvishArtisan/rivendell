@@ -24006,3 +24006,6 @@
 2023-03-07 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdvairplayd(8) that caused a segfault on
 	startup.
+2023-03-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdadmin(1) that threw a SQL error when attempting
+	to create a new Switcher/GPIO instance.

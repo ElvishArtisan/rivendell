@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Matrix
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -1537,6 +1537,9 @@ void EditMatrix::AddResources(RDMatrix::VguestType type) const
 	QString::asprintf("`MATRIX_NUM`=%d,",edit_matrix->matrix());
       if(edit_matrix->type()==RDMatrix::LogitekVguest) {
 	sql+=QString::asprintf("`VGUEST_TYPE`=%d,",type);
+      }
+      else {
+	sql+=QString::asprintf("`VGUEST_TYPE`=%d,",RDMatrix::VguestTypeNone);
       }
       sql+=QString::asprintf("`NUMBER`=%d",i+1);
       RDSqlQuery::apply(sql);
