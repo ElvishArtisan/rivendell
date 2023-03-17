@@ -55,6 +55,8 @@ docs/dtds/direct.html
 docs/dtds/direct.pdf
 docs/dtds/superfeed.html
 docs/dtds/superfeed.pdf
+docs/manpages/*.html
+docs/manpages/*.pdf
 docs/opsguide/*.html
 docs/opsguide/*.pdf
 docs/opsguide/blueball.png
