@@ -439,8 +439,11 @@ rm -rf $RPM_BUILD_ROOT
 @HPI_FILE4@
 /etc/auto.master.d/rd.audiostore.autofs
 @LOCAL_PREFIX@/share/rivendell/opsguide.pdf
-@LOCAL_PREFIX@/share/rivendell/html/*
+@LOCAL_PREFIX@/share/rivendell/html
+@LOCAL_PREFIX@/share/rivendell/manpages
+@LOCAL_PREFIX@/share/rivendell/manpages/html
 @LOCAL_PREFIX@/share/rivendell/apis
+@LOCAL_PREFIX@/share/rivendell/apis/html
 
 
 %files webapi
@@ -466,6 +469,7 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/share/rivendell/opsguide.pdf
 @LOCAL_PREFIX@/share/rivendell/html/*
 @LOCAL_PREFIX@/share/rivendell/apis
+@LOCAL_PREFIX@/share/rivendell/manpages
 
 
 %files devel
