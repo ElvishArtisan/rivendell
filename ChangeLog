@@ -24012,3 +24012,5 @@
 2023-03-17 Fred Gleason <fredg@paravelsystems.com>
 	* Added the API documentation and man pages to the 'rivendell-opsguide'
 	RPM package.
+2023-03-17 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the copyright notices to use an interval of 2002-2023.
