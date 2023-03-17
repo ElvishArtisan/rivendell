@@ -20983,3 +20983,6 @@
 2023-03-03 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the PyPAD API that caused incorrect date/time
 	 resolutions when using the 'MMM' wildcard.
+2023-03-17 Fred Gleason <fredg@paravelsystems.com>
+	* Added the API documentation to the 'rivendell-opsguide' RPM
+	package.

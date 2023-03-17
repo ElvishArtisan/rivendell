@@ -2,7 +2,7 @@
 ##
 ## docs/docbook/automake.am for Rivendell
 ##
-## (C) Copyright 2015-2017 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2015-2023 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -30,6 +30,16 @@
 	xsltproc $(DOCBOOK_STYLESHEETS)/manpages/docbook.xsl $<
 %.8:	%.xml
 	xsltproc $(DOCBOOK_STYLESHEETS)/manpages/docbook.xsl $<
+
+install-exec-local:	
+	mkdir -p $(DESTDIR)$(prefix)/share/rivendell/apis
+	cp *.pdf $(DESTDIR)$(prefix)/share/rivendell/apis/
+	mkdir -p $(DESTDIR)$(prefix)/share/rivendell/apis/html
+	cp *.html $(DESTDIR)$(prefix)/share/rivendell/apis/html/
+	cp *.png $(DESTDIR)$(prefix)/share/rivendell/apis/html/
+
+uninstall-local:
+	rm -rf $(DESTDIR)$(prefix)/share/rivendell/apis
 
 all-local:	cae.html\
                 cae.pdf\
