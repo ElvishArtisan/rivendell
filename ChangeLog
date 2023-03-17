@@ -24009,3 +24009,6 @@
 2023-03-11 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdadmin(1) that threw a SQL error when attempting
 	to create a new Switcher/GPIO instance.
+2023-03-17 Fred Gleason <fredg@paravelsystems.com>
+	* Added the API documentation and man pages to the 'rivendell-opsguide'
+	RPM package.

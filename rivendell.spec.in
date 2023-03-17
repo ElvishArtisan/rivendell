@@ -499,7 +499,8 @@ rm -rf $RPM_BUILD_ROOT
 /etc/auto.master.d/rd.audiostore.autofs
 %{_datadir}/rivendell/opsguide.pdf
 %{_datadir}/rivendell/html/*
-
+%{_datadir}/rivendell/apis
+%{_datadir}/rivendell/manpages
 
 %files webapi
 %{_libdir}/librivwebcapi.so.@INTERFACE_RIVWEBCAPI_MAJOR@
@@ -518,6 +519,8 @@ rm -rf $RPM_BUILD_ROOT
 %files opsguide
 %{_datadir}/rivendell/opsguide.pdf
 %{_datadir}/rivendell/html/*
+%{_datadir}/rivendell/apis
+%{_datadir}/rivendell/manpages
 
 
 %files devel
