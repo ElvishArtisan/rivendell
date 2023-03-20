@@ -2,7 +2,7 @@
 //
 // A container class for a Rivendell Catch Event message.
 //
-//   (C) Copyright 2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2022-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -370,15 +370,11 @@ bool RDCatchEvent::read(const QString &str)
   case RDCatchEvent::ReloadDecksOp:
     if(f0.size()!=4) {
       return false;
-    }    
-    chan=f0.at(4).toInt(&ok);
-    if(ok&&(chan<255)) {
-      d_operation=op;
-      d_host_name=f0.at(1);
-      d_target_host_name=f0.at(3);
-      return true;
     }
-    break;
+    d_operation=op;
+    d_host_name=f0.at(1);
+    d_target_host_name=f0.at(3);
+    return true;
 
   case RDCatchEvent::NullOp:
   case RDCatchEvent::LastOp:
