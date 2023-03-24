@@ -24019,3 +24019,5 @@
 	when processing a 'Reload Decks' operation.
 2023-03-24 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored code in rdrssd(8) to improve reliability.
+2023-03-24 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.0.0rc2int0.
