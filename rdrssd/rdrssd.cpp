@@ -2,7 +2,7 @@
 //
 // Rivendell RSS Processor Service
 //
-//   (C) Copyright 2020-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2020-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -133,9 +133,12 @@ void MainObject::ProcessFeed(const QString &key_name)
   //
   // Update Posted XML
   //
+  rda->syslog(LOG_DEBUG,"examining feed \"%s\"",key_name.toUtf8().constData());
+  bool modified=false;
   sql=QString("select ")+
     "`PODCASTS`.`ID`,"+                   // 00
-    "`PODCASTS`.`EXPIRATION_DATETIME` "+  // 01
+    "`PODCASTS`.`EXPIRATION_DATETIME`,"+  // 01
+    "`ITEM_TITLE` "+                      // 02
     "from `PODCASTS` left join `FEEDS` "+
     "on `PODCASTS`.`FEED_ID`=`FEEDS`.`ID` where "+
     "(`FEEDS`.`KEY_NAME`='"+RDEscapeString(key_name)+"') && "+
@@ -143,11 +146,17 @@ void MainObject::ProcessFeed(const QString &key_name)
     "(`PODCASTS`.`EFFECTIVE_DATETIME`<"+now_str+") || "+
     "(`FEEDS`.`LAST_BUILD_DATETIME`<`PODCASTS`.`EXPIRATION_DATETIME`) && "+
     "(`PODCASTS`.`EXPIRATION_DATETIME`<"+now_str+"))";
+
+  //  rda->syslog(LOG_NOTICE,"scanning feed %s: SQL: %s\n",
+  //	 key_name.toUtf8().constData(),sql.toUtf8().constData());
+
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    bool deleted=false;
+    modified=true;
     if((!q->value(1).isNull())&&(q->value(1).toDateTime()<now)) {
-      // Delete expired cast
+      //
+      // Delete expired item
+      //
       RDPodcast *cast=new RDPodcast(rda->config(),q->value(0).toUInt());
       if(!cast->dropAudio(feed,&err_msg,false)) {
 	rda->syslog(LOG_WARNING,
@@ -157,43 +166,49 @@ void MainObject::ProcessFeed(const QString &key_name)
 		    feed->keyName().toUtf8().constData(),
 		    err_msg.toUtf8().constData());
       }
+      delete cast;
       sql=QString("delete from `PODCASTS` where ")+
 	QString::asprintf("`ID`=%u",q->value(0).toUInt());
       RDSqlQuery::apply(sql);
       rda->syslog(LOG_INFO,"purged cast %u [%s] from feed \"%s\"",
-		  q->value(0).toUInt(),cast->itemTitle().toUtf8().constData(),
+		  q->value(0).toUInt(),q->value(2).toString().toUtf8().
+		  constData(),
 		  feed->keyName().toUtf8().constData());
-      delete cast;
-
       rda->ripc()->sendNotification(RDNotification::FeedType,
 				 RDNotification::ModifyAction,feed->keyName());
       rda->ripc()->sendNotification(RDNotification::FeedItemType,
 				    RDNotification::DeleteAction,
 				    q->value(0).toUInt());
-      deleted=true;
-    }
-    if(feed->postXml(&err_msg)) {
-      rda->syslog(LOG_DEBUG,
-		  "repost of XML for feed \"%s\" triggered by cast id %u",
-		  key_name.toUtf8().constData(),q->value(0).toUInt());
-      if(!deleted) {
-	rda->ripc()->sendNotification(RDNotification::FeedType,
-				      RDNotification::ModifyAction,
-				      feed->keyName());
-	rda->ripc()->sendNotification(RDNotification::FeedType,
-				      RDNotification::ModifyAction,
-				      feed->keyName());
-      }
     }
     else {
-      rda->
-	syslog(LOG_WARNING,
-	    "repost of XML for feed \"%s\" triggered by cast id %u failed [%s]",
-	    key_name.toUtf8().constData(),q->value(0).toUInt(),
-	    err_msg.toUtf8().constData());
-   }
+      //
+      // Enable embargoed item
+      //
+      rda->syslog(LOG_INFO,
+	   "auto-posting item for feed \"%s\": cast_id: %u, item_title: \"%s\"",
+		  key_name.toUtf8().constData(),q->value(0).toUInt(),
+		  q->value(2).toString().toUtf8().constData());
+      rda->ripc()->sendNotification(RDNotification::FeedType,
+				    RDNotification::ModifyAction,
+				    feed->keyName());
+      rda->ripc()->sendNotification(RDNotification::FeedItemType,
+				    RDNotification::ModifyAction,
+				    q->value(0).toUInt());
+    }
   }
   delete q;
+
+  //
+  // Update feed XML
+  //
+  if(modified) {
+    if(!feed->postXml(&err_msg)) {
+      rda->syslog(LOG_INFO,
+		  "xml update FAILED for item in feed \"%s\" [%s]",
+		  key_name.toUtf8().constData(),q->value(0).toUInt(),
+		  err_msg.toUtf8().constData());
+    }
+  }
 
   delete feed;
 }
