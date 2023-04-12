@@ -24026,3 +24026,6 @@
 2023-04-12 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'RDReplicator::roundDownToDow()' methods.
 	* Added a 'Westwood One Wegener Portal' replicator.
+2023-04-12 Fred Gleason <fredg@paravelsystems.com>
+	* Removed file purging functionality from the 'Westwood One Wegener
+	Portal' replicator.

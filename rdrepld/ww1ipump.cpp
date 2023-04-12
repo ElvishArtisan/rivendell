@@ -91,7 +91,6 @@ void Ww1Ipump::CheckIsciXreference()
 	sql="update `VERSION` set `LAST_ISCI_XREFERENCE`=now()";
 	RDSqlQuery::apply(sql);
 	xds_isci_datetime=QDateTime(QDate::currentDate(),QTime::currentTime());
-	PurgeCuts();
       }
     }
   }
@@ -402,61 +401,4 @@ bool Ww1Ipump::PostCut(const QString &cutname,const QString &filename)
 	      dest_url.toUtf8().constData());
 
   return true;
-}
-
-
-void Ww1Ipump::PurgeCuts()
-{
-  QString sql;
-  RDSqlQuery *q;
-  RDSqlQuery *q1;
-  RDSqlQuery *q2;
-  RDDelete *conv;
-  RDDelete::ErrorCode conv_err;
-
-  sql=QString("select ")+
-    "`ID`,"+               // 00
-    "`POSTED_FILENAME` "+  // 01
-    "from `REPL_CART_STATE` where "+
-    "`REPLICATOR_NAME`='"+RDEscapeString(config()->name())+"'";
-  q=new RDSqlQuery(sql);
-  while(q->next()) {
-    sql=QString("select `ID` from `ISCI_XREFERENCE` where ")+
-      "`FILENAME`='"+RDEscapeString(q->value(1).toString())+"'";
-    q1=new RDSqlQuery(sql);
-    if(!q1->first()) {
-      QString path=config()->url();
-      if(path.right(1)!="/") {
-	path+="/";
-      }
-      QUrl url(path+q->value(1).toString());
-      conv=new RDDelete(rda->config());
-      conv->setTargetUrl(url.toString());
-      //
-      // FIXME: Finish implementing ssh(1) key support!
-      //
-      if((conv_err=conv->runDelete(config()->urlUsername(),
-				   config()->urlPassword(),"",false,
-				   rda->config()->logXloadDebugData()))==
-	 RDDelete::ErrorOk) {
-	sql=QString::asprintf("delete from `REPL_CART_STATE` where `ID`=%d",
-			      q->value(0).toInt());
-	q2=new RDSqlQuery(sql);
-	delete q2;
-	rda->syslog(LOG_INFO,"purged \"%s\" for replicator \"%s\"",
-		    (const char *)url.toString().toUtf8(),
-		    (const char *)config()->name().toUtf8());
-      }
-      else {
-	rda->syslog(LOG_WARNING,
-		    "unable to delete \"%s\" for replicator \"%s\" [%s]",
-		    (const char *)url.toString().toUtf8(),
-		    (const char *)config()->name().toUtf8(),
-		    (const char *)RDDelete::errorText(conv_err).toUtf8());
-      }
-      delete conv;
-    }
-    delete q1;
-  }
-  delete q;
 }

@@ -36,7 +36,6 @@ class Ww1Ipump : public ReplFactory
   bool ValidateFilename(const QString &filename);
   void CheckCarts();
   bool PostCut(const QString &cutname,const QString &filename);
-  void PurgeCuts();
   QDateTime xds_isci_datetime;
 };
 
