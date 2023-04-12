@@ -24023,3 +24023,6 @@
 	* Incremented the package version to 4.0.0rc2int0.
 2023-04-12 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'RDUpload::createDestinationDirs()' method.
+2023-04-12 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDReplicator::roundDownToDow()' methods.
+	* Added a 'Westwood One Wegener Portal' replicator.

@@ -28,7 +28,7 @@
 class RDReplicator
 {
  public:
-  enum Type {TypeCitadelXds=0,TypeLast=1};
+  enum Type {TypeCitadelXds=0,TypeWw1Ipump=1,TypeLast=2};
   RDReplicator(const QString &name);
   QString name() const;
   RDReplicator::Type type() const;
@@ -58,6 +58,8 @@ class RDReplicator
   int normalizeLevel() const;
   void setNormalizeLevel(int lvl) const;
   QString typeString() const;
+  static QDate roundDownToDow(const QDate &date,int dow);
+  static QDateTime roundDownToDow(const QDateTime &dt,int dow);
   static QString typeString(RDReplicator::Type type);
 
  private:

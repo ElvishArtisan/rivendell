@@ -2,7 +2,7 @@
 //
 // The Rivendell Replicator Daemon
 //
-//   (C) Copyright 2010-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -36,6 +36,7 @@
 
 #include "citadelxds.h"
 #include "rdrepld.h"
+#include "ww1ipump.h"
 
 void SigHandler(int signum)
 {
@@ -149,47 +150,49 @@ void MainObject::ProcessCarts()
 	RDEscapeString(q->value(0).toString())+"')||";
     }
     delete q;
-    where=where.left(where.length()-2);
-    sql=QString("select ")+
-      "`NUMBER`,"+             // 00
-      "`TYPE`,"+               // 01
-      "`METADATA_DATETIME` "+  // 02
-      "from `CART` where "+
-      where;
-    q=new RDSqlQuery(sql);
-    while(q->next()) {
+    where=where.left(where.length()-2).trimmed();
+    if(!where.isEmpty()) {
       sql=QString("select ")+
-	"`ID`,"+             // 00
-	"`ITEM_DATETIME` "+  // 01
-	"from `REPL_CART_STATE` where "+
-	"(`REPLICATOR_NAME`='"+RDEscapeString(repl_name)+"')&&"+
-	QString::asprintf("(`CART_NUMBER`=%u)",q->value(0).toUInt());
-      q1=new RDSqlQuery(sql);
-      if(q1->first()) {
-	stale=q->value(2).toDateTime()>q1->value(1).toDateTime();
-      }
-      else {
-	stale=true;
-      }
-      if(stale) {
-	if(repl_replicators[i]->processCart(q->value(0).toUInt())) {
-	  if(q1->isValid()) {
-	    sql=QString("update `REPL_CART_STATE` set ")+
-	      "`ITEM_DATETIME`=now() where "+
-	      QString::asprintf("`ID`=%u",q1->value(0).toUInt());
-	  }
-	  else {
-	    sql=QString("insert into `REPL_CART_STATE` set ")+
-	      "`REPLICATOR_NAME`='"+RDEscapeString(repl_name)+"',"+
-	      QString::asprintf("`CART_NUMBER`=%u,",q->value(0).toUInt())+
-	      "`ITEM_DATETIME`=now()";
-	  }
-	  RDSqlQuery::apply(sql);
+	"`NUMBER`,"+             // 00
+	"`TYPE`,"+               // 01
+	"`METADATA_DATETIME` "+  // 02
+	"from `CART` where "+
+	where;
+      q=new RDSqlQuery(sql);
+      while(q->next()) {
+	sql=QString("select ")+
+	  "`ID`,"+             // 00
+	  "`ITEM_DATETIME` "+  // 01
+	  "from `REPL_CART_STATE` where "+
+	  "(`REPLICATOR_NAME`='"+RDEscapeString(repl_name)+"')&&"+
+	  QString::asprintf("(`CART_NUMBER`=%u)",q->value(0).toUInt());
+	q1=new RDSqlQuery(sql);
+	if(q1->first()) {
+	  stale=q->value(2).toDateTime()>q1->value(1).toDateTime();
 	}
+	else {
+	  stale=true;
+	}
+	if(stale) {
+	  if(repl_replicators[i]->processCart(q->value(0).toUInt())) {
+	    if(q1->isValid()) {
+	      sql=QString("update `REPL_CART_STATE` set ")+
+		"`ITEM_DATETIME`=now() where "+
+		QString::asprintf("`ID`=%u",q1->value(0).toUInt());
+	    }
+	    else {
+	      sql=QString("insert into `REPL_CART_STATE` set ")+
+		"`REPLICATOR_NAME`='"+RDEscapeString(repl_name)+"',"+
+		QString::asprintf("`CART_NUMBER`=%u,",q->value(0).toUInt())+
+		"`ITEM_DATETIME`=now()";
+	    }
+	    RDSqlQuery::apply(sql);
+	  }
+	}
+	delete q1;
       }
-      delete q1;
+      delete q;
     }
-    delete q;
   }
 }
 
@@ -234,6 +237,10 @@ void MainObject::LoadReplicators()
     switch(config->type()) {
     case RDReplicator::TypeCitadelXds:
       repl_replicators.push_back(new CitadelXds(config));
+      break;
+
+    case RDReplicator::TypeWw1Ipump:
+      repl_replicators.push_back(new Ww1Ipump(config));
       break;
 
     case RDReplicator::TypeLast:

@@ -205,9 +205,29 @@ QString RDReplicator::typeString(RDReplicator::Type type)
     ret="Citadel X-Digital Portal";
     break;
 
+  case RDReplicator::TypeWw1Ipump:
+    ret="Westwood One Wegener Portal";
+    break;
+
   case RDReplicator::TypeLast:
     break;
   }
+  return ret;
+}
+
+
+QDate RDReplicator::roundDownToDow(const QDate &date,int dow)
+{
+  return date.addDays(-(date.dayOfWeek()-dow));
+}
+
+
+QDateTime RDReplicator::roundDownToDow(const QDateTime &dt,int dow)
+{
+  QDateTime ret=dt;
+
+  ret.setDate(RDReplicator::roundDownToDow(dt.date(),dow));
+
   return ret;
 }
 
