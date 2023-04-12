@@ -76,6 +76,7 @@ RDUpload::RDUpload(RDConfig *c,QObject *parent)
   : RDTransfer(c,parent)
 {
   conv_aborting=false;
+  conv_create_dst_dirs=false;
 }
 
 
@@ -103,6 +104,12 @@ void RDUpload::setSourceFile(const QString &filename)
 void RDUpload::setDestinationUrl(const QString &url)
 {
   conv_dst_url=url;
+}
+
+
+void RDUpload::createDestinationDirs(bool state)
+{
+  conv_create_dst_dirs=state;
 }
 
 
@@ -177,6 +184,14 @@ RDUpload::ErrorCode RDUpload::runUpload(const QString &username,
     curl_easy_setopt(curl,CURLOPT_USERPWD,userpwd);
   }
   curl_easy_setopt(curl,CURLOPT_SSL_VERIFYHOST,0); // Don't verify host key
+
+  //
+  // Create any needed target directories
+  //
+  if(conv_create_dst_dirs) {
+    curl_easy_setopt(curl,CURLOPT_FTP_CREATE_MISSING_DIRS,
+		     CURLFTP_CREATE_DIR_RETRY);
+  }
 
   //
   // Transfer Parameters

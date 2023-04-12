@@ -24021,3 +24021,5 @@
 	* Refactored code in rdrssd(8) to improve reliability.
 2023-03-24 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.0.0rc2int0.
+2023-04-12 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'RDUpload::createDestinationDirs()' method.

@@ -2,7 +2,7 @@
 //
 // Test Rivendell file uploading.
 //
-//   (C) Copyright 2010-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -36,6 +36,7 @@ MainObject::MainObject(QObject *parent)
   password="";
   RDUpload::ErrorCode conv_err;
   use_identity_file=false;
+  create_dirs=false;
 
   //
   // Open the Database
@@ -64,6 +65,10 @@ MainObject::MainObject(QObject *parent)
     }
     if(rda->cmdSwitch()->key(i)=="--use-identity-file") {
       use_identity_file=true;
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
+    if(rda->cmdSwitch()->key(i)=="--create-dirs") {
+      create_dirs=true;
       rda->cmdSwitch()->setProcessed(i,true);
     }
     if(rda->cmdSwitch()->key(i)=="--source-file") {
@@ -100,6 +105,7 @@ MainObject::MainObject(QObject *parent)
   RDUpload *conv=new RDUpload(rda->config(),this);
   conv->setSourceFile(source_filename);
   conv->setDestinationUrl(destination_url);
+  conv->createDestinationDirs(create_dirs);
   printf("Uploading...\n");
   conv_err=conv->
     runUpload(username,password,ssh_identity_filename,use_identity_file,

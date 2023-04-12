@@ -39,6 +39,7 @@ class RDUpload : public RDTransfer
   QStringList supportedSchemes() const;
   void setSourceFile(const QString &filename);
   void setDestinationUrl(const QString &url);
+  void createDestinationDirs(bool state);
   int totalSteps() const;
   RDUpload::ErrorCode runUpload(const QString &username,
 				const QString &password,
@@ -62,6 +63,7 @@ class RDUpload : public RDTransfer
 					       double ulnow);
   QString conv_src_filename;
   QUrl conv_dst_url;
+  bool conv_create_dst_dirs;
   bool conv_aborting;
   uint conv_src_size;
 };
