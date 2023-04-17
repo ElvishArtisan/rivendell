@@ -205,8 +205,7 @@ void MainObject::ProcessFeed(const QString &key_name)
     if(!feed->postXml(&err_msg)) {
       rda->syslog(LOG_INFO,
 		  "xml update FAILED for item in feed \"%s\" [%s]",
-		  key_name.toUtf8().constData(),q->value(0).toUInt(),
-		  err_msg.toUtf8().constData());
+		  key_name.toUtf8().constData(),err_msg.toUtf8().constData());
     }
   }
 

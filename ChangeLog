@@ -24029,3 +24029,6 @@
 2023-04-12 Fred Gleason <fredg@paravelsystems.com>
 	* Removed file purging functionality from the 'Westwood One Wegener
 	Portal' replicator.
+2023-04-17 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdrssd(8) that caused a segfault when
+	attempting to report a failed feed update in syslog.
