@@ -24032,3 +24032,6 @@
 2023-04-17 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdrssd(8) that caused a segfault when
 	attempting to report a failed feed update in syslog.
+2023-04-19 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the log importer code that threw SQL errors when
+	attempting to process traffic log imports.

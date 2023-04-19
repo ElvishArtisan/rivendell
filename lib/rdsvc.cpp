@@ -550,12 +550,19 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
     "`"+src_str+"LEN_MINUTES_OFFSET`,"+  // 18
     "`"+src_str+"LEN_MINUTES_LENGTH`,"+  // 19
     "`"+src_str+"LEN_SECONDS_OFFSET`,"+  // 20
-    "`"+src_str+"LEN_SECONDS_LENGTH`,"+  // 21
-    "`"+src_str+"TRANS_TYPE_OFFSET`,"+   // 22
-    "`"+src_str+"TRANS_TYPE_LENGTH`,"+   // 23
-    "`"+src_str+"TIME_TYPE_OFFSET`,"+    // 24
-    "`"+src_str+"TIME_TYPE_LENGTH` "+    // 25
-    "from "+parser_table+" where `NAME`='"+RDEscapeString(parser_name)+"'";
+    "`"+src_str+"LEN_SECONDS_LENGTH`";   // 21
+
+  if(src==RDSvc::Music) {
+    sql+=QString(",")+
+      "`"+src_str+"TRANS_TYPE_OFFSET`,"+   // 22
+      "`"+src_str+"TRANS_TYPE_LENGTH`,"+   // 23
+      "`"+src_str+"TIME_TYPE_OFFSET`,"+    // 24
+      "`"+src_str+"TIME_TYPE_LENGTH` ";    // 25
+  }
+  else {
+    sql+=" ";
+  }
+  sql+="from "+parser_table+" where `NAME`='"+RDEscapeString(parser_name)+"'";
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
