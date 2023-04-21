@@ -24037,3 +24037,7 @@
 	attempting to process traffic log imports.
 2023-04-21 Fred Gleason <fredg@paravelsystems.com>
 	* Updated I18N data.
+2023-04-21 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the package version to 4.0.0rc3.
+	* Updated the version of the 'rivwebpyapi' PyPI package to
+	4.0.0rc3.
