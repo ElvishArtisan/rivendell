@@ -63,6 +63,10 @@
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>[new switch event]</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CatchListView</name>
@@ -549,6 +553,26 @@ New</source>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Cut</source>
+        <translation type="unfinished">Conteúdo</translation>
+    </message>
+    <message>
+        <source>Missing Cut</source>
+        <translation type="unfinished">Conteúdo Faltando</translation>
+    </message>
+    <message>
+        <source>You must assign a source cut!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Conflicting Event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The parameters of this event conflict with</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditRecording</name>
@@ -768,11 +792,11 @@ Novo</translation>
     </message>
     <message>
         <source>Duplicate Event</source>
-        <translation>Duplicar Evento</translation>
+        <translation type="vanished">Duplicar Evento</translation>
     </message>
     <message>
         <source>An event with these parameters already exists!</source>
-        <translation>Um Evento com estes parâmetros já existe!</translation>
+        <translation type="vanished">Um Evento com estes parâmetros já existe!</translation>
     </message>
     <message>
         <source>Select</source>
@@ -793,6 +817,14 @@ New</source>
     </message>
     <message>
         <source>The Record Length parameter cannot be &quot;00:00:00&quot;!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Conflicting Event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The parameters of this event conflict with</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -930,7 +962,7 @@ New</source>
     </message>
     <message>
         <source>[none]</source>
-        <translation type="obsolete">[nenhum]</translation>
+        <translation type="unfinished">[nenhum]</translation>
     </message>
     <message>
         <source>RSS Feed:</source>
@@ -1378,7 +1410,7 @@ New</source>
     </message>
     <message>
         <source>Control connection timed out to host</source>
-        <translation>Conexão de Controle expirou para o Cliente</translation>
+        <translation type="vanished">Conexão de Controle expirou para o Cliente</translation>
     </message>
     <message>
         <source>Su</source>
@@ -1542,10 +1574,6 @@ New</source>
     </message>
     <message>
         <source>Unknown command option</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Connection Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -769,6 +769,10 @@ All</source>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>[select service]</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ImportCartsModel</name>

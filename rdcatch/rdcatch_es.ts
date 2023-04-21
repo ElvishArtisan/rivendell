@@ -63,6 +63,10 @@
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>[new switch event]</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CatchListView</name>
@@ -545,6 +549,26 @@ New</source>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Cut</source>
+        <translation type="unfinished">Audio</translation>
+    </message>
+    <message>
+        <source>Missing Cut</source>
+        <translation type="unfinished">Audio no encontrado</translation>
+    </message>
+    <message>
+        <source>You must assign a source cut!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Conflicting Event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The parameters of this event conflict with</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditRecording</name>
@@ -740,11 +764,11 @@ como Nuevo</translation>
     </message>
     <message>
         <source>Duplicate Event</source>
-        <translation>Evento duplicado</translation>
+        <translation type="vanished">Evento duplicado</translation>
     </message>
     <message>
         <source>An event with these parameters already exists!</source>
-        <translation>¡Un evento con esos parámetros ya existe!</translation>
+        <translation type="vanished">¡Un evento con esos parámetros ya existe!</translation>
     </message>
     <message>
         <source>Max Record Length:</source>
@@ -789,6 +813,14 @@ New</source>
     </message>
     <message>
         <source>The Record Length parameter cannot be &quot;00:00:00&quot;!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Conflicting Event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The parameters of this event conflict with</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1056,7 +1088,7 @@ como Nuevo</translation>
     </message>
     <message>
         <source>[none]</source>
-        <translation type="obsolete">[ninguno]</translation>
+        <translation type="unfinished">[ninguno]</translation>
     </message>
     <message>
         <source>Event Offset:</source>
@@ -1334,7 +1366,7 @@ New</source>
     </message>
     <message>
         <source>Control connection timed out to host</source>
-        <translation>La conexión de control no pudo realizarse</translation>
+        <translation type="vanished">La conexión de control no pudo realizarse</translation>
     </message>
     <message>
         <source>Su</source>
@@ -1454,10 +1486,6 @@ New</source>
     </message>
     <message>
         <source>Unknown command option</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Connection Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

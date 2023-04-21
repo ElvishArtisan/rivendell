@@ -548,11 +548,11 @@ Tail</source>
     <name>MainWidget</name>
     <message>
         <source>RDAirPlay</source>
-        <translation>RDAirPlay</translation>
+        <translation type="vanished">RDAirPlay</translation>
     </message>
     <message>
         <source>Multiple instances not allowed!</source>
-        <translation>Det er ikkje lov med fleire førekomstar!</translation>
+        <translation type="vanished">Det er ikkje lov med fleire førekomstar!</translation>
     </message>
     <message>
         <source>RDAirPlay - Host:</source>
@@ -671,6 +671,30 @@ LASTAR PÅ NYTT</translation>
     <message>
         <source>Voice
 Tracker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Opening database...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reading command line options...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Initializing global resources...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Initializing widgets...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Initializing sound panel array...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connecting to Rivendell services...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -602,11 +602,11 @@ sonidos</translation>
     </message>
     <message>
         <source>RDAirPlay</source>
-        <translation>RDAirPlay</translation>
+        <translation type="vanished">RDAirPlay</translation>
     </message>
     <message>
         <source>Multiple instances not allowed!</source>
-        <translation>¡No se permiten múltiples instancias!</translation>
+        <translation type="vanished">¡No se permiten múltiples instancias!</translation>
     </message>
     <message>
         <source>LOG
@@ -661,6 +661,30 @@ LISTA</translation>
     <message>
         <source>Voice
 Tracker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Opening database...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reading command line options...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Initializing global resources...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Initializing widgets...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Initializing sound panel array...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connecting to Rivendell services...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

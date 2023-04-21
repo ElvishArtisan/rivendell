@@ -2198,6 +2198,14 @@ Do you still want to save?</source>
         <source>Cancel</source>
         <translation type="unfinished">Cancelar</translation>
     </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The variable name is already in use!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditHotkeys</name>
@@ -3694,43 +3702,43 @@ computador para obtener los recursos de audio de dicho equipo.</translation>
     </message>
     <message>
         <source>32 kbps/chan</source>
-        <translation>32 kbps/canal</translation>
+        <translation type="vanished">32 kbps/canal</translation>
     </message>
     <message>
         <source>48 kbps/chan</source>
-        <translation>48 kbps/canal</translation>
+        <translation type="vanished">48 kbps/canal</translation>
     </message>
     <message>
         <source>56 kbps/chan</source>
-        <translation>56 kbps/canal</translation>
+        <translation type="vanished">56 kbps/canal</translation>
     </message>
     <message>
         <source>64 kbps/chan</source>
-        <translation>64 kbps/canal</translation>
+        <translation type="vanished">64 kbps/canal</translation>
     </message>
     <message>
         <source>80 kbps/chan</source>
-        <translation>80 kbps/canal</translation>
+        <translation type="vanished">80 kbps/canal</translation>
     </message>
     <message>
         <source>96 kbps/chan</source>
-        <translation>96 kbps/canal</translation>
+        <translation type="vanished">96 kbps/canal</translation>
     </message>
     <message>
         <source>112 kbps/chan</source>
-        <translation>112 kbps/canal</translation>
+        <translation type="vanished">112 kbps/canal</translation>
     </message>
     <message>
         <source>128 kbps/chan</source>
-        <translation>128 kbps/canal</translation>
+        <translation type="vanished">128 kbps/canal</translation>
     </message>
     <message>
         <source>160 kbps/chan</source>
-        <translation>160 kbps/canal</translation>
+        <translation type="vanished">160 kbps/canal</translation>
     </message>
     <message>
         <source>192 kbps/chan</source>
-        <translation>192 kbps/canal</translation>
+        <translation type="vanished">192 kbps/canal</translation>
     </message>
     <message>
         <source>40 kbps/chan</source>
@@ -3831,6 +3839,10 @@ computador para obtener los recursos de audio de dicho equipo.</translation>
     <message>
         <source>Cancel</source>
         <translation type="unfinished">Cancelar</translation>
+    </message>
+    <message>
+        <source>kbps/chan</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4878,6 +4890,18 @@ Music</source>
     </message>
     <message>
         <source>Include Traffic Import Markers in Finished Logs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation type="unfinished">No</translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation type="unfinished">Sí</translation>
+    </message>
+    <message>
+        <source>Bypass Grid Processing</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6251,6 +6275,18 @@ Do you still want to delete it?</source>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error posting audio to feed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error posting updated XML to feed</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListGpis</name>
@@ -7463,6 +7499,14 @@ Feeds</source>
     </message>
     <message>
         <source>This account has insufficient privileges for this operation.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The --add-host-entry option requires root permissions.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unrecognized option</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

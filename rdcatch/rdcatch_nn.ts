@@ -63,6 +63,10 @@
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>[new switch event]</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CatchListView</name>
@@ -546,6 +550,26 @@ New</source>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Cut</source>
+        <translation type="unfinished">Klipp</translation>
+    </message>
+    <message>
+        <source>Missing Cut</source>
+        <translation type="unfinished">Manglar klipp</translation>
+    </message>
+    <message>
+        <source>You must assign a source cut!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Conflicting Event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The parameters of this event conflict with</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditRecording</name>
@@ -765,11 +789,11 @@ ny</translation>
     </message>
     <message>
         <source>Duplicate Event</source>
-        <translation>Kopier hending</translation>
+        <translation type="vanished">Kopier hending</translation>
     </message>
     <message>
         <source>An event with these parameters already exists!</source>
-        <translation>Det finst alt ei hending med dette oppsettet!</translation>
+        <translation type="vanished">Det finst alt ei hending med dette oppsettet!</translation>
     </message>
     <message>
         <source>Select</source>
@@ -790,6 +814,14 @@ New</source>
     </message>
     <message>
         <source>The Record Length parameter cannot be &quot;00:00:00&quot;!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Conflicting Event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The parameters of this event conflict with</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -923,7 +955,7 @@ New</source>
     </message>
     <message>
         <source>[none]</source>
-        <translation type="obsolete">[ingen]</translation>
+        <translation type="unfinished">[ingen]</translation>
     </message>
     <message>
         <source>RSS Feed:</source>
@@ -1371,7 +1403,7 @@ New</source>
     </message>
     <message>
         <source>Control connection timed out to host</source>
-        <translation>Tidsavbrot på kontrolltilkoplinga til verten</translation>
+        <translation type="vanished">Tidsavbrot på kontrolltilkoplinga til verten</translation>
     </message>
     <message>
         <source>Su</source>
@@ -1535,10 +1567,6 @@ New</source>
     </message>
     <message>
         <source>Unknown command option</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Connection Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

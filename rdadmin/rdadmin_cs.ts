@@ -2200,6 +2200,14 @@ Stále ještě chcete uložit?</translation>
         <source>Cancel</source>
         <translation type="unfinished">Zrušit</translation>
     </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The variable name is already in use!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditHotkeys</name>
@@ -3714,43 +3722,43 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
     </message>
     <message>
         <source>32 kbps/chan</source>
-        <translation>32 kB/s/kanál</translation>
+        <translation type="vanished">32 kB/s/kanál</translation>
     </message>
     <message>
         <source>48 kbps/chan</source>
-        <translation>48 kB/s/kanál</translation>
+        <translation type="vanished">48 kB/s/kanál</translation>
     </message>
     <message>
         <source>56 kbps/chan</source>
-        <translation>56 kB/s/kanál</translation>
+        <translation type="vanished">56 kB/s/kanál</translation>
     </message>
     <message>
         <source>64 kbps/chan</source>
-        <translation>64 kB/s/kanál</translation>
+        <translation type="vanished">64 kB/s/kanál</translation>
     </message>
     <message>
         <source>80 kbps/chan</source>
-        <translation>80 kB/s/kanál</translation>
+        <translation type="vanished">80 kB/s/kanál</translation>
     </message>
     <message>
         <source>96 kbps/chan</source>
-        <translation>96 kB/s/kanál</translation>
+        <translation type="vanished">96 kB/s/kanál</translation>
     </message>
     <message>
         <source>112 kbps/chan</source>
-        <translation>112 kB/s/kanál</translation>
+        <translation type="vanished">112 kB/s/kanál</translation>
     </message>
     <message>
         <source>128 kbps/chan</source>
-        <translation>128 kB/s/kanál</translation>
+        <translation type="vanished">128 kB/s/kanál</translation>
     </message>
     <message>
         <source>160 kbps/chan</source>
-        <translation>160 kB/s/kanál</translation>
+        <translation type="vanished">160 kB/s/kanál</translation>
     </message>
     <message>
         <source>192 kbps/chan</source>
-        <translation>192 kB/s/kanál</translation>
+        <translation type="vanished">192 kB/s/kanál</translation>
     </message>
     <message>
         <source>40 kbps/chan</source>
@@ -3851,6 +3859,10 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
     <message>
         <source>Cancel</source>
         <translation type="unfinished">Zrušit</translation>
+    </message>
+    <message>
+        <source>kbps/chan</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4941,6 +4953,18 @@ Music</source>
     </message>
     <message>
         <source>Include Traffic Import Markers in Finished Logs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation type="unfinished">Ne</translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation type="unfinished">Ano</translation>
+    </message>
+    <message>
+        <source>Bypass Grid Processing</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6312,6 +6336,18 @@ Stále ještě jej chcete smazat?</translation>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error posting audio to feed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error posting updated XML to feed</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListGpis</name>
@@ -7533,6 +7569,14 @@ Feeds</source>
     </message>
     <message>
         <source>This account has insufficient privileges for this operation.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The --add-host-entry option requires root permissions.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unrecognized option</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

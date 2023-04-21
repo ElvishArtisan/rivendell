@@ -1337,6 +1337,14 @@ Do you still want to save?</source>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The variable name is already in use!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditImage</name>
@@ -2325,46 +2333,6 @@ configured to run the CAE service in order to populate the audio resources datab
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>32 kbps/chan</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>48 kbps/chan</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>56 kbps/chan</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>64 kbps/chan</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>80 kbps/chan</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>96 kbps/chan</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>112 kbps/chan</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>128 kbps/chan</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>160 kbps/chan</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>192 kbps/chan</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>No</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2446,6 +2414,10 @@ configured to run the CAE service in order to populate the audio resources datab
     </message>
     <message>
         <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>kbps/chan</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3171,6 +3143,18 @@ Music</source>
     </message>
     <message>
         <source>Include Traffic Import Markers in Finished Logs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bypass Grid Processing</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3955,6 +3939,18 @@ License</source>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error posting audio to feed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error posting updated XML to feed</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListGpis</name>
@@ -4570,6 +4566,14 @@ Feeds</source>
     </message>
     <message>
         <source>This account has insufficient privileges for this operation.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The --add-host-entry option requires root permissions.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unrecognized option</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

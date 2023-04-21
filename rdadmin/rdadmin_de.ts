@@ -2006,6 +2006,14 @@ Do you still want to save?</source>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The variable name is already in use!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditImage</name>
@@ -3431,43 +3439,43 @@ configured to run the CAE service in order to populate the audio resources datab
     </message>
     <message>
         <source>32 kbps/chan</source>
-        <translation type="unfinished">32 kbps/Kanal</translation>
+        <translation type="obsolete">32 kbps/Kanal</translation>
     </message>
     <message>
         <source>48 kbps/chan</source>
-        <translation type="unfinished">48 kbps/Kanals</translation>
+        <translation type="obsolete">48 kbps/Kanals</translation>
     </message>
     <message>
         <source>56 kbps/chan</source>
-        <translation type="unfinished">56 knps/Kanal</translation>
+        <translation type="obsolete">56 knps/Kanal</translation>
     </message>
     <message>
         <source>64 kbps/chan</source>
-        <translation type="unfinished">64 kbps/Kanal</translation>
+        <translation type="obsolete">64 kbps/Kanal</translation>
     </message>
     <message>
         <source>80 kbps/chan</source>
-        <translation type="unfinished">80 kbps/Kanal</translation>
+        <translation type="obsolete">80 kbps/Kanal</translation>
     </message>
     <message>
         <source>96 kbps/chan</source>
-        <translation type="unfinished">96 kbps/Kanal</translation>
+        <translation type="obsolete">96 kbps/Kanal</translation>
     </message>
     <message>
         <source>112 kbps/chan</source>
-        <translation type="unfinished">112 kbps/Kanal</translation>
+        <translation type="obsolete">112 kbps/Kanal</translation>
     </message>
     <message>
         <source>128 kbps/chan</source>
-        <translation type="unfinished">128 kbps/Kanal</translation>
+        <translation type="obsolete">128 kbps/Kanal</translation>
     </message>
     <message>
         <source>160 kbps/chan</source>
-        <translation type="unfinished">160 kbps/Kanal</translation>
+        <translation type="obsolete">160 kbps/Kanal</translation>
     </message>
     <message>
         <source>192 kbps/chan</source>
-        <translation type="unfinished">192 kbps/Kanal</translation>
+        <translation type="obsolete">192 kbps/Kanal</translation>
     </message>
     <message>
         <source>40 kbps/chan</source>
@@ -3567,6 +3575,10 @@ configured to run the CAE service in order to populate the audio resources datab
     </message>
     <message>
         <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>kbps/chan</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4565,6 +4577,18 @@ Music</source>
     </message>
     <message>
         <source>Include Traffic Import Markers in Finished Logs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation type="unfinished">Nein</translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation type="unfinished">Ja</translation>
+    </message>
+    <message>
+        <source>Bypass Grid Processing</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5823,6 +5847,18 @@ Wollen Sie ihn immernoch löschen?</translation>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error posting audio to feed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error posting updated XML to feed</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListGpis</name>
@@ -6992,6 +7028,14 @@ Feeds</source>
     </message>
     <message>
         <source>This account has insufficient privileges for this operation.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The --add-host-entry option requires root permissions.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unrecognized option</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

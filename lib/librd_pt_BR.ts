@@ -1034,6 +1034,22 @@
         <source>Disc Artist</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Insertion into LOGS table failed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Len</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>
@@ -1712,6 +1728,10 @@ File</source>
         <source>OK</source>
         <translation type="unfinished">OK</translation>
     </message>
+    <message>
+        <source>no such host</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDCueEdit</name>
@@ -2022,6 +2042,14 @@ Cart</source>
         <source>CD-Text reader process returned an error!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>CD-Text reader process failed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Call to &quot;/usr/bin/cdda2wav&quot; failed</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDDiscModel</name>
@@ -2063,10 +2091,6 @@ Cart</source>
     </message>
     <message>
         <source>Audio Track</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>New cart</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3519,10 +3543,6 @@ Por Favor, cheque suas configurações e tenbte outra vez.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Line</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>NOTE</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3532,6 +3552,14 @@ Por Favor, cheque suas configurações e tenbte outra vez.</translation>
     </message>
     <message>
         <source>[voice track]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trans</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Line Number</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3771,7 +3799,11 @@ Por Favor, cheque suas configurações e tenbte outra vez.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>T</source>
+        <source>S</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>H</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4649,6 +4681,10 @@ por favor, tente novamente!</translation>
     </message>
     <message>
         <source>[none]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Has Grid</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

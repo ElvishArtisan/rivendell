@@ -24035,3 +24035,5 @@
 2023-04-19 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the log importer code that threw SQL errors when
 	attempting to process traffic log imports.
+2023-04-21 Fred Gleason <fredg@paravelsystems.com>
+	* Updated I18N data.

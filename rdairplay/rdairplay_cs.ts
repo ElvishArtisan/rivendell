@@ -538,11 +538,11 @@ poslechu</translation>
     <name>MainWidget</name>
     <message>
         <source>RDAirPlay</source>
-        <translation>RDAirplay</translation>
+        <translation type="vanished">RDAirplay</translation>
     </message>
     <message>
         <source>Multiple instances not allowed!</source>
-        <translation>Více instancí není dovoleno!</translation>
+        <translation type="vanished">Více instancí není dovoleno!</translation>
     </message>
     <message>
         <source>RDAirPlay - Host:</source>
@@ -661,6 +661,30 @@ OBNOVEN</translation>
     <message>
         <source>Voice
 Tracker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Opening database...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reading command line options...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Initializing global resources...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Initializing widgets...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Initializing sound panel array...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connecting to Rivendell services...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
