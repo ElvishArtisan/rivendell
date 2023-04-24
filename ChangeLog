@@ -24041,3 +24041,6 @@
 	* Updated the package version to 4.0.0rc3.
 	* Updated the version of the 'rivwebpyapi' PyPI package to
 	4.0.0rc3.
+2023-04-24 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the 'List Feeds' dialog in rdadmin(1) that
+	threw a segfault when reposting a feed.

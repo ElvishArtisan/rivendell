@@ -331,8 +331,7 @@ void ListFeeds::repostData()
   // Post Item Data
   //
   sql=QString("select ")+
-    "`ID`,"+        // 00
-    "`KEY_NAME` "+  // 01
+    "`ID` "+        // 00
     "from `PODCASTS` where "+
     QString::asprintf("`FEED_ID`=%u",feed->id());
   q=new RDSqlQuery(sql);
@@ -344,7 +343,7 @@ void ListFeeds::repostData()
     if(!feed->postPodcast(q->value(0).toUInt(),&err_msg)) {
       QMessageBox::warning(this,"RDAdmin - "+tr("Error"),
 			   tr("Error posting audio to feed")+" \""+
-			   q->value(1).toString()+"\"\n"+
+			   feed->keyName()+"\"\n"+
 			   "["+err_msg+"].");
     }
     pd->setValue(++count);
@@ -358,12 +357,12 @@ void ListFeeds::repostData()
   pd->setRange(0,1);
   pd->setValue(0);
   if(!feed->postXml(&err_msg)) {
+    pd->setValue(1);
     QMessageBox::warning(this,"RDAdmin - "+tr("Error"),
 			 tr("Error posting updated XML to feed")+" \""+
-			 q->value(1).toString()+"\"\n"+
+			 feed->keyName()+"\"\n"+
 			 "["+err_msg+"].");
   }
-  pd->setValue(1);
 
   delete pd;
 }
