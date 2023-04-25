@@ -38,7 +38,7 @@
 #include "rdlog.h"
 #include "rdpodcast.h"
 #include "rdrenderer.h"
-#include "rdtempdirectory.h"
+#include "rdtextfile.h"
 #include "rdupload.h"
 #include "rdwavefile.h"
 #include "rdwebresult.h"
@@ -1870,6 +1870,39 @@ QString RDFeed::itunesCategoryXml(const QString &category,
   return QString("<itunes:category text=\"")+RDXmlEscape(category)+"\">\n"+
     pad_str+"  <itunes:category text=\""+RDXmlEscape(sub_category)+"\" />\n"+
     pad_str+"</itunes:category>";
+}
+
+
+bool RDFeed::generateReport(const QString &feed_url,
+			    const QString &stylesheet_pathname,
+			    const QString &report_filename,
+			    RDTempDirectory *tempdir,
+			    QString *err_msg)
+{
+  QString err_msg2;
+  int result;
+  bool ret=false;
+
+  ret=tempdir->create(&err_msg2);
+  if(ret) {
+    *err_msg=QObject::tr("Unable to create temporary directory.")+
+      "["+err_msg2+"]";
+    QString tmpfile=tempdir->path()+"/"+report_filename;
+    QString cmd="curl -f -s "+feed_url+" | xsltproc --encoding utf-8 "+
+      stylesheet_pathname+" - > "+tmpfile;
+    result=system(cmd.toUtf8());
+    if(result==-1) {
+      *err_msg=tr("unable to fork process")+" ["+strerror(errno)+"].";
+      return false;
+    }
+    if(WEXITSTATUS(result)!=0) {
+      *err_msg=tr("converter returned non-zero exit code.");
+      return false;
+    }
+    RDWebBrowser("file://"+tmpfile);
+  }
+
+  return ret;
 }
 
 

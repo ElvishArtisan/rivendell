@@ -30,6 +30,7 @@
 #include <rdrssschemas.h>
 #include <rdsettings.h>
 #include <rdstation.h>
+#include <rdtempdirectory.h>
 #include <rduser.h>
 #include <rdweb.h>
 
@@ -153,6 +154,10 @@ class RDFeed : public QObject
   static QString publicUrl(const QString &base_url,const QString &keyname);
   static QString itunesCategoryXml(const QString &category,
 				   const QString &sub_category,int padding=0);
+  static bool generateReport(const QString &feed_url,
+			     const QString &stylesheet_pathname,
+			     const QString &report_filename,
+			     RDTempDirectory *tempdir,QString *err_msg);
 
  signals:
   void postProgressChanged(int step);

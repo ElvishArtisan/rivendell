@@ -24044,3 +24044,5 @@
 2023-04-24 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in the 'List Feeds' dialog in rdadmin(1) that
 	threw a segfault when reposting a feed.
+2023-04-25 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'RDFeed::generateReport()' method.

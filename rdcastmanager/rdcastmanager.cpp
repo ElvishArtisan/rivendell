@@ -247,17 +247,13 @@ void MainWidget::reportData()
   QString url=cast_feed_model->
     data(cast_feed_model->index(rows.at(0).row(),6)).toString();
   cast_temp_directories.push_back(new RDTempDirectory("rdcastmanager-report"));
-  if(!cast_temp_directories.last()->create(&err_msg)) {
-    QMessageBox::warning(this,"RDCastManager - "+tr("Error"),
-                        tr("Unable to create temporary directory.")+"\n"+
-                        "["+err_msg+"]");
+  if(!RDFeed::generateReport(url,
+			     "/usr/share/rivendell/rdcastmanager-report.xsl",
+			     "report.html",cast_temp_directories.back(),
+			     &err_msg)) {
+    QMessageBox::warning(this,"RDCastManager - "+tr("Error"),err_msg);
     return;
   }
-  QString tmpfile=cast_temp_directories.last()->path()+"/report.html";
-  QString cmd="curl -f -s "+url+" | xsltproc --encoding utf-8 /usr/share/rivendell/rdcastmanager-report.xsl - > "+tmpfile;
-  printf("CMD: %s\n",cmd.toUtf8().constData());
-  system(cmd.toUtf8());
-  RDWebBrowser("file://"+tmpfile);
 }
 
 
