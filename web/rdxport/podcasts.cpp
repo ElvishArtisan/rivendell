@@ -40,8 +40,8 @@
 
 #include "rdxport.h"
 
-size_t __PostRss_Readfunction_Callback(char *buffer,size_t size,size_t nitems,
-				       void *userdata)
+size_t __PostRss_UploadFunction_Callback(char *buffer,size_t size,
+					 size_t nitems,void *userdata)
 {
   Xport *xport=(Xport *)userdata;
 
@@ -54,6 +54,17 @@ size_t __PostRss_Readfunction_Callback(char *buffer,size_t size,size_t nitems,
 	 curlsize);
   xport->xport_curl_data_ptr+=curlsize;
   return curlsize;
+}
+
+
+size_t __PostRss_DownloadFunction_Callback(char *buffer,size_t size,
+					   size_t nitems,void *userdata)
+{
+  Xport *xport=(Xport *)userdata;
+
+  (xport->xport_curl_data)+=QByteArray(buffer,size*nitems);
+
+  return size*nitems;
 }
 
 
@@ -401,7 +412,7 @@ bool Xport::PostRssElemental(RDFeed *feed,const QDateTime &now,QString *err_msg)
   //
   curl_easy_setopt(curl,CURLOPT_URL,feed->feedUrl().toUtf8().constData());
   curl_easy_setopt(curl,CURLOPT_UPLOAD,1);
-  curl_easy_setopt(curl,CURLOPT_READFUNCTION, __PostRss_Readfunction_Callback);
+  curl_easy_setopt(curl,CURLOPT_READFUNCTION, __PostRss_UploadFunction_Callback);
   curl_easy_setopt(curl,CURLOPT_READDATA,this);
 
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
@@ -433,6 +444,117 @@ bool Xport::PostRssElemental(RDFeed *feed,const QDateTime &now,QString *err_msg)
   curl_easy_cleanup(curl);
 
   return ret;
+}
+
+
+void Xport::DownloadRss()
+{
+  CURL *curl=NULL;
+  CURLcode curl_err;
+  char errstr[CURL_ERROR_SIZE];
+  int feed_id=0;
+  QString keyname;
+  QString destpath;
+  QString err_msg;
+  RDFeed *feed=NULL;
+  QString msg="OK";
+
+  QDateTime now=QDateTime::currentDateTime();
+
+  if(!xport_post->getValue("ID",&feed_id)) {
+    XmlExit("Missing ID",400,"podcasts.cpp",LINE_NUMBER);
+  }
+  feed=new RDFeed(feed_id,rda->config(),this);
+  if(!feed->exists()) {
+    XmlExit("No such feed",404,"podcasts.cpp",LINE_NUMBER);
+  }
+  keyname=feed->keyName();
+
+  if(((!rda->user()->editPodcast())||
+      (!rda->user()->feedAuthorized(keyname)))&&
+     (!rda->user()->adminConfig())) {
+    delete feed;
+    XmlExit("No such feed",404,"podcasts.cpp",LINE_NUMBER);
+  }
+
+  if((curl=curl_easy_init())==NULL) {
+    XmlExit("unable to get CURL handle",500,"podcasts.cpp",LINE_NUMBER);
+  }
+  //  xport_curl_data=feed->rssXml(err_msg,now).toUtf8();
+  //  xport_curl_data_ptr=0;
+
+  //
+  // Authentication Parameters
+  //
+  if((QUrl(feed->feedUrl()).scheme().toLower()=="sftp")&&
+     (!rda->station()->sshIdentityFile().isEmpty())&&feed->purgeUseIdFile()) {
+    //
+    // Enable host key verification
+    //
+    curl_easy_setopt(curl,CURLOPT_SSL_VERIFYHOST,0);
+
+    curl_easy_setopt(curl,CURLOPT_USERNAME,
+		     feed->purgeUsername().toUtf8().constData());
+    curl_easy_setopt(curl,CURLOPT_SSH_PRIVATE_KEYFILE,
+		     rda->station()->sshIdentityFile().toUtf8().constData());
+    curl_easy_setopt(curl,CURLOPT_KEYPASSWD,
+		     feed->purgePassword().toUtf8().constData());
+    rda->syslog(LOG_DEBUG,"using ssh key at \"%s\"",
+		rda->station()->sshIdentityFile().toUtf8().constData());
+  }
+  else {
+    //
+    // Disable host key verification
+    //
+    curl_easy_setopt(curl,CURLOPT_SSL_VERIFYHOST,0);
+
+    curl_easy_setopt(curl,CURLOPT_USERNAME,
+		     feed->purgeUsername().toUtf8().constData());
+    curl_easy_setopt(curl,CURLOPT_PASSWORD,
+		     feed->purgePassword().toUtf8().constData());
+  }
+
+  //
+  // Transfer Parameters
+  //
+  curl_easy_setopt(curl,CURLOPT_URL,feed->feedUrl().toUtf8().constData());
+  curl_easy_setopt(curl,CURLOPT_UPLOAD,0);
+  xport_curl_data.clear();
+  curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,
+		   __PostRss_DownloadFunction_Callback);
+  curl_easy_setopt(curl,CURLOPT_WRITEDATA,this);
+
+  curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
+  curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
+  curl_easy_setopt(curl,CURLOPT_USERAGENT,
+		   rda->config()->userAgent().toUtf8().constData());
+  curl_easy_setopt(curl,CURLOPT_ERRORBUFFER,errstr);
+
+  //
+  // Execute it
+  //
+  switch((curl_err=curl_easy_perform(curl))) {
+  case CURLE_OK:
+  case CURLE_PARTIAL_FILE:
+    feed->setLastBuildDateTime(now);
+    rda->syslog(LOG_DEBUG,
+		"posted RSS XML to \"%s\"",
+		feed->feedUrl().toUtf8().constData());
+    break;
+
+  default:
+    rda->syslog(LOG_ERR,"RSS XML upload failed: curl error %d [%s]",
+		curl_err,curl_easy_strerror(curl_err));
+    err_msg+=errstr;
+    break;
+  }
+  curl_easy_cleanup(curl);
+
+  printf("Content-type: application/rss+xml; charset: UTF-8\n");
+  printf("Status: 200\n\n");
+  printf("%s",xport_curl_data.constData());
+
+  Exit(0);
 }
 
 
@@ -622,7 +744,7 @@ void Xport::PostImage()
   //
   curl_easy_setopt(curl,CURLOPT_URL,desturl.toUtf8().constData());
   curl_easy_setopt(curl,CURLOPT_UPLOAD,1);
-  curl_easy_setopt(curl,CURLOPT_READFUNCTION, __PostRss_Readfunction_Callback);
+  curl_easy_setopt(curl,CURLOPT_READFUNCTION, __PostRss_UploadFunction_Callback);
   curl_easy_setopt(curl,CURLOPT_READDATA,this);
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);

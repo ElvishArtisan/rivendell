@@ -353,6 +353,11 @@ void Xport::ripcConnectedData(bool state)
     RemovePodcast();
     break;
 
+  case RDXPORT_COMMAND_DOWNLOAD_RSS:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_DOWNLOAD_RSS");
+    DownloadRss();
+    break;
+
   case RDXPORT_COMMAND_POST_RSS:
     rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_POST_RSS");
     PostRss();

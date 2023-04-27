@@ -90,6 +90,12 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
     connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 
   //
+  // XSLT Engine (for feed reports)
+  //
+  cast_xslt_engine=
+    new RDXsltEngine("/usr/share/rivendell/rdcastmanager-report.xsl",this);
+
+  //
   // Feed List
   //
   cast_feed_view=new RDTreeView(this);
@@ -239,20 +245,18 @@ void MainWidget::copyData()
 void MainWidget::reportData()
 {
   QModelIndexList rows=cast_feed_view->selectionModel()->selectedRows();
-
   if(rows.size()!=1) {
     return;
   }
   QString err_msg;
   QString url=cast_feed_model->
     data(cast_feed_model->index(rows.at(0).row(),6)).toString();
-  cast_temp_directories.push_back(new RDTempDirectory("rdcastmanager-report"));
-  if(!RDFeed::generateReport(url,
-			     "/usr/share/rivendell/rdcastmanager-report.xsl",
-			     "report.html",cast_temp_directories.back(),
-			     &err_msg)) {
+  QString output_filename="report.html";
+  if(cast_xslt_engine->transformUrl(&output_filename,url,&err_msg)) {
+    RDWebBrowser("file://"+output_filename);
+  }
+  else {
     QMessageBox::warning(this,"RDCastManager - "+tr("Error"),err_msg);
-    return;
   }
 }
 
@@ -265,9 +269,7 @@ void MainWidget::feedDoubleClickedData(const QModelIndex &index)
 
 void MainWidget::quitMainWidget()
 {
-  for(int i=0;i<cast_temp_directories.size();i++) {
-    delete cast_temp_directories.at(i);
-  }
+  delete cast_xslt_engine;
   saveSettings();
   exit(0);
 }

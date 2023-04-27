@@ -136,11 +136,12 @@ class RDFeed : public QObject
   bool postPodcast(unsigned cast_id,QString *err_msg);
   QString audioUrl(unsigned cast_id);
   QString imageUrl(int img_id) const;
-  bool postXml(QString *err_msg);
+  bool downloadXml(QByteArray *xml,QString *err_msg);  // WebAPI Call
+  bool postXml(QString *err_msg);  // WebAPI Call
   bool postXmlConditional(const QString &caption,QWidget *widget);
-  bool removeRss();
-  bool postImage(int img_id) const;
-  bool removeImage(int img_id) const;
+  bool removeRss();  // WebAPI Call
+  bool postImage(int img_id) const;  // WebAPI Call
+  bool removeImage(int img_id) const;  // WebAPI Call
   void removeAllImages();
   unsigned postCut(const QString &cutname,QString *err_msg);
   unsigned postFile(const QString &srcfile,QString *err_msg);
@@ -154,10 +155,24 @@ class RDFeed : public QObject
   static QString publicUrl(const QString &base_url,const QString &keyname);
   static QString itunesCategoryXml(const QString &category,
 				   const QString &sub_category,int padding=0);
+  /*
   static bool generateReport(const QString &feed_url,
 			     const QString &stylesheet_pathname,
 			     const QString &report_filename,
 			     RDTempDirectory *tempdir,QString *err_msg);
+  */
+  /*
+  static bool generateReport(const QByteArray &src_xml,
+			     const QString &stylesheet_pathname,
+			     const QString &report_filename,
+			     RDTempDirectory *tempdir,QString *err_msg);
+  */
+  /*
+  static bool generateReport(QString *output,
+			     const QString &src_xml,
+			     const QString &stylesheet_pathname,
+			     QString *err_msg);
+  */
 
  signals:
   void postProgressChanged(int step);

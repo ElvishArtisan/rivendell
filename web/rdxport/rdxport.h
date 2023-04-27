@@ -89,6 +89,7 @@ class Xport : public QObject
   void PostPodcast();
   void RemovePodcast();
   bool PostRssElemental(RDFeed *feed,const QDateTime &now,QString *err_msg);
+  void DownloadRss();
   void PostRss();
   void RemoveRss();
   void PostImage();
@@ -110,8 +111,11 @@ class Xport : public QObject
   QHostAddress xport_remote_address;
   QByteArray xport_curl_data;
   int xport_curl_data_ptr;
-  friend size_t __PostRss_Readfunction_Callback(char *buffer,size_t size,
-						size_t nitems,void *userdata);
+  friend size_t __PostRss_UploadFunction_Callback(char *buffer,size_t size,
+						  size_t nitems,void *userdata);
+  friend size_t __PostRss_DownloadFunction_Callback(char *buffer,size_t size,
+						    size_t nitems,
+						    void *userdata);
 };
 
 

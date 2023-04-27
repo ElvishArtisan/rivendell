@@ -98,7 +98,7 @@ ListFeeds::ListFeeds(QWidget *parent)
   //
   // Feed List
   //
-  list_feeds_view=new RDTableView(this);
+  list_feeds_view=new RDFeedListView(this);
   list_feeds_model=new RDFeedListModel(true,false,this);
   list_feeds_model->setFont(font());
   list_feeds_model->setPalette(palette());
@@ -115,6 +115,7 @@ ListFeeds::ListFeeds(QWidget *parent)
 
 ListFeeds::~ListFeeds()
 {
+  delete list_feeds_view;
 }
 
 

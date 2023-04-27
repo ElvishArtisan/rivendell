@@ -25,6 +25,7 @@
 
 #include <rddialog.h>
 #include <rdfeedlistmodel.h>
+#include <rdfeedlistview.h>
 #include <rdtableview.h>
 
 class ListFeeds : public RDDialog
@@ -51,7 +52,7 @@ class ListFeeds : public RDDialog
 
  private:
   QLabel *list_box_label;
-  RDTableView *list_feeds_view;
+  RDFeedListView *list_feeds_view;
   RDFeedListModel *list_feeds_model;
   QPushButton *list_add_button;
   QPushButton *list_edit_button;

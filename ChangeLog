@@ -24046,3 +24046,13 @@
 	threw a segfault when reposting a feed.
 2023-04-25 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'RDFeed::generateReport()' method.
+2023-04-27 Fred Gleason <fredg@paravelsystems.com>
+	* Removed a 'RDFeed::generateReport()' methods.
+	* Added a 'DownloadRss()' method to the WebAPI.
+	* Added a 'RDXsltEngine' class.
+	* Added a 'Generate Front Report' item to the right-click menu in
+	the 'Podcast Feeds' list in the 'Rivendell Feed List' dialog in
+	rdadmin(1).
+	* Added a 'Generate Back Report' item to the right-click menu in
+	the 'Podcast Feeds' list in the 'Rivendell Feed List' dialog in
+	rdadmin(1).

@@ -54,6 +54,7 @@ class RDFeedListModel : public QAbstractItemModel
   bool isFeed(const QModelIndex &index) const;
   bool isCast(const QModelIndex &index) const;
   QString keyName(const QModelIndex &index) const;
+  QString keyName(int row) const;
   unsigned feedId(const QModelIndex &index) const;
   QString publicUrl(const QModelIndex &index) const;
   QModelIndex feedRow(const QString &keyname) const;

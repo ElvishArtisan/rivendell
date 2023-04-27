@@ -22,6 +22,7 @@
 #include <math.h>
 
 #include <QMessageBox>
+#include <QProcess>
 
 #include "rdapplication.h"
 #include "rdaudioconvert.h"
@@ -57,7 +58,7 @@ int __RDFeed_Debug_Callback(CURL *handle,curl_infotype type,char *data,
 }
 
 
-size_t __RDFeed_Write_Callback(char *ptr,size_t size,size_t nmemb,
+size_t __RDFeed_Download_Callback(char *ptr,size_t size,size_t nmemb,
 			       void *userdata)
 {
   QByteArray *buffer=(QByteArray *)userdata;
@@ -868,7 +869,7 @@ bool RDFeed::postPodcast(unsigned cast_id,QString *err_msg)
   }
   QStringList *err_msgs=SetupCurlLogging(curl);
   QByteArray write_buffer;
-  curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,__RDFeed_Write_Callback);
+  curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,__RDFeed_Download_Callback);
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,&write_buffer);
   curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
@@ -952,6 +953,90 @@ QString RDFeed::imageUrl(int img_id) const
   delete q;
 
   return ret;
+}
+
+
+bool RDFeed::downloadXml(QByteArray *xml,QString *err_msg)
+{
+  long response_code;
+  CURL *curl=NULL;
+  CURLcode curl_err;
+  char curl_errorbuffer[CURL_ERROR_SIZE];
+  struct curl_httppost *first=NULL;
+  struct curl_httppost *last=NULL;
+
+  //
+  // Generate POST Data
+  //
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
+	       CURLFORM_COPYCONTENTS,
+	       QString::asprintf("%u",RDXPORT_COMMAND_DOWNLOAD_RSS).toUtf8().
+	       constData(),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
+	       CURLFORM_COPYCONTENTS,rda->user()->name().toUtf8().constData(),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"PASSWORD",
+	       CURLFORM_COPYCONTENTS,
+	       rda->user()->password().toUtf8().constData(),CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"ID",
+	       CURLFORM_COPYCONTENTS,
+	       QString::asprintf("%u",feed_id).toUtf8().constData(),
+	       CURLFORM_END);
+
+  //
+  // Set up the transfer
+  //
+  if((curl=curl_easy_init())==NULL) {
+    curl_formfree(first);
+    return false;
+  }
+  QStringList *err_msgs=SetupCurlLogging(curl);
+  
+  curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,__RDFeed_Download_Callback);
+  feed_xml.clear();
+  curl_easy_setopt(curl,CURLOPT_WRITEDATA,xml);
+  curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
+  curl_easy_setopt(curl,CURLOPT_ERRORBUFFER,curl_errorbuffer);
+  curl_easy_setopt(curl,CURLOPT_USERAGENT,
+		   rda->config()->userAgent().toUtf8().constData());
+  curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
+  curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
+  curl_easy_setopt(curl,CURLOPT_URL,
+	    rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
+  rda->syslog(LOG_DEBUG,"using web service URL: %s",
+	   rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
+
+  //
+  // Send it
+  //
+  if((curl_err=curl_easy_perform(curl))!=CURLE_OK) {
+    *err_msg=QString::fromUtf8(curl_errorbuffer);
+    curl_easy_cleanup(curl);
+    curl_formfree(first);
+    ProcessCurlLogging("RDFeed::postPodcast()",err_msgs);
+    return false;
+  }
+
+  //
+  // Clean up
+  //
+  curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
+  curl_easy_cleanup(curl);
+  curl_formfree(first);
+
+  //
+  // Process the results
+  //
+  if((response_code<200)||(response_code>299)) {
+    *err_msg=tr("remote server returned unexpected response code")+
+      QString::asprintf(" %ld",response_code);
+    ProcessCurlLogging("RDFeed::postPodcast()",err_msgs);
+    return false;
+  }
+  delete err_msgs;
+
+  return true;
 }
 
 
@@ -1873,39 +1958,6 @@ QString RDFeed::itunesCategoryXml(const QString &category,
 }
 
 
-bool RDFeed::generateReport(const QString &feed_url,
-			    const QString &stylesheet_pathname,
-			    const QString &report_filename,
-			    RDTempDirectory *tempdir,
-			    QString *err_msg)
-{
-  QString err_msg2;
-  int result;
-  bool ret=false;
-
-  ret=tempdir->create(&err_msg2);
-  if(ret) {
-    *err_msg=QObject::tr("Unable to create temporary directory.")+
-      "["+err_msg2+"]";
-    QString tmpfile=tempdir->path()+"/"+report_filename;
-    QString cmd="curl -f -s "+feed_url+" | xsltproc --encoding utf-8 "+
-      stylesheet_pathname+" - > "+tmpfile;
-    result=system(cmd.toUtf8());
-    if(result==-1) {
-      *err_msg=tr("unable to fork process")+" ["+strerror(errno)+"].";
-      return false;
-    }
-    if(WEXITSTATUS(result)!=0) {
-      *err_msg=tr("converter returned non-zero exit code.");
-      return false;
-    }
-    RDWebBrowser("file://"+tmpfile);
-  }
-
-  return ret;
-}
-
-
 void RDFeed::renderMessage(const QString &msg)
 {
   fprintf(stderr,"RENDERER: %s\n",msg.toUtf8().constData());
@@ -1962,7 +2014,7 @@ bool RDFeed::SavePodcast(unsigned cast_id,const QString &src_filename,
   }
   QStringList *err_msgs=SetupCurlLogging(curl);
   QByteArray write_buffer;
-  curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,__RDFeed_Write_Callback);
+  curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,__RDFeed_Download_Callback);
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,&write_buffer);
   curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
