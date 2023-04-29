@@ -21,6 +21,9 @@
 ## Use automake to process this into a Makefile.in
 
 install-exec-am:	
+	mkdir -p $(DESTDIR)@prefix@/share/pixmaps/rivendell
+	cp rdairplay_skin.png $(DESTDIR)@prefix@/share/pixmaps/rivendell
+	cp rdpanel_skin.png $(DESTDIR)@prefix@/share/pixmaps/rivendell
 	mkdir -p $(DESTDIR)@libexecdir@
 	cp donut-spinner.gif $(DESTDIR)@libexecdir@
 	cp greencheckmark.png $(DESTDIR)@libexecdir@
@@ -192,6 +195,8 @@ install-exec-am:
 	./update_icons.sh
 
 uninstall-local:	
+	rm -f $(DESTDIR)@prefix@/share/pixmaps/rivendell/rdairplay_skin.png
+	rm -f $(DESTDIR)@prefix@/share/pixmaps/rivendell/rdpanel_skin.png
 	rm -f $(DESTDIR)@libexecdir@/donut-spinner.gif
 	rm -f $(DESTDIR)@libexecdir@/greencheckmark.png
 	rm -f $(DESTDIR)@libexecdir@/redx.png
@@ -324,6 +329,8 @@ EXTRA_DIST = admin.xpm\
              progressbar.gif\
              progressbar.xcf\
              rdairplay_logo.png\
+             rdairplay_skin.png\
+             rdairplay_skin.xcf\
              rdairplay_white_logo.png\
              record.xpm\
              record2.xpm\
@@ -455,6 +462,8 @@ EXTRA_DIST = admin.xpm\
              rdlogmanager-512x512.xpm\
              rdlogmanager-64x64.xpm\
              rdlogmanager.ico\
+             rdpanel_skin.png\
+             rdpanel_skin.xcf\
              rdpanel-128x128.png\
              rdpanel-16x16.png\
              rdpanel-22x22.png\

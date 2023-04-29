@@ -24041,3 +24041,7 @@
 	* Updated the package version to 4.0.0rc3.
 	* Updated the version of the 'rivwebpyapi' PyPI package to
 	4.0.0rc3.
+2023-04-29 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'RDWidget::setBackgroundPixmap()' method.
+	* Fixed a bug in the voice tracker in rdairplay(1) that caused the
+	the track waveform areas to be painted solid black.

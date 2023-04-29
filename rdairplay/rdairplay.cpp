@@ -171,12 +171,7 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
     air_op_mode[i]=RDAirPlayConf::Previous;
   }
-  bgmap=QPixmap(rda->airplayConf()->skinPath());
-  if(!bgmap.isNull()&&(bgmap.width()>=1024)&&(bgmap.height()>=738)) {
-    QPalette palette;
-    palette.setBrush(backgroundRole(),bgmap);
-    setPalette(palette);
-  }
+  setBackgroundPixmap(QPixmap(rda->airplayConf()->skinPath()));
 
   //
   // Top Strip
@@ -1800,7 +1795,7 @@ void MainWidget::resizeEvent(QResizeEvent *e)
 {
   int w=width();
   int h=height();
-  
+
   //
   // Top Row
   //
@@ -1831,7 +1826,6 @@ void MainWidget::resizeEvent(QResizeEvent *e)
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
     air_log_list[i]->setGeometry(550,140,w-560,h-215);
   }
-
 
   //
   // Bottom Button Row

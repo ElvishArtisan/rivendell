@@ -42,7 +42,7 @@ RDCartDialog *panel_cart_dialog;
 MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   : RDMainWindow("rdpanel",c)
 {
-  QPixmap panel_skin_pixmap;
+  //  QPixmap panel_skin_pixmap;
   QString err_msg;
 
   //
@@ -82,13 +82,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // Allocate Global Resources
   //
-  panel_skin_pixmap=QPixmap(rda->panelConf()->skinPath());
-  if(!panel_skin_pixmap.isNull()&&(panel_skin_pixmap.width()>=1024)&&
-     (panel_skin_pixmap.height()>=738)) {
-    QPalette p=palette();
-    p.setBrush(backgroundRole(),panel_skin_pixmap);
-    setPalette(p);
-  }
+  setBackgroundPixmap(rda->panelConf()->skinPath());
 
   //
   // CAE Connection
