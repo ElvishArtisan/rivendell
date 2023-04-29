@@ -24049,6 +24049,8 @@
 	* Changed the behavior of the logo display in rdairplay(1) so as to
 	show the default Rivendell logo when the 'Logo Image' control in
 	rdadmin(1) is not set to a valid graphical image file.
+	* Added default skins for rdairplay(1) and rdpanel(1) to the
+	'rivendell' DEB package.
 2023-04-29 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug where a pending hard start with a non-zero grace time
 	was not cleared properly during a log chain event.

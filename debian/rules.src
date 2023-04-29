@@ -132,6 +132,10 @@ binary:
 	cp conf/rivendell-env.sh debian/rivendell/usr/share/rivendell
 	mkdir -p debian/rivendell/usr/share/rivendell/logos
 	cp icons/webget_logo.png debian/rivendell/usr/share/rivendell/logos/
+	mkdir -p debian/rivendell/usr/share/pixmaps/rivendell
+	cp icons/rdairplay_skin.png debian/rivendell/usr/share/pixmaps/rivendell/
+	cp icons/rdpanel_skin.png debian/rivendell/usr/share/pixmaps/rivendell/
+	cp icons/rdairplay_logo.png debian/rivendell/usr/share/pixmaps/rivendell/
 	mkdir -p debian/rivendell/usr/share/doc/rivendell/logos
 	cp AUTHORS debian/rivendell/usr/share/doc/rivendell/
 	cp NEWS debian/rivendell/usr/share/doc/rivendell/
