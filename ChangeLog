@@ -24045,3 +24045,7 @@
 	* Added a 'RDWidget::setBackgroundPixmap()' method.
 	* Fixed a bug in the voice tracker in rdairplay(1) that caused the
 	the track waveform areas to be painted solid black.
+2023-04-29 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the behavior of the logo display in rdairplay(1) so as to
+	show the default Rivendell logo when the 'Logo Image' control in
+	rdadmin(1) is not set to a valid graphical image file.

@@ -62,16 +62,12 @@ TopStrip::TopStrip(QWidget *parent)
   // Logo
   //
   QPixmap pix(rda->airplayConf()->logoPath());
+  if(pix.isNull()) {
+    pix.load("/usr/share/pixmaps/rivendell/rdairplay_logo.png");
+  }
   d_logo=new QLabel(this);
   d_logo->setAlignment(Qt::AlignCenter);
   d_logo->setPixmap(pix);
-  /*
-  d_logo->setFont(bannerFont());
-  d_logo->setText(QString::asprintf("User Logo\n(%dx%d)",
-					    RD_RDAIRPLAY_LOGO_WIDTH,
-					    RD_RDAIRPLAY_LOGO_HEIGHT));
-  d_logo->setStyleSheet("background-color: #99FF99");
-  */
 
   setFocusPolicy(Qt::NoFocus);
 }
