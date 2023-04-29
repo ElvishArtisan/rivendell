@@ -2174,6 +2174,8 @@ bool RDLogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
     break;
 
   case RDLogLine::Chain:
+    play_grace_timer->stop();
+
     //
     // Assign Next Event
     //
