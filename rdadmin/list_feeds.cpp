@@ -2,7 +2,7 @@
 //
 // List Rivendell Feeds
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -98,7 +98,7 @@ ListFeeds::ListFeeds(QWidget *parent)
   //
   // Feed List
   //
-  list_feeds_view=new RDFeedListView(this);
+  list_feeds_view=new FeedListView(this);
   list_feeds_model=new RDFeedListModel(true,false,this);
   list_feeds_model->setFont(font());
   list_feeds_model->setPalette(palette());

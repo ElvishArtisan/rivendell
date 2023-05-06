@@ -1,4 +1,4 @@
-// rdfeedlistview.h
+// feedlistview.h
 //
 // RDTableView widget for RSS feeds
 //
@@ -18,28 +18,29 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef RDFEEDLISTVIEW_H
-#define RDFEEDLISTVIEW_H
+#ifndef FEEDLISTVIEW_H
+#define FEEDLISTVIEW_H
 
 #include <QAction>
 #include <QList>
 #include <QMenu>
 
+#include <rdfeed.h>
 #include <rdtableview.h>
 #include <rdtempdirectory.h>
-#include "rdxsltengine.h"
+#include <rdxsltengine.h>
 
-class RDFeedListView : public RDTableView
+class FeedListView : public RDTableView
 {
   Q_OBJECT
  public:
-  RDFeedListView(QWidget *parent=0);
-  ~RDFeedListView();
+  FeedListView(QWidget *parent=0);
+  ~FeedListView();
 
  private slots:
   void aboutToShowMenuData();
-  void generateFrontReportData();
-  void generateBackReportData();
+  void generateFrontItemReportData();
+  void generateBackItemReportData();
 
  protected:
   void mousePressEvent(QMouseEvent *e);
@@ -47,10 +48,10 @@ class RDFeedListView : public RDTableView
  private:
   int d_mouse_row;
   QMenu *d_mouse_menu;
-  QAction *d_front_report_action;
-  QAction *d_back_report_action;
-  RDXsltEngine *d_xslt_engine;
+  QAction *d_front_item_report_action;
+  QAction *d_back_item_report_action;
+  QList<RDXsltEngine *> d_xslt_engines;
 };
 
 
-#endif  // RDFEEDLISTVIEW_H
+#endif  // FEEDLISTVIEW_H

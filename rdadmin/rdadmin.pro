@@ -2,7 +2,9 @@
 #
 # The QMake project file for RDAdmin.
 #
-# (C) Copyright 2003-2021 Fred Gleason <fredg@paravelsystems.com>
+# (C) Copyright 2003-2023 Fred Gleason <fredg@paravelsystems.com>
+#
+#   NB - This data is used only by Qt's i18n tools!
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as
@@ -59,6 +61,7 @@ x11 {
   SOURCES += edit_user.cpp
   SOURCES += edit_user_perms.cpp
   SOURCES += edit_vguest_resource.cpp
+  SOURCES += feedlistview.cpp
   SOURCES += info_dialog.cpp
   SOURCES += license.cpp
   SOURCES += list_dropboxes.cpp
@@ -129,6 +132,7 @@ x11 {
   HEADERS += edit_user.h
   HEADERS += edit_user_perms.h
   HEADERS += edit_vguest_resource.h
+  HEADERS += feedlistview.h
   HEADERS += info_dialog.h
   HEADERS += license.h
   HEADERS += list_dropboxes.h

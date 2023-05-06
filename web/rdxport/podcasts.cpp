@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal -- Podcast services
 //
-//   (C) Copyright 2010-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -369,11 +369,12 @@ bool Xport::PostRssElemental(RDFeed *feed,const QDateTime &now,QString *err_msg)
   CURLcode curl_err;
   char errstr[CURL_ERROR_SIZE];
   bool ret=false;
+  bool ok=false;
 
   if((curl=curl_easy_init())==NULL) {
     XmlExit("unable to get CURL handle",500,"podcasts.cpp",LINE_NUMBER);
   }
-  xport_curl_data=feed->rssXml(err_msg,now).toUtf8();
+  xport_curl_data=feed->rssXml(err_msg,now,&ok).toUtf8();
   xport_curl_data_ptr=0;
 
   //

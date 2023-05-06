@@ -136,7 +136,6 @@ class RDFeed : public QObject
   bool postPodcast(unsigned cast_id,QString *err_msg);
   QString audioUrl(unsigned cast_id);
   QString imageUrl(int img_id) const;
-  bool downloadXml(QByteArray *xml,QString *err_msg);  // WebAPI Call
   bool postXml(QString *err_msg);  // WebAPI Call
   bool postXmlConditional(const QString &caption,QWidget *widget);
   bool removeRss();  // WebAPI Call
@@ -148,31 +147,19 @@ class RDFeed : public QObject
   unsigned postLog(const QString &logname,const QTime &start_time,
 		   bool stop_at_stop,int start_line,int end_line,
 		   QString *err_msg);
-  QString rssXml(QString *err_msg,const QDateTime &now,bool *ok=NULL);
+  QString rssXml(QString *err_msg,const QDateTime &now,bool *ok,
+		 QList<unsigned> *active_cast_ids=NULL);
+  bool rssFrontXml(QByteArray *xml,QString *err_msg) const;  // WebAPI Call
+  bool rssBackXml(QByteArray *xml,QString *err_msg) const;// Public HTTP(S) Call
+  void activeCasts(QList<unsigned> *cast_ids);
+  bool frontActiveCasts(QList<unsigned> *cast_ids,QString *err_msg);
+  bool backActiveCasts(QList<unsigned> *cast_ids,QString *err_msg);
   static unsigned create(const QString &keyname,bool enable_users,
 			 QString *err_msg);
   static QString imageFilename(int feed_id,int img_id,const QString &ext);
   static QString publicUrl(const QString &base_url,const QString &keyname);
   static QString itunesCategoryXml(const QString &category,
 				   const QString &sub_category,int padding=0);
-  /*
-  static bool generateReport(const QString &feed_url,
-			     const QString &stylesheet_pathname,
-			     const QString &report_filename,
-			     RDTempDirectory *tempdir,QString *err_msg);
-  */
-  /*
-  static bool generateReport(const QByteArray &src_xml,
-			     const QString &stylesheet_pathname,
-			     const QString &report_filename,
-			     RDTempDirectory *tempdir,QString *err_msg);
-  */
-  /*
-  static bool generateReport(QString *output,
-			     const QString &src_xml,
-			     const QString &stylesheet_pathname,
-			     QString *err_msg);
-  */
 
  signals:
   void postProgressChanged(int step);

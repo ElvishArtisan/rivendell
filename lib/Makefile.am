@@ -136,7 +136,6 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdexport_settings_dialog.cpp rdexport_settings_dialog.h\
                         rdfeed.cpp rdfeed.h\
                         rdfeedlistmodel.cpp rdfeedlistmodel.h\
-                        rdfeedlistview.cpp rdfeedlistview.h\
                         rdfontengine.cpp rdfontengine.h\
                         rdformpost.cpp rdformpost.h\
                         rdflacdecode.cpp rdflacdecode.h\
@@ -348,7 +347,6 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdexport_settings_dialog.cpp\
                           moc_rdfeed.cpp\
                           moc_rdfeedlistmodel.cpp\
-                          moc_rdfeedlistview.cpp\
                           moc_rdframe.cpp\
                           moc_rdget_ath.cpp\
                           moc_rdgetpasswd.cpp\

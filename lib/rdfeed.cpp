@@ -44,6 +44,7 @@
 #include "rdwavefile.h"
 #include "rdwebresult.h"
 #include "rdxport_interface.h"
+#include "rdxsltengine.h"
 
 int __RDFeed_Debug_Callback(CURL *handle,curl_infotype type,char *data,
                            size_t size,void *userptr)
@@ -67,6 +68,8 @@ size_t __RDFeed_Download_Callback(char *ptr,size_t size,size_t nmemb,
 
   return size*nmemb;
 }
+
+
 
 
 RDFeed::RDFeed(const QString &keyname,RDConfig *config,QObject *parent)
@@ -956,90 +959,6 @@ QString RDFeed::imageUrl(int img_id) const
 }
 
 
-bool RDFeed::downloadXml(QByteArray *xml,QString *err_msg)
-{
-  long response_code;
-  CURL *curl=NULL;
-  CURLcode curl_err;
-  char curl_errorbuffer[CURL_ERROR_SIZE];
-  struct curl_httppost *first=NULL;
-  struct curl_httppost *last=NULL;
-
-  //
-  // Generate POST Data
-  //
-  curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
-	       CURLFORM_COPYCONTENTS,
-	       QString::asprintf("%u",RDXPORT_COMMAND_DOWNLOAD_RSS).toUtf8().
-	       constData(),
-	       CURLFORM_END);
-  curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
-	       CURLFORM_COPYCONTENTS,rda->user()->name().toUtf8().constData(),
-	       CURLFORM_END);
-  curl_formadd(&first,&last,CURLFORM_PTRNAME,"PASSWORD",
-	       CURLFORM_COPYCONTENTS,
-	       rda->user()->password().toUtf8().constData(),CURLFORM_END);
-  curl_formadd(&first,&last,CURLFORM_PTRNAME,"ID",
-	       CURLFORM_COPYCONTENTS,
-	       QString::asprintf("%u",feed_id).toUtf8().constData(),
-	       CURLFORM_END);
-
-  //
-  // Set up the transfer
-  //
-  if((curl=curl_easy_init())==NULL) {
-    curl_formfree(first);
-    return false;
-  }
-  QStringList *err_msgs=SetupCurlLogging(curl);
-  
-  curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,__RDFeed_Download_Callback);
-  feed_xml.clear();
-  curl_easy_setopt(curl,CURLOPT_WRITEDATA,xml);
-  curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
-  curl_easy_setopt(curl,CURLOPT_ERRORBUFFER,curl_errorbuffer);
-  curl_easy_setopt(curl,CURLOPT_USERAGENT,
-		   rda->config()->userAgent().toUtf8().constData());
-  curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
-  curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
-  curl_easy_setopt(curl,CURLOPT_URL,
-	    rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
-  rda->syslog(LOG_DEBUG,"using web service URL: %s",
-	   rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
-
-  //
-  // Send it
-  //
-  if((curl_err=curl_easy_perform(curl))!=CURLE_OK) {
-    *err_msg=QString::fromUtf8(curl_errorbuffer);
-    curl_easy_cleanup(curl);
-    curl_formfree(first);
-    ProcessCurlLogging("RDFeed::postPodcast()",err_msgs);
-    return false;
-  }
-
-  //
-  // Clean up
-  //
-  curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
-  curl_easy_cleanup(curl);
-  curl_formfree(first);
-
-  //
-  // Process the results
-  //
-  if((response_code<200)||(response_code>299)) {
-    *err_msg=tr("remote server returned unexpected response code")+
-      QString::asprintf(" %ld",response_code);
-    ProcessCurlLogging("RDFeed::postPodcast()",err_msgs);
-    return false;
-  }
-  delete err_msgs;
-
-  return true;
-}
-
-
 bool RDFeed::postXml(QString *err_msg)
 {
   long response_code;
@@ -1714,7 +1633,8 @@ unsigned RDFeed::postLog(const QString &logname,const QTime &start_time,
 }
 
 
-QString RDFeed::rssXml(QString *err_msg,const QDateTime &now,bool *ok)
+QString RDFeed::rssXml(QString *err_msg,const QDateTime &now,bool *ok,
+		       QList<unsigned> *active_cast_ids)
 {
   QString ret;
 
@@ -1791,7 +1711,8 @@ QString RDFeed::rssXml(QString *err_msg,const QDateTime &now,bool *ok)
   //
   // Render Channel XML
   //
-  ret+="  <channel>\n";
+  ret+=QString::asprintf("  <channel rivendell:id=\"%u\">\n",
+			 chan_q->value(18).toUInt());
   ret+=ResolveChannelWildcards(channel_template,chan_q,now)+"\r\n";
 
   //
@@ -1852,7 +1773,15 @@ QString RDFeed::rssXml(QString *err_msg,const QDateTime &now,bool *ok)
   }
   item_q=new RDSqlQuery(sql);
   while(item_q->next()) {
-    ret+="    <item>\r\n";
+    if((active_cast_ids==NULL)||
+       (active_cast_ids->contains(item_q->value(14).toUInt()))) {
+      ret+=QString::
+	asprintf("    <item rivendell:id=\"%u\" rivendell:style=\"active-rounded-block\">\r\n",item_q->value(14).toUInt());
+    }
+    else {
+      ret+=QString::
+	asprintf("    <item rivendell:id=\"%u\" rivendell:style=\"missing-rounded-block\">\r\n",item_q->value(14).toUInt());
+    }
     ret+=ResolveItemWildcards(item_template,item_q,chan_q);
     ret+="\r\n";
     ret+="    </item>\r\n";
@@ -1865,6 +1794,256 @@ QString RDFeed::rssXml(QString *err_msg,const QDateTime &now,bool *ok)
 
   if(ok!=NULL) {
     *ok=true;
+  }
+
+  return ret;
+}
+
+
+bool RDFeed::rssFrontXml(QByteArray *xml,QString *err_msg) const
+{
+  long response_code;
+  CURL *curl=NULL;
+  CURLcode curl_err;
+  char curl_errorbuffer[CURL_ERROR_SIZE];
+  struct curl_httppost *first=NULL;
+  struct curl_httppost *last=NULL;
+
+  //
+  // Generate POST Data
+  //
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
+	       CURLFORM_COPYCONTENTS,
+	       QString::asprintf("%u",RDXPORT_COMMAND_DOWNLOAD_RSS).toUtf8().
+	       constData(),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
+	       CURLFORM_COPYCONTENTS,rda->user()->name().toUtf8().constData(),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"PASSWORD",
+	       CURLFORM_COPYCONTENTS,
+	       rda->user()->password().toUtf8().constData(),CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"ID",
+	       CURLFORM_COPYCONTENTS,
+	       QString::asprintf("%u",feed_id).toUtf8().constData(),
+	       CURLFORM_END);
+
+  //
+  // Set up the transfer
+  //
+  if((curl=curl_easy_init())==NULL) {
+    curl_formfree(first);
+    return false;
+  }
+  QStringList *err_msgs=SetupCurlLogging(curl);
+  
+  curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,__RDFeed_Download_Callback);
+  xml->clear();
+  curl_easy_setopt(curl,CURLOPT_WRITEDATA,xml);
+  curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
+  curl_easy_setopt(curl,CURLOPT_ERRORBUFFER,curl_errorbuffer);
+  curl_easy_setopt(curl,CURLOPT_USERAGENT,
+		   rda->config()->userAgent().toUtf8().constData());
+  curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
+  curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
+  curl_easy_setopt(curl,CURLOPT_URL,
+	    rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
+  rda->syslog(LOG_DEBUG,"using web service URL: %s",
+	   rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
+
+  //
+  // Send it
+  //
+  if((curl_err=curl_easy_perform(curl))!=CURLE_OK) {
+    *err_msg=QString::fromUtf8(curl_errorbuffer);
+    curl_easy_cleanup(curl);
+    curl_formfree(first);
+    ProcessCurlLogging("RDFeed::postPodcast()",err_msgs);
+    return false;
+  }
+
+  //
+  // Clean up
+  //
+  curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
+  curl_easy_cleanup(curl);
+  curl_formfree(first);
+
+  //
+  // Process the results
+  //
+  if((response_code<200)||(response_code>299)) {
+    *err_msg=tr("remote server returned unexpected response code")+
+      QString::asprintf(" %ld",response_code);
+    ProcessCurlLogging("RDFeed::postPodcast()",err_msgs);
+    return false;
+  }
+  delete err_msgs;
+
+  return true;
+}
+
+
+bool RDFeed::rssBackXml(QByteArray *xml,QString *err_msg) const
+{
+  CURL *curl=NULL;
+  CURLcode curl_err;
+  long response_code;
+  bool ret=false;
+
+  if((curl=curl_easy_init())==NULL) {
+    *err_msg=tr("Unable to initialize CURL");
+    ret=false;
+  }
+  else {
+    QByteArray src_xml;
+    curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,__RDFeed_Download_Callback);
+    curl_easy_setopt(curl,CURLOPT_WRITEDATA,xml);
+    curl_easy_setopt(curl,CURLOPT_USERAGENT,
+		     rda->config()->userAgent().toUtf8().constData());
+    curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
+    curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
+    curl_easy_setopt(curl,CURLOPT_URL,
+		     RDFeed::publicUrl(baseUrl(""),feed_keyname).
+		     toUtf8().constData());
+    curl_err=curl_easy_perform(curl);
+    if((ret=(curl_err==CURLE_OK))) {
+      curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
+      if((ret=(response_code>=200)||(response_code<300))) {
+	ret=true;
+	*err_msg=QObject::tr("Server returned result code")+
+	  QString::asprintf(" %lu ",response_code)+*xml;
+      }
+    }
+    else {
+      *err_msg=QObject::tr("Curl error")+" ["+curl_easy_strerror(curl_err)+"].";
+      ret=false;
+    }
+  }
+  curl_easy_cleanup(curl);
+  return ret;
+}
+
+
+void RDFeed::activeCasts(QList<unsigned> *cast_ids)
+{
+  cast_ids->clear();
+
+  QString sql=QString("select ")+
+    "`ID` "+  // 00
+    "from `PODCASTS` where "+
+    QString::asprintf("`FEED_ID`=%u && ",feed_id)+
+    QString::asprintf("`STATUS`=%u ",RDPodcast::StatusActive)+
+    "order by `ORIGIN_DATETIME` desc";
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  while(q->next()) {
+    cast_ids->push_back(q->value(0).toUInt());
+  }
+  delete q;
+}
+
+
+bool RDFeed::frontActiveCasts(QList<unsigned> *cast_ids,QString *err_msg)
+{
+  QByteArray xml;
+  bool ret=false;
+  QString text;
+  bool ok=false;
+
+  cast_ids->clear();
+  if(rssFrontXml(&xml,err_msg)) {
+    RDXsltEngine *xslt=
+      new RDXsltEngine("/usr/share/rivendell/rss-item-enclosures.xsl",this);
+    if(xslt->transform(&text,xml,err_msg)) {
+      QStringList f0=text.split("|",QString::SkipEmptyParts);
+      for(int i=0;i<f0.size();i++) {
+	QStringList f1=f0.at(i).split("/",QString::SkipEmptyParts);
+	QStringList f2=f1.last().split(".",QString::KeepEmptyParts);
+	if(f2.size()==2) {
+	  QStringList f3=f2.first().split("_",QString::KeepEmptyParts);
+	  if(f3.size()==2) {
+	    cast_ids->push_back(f3.last().toUInt(&ok));
+	    if(ok) {
+	      ret=ok;
+	      // OK, keep going
+	    }
+	    else {
+	      // Integer conversion failed
+	      *err_msg=QObject::tr("Internal error 1");
+	      ret=false;
+	      break;
+	    }
+	  }
+	  else {
+	    // f3: Split on '_' failed
+	    *err_msg=QObject::tr("Internal error 2");
+	    ret=false;
+	    break;
+	  }
+	}
+	else {
+	  // f2: Split on '.' failed
+	  *err_msg=QObject::tr("Internal error 3");
+	  ret=false;
+	  break;
+	}
+      }
+    }
+    delete xslt;
+  }
+
+  return ret;
+}
+
+
+bool RDFeed::backActiveCasts(QList<unsigned> *cast_ids,QString *err_msg)
+{
+  QByteArray xml;
+  bool ret=false;
+  QString text;
+  bool ok=false;
+
+  cast_ids->clear();
+  if(rssBackXml(&xml,err_msg)) {
+    RDXsltEngine *xslt=
+      new RDXsltEngine("/usr/share/rivendell/rss-item-enclosures.xsl",
+		       this);
+    if(xslt->transform(&text,xml,err_msg)) {
+      QStringList f0=text.split("|",QString::SkipEmptyParts);
+      for(int i=0;i<f0.size();i++) {
+	QStringList f1=f0.at(i).split("/",QString::SkipEmptyParts);
+	QStringList f2=f1.last().split(".",QString::KeepEmptyParts);
+	if(f2.size()==2) {
+	  QStringList f3=f2.first().split("_",QString::KeepEmptyParts);
+	  if(f3.size()==2) {
+	    cast_ids->push_back(f3.last().toUInt(&ok));
+	    if(ok) {
+	      ret=ok;
+	      // OK, keep going
+	    }
+	    else {
+	      // Integer conversion failed
+	      *err_msg=QObject::tr("Internal error 1");
+	      ret=false;
+	      break;
+	    }
+	  }
+	  else {
+	    // f3: Split on '_' failed
+	    *err_msg=QObject::tr("Internal error 2");
+	    ret=false;
+	    break;
+	  }
+	}
+	else {
+	  // f2: Split on '.' failed
+	  *err_msg=QObject::tr("Internal error 3");
+	  ret=false;
+	  break;
+	}
+      }
+    }
+    delete xslt;
   }
 
   return ret;

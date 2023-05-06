@@ -24056,3 +24056,8 @@
 	* Added a 'Generate Back Report' item to the right-click menu in
 	the 'Podcast Feeds' list in the 'Rivendell Feed List' dialog in
 	rdadmin(1).
+2023-05-06 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the RSS reports in rdadmin(1) to include information on
+	missing	items.
+	* Modified the feed report in rdcastmanager to include information
+	on missing items.

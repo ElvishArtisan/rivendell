@@ -2,7 +2,7 @@
 //
 // List Rivendell RSS Feeds
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,8 +25,9 @@
 
 #include <rddialog.h>
 #include <rdfeedlistmodel.h>
-#include <rdfeedlistview.h>
 #include <rdtableview.h>
+
+#include <feedlistview.h>
 
 class ListFeeds : public RDDialog
 {
@@ -52,7 +53,7 @@ class ListFeeds : public RDDialog
 
  private:
   QLabel *list_box_label;
-  RDFeedListView *list_feeds_view;
+  FeedListView *list_feeds_view;
   RDFeedListModel *list_feeds_model;
   QPushButton *list_add_button;
   QPushButton *list_edit_button;

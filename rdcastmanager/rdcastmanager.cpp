@@ -93,7 +93,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   // XSLT Engine (for feed reports)
   //
   cast_xslt_engine=
-    new RDXsltEngine("/usr/share/rivendell/rdcastmanager-report.xsl",this);
+    new RDXsltEngine("/usr/share/rivendell/rss-back-item-report.xsl",this);
 
   //
   // Feed List
