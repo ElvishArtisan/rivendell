@@ -44,6 +44,9 @@ FeedListView::FeedListView(QWidget *parent)
   d_back_item_report_action=d_mouse_menu->
     addAction(tr("Generate Item Report [Back]"),this,SLOT(generateBackItemReportData()));
   d_back_item_report_action->setCheckable(false);
+  d_mouse_menu->addSeparator();
+  d_bluebrry_validate_action=d_mouse_menu->
+    addAction(tr("Validate with Bluebrry"),this,SLOT(validateBluebrryData()));
 
   connect(d_mouse_menu,SIGNAL(aboutToShow()),
 	  this,SLOT(aboutToShowMenuData()));
@@ -100,6 +103,7 @@ void FeedListView::generateFrontItemReportData()
 			 tr("Error accessing from XML data.")+"\n"+
 			 "["+err_msg+"]");
   }
+  delete feed;
 }
 
 
@@ -130,6 +134,20 @@ void FeedListView::generateBackItemReportData()
 			 tr("Error accessing from XML data.")+"\n"+
 			 "["+err_msg+"]");
   }
+  delete feed;
+}
+
+
+void FeedListView::validateBluebrryData()
+{
+  RDFeedListModel *m=(RDFeedListModel *)model();
+  QString keyname=m->data(m->index(d_mouse_row,0)).toString();
+  RDFeed *feed=new RDFeed(keyname,rda->config(),this);
+
+  QString url=QString("https://www.castfeedvalidator.com/validate.php?url=")+
+    feed->publicUrl(feed->baseUrl(""),feed->keyName());
+  RDWebBrowser(url);
+  delete feed;
 }
 
 

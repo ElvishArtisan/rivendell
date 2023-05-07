@@ -24061,3 +24061,6 @@
 	missing	items.
 	* Modified the feed report in rdcastmanager to include information
 	on missing items.
+2023-05-07 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Validate with Bluebrry' item to the right-click menu
+	to items in the 'List Feeds' dialog in rdadmin(1).

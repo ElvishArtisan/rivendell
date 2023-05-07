@@ -41,6 +41,7 @@ class FeedListView : public RDTableView
   void aboutToShowMenuData();
   void generateFrontItemReportData();
   void generateBackItemReportData();
+  void validateBluebrryData();
 
  protected:
   void mousePressEvent(QMouseEvent *e);
@@ -50,6 +51,7 @@ class FeedListView : public RDTableView
   QMenu *d_mouse_menu;
   QAction *d_front_item_report_action;
   QAction *d_back_item_report_action;
+  QAction *d_bluebrry_validate_action;
   QList<RDXsltEngine *> d_xslt_engines;
 };
 
