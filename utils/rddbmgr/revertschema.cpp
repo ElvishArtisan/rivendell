@@ -42,6 +42,15 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
+  // Revert 368
+  //
+  if((cur_schema==368)&&(set_schema<cur_schema)) {
+    DropColumn("FEEDS","SHA1_HASH");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 367
   //
   if((cur_schema==367)&&(set_schema<cur_schema)) {

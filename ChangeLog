@@ -24064,3 +24064,10 @@
 2023-05-07 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'Validate with Bluebrry' item to the right-click menu
 	to items in the 'List Feeds' dialog in rdadmin(1).
+2023-05-08 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'FEEDS.SHA1_HASH' field to the database.
+	* Incremented the database version to 368.
+	* Added 'RDFeed::sha1Hash()' and 'RDFeed::setSha1Hash()' methods.
+	* Added a 'RDSha1HashData()' function.
+	* Optimized the podcasting subsystem so as to upload feed XML only
+	when the XML contents have actually changed.

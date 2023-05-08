@@ -3351,7 +3351,7 @@
 
 <sect1>
   <title>RemovePodcast</title>
-  <subtitle>Delete podcast audio from the Rivendell audio store</subtitle>
+  <subtitle>Delete podcast audio from the remote archive</subtitle>
   <para>
     Command Code: <code>RDXPORT_COMMAND_REMOVE_PODCAST</code>
   </para>

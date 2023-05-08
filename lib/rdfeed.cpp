@@ -713,6 +713,18 @@ void RDFeed::setNormalizeLevel(int lvl) const
 }
 
 
+QString RDFeed::sha1Hash() const
+{
+  return RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,"SHA1_HASH").toString();
+}
+
+
+void RDFeed::setSha1Hash(const QString &str) const
+{
+  SetRow("SHA1_HASH",str);
+}
+
+
 QByteArray RDFeed::imageData(int img_id) const
 {
   return RDGetSqlValue("FEED_IMAGES","ID",img_id,"DATA").toByteArray();

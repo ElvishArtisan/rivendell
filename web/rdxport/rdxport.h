@@ -88,8 +88,8 @@ class Xport : public QObject
   void DeletePodcast();
   void PostPodcast();
   void RemovePodcast();
-  bool PostRssElemental(RDFeed *feed,const QDateTime &now,QString *err_msg);
   void DownloadRss();
+  bool PostRssElemental(RDFeed *feed,const QDateTime &now,QString *err_msg);
   void PostRss();
   void RemoveRss();
   void PostImage();
