@@ -221,7 +221,7 @@ void MainWidget::openData()
     delete d;
   }
   if(cast_feed_model->isCast(rows.first())) {
-    EditCast *d=new EditCast(cast_feed_model->castId(rows.first()),this);
+    EditCast *d=new EditCast(cast_feed_model->castId(rows.first()),false,this);
     if(d->exec()) {
       cast_feed_model->refreshRow(rows.first());
     }

@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Cast
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -36,12 +36,14 @@ class EditCast : public RDDialog
 {
  Q_OBJECT
  public:
-  EditCast(unsigned cast_id,QWidget *parent=0);
+ EditCast(unsigned cast_id,bool new_post,QWidget *parent);
   ~EditCast();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 
  private slots:
+  void titleChangedData(const QString &str);
+  void descriptionChangedData();
   void effectiveSelectData();
   void expirationSelectedData(int state);
   void expirationSelectData();

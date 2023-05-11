@@ -26,7 +26,7 @@
 #include "edit_cast.h"
 #include "globals.h"
 
-EditCast::EditCast(unsigned cast_id,QWidget *parent)
+EditCast::EditCast(unsigned cast_id,bool new_post,QWidget *parent)
   : RDDialog(parent)
 {
   cast_cast=new RDPodcast(rda->config(),cast_id);
@@ -56,15 +56,19 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   //
   cast_item_title_edit=new QLineEdit(this);
   cast_item_title_edit->setMaxLength(255);
+  cast_item_title_edit->setPlaceholderText(tr("Enter item title"));
   cast_item_title_label=new QLabel(tr("Title:"),this);
   cast_item_title_label->setFont(labelFont());
   cast_item_title_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  connect(cast_item_title_edit,SIGNAL(textChanged(const QString &)),
+	  this,SLOT(titleChangedData(const QString &)));
 
   //
   // Item Author
   //
   cast_item_author_edit=new QLineEdit(this);
   cast_item_author_edit->setMaxLength(255);
+  cast_item_author_edit->setPlaceholderText(tr("Enter author e-mail address"));
   cast_item_author_label=new QLabel(tr("Author E-Mail:"),this);
   cast_item_author_label->setFont(labelFont());
   cast_item_author_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -110,10 +114,13 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   // Item Description
   //
   cast_item_description_edit=new QTextEdit(this);
+  cast_item_description_edit->setPlaceholderText(tr("Enter item description"));
   cast_item_description_label=new QLabel(tr("Description:"),this);
   cast_item_description_label->setFont(labelFont());
   cast_item_description_label->
     setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  connect(cast_item_description_edit,SIGNAL(textChanged()),
+	  this,SLOT(descriptionChangedData()));
 
   //
   // Item Explicit
@@ -198,7 +205,10 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   //
   setWindowTitle("RDCastManager - "+tr("Editing Item")+
 		 +"  [Cast ID: "+QString::asprintf("%u",cast_cast->id())+"]");
-  cast_item_title_edit->setText(cast_cast->itemTitle());
+  if((!new_post)||(cast_status==RDPodcast::StatusActive)) {
+    cast_item_title_edit->setText(cast_cast->itemTitle());
+    cast_item_description_edit->setText(cast_cast->itemDescription());
+  }
   cast_item_author_edit->setText(cast_cast->itemAuthor());
   if(cast_cast->originLoginName().isEmpty()) {
     cast_item_origin_edit->
@@ -220,7 +230,6 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
     setVisible(rda->rssSchemas()->
 	       supportsItemCategories(cast_feed->rssSchema()));
   cast_item_link_edit->setText(cast_cast->itemLink());
-  cast_item_description_edit->setText(cast_cast->itemDescription());
   cast_item_explicit_check->setChecked(cast_cast->itemExplicit());
   cast_item_image_box->setCategoryId(cast_feed->id());
   cast_item_image_box->setCurrentImageId(cast_cast->itemImageId());
@@ -251,6 +260,7 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
     cast_active_label->setDisabled(true);
     break;
   }
+  descriptionChangedData();
 
   //
   // Fix the Window Size
@@ -275,6 +285,20 @@ QSize EditCast::sizeHint() const
 QSizePolicy EditCast::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+}
+
+
+void EditCast::titleChangedData(const QString &str)
+{
+  descriptionChangedData();
+}
+
+
+void EditCast::descriptionChangedData()
+{
+  cast_ok_button->
+    setDisabled(cast_item_description_edit->toPlainText().trimmed().isEmpty()||
+		cast_item_title_edit->text().trimmed().isEmpty());
 }
 
 

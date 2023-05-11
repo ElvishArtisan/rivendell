@@ -188,7 +188,7 @@ void ListCasts::addCartData()
     QMessageBox::warning(this,"RDCastManager - "+tr("Posting Error"),err_msg);
     return;
   }
-  EditCast *d=new EditCast(cast_id,this);
+  EditCast *d=new EditCast(cast_id,true,this);
   d->exec();
   QModelIndex row=list_casts_model->addCast(cast_id);
   if(row.isValid()) {
@@ -220,7 +220,7 @@ void ListCasts::addFileData()
     QMessageBox::warning(this,"RDCastManager - "+tr("Posting Error"),err_msg);
     return;
   }
-  EditCast *d=new EditCast(cast_id,this);
+  EditCast *d=new EditCast(cast_id,true,this);
   d->exec();
   QModelIndex row=list_casts_model->addCast(cast_id);
   if(row.isValid()) {
@@ -256,7 +256,7 @@ void ListCasts::addLogData()
 				&start_line,&end_line)) {
       if((cast_id=list_feed->postLog(logname,start_time,ignore_stops,
 				     start_line,end_line,&err_msg))!=0) {
-	EditCast *cast=new EditCast(cast_id,this);
+	EditCast *cast=new EditCast(cast_id,true,this);
 	cast->exec();
 	QModelIndex row=list_casts_model->addCast(cast_id);
 	if(row.isValid()) {
@@ -293,7 +293,7 @@ void ListCasts::editData()
   if(rows.size()!=1) {
     return;
   }
-  EditCast *d=new EditCast(list_casts_model->castId(rows.first()),this);
+  EditCast *d=new EditCast(list_casts_model->castId(rows.first()),false,this);
   if(d->exec()) {
     list_casts_model->refresh(rows.first());
     rda->ripc()->sendNotification(RDNotification::FeedType,

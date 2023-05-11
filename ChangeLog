@@ -24071,3 +24071,7 @@
 	* Added a 'RDSha1HashData()' function.
 	* Optimized the podcasting subsystem so as to upload feed XML only
 	when the XML contents have actually changed.
+2023-05-11 Fred Gleason <fredg@paravelsystems.com>
+	* Modified rdcastmanager(1) so that the 'Title' and 'Description'
+	field of the 'Editing Item' dialog default to empty after posting
+	a new item when AutoPost is disabled.
