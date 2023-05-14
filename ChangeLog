@@ -24075,3 +24075,13 @@
 	* Modified rdcastmanager(1) so that the 'Title' and 'Description'
 	field of the 'Editing Item' dialog default to empty after posting
 	a new item when AutoPost is disabled.
+2023-05-14 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'FEEDS.CDN_PURGE_PLUGIN_PATH' field to the database.
+	* Incremented the database version to 369.
+	* Added ' RDFeed::cdnPurgePluginPath()' and
+	'RDFeed::setCdnPurgePluginPath()' methods.
+	* Removed the RD_MODULES_DIR #define from 'lib/rd.h'.
+	* Changed the RD_PYPAD_SCRIPT_DIR #define in 'lib/rd.h' to be
+	a static value of "/usr/lib/rivendell/pypad".
+	* Added a 'CDN Purge Plug-In' control to the 'Feed' dialog in
+	rdadmin(1).

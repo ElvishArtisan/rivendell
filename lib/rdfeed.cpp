@@ -725,6 +725,19 @@ void RDFeed::setSha1Hash(const QString &str) const
 }
 
 
+QString RDFeed::cdnPurgePluginPath() const
+{
+  return RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,"CDN_PURGE_PLUGIN_PATH").
+    toString();
+}
+
+
+void RDFeed::setCdnPurgePluginPath(const QString &str) const
+{
+  SetRow("CDN_PURGE_PLUGIN_PATH",str);
+}
+
+
 QByteArray RDFeed::imageData(int img_id) const
 {
   return RDGetSqlValue("FEED_IMAGES","ID",img_id,"DATA").toByteArray();

@@ -1,8 +1,8 @@
 ## Makefile.am
 ##
-## Makefile.am for rivendell/apis
+## Makefile.am for Rivendell apis/cdn/scripts
 ##
-##   (C) Copyright 2018-2023 Fred Gleason <fredg@paravelsystems.com>
+##   (C) Copyright 2023 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License as
@@ -20,31 +20,17 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-SUBDIRS = cdn\
-          pypad\
-          rivwebcapi\
-          rivwebpyapi
+install-exec-am:	
+	mkdir -p $(DESTDIR)/usr/lib/rivendell/cdn
+	cp aka_purge.sh $(DESTDIR)/usr/lib/rivendell/cdn/
+	cp akamai_purge.cdn $(DESTDIR)/usr/lib/rivendell/cdn/
 
-pypi:	
-	rm -rf pypi
-	mkdir -p pypi/src/rivendellaudio
-	touch pypi/src/rivendellaudio/__init__.py
-	cp pypad/api/pypad.py pypi/src/rivendellaudio/
-	cp rivwebpyapi/api/rivwebpyapi.py pypi/src/rivendellaudio/
-	cp ../LICENSES/LGPLv2.txt pypi/LICENSE
-	cp pyproject.toml pypi/
-	cp setup.cfg pypi/
-	mkdir -p pypi/tests
-	python3 -m build pypi
-	cp pypi/dist/* .
-	cp pypi/src/rivendellaudio.egg-info/* .
-	rm -rf pypi
+uninstall-local:	
+	rm -f $(DESTDIR)/usr/lib/rivendell/cdn/aka_purge.sh
+	rm -f $(DESTDIR)/usr/lib/rivendell/cdn/akamai_purge.cdn
 
-post-pypi:	
-	python3 -m twine upload --repository pypi *.tar.gz *.whl
-
-EXTRA_DIST = pyproject.toml\
-             setup.cfg.in
+EXTRA_DIST = aka_purge.sh\
+             akamai_purge.cdn
 
 CLEANFILES = *~\
              *.idb\
@@ -52,15 +38,7 @@ CLEANFILES = *~\
              *.obj\
              *.pdb\
              *.qm\
-             *.tar.gz\
-             *.whl\
-             PKG-INFO\
-             SOURCES.txt\
-             dependency_links.txt\
-             moc_*\
-             not-zip-safe\
-             requires.txt\
-             top_level.txt
+             moc_*
 
 MAINTAINERCLEANFILES = *~\
                        *.tar.gz\

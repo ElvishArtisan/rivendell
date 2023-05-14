@@ -26,6 +26,9 @@
 
 #include <curl/curl.h>
 
+#include <QProcess>
+#include <QProcessEnvironment>
+
 #include <rdapplication.h>
 #include <rdconf.h>
 #include <rddelete.h>
@@ -575,6 +578,22 @@ bool Xport::PostRssElemental(RDFeed *feed,const QDateTime &now,QString *err_msg)
   }
   curl_easy_cleanup(curl);
 
+  //
+  // Cache Management
+  //
+  rda->syslog(LOG_NOTICE,"CDN1");
+  if(ret) {
+    QString cdn_script=feed->cdnPurgePluginPath();
+    rda->syslog(LOG_NOTICE,"CDN2  script: %s",
+		cdn_script.toUtf8().constData());
+    if(!cdn_script.isEmpty()) {
+  rda->syslog(LOG_NOTICE,"CDN3");
+      QStringList args;
+      args.push_back(RDFeed::publicUrl(feed->baseUrl(""),feed->keyName()));
+      RunCdnScript(cdn_script,args);
+    }
+  }
+
   return ret;
 }
 
@@ -871,3 +890,35 @@ void Xport::RemoveImage()  // Remove podcast image from the remote archive
   Exit(0);
 }
 
+
+void Xport::RunCdnScript(const QString &cmd,const QStringList &args)
+{
+  QStringList f0=cmd.split("/",QString::KeepEmptyParts);
+  f0.removeLast();
+  QProcess *proc=new QProcess(this);
+  QProcessEnvironment env=QProcessEnvironment::systemEnvironment();
+  QString path=env.value("PATH");
+  env.remove("PATH");
+  env.insert("PATH",f0.join("/")+":"+path);
+  proc->setEnvironment(env.toStringList());
+
+  proc->start(cmd,args);
+  proc->waitForFinished();
+  if(proc->exitStatus()!=QProcess::NormalExit) {
+    rda->syslog(LOG_WARNING,"cdn script \"%s\" crashed",
+		(cmd+" "+args.join(" ")).toUtf8().constData());
+  }
+  else {
+    if(proc->exitCode()!=0) {
+      rda->syslog(LOG_WARNING,"cdn script \"%s\" returned exit code %d [%s]",
+		  (cmd+" "+args.join(" ")).toUtf8().constData(),
+		  proc->exitCode(),
+		  proc->readAllStandardError().constData());
+    }
+    else {
+      rda->syslog(LOG_DEBUG,"ran cdn script \"%s\"",
+		  (cmd+" "+args.join(" ")).toUtf8().constData());
+    }
+  }
+  delete proc;
+}

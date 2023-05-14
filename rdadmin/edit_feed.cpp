@@ -22,11 +22,13 @@
 
 #include <QApplication>
 #include <QClipboard>
+#include <QFileDialog>
 #include <QMessageBox>
 
 #include <rdapplication.h>
 #include <rddelete.h>
 #include <rdexport_settings_dialog.h>
+#include <rdpaths.h>
 #include <rdupload.h>
 
 #include "edit_feed.h"
@@ -354,6 +356,23 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   feed_castorder_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
+  // CDN Purge Plug-In Path
+  //
+  feed_cdn_purge_plugin_path_label=new QLabel(tr("CDN Purge Plug-In")+":",this);
+  feed_cdn_purge_plugin_path_label->setFont(labelFont());
+  feed_cdn_purge_plugin_path_label->
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  feed_cdn_purge_plugin_path_edit=new QLineEdit(this);
+  feed_cdn_purge_plugin_path_select_button=new QPushButton(tr("Select"),this);
+  feed_cdn_purge_plugin_path_select_button->setFont(subButtonFont());
+  connect(feed_cdn_purge_plugin_path_select_button,SIGNAL(clicked()),
+	  this,SLOT(selectCdnPurgePlugin()));
+  feed_cdn_purge_plugin_path_clear_button=new QPushButton(tr("Clear"),this);
+  feed_cdn_purge_plugin_path_clear_button->setFont(subButtonFont());
+  connect(feed_cdn_purge_plugin_path_clear_button,SIGNAL(clicked()),
+	  this,SLOT(clearCdnPurgePlugin()));
+
+  //
   // Default Item Image
   //
   feed_item_image_box=new RDImagePickerBox("FEED_IMAGES","FEED_ID",this);
@@ -487,6 +506,10 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
     feed_normalize_check->setChecked(true);
     feed_normalize_spin->setValue(feed_feed->normalizeLevel()/1000);
   }
+  feed_cdn_purge_plugin_path_edit->setText(feed_feed->cdnPurgePluginPath());
+  if(feed_cdn_purge_plugin_path_edit->text().isEmpty()) {
+    feed_cdn_purge_plugin_path_edit->setText(tr("[none]"));
+  }
   feed_castorder_box->setCurrentIndex(feed_feed->castOrderIsAscending());
   feed_item_image_box->setCurrentImageId(feed_feed->defaultItemImageId());
 
@@ -503,7 +526,7 @@ EditFeed::~EditFeed()
 
 QSize EditFeed::sizeHint() const
 {
-  return QSize(1000,710);
+  return QSize(1000,734);
 } 
 
 
@@ -639,6 +662,33 @@ void EditFeed::copyItemXmlData()
 }
 
 
+void EditFeed::selectCdnPurgePlugin()
+{
+  QString path=feed_cdn_purge_plugin_path_edit->text();
+  if(path==tr("[none]")) {
+    path="";
+  }
+  path=QFileDialog::getOpenFileName(this,"RDAdmin - "+tr("Select Plug-In"),
+				    RD_CDN_SCRIPT_DIR,
+				    tr("Rivendell CDN Scripts (*.cdn)")+";;"+
+				    tr("All Files (*)"));
+  if(!path.isNull()) {
+    if(path.isEmpty()) {
+      feed_cdn_purge_plugin_path_edit->setText(tr("[none]"));
+    }
+    else {
+      feed_cdn_purge_plugin_path_edit->setText(path);
+    }
+  }
+}
+
+
+void EditFeed::clearCdnPurgePlugin()
+{
+  feed_cdn_purge_plugin_path_edit->setText(tr("[none]"));
+}
+
+
 void EditFeed::okData()
 {
   if(feed_is_superfeed_box->currentIndex()&&
@@ -706,6 +756,12 @@ void EditFeed::okData()
   }
   else {
     feed_feed->setNormalizeLevel(1);
+  }
+  if(feed_cdn_purge_plugin_path_edit->text()==tr("[none]")) {
+    feed_feed->setCdnPurgePluginPath(QString());
+  }
+  else {
+    feed_feed->setCdnPurgePluginPath(feed_cdn_purge_plugin_path_edit->text());
   }
   feed_feed->setCastOrderIsAscending(feed_castorder_box->currentIndex());
 
@@ -816,15 +872,20 @@ void EditFeed::resizeEvent(QResizeEvent *e)
   feed_max_shelf_life_label->setGeometry(20,595,130,19);
   feed_max_shelf_life_unit_label->setGeometry(250,595,50,19);
 
-  feed_item_image_box->setGeometry(155,617,335,38);
-  feed_item_image_box->setIconSize(QSize(36,36));
-  feed_item_image_label->setGeometry(20,617,130,19);
+  feed_cdn_purge_plugin_path_label->setGeometry(5,617,145,19);
+  feed_cdn_purge_plugin_path_edit->setGeometry(155,617,245,19);
+  feed_cdn_purge_plugin_path_select_button->setGeometry(405,615,40,24);
+  feed_cdn_purge_plugin_path_clear_button->setGeometry(450,615,40,24);
 
-  feed_base_preamble_edit->setGeometry(155,658,335,19);
-  feed_base_preamble_label->setGeometry(20,658,130,19);
+  feed_item_image_box->setGeometry(155,24+617,335,38);
+  feed_item_image_box->setIconSize(QSize(36,24+36));
+  feed_item_image_label->setGeometry(20,641,130,19);
 
-  feed_castorder_box->setGeometry(155,682,100,19);
-  feed_castorder_label->setGeometry(20,682,130,19);
+  feed_base_preamble_edit->setGeometry(155,682,335,19);
+  feed_base_preamble_label->setGeometry(20,682,130,19);
+
+  feed_castorder_box->setGeometry(155,706,100,19);
+  feed_castorder_label->setGeometry(20,706,130,19);
 
   //
   // Right-hand Side

@@ -4,7 +4,7 @@
 
 // Install-Dependent Path Values for Rivendell
 //
-//   (C) Copyright 2008-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2008-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,11 +22,6 @@
 
 #ifndef RDPATHS_H
 #define RDPATHS_H
-
-/*
- * Rivendell Loadable Modules Directory
- */
-#define RD_MODULES_DIR "@libdir@/rivendell"
 
 /*
  * Default Skins
@@ -50,7 +45,13 @@ extern "C" {
  * PyPAD
  */
 #define RD_PYPAD_PYTHON_PATH "@PYTHON@"
-#define RD_PYPAD_SCRIPT_DIR "@libdir@/rivendell/pypad"
+//#define RD_PYPAD_SCRIPT_DIR "@libdir@/rivendell/pypad"
+#define RD_PYPAD_SCRIPT_DIR "/usr/lib/rivendell/pypad"
+
+/*
+ * CDN Plug-ins
+ */
+#define RD_CDN_SCRIPT_DIR "/usr/lib/rivendell/cdn"
 
 
 #endif  // RDPATHS_H

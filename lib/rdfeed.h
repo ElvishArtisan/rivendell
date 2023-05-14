@@ -131,6 +131,8 @@ class RDFeed : public QObject
   void setNormalizeLevel(int lvl) const;
   QString sha1Hash() const;
   void setSha1Hash(const QString &str) const;
+  QString cdnPurgePluginPath() const;
+  void setCdnPurgePluginPath(const QString &str) const;
   QByteArray imageData(int img_id) const;
   int importImageFile(const QString &pathname,QString *err_msg,
 		      QString desc="") const;

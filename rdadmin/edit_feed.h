@@ -61,6 +61,8 @@ class EditFeed : public RDDialog
   void copyHeaderXmlData();
   void copyChannelXmlData();
   void copyItemXmlData();
+  void selectCdnPurgePlugin();
+  void clearCdnPurgePlugin();
   void okData();
   void cancelData();
 
@@ -136,6 +138,10 @@ class EditFeed : public RDDialog
   QLabel *feed_channel_description_label;
   QLabel *feed_channel_image_label;
   RDImagePickerBox *feed_channel_image_box;
+  QLabel *feed_cdn_purge_plugin_path_label;
+  QLineEdit *feed_cdn_purge_plugin_path_edit;
+  QPushButton *feed_cdn_purge_plugin_path_select_button;
+  QPushButton *feed_cdn_purge_plugin_path_clear_button;
   QLabel *feed_base_url_label;
   QLabel *feed_base_preamble_label;
   QLabel *feed_purge_url_label;
