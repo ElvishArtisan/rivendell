@@ -581,13 +581,9 @@ bool Xport::PostRssElemental(RDFeed *feed,const QDateTime &now,QString *err_msg)
   //
   // Cache Management
   //
-  rda->syslog(LOG_NOTICE,"CDN1");
   if(ret) {
     QString cdn_script=feed->cdnPurgePluginPath();
-    rda->syslog(LOG_NOTICE,"CDN2  script: %s",
-		cdn_script.toUtf8().constData());
     if(!cdn_script.isEmpty()) {
-  rda->syslog(LOG_NOTICE,"CDN3");
       QStringList args;
       args.push_back(RDFeed::publicUrl(feed->baseUrl(""),feed->keyName()));
       RunCdnScript(cdn_script,args);
