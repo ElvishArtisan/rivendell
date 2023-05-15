@@ -152,15 +152,14 @@ void FeedListView::generateBackItemReportData()
 void FeedListView::viewFrontRawXmlData()
 {
   QDateTime now=QDateTime::currentDateTime();
-  bool ok=false;
   QList<unsigned> front_ids;
   QString err_msg;
   RDFeedListModel *m=(RDFeedListModel *)model();
   QString keyname=m->data(m->index(d_mouse_row,0)).toString();
   RDFeed *feed=new RDFeed(keyname,rda->config(),this);
+  QByteArray xml;
 
-  if(feed->frontActiveCasts(&front_ids,&err_msg)) {
-    QString xml=feed->rssXml(&err_msg,now,&ok,&front_ids);
+  if(feed->rssFrontXml(&xml,&err_msg)) {
     RDTextFile(xml,true);
   }
   else {

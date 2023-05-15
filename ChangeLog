@@ -24092,3 +24092,6 @@
 	* Added 'View Raw XML [Front]' and 'View Raw XML [Back]' items to
 	the right-click menu in the 'Rivendell Feed List' dialog in
 	rdadmin(1).
+2023-05-15 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdadmin(1) that caused the 'View Raw XML [Front]
+	report to use locally generated XML.
