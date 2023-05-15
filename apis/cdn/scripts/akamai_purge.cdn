@@ -28,11 +28,4 @@ _url=$TARGET_URL
 [[ $_url =~ ^https?://[^/]+ ]] && _url="${BASH_REMATCH[0]}"
 DOMAIN=${_url#https://}
 
-
-echo -n "URL: "
-echo $TARGET_URL
-
-echo -n "DOMAIN: "
-echo $DOMAIN
-
-aka_purge.sh $DOMAIN -o $URL
+aka_purge.sh $DOMAIN -o $TARGET_URL

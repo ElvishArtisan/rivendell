@@ -24097,3 +24097,6 @@
 	report to use locally generated XML.
 2023-05-15 Fred Gleason <fredg@paravelsystems.com>
 	* Remote debugging printf()s from 'web/rdxport/podcasts.cpp'.
+2023-05-15 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'apis/cdn/scripts/akamai_purge.cdn' that broke
+	content purging on Akamai.
