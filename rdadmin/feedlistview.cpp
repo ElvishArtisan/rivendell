@@ -44,7 +44,18 @@ FeedListView::FeedListView(QWidget *parent)
   d_back_item_report_action=d_mouse_menu->
     addAction(tr("Generate Item Report [Back]"),this,SLOT(generateBackItemReportData()));
   d_back_item_report_action->setCheckable(false);
+
   d_mouse_menu->addSeparator();
+
+  d_front_raw_xml_action=d_mouse_menu->
+    addAction(tr("View Raw XML [Front]"),this,SLOT(viewFrontRawXmlData()));
+  d_front_raw_xml_action->setCheckable(false);
+  d_back_raw_xml_action=d_mouse_menu->
+    addAction(tr("View Raw XML [Back]"),this,SLOT(viewBackRawXmlData()));
+  d_back_raw_xml_action->setCheckable(false);
+
+  d_mouse_menu->addSeparator();
+
   d_bluebrry_validate_action=d_mouse_menu->
     addAction(tr("Validate with Bluebrry"),this,SLOT(validateBluebrryData()));
 
@@ -128,6 +139,53 @@ void FeedListView::generateBackItemReportData()
     else {
       QMessageBox::warning(this,"RDAdmin - "+tr("Error"),err_msg);
     }
+  }
+  else {
+    QMessageBox::warning(this,"RDAdmin - "+tr("Error"),
+			 tr("Error accessing from XML data.")+"\n"+
+			 "["+err_msg+"]");
+  }
+  delete feed;
+}
+
+
+void FeedListView::viewFrontRawXmlData()
+{
+  QDateTime now=QDateTime::currentDateTime();
+  bool ok=false;
+  QList<unsigned> front_ids;
+  QString err_msg;
+  RDFeedListModel *m=(RDFeedListModel *)model();
+  QString keyname=m->data(m->index(d_mouse_row,0)).toString();
+  RDFeed *feed=new RDFeed(keyname,rda->config(),this);
+
+  if(feed->frontActiveCasts(&front_ids,&err_msg)) {
+    QString xml=feed->rssXml(&err_msg,now,&ok,&front_ids);
+    RDTextFile(xml,true);
+  }
+  else {
+    QMessageBox::warning(this,"RDAdmin - "+tr("Error"),
+			 tr("Error accessing from XML data.")+"\n"+
+			 "["+err_msg+"]");
+  }
+  delete feed;
+}
+
+
+void FeedListView::viewBackRawXmlData()
+{
+  QDateTime now=QDateTime::currentDateTime();
+  bool ok=false;
+  QList<unsigned> back_ids;
+  QString err_msg;
+  QString output_filename="report.html";
+  RDFeedListModel *m=(RDFeedListModel *)model();
+  QString keyname=m->data(m->index(d_mouse_row,0)).toString();
+  RDFeed *feed=new RDFeed(keyname,rda->config(),this);
+
+  if(feed->backActiveCasts(&back_ids,&err_msg)) {
+    QString xml=feed->rssXml(&err_msg,now,&ok,&back_ids);
+    RDTextFile(xml,true);
   }
   else {
     QMessageBox::warning(this,"RDAdmin - "+tr("Error"),

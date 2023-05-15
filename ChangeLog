@@ -24088,3 +24088,7 @@
 2023-05-15 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdcastmanager(1) which broke display
 	of superfeed items in the 'Podcast Item List' dialog.
+2023-05-15 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'View Raw XML [Front]' and 'View Raw XML [Back]' items to
+	the right-click menu in the 'Rivendell Feed List' dialog in
+	rdadmin(1).
