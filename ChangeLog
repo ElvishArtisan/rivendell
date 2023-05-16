@@ -24100,3 +24100,6 @@
 2023-05-15 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'apis/cdn/scripts/akamai_purge.cdn' that broke
 	content purging on Akamai.
+2023-05-15 Fred Gleason <fredg@paravelsystems.com>
+	* Remove the seconds field from the 'Air Date/Time' and 'Item Expires'
+	values on the 'Editing Item' dialog in rdcastmanager(1).

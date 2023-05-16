@@ -22,11 +22,12 @@
 #define EDIT_CAST_H
 
 #include <QCheckBox>
+#include <QDateTimeEdit>
 #include <QLineEdit>
 #include <QPushButton>
 #include <QTextEdit>
 
-#include <rddatetimeedit.h>
+//#include <rddatetimeedit.h>
 #include <rddialog.h>
 #include <rdfeed.h>
 #include <rdimagepickerbox.h>
@@ -81,9 +82,9 @@ class EditCast : public RDDialog
   QCheckBox *cast_active_check;
   QLabel *cast_active_label;
   QPushButton *cast_item_expiration_button;
-  RDDateTimeEdit *cast_item_expiration_edit;
+  QDateTimeEdit *cast_item_expiration_edit;
   QLabel *cast_item_effective_label;
-  RDDateTimeEdit *cast_item_effective_edit;
+  QDateTimeEdit *cast_item_effective_edit;
   QPushButton *cast_item_effective_button;
   QPushButton *cast_ok_button;
   QPushButton *cast_cancel_button;

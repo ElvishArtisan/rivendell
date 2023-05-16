@@ -139,7 +139,9 @@ EditCast::EditCast(unsigned cast_id,bool new_post,QWidget *parent)
   //
   // Effective DateTime
   //
-  cast_item_effective_edit=new RDDateTimeEdit(this);
+  cast_item_effective_edit=new QDateTimeEdit(this);
+  cast_item_effective_edit->
+    setDisplayFormat(rda->shortDateFormat()+" "+rda->timeFormat(false));
   cast_item_effective_label=new QLabel(tr("Air Date/Time:"),this);
   cast_item_effective_label->setFont(labelFont());
   cast_item_effective_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -167,7 +169,9 @@ EditCast::EditCast(unsigned cast_id,bool new_post,QWidget *parent)
   cast_item_expiration_box_label->
     setEnabled(cast_status!=RDPodcast::StatusExpired);
 
-  cast_item_expiration_edit=new RDDateTimeEdit(this);
+  cast_item_expiration_edit=new QDateTimeEdit(this);
+  cast_item_expiration_edit->
+    setDisplayFormat(rda->shortDateFormat()+" "+rda->timeFormat(false));
   cast_item_expiration_label=new QLabel(tr("at"),this);
   cast_item_expiration_label->setFont(labelFont());
   cast_item_expiration_label->setAlignment(Qt::AlignCenter);
@@ -213,15 +217,14 @@ EditCast::EditCast(unsigned cast_id,bool new_post,QWidget *parent)
   if(cast_cast->originLoginName().isEmpty()) {
     cast_item_origin_edit->
       setText(tr("unknown")+" "+tr("at")+" "+
-	      cast_cast->originDateTime().toString("MM/dd/yyyy - hh:mm:ss"));
+	      rda->shortDateTimeString(cast_cast->originDateTime()));
   }
   else {
   cast_item_origin_edit->
     setText(cast_cast->originLoginName()+" "+tr("on")+" "+
 	    cast_cast->originStation()+" "+tr("at")+" "+
-	    cast_cast->originDateTime().toString("MM/dd/yyyy - hh:mm:ss"));
+	    rda->shortDateTimeString(cast_cast->originDateTime()));
   }
-
   cast_item_category_edit->setText(cast_cast->itemCategory());
   cast_item_category_label->
     setVisible(rda->rssSchemas()->
@@ -500,8 +503,8 @@ void EditCast::resizeEvent(QResizeEvent *e)
   // Air Date/Time
   //
   cast_item_effective_label->setGeometry(20,h-154,110,20);
-  cast_item_effective_edit->setGeometry(135,h-154,200,20);
-  cast_item_effective_button->setGeometry(345,h-156,75,24);
+  cast_item_effective_edit->setGeometry(135,h-154,200-50,20);
+  cast_item_effective_button->setGeometry(345-50,h-156,75,24);
 
   //
   // Cast Expiration
@@ -510,8 +513,8 @@ void EditCast::resizeEvent(QResizeEvent *e)
   cast_item_expiration_box->setGeometry(135,h-126,50,20);
 
   cast_item_expiration_label->setGeometry(190,h-126,20,20);
-  cast_item_expiration_edit->setGeometry(215,h-126,200,20);
-  cast_item_expiration_button->setGeometry(425,h-128,75,24);
+  cast_item_expiration_edit->setGeometry(215,h-126,200-50,20);
+  cast_item_expiration_button->setGeometry(425-50,h-128,75,24);
 
   //
   // Buttons

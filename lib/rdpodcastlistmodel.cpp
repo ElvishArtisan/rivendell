@@ -448,32 +448,28 @@ void RDPodcastListModel::updateRow(int row,RDSqlQuery *q)
     if(q->value(3).toDateTime()<=QDateTime::currentDateTime()) {
       d_status_pixmaps[row]=
 	rda->iconEngine()->listIcon(RDIconEngine::GreenBall);
-    //      icons.push_back(rda->iconEngine()->listIcon(RDIconEngine::GreenBall));
     }
     else {
       d_status_pixmaps[row]=rda->iconEngine()->listIcon(RDIconEngine::BlueBall);
-      //      icons.push_back(rda->iconEngine()->listIcon(RDIconEngine::BlueBall));
     }
     break;
 
 
   case RDPodcast::StatusPending:
     d_status_pixmaps[row]=rda->iconEngine()->listIcon(RDIconEngine::RedBall);
-    //    icons.push_back(rda->iconEngine()->listIcon(RDIconEngine::RedBall));
     break;
 
   case RDPodcast::StatusExpired:
     d_status_pixmaps[row]=rda->iconEngine()->listIcon(RDIconEngine::WhiteBall);
-    //    icons.push_back(rda->iconEngine()->listIcon(RDIconEngine::WhiteBall));
   }
 
   // Start
-  texts.push_back(q->value(3).toDateTime().toString("MM/dd/yyyy hh:mm:ss"));
+  texts.push_back(rda->shortDateTimeString(q->value(3).toDateTime(),false));
   icons.push_back(QVariant());
 
   // Expiration
   if(q->value(4).toDateTime().isValid()) {
-    texts.push_back(q->value(4).toDateTime().toString("MM/dd/yyyy hh:mm:ss"));
+    texts.push_back(rda->shortDateTimeString(q->value(4).toDateTime(),false));
   }
   else {
     texts.push_back(tr("Never"));
@@ -495,12 +491,12 @@ void RDPodcastListModel::updateRow(int row,RDSqlQuery *q)
   // Posted By
   if(q->value(9).isNull()) {
     texts.push_back(tr("unknown")+" "+tr("at")+" "+
-		    q->value(11).toDateTime().toString("MM/dd/yyyy hh:mm:ss"));
+		    rda->shortDateTimeString(q->value(11).toDateTime()));
     }
   else {
     texts.push_back(q->value(9).toString()+" "+tr("on")+" "+
 		    q->value(10).toString()+" "+tr("at")+" "+
-		    q->value(11).toDateTime().toString("MM/dd/yyyy hh:mm:ss"));
+		    rda->shortDateTimeString(q->value(11).toDateTime()));
   }
   icons.push_back(QVariant());
 
