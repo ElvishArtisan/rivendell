@@ -21,6 +21,19 @@
 #   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #
 
+#
+# Usage: akamai_purge.cdn <target-url>
+#
+# N.B. - For this to work, you must provision an Akamai EdgeGrid access
+#        token with read/write access to Akamai's CCU APIs and place it
+#        at '/usr/share/rivendell/keys/edgegrid.conf'. The token file should
+#        be owned by the 'rivendell' user and group and have permission bits
+#        set to 0600.
+#
+#        For additional information, see:
+#          https://techdocs.akamai.com/purge-cache/reference/api-get-started
+#
+
 TARGET_URL=$1
 
 _url=$TARGET_URL

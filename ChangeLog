@@ -24103,3 +24103,5 @@
 2023-05-15 Fred Gleason <fredg@paravelsystems.com>
 	* Remove the seconds field from the 'Air Date/Time' and 'Item Expires'
 	values on the 'Editing Item' dialog in rdcastmanager(1).
+2023-05-15 Fred Gleason <fredg@paravelsystems.com>
+	* Added a usage note to 'apis/cdn/scripts/akamai_purge.cdn'.
