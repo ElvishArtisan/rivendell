@@ -24105,3 +24105,6 @@
 	values on the 'Editing Item' dialog in rdcastmanager(1).
 2023-05-16 Fred Gleason <fredg@paravelsystems.com>
 	* Added a usage note to 'apis/cdn/scripts/akamai_purge.cdn'.
+2023-05-16 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdrssd(8) to process feeds at two seconds after each
+	minute.

@@ -34,10 +34,7 @@ MainObject::MainObject(QObject *parent)
   : QObject(parent)
 {
   QString err_msg;
-  bool ok=false;
   RDApplication::ErrorType err_type=RDApplication::ErrorOk;
-
-  d_process_interval=RDRSSD_DEFAULT_PROCESS_INTERVAL;
 
   //
   // Open the Database
@@ -68,15 +65,6 @@ MainObject::MainObject(QObject *parent)
   // Read Command Options
   //
   for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
-    if(rda->cmdSwitch()->key(i)=="--process-interval") {
-      d_process_interval=1000*rda->cmdSwitch()->value(i).toInt(&ok);
-      if((!ok)||(d_process_interval<=0)) {
-	fprintf(stderr,
-		"rdrssd: invalid value specified for --process-interval\n");
-	exit(1);
-      }
-      rda->cmdSwitch()->setProcessed(i,true);
-    }
     if(!rda->cmdSwitch()->processed(i)) {
       rda->syslog(LOG_ERR,"unknown command option \"%s\"",
 		  (const char *)rda->cmdSwitch()->key(i).toUtf8());
@@ -96,7 +84,8 @@ MainObject::MainObject(QObject *parent)
   d_timer=new QTimer(this);
   d_timer->setSingleShot(true);
   connect(d_timer,SIGNAL(timeout()),this,SLOT(timeoutData()));
-  d_timer->start(0);
+
+  StartTimer();
 
   rda->syslog(LOG_DEBUG,"started");
 }
@@ -117,7 +106,17 @@ void MainObject::timeoutData()
   }
   delete q;
 
-  d_timer->start(d_process_interval);
+  StartTimer();
+}
+
+
+void MainObject::StartTimer()
+{
+  QDateTime now=QDateTime::currentDateTime();
+  QDateTime then=now.addSecs(60);
+
+  then.setTime(QTime(then.time().hour(),then.time().minute(),2));
+  d_timer->start(now.msecsTo(then));
 }
 
 

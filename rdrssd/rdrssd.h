@@ -24,8 +24,7 @@
 #include <QObject>
 #include <QTimer>
 
-#define RDRSSD_DEFAULT_PROCESS_INTERVAL 60000
-#define RDRSSD_USAGE "[--process-interval=<secs>]\n\n"
+#define RDRSSD_USAGE "\n"
 
 class MainObject : public QObject
 {
@@ -37,8 +36,8 @@ class MainObject : public QObject
   void timeoutData();
 
  private:
+  void StartTimer();
   void ProcessFeed(const QString &key_name);
-  int d_process_interval;
   QTimer *d_timer;
 };
 
