@@ -2,7 +2,7 @@
 //
 // Handle data from an HTML form.
 //
-//   (C) Copyright 2009-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2009-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -43,6 +43,7 @@ RDFormPost::RDFormPost(RDFormPost::Encoding encoding,int64_t maxsize,
   post_auto_delete=auto_delete;
   post_data=NULL;
   post_tempdir=NULL;
+  post_bytes_downloaded=0;
 
   //
   // Client Info
@@ -101,7 +102,13 @@ RDFormPost::RDFormPost(RDFormPost::Encoding encoding,int64_t maxsize,
   // (Perhaps) autodetect the encoding type
   //
   char first[2];
-  RDCheckExitCode("RDFormPost::RDFormPost read",read(0,first,1));
+  ssize_t s;
+
+  if((s=read(0,first,1))<=0) {
+    post_error=RDFormPost::ErrorMalformedData;
+    return;
+  }
+  post_bytes_downloaded+=1;
   if(post_encoding==RDFormPost::AutoEncoded) {
     if(first[0]=='-') {
       post_encoding=RDFormPost::MultipartEncoded;
@@ -138,9 +145,11 @@ RDFormPost::~RDFormPost()
     if(post_tempdir!=NULL) {
       delete post_tempdir;
     }
+    /*
     if(post_data!=NULL) {
       delete post_data;
     }
+    */
   }
 }
 
@@ -563,12 +572,13 @@ void RDFormPost::LoadUrlEncoding(char first)
       post_error=RDFormPost::ErrorMalformedData;
       return;
     }
+    post_bytes_downloaded+=n;
     total_read+=n;
   }
 
-  //  post_data[post_content_length]=0;
   post_data[total_read]=0;
   lines=QString(post_data).split("&");
+
   for(int i=0;i<lines.size();i++) {
     line=lines[i].split("=",QString::KeepEmptyParts);
     for(int j=2;j<line.size();j++) {
@@ -596,6 +606,8 @@ void RDFormPost::LoadUrlEncoding(char first)
 
 void RDFormPost::LoadMultipartEncoding(char first)
 {
+  bool ok=false;
+
   //
   // Create Stream Reader
   //
@@ -627,7 +639,11 @@ void RDFormPost::LoadMultipartEncoding(char first)
   //
   // Get Separator Line
   //
-  post_separator=first+QString::fromUtf8(GetLine()).trimmed();
+  post_separator=first+QString::fromUtf8(GetLine(&ok)).trimmed();
+  if(!ok) {
+    post_error=RDFormPost::ErrorMalformedData;
+    return;
+  }
 
   //
   // Read Mime Parts
@@ -638,7 +654,11 @@ void RDFormPost::LoadMultipartEncoding(char first)
   bool again=false;
 
   do {
-    again=GetMimePart(&name,&value,&is_file);
+    again=GetMimePart(&name,&value,&is_file,&ok);
+    if(!ok) {
+      post_error=RDFormPost::ErrorMalformedData;
+      return;
+    }
     post_values[name]=value;
     post_filenames[name]=is_file;
   } while(again);
@@ -646,7 +666,8 @@ void RDFormPost::LoadMultipartEncoding(char first)
 }
 
 
-bool RDFormPost::GetMimePart(QString *name,QString *value,bool *is_file)
+bool RDFormPost::GetMimePart(QString *name,QString *value,bool *is_file,
+			     bool *ok)
 {
   QString line;
   int fd=-1;
@@ -659,7 +680,10 @@ bool RDFormPost::GetMimePart(QString *name,QString *value,bool *is_file)
   // Headers
   //
   do {
-    line=QString::fromUtf8(GetLine());
+    line=QString::fromUtf8(GetLine(ok));
+    if(!ok) {
+      return false;
+    }
     QStringList f0=line.split(":");
     if(f0.size()==2) {
       if(f0[0].toLower()=="content-disposition") {
@@ -692,20 +716,32 @@ bool RDFormPost::GetMimePart(QString *name,QString *value,bool *is_file)
   //
   if(*is_file) {
     QByteArray data;
-    data=GetLine();
+    data=GetLine(ok);
+    if(!ok) {
+      return false;
+    }
     line=QString::fromUtf8(data).trimmed();
     while(!line.contains(post_separator)) {
       RDCheckExitCode("RDFormPost::GetMimePart write",
 		      write(fd,data,data.length()));
-      data=GetLine();
+      data=GetLine(ok);
+      if(!ok) {
+	return false;
+      }
       line=QString::fromUtf8(data).trimmed();
     }
   }
   else {
-    line=QString::fromUtf8(GetLine());
+    line=QString::fromUtf8(GetLine(ok));
+    if(!ok) {
+      return false;
+    }
     while((!line.isEmpty())&&(!line.contains(post_separator))) {
       *value+=line;
-      line=QString::fromUtf8(GetLine());
+      line=QString::fromUtf8(GetLine(ok));
+      if(!ok) {
+	return false;
+      }
     }
     *value=value->trimmed();
   }
@@ -721,13 +757,18 @@ bool RDFormPost::GetMimePart(QString *name,QString *value,bool *is_file)
 }
 
 
-QByteArray RDFormPost::GetLine() const
+QByteArray RDFormPost::GetLine(bool *ok)
 {
   char *data=NULL;
   size_t n=0;
 
-  n=getline(&data,&n,post_stream);
+  if((n=getline(&data,&n,post_stream))<0) {
+    *ok=false;
+  }
+  post_bytes_downloaded+=n;
   QByteArray ret(data,n);
   free(data);
+  *ok=true;
+
   return ret;
 }

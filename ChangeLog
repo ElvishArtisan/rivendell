@@ -24124,3 +24124,7 @@
 2023-05-17 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in the WebAPI that caused imports to bypass the
 	maximum file size limitation set the 'System Settings' in rdadmin(1).
+2023-05-17 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a vulnerabilities in 'RDFormPost' that could allow maximum
+	post length restrictions to be bypassed by use of a maliciously
+	crafted HTTP transaction.
