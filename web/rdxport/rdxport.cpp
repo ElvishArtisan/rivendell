@@ -113,7 +113,7 @@ Xport::Xport(QObject *parent)
   // Generate Post
   //
   xport_post=new RDFormPost(RDFormPost::AutoEncoded,
-			    rda->system()->maxPostLength(),false);
+			    rda->system()->maxPostLength(),true);
   if(xport_post->error()!=RDFormPost::ErrorOk) {
     XmlExit(xport_post->errorString(xport_post->error()),400,"rdxport.cpp",
 	    LINE_NUMBER);

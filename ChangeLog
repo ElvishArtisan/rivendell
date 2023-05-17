@@ -24128,3 +24128,6 @@
 	* Fixed a vulnerabilities in 'RDFormPost' that could allow maximum
 	post length restrictions to be bypassed by use of a maliciously
 	crafted HTTP transaction.
+2023-05-17 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the rdxport service that caused temporary
+	directories to be left behind after processing audio imports.
