@@ -45,3 +45,5 @@ UPLOAD_BITRATE             int(11)
 UPLOAD_QUALITY             int(11)
 UPLOAD_EXTENSION           varchar(16)
 NORMALIZE_LEVEL            int(11)
+SHA1_HASH                  varchar(40)
+CDN_PURGE_PLUGIN_PATH      text

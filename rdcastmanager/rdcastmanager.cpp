@@ -90,6 +90,12 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
     connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 
   //
+  // XSLT Engine (for feed reports)
+  //
+  cast_xslt_engine=
+    new RDXsltEngine("/usr/share/rivendell/rss-back-item-report.xsl",this);
+
+  //
   // Feed List
   //
   cast_feed_view=new RDTreeView(this);
@@ -215,7 +221,7 @@ void MainWidget::openData()
     delete d;
   }
   if(cast_feed_model->isCast(rows.first())) {
-    EditCast *d=new EditCast(cast_feed_model->castId(rows.first()),this);
+    EditCast *d=new EditCast(cast_feed_model->castId(rows.first()),false,this);
     if(d->exec()) {
       cast_feed_model->refreshRow(rows.first());
     }
@@ -239,25 +245,19 @@ void MainWidget::copyData()
 void MainWidget::reportData()
 {
   QModelIndexList rows=cast_feed_view->selectionModel()->selectedRows();
-
   if(rows.size()!=1) {
     return;
   }
   QString err_msg;
   QString url=cast_feed_model->
     data(cast_feed_model->index(rows.at(0).row(),6)).toString();
-  cast_temp_directories.push_back(new RDTempDirectory("rdcastmanager-report"));
-  if(!cast_temp_directories.last()->create(&err_msg)) {
-    QMessageBox::warning(this,"RDCastManager - "+tr("Error"),
-                        tr("Unable to create temporary directory.")+"\n"+
-                        "["+err_msg+"]");
-    return;
+  QString output_filename="report.html";
+  if(cast_xslt_engine->transformUrl(&output_filename,url,&err_msg)) {
+    RDWebBrowser("file://"+output_filename);
   }
-  QString tmpfile=cast_temp_directories.last()->path()+"/report.html";
-  QString cmd="curl -f -s "+url+" | xsltproc --encoding utf-8 /usr/share/rivendell/rdcastmanager-report.xsl - > "+tmpfile;
-  printf("CMD: %s\n",cmd.toUtf8().constData());
-  system(cmd.toUtf8());
-  RDWebBrowser("file://"+tmpfile);
+  else {
+    QMessageBox::warning(this,"RDCastManager - "+tr("Error"),err_msg);
+  }
 }
 
 
@@ -269,9 +269,7 @@ void MainWidget::feedDoubleClickedData(const QModelIndex &index)
 
 void MainWidget::quitMainWidget()
 {
-  for(int i=0;i<cast_temp_directories.size();i++) {
-    delete cast_temp_directories.at(i);
-  }
+  delete cast_xslt_engine;
   saveSettings();
   exit(0);
 }

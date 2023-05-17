@@ -2,7 +2,7 @@
 //
 // Revert Rivendell DB schema
 //
-//   (C) Copyright 2018-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -40,6 +40,24 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
   // NEW SCHEMA REVERSIONS GO HERE...
 
+
+  //
+  // Revert 369
+  //
+  if((cur_schema==369)&&(set_schema<cur_schema)) {
+    DropColumn("FEEDS","CDN_PURGE_PLUGIN_PATH");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
+  // Revert 368
+  //
+  if((cur_schema==368)&&(set_schema<cur_schema)) {
+    DropColumn("FEEDS","SHA1_HASH");
+
+    WriteSchemaVersion(--cur_schema);
+  }
 
   //
   // Revert 367

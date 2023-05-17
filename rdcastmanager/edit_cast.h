@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Cast
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,11 +22,12 @@
 #define EDIT_CAST_H
 
 #include <QCheckBox>
+#include <QDateTimeEdit>
 #include <QLineEdit>
 #include <QPushButton>
 #include <QTextEdit>
 
-#include <rddatetimeedit.h>
+//#include <rddatetimeedit.h>
 #include <rddialog.h>
 #include <rdfeed.h>
 #include <rdimagepickerbox.h>
@@ -36,12 +37,14 @@ class EditCast : public RDDialog
 {
  Q_OBJECT
  public:
-  EditCast(unsigned cast_id,QWidget *parent=0);
+ EditCast(unsigned cast_id,bool new_post,QWidget *parent);
   ~EditCast();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 
  private slots:
+  void titleChangedData(const QString &str);
+  void descriptionChangedData();
   void effectiveSelectData();
   void expirationSelectedData(int state);
   void expirationSelectData();
@@ -79,9 +82,9 @@ class EditCast : public RDDialog
   QCheckBox *cast_active_check;
   QLabel *cast_active_label;
   QPushButton *cast_item_expiration_button;
-  RDDateTimeEdit *cast_item_expiration_edit;
+  QDateTimeEdit *cast_item_expiration_edit;
   QLabel *cast_item_effective_label;
-  RDDateTimeEdit *cast_item_effective_edit;
+  QDateTimeEdit *cast_item_effective_edit;
   QPushButton *cast_item_effective_button;
   QPushButton *cast_ok_button;
   QPushButton *cast_cancel_button;

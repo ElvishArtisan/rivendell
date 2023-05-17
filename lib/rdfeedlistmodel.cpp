@@ -258,6 +258,12 @@ bool RDFeedListModel::isCast(const QModelIndex &index) const
 }
 
 
+QString RDFeedListModel::keyName(int row) const
+{
+  return d_key_names.at(row);
+}
+
+
 QString RDFeedListModel::keyName(const QModelIndex &index) const
 {
   if(index.isValid()) {

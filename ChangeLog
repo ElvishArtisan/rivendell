@@ -24041,6 +24041,21 @@
 	* Updated the package version to 4.0.0rc3.
 	* Updated the version of the 'rivwebpyapi' PyPI package to
 	4.0.0rc3.
+2023-04-24 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the 'List Feeds' dialog in rdadmin(1) that
+	threw a segfault when reposting a feed.
+2023-04-25 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'RDFeed::generateReport()' method.
+2023-04-27 Fred Gleason <fredg@paravelsystems.com>
+	* Removed a 'RDFeed::generateReport()' methods.
+	* Added a 'DownloadRss()' method to the WebAPI.
+	* Added a 'RDXsltEngine' class.
+	* Added a 'Generate Front Report' item to the right-click menu in
+	the 'Podcast Feeds' list in the 'Rivendell Feed List' dialog in
+	rdadmin(1).
+	* Added a 'Generate Back Report' item to the right-click menu in
+	the 'Podcast Feeds' list in the 'Rivendell Feed List' dialog in
+	rdadmin(1).
 2023-04-29 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'RDWidget::setBackgroundPixmap()' method.
 	* Fixed a bug in the voice tracker in rdairplay(1) that caused the
@@ -24054,3 +24069,55 @@
 2023-04-29 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug where a pending hard start with a non-zero grace time
 	was not cleared properly during a log chain event.
+2023-05-06 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the RSS reports in rdadmin(1) to include information on
+	missing	items.
+	* Modified the feed report in rdcastmanager to include information
+	on missing items.
+2023-05-07 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Validate with Bluebrry' item to the right-click menu
+	to items in the 'List Feeds' dialog in rdadmin(1).
+2023-05-08 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'FEEDS.SHA1_HASH' field to the database.
+	* Incremented the database version to 368.
+	* Added 'RDFeed::sha1Hash()' and 'RDFeed::setSha1Hash()' methods.
+	* Added a 'RDSha1HashData()' function.
+	* Optimized the podcasting subsystem so as to upload feed XML only
+	when the XML contents have actually changed.
+2023-05-11 Fred Gleason <fredg@paravelsystems.com>
+	* Modified rdcastmanager(1) so that the 'Title' and 'Description'
+	field of the 'Editing Item' dialog default to empty after posting
+	a new item when AutoPost is disabled.
+2023-05-14 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'FEEDS.CDN_PURGE_PLUGIN_PATH' field to the database.
+	* Incremented the database version to 369.
+	* Added ' RDFeed::cdnPurgePluginPath()' and
+	'RDFeed::setCdnPurgePluginPath()' methods.
+	* Removed the RD_MODULES_DIR #define from 'lib/rd.h'.
+	* Changed the RD_PYPAD_SCRIPT_DIR #define in 'lib/rd.h' to be
+	a static value of "/usr/lib/rivendell/pypad".
+	* Added a 'CDN Purge Plug-In' control to the 'Feed' dialog in
+	rdadmin(1).
+2023-05-15 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdcastmanager(1) which broke display
+	of superfeed items in the 'Podcast Item List' dialog.
+2023-05-15 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'View Raw XML [Front]' and 'View Raw XML [Back]' items to
+	the right-click menu in the 'Rivendell Feed List' dialog in
+	rdadmin(1).
+2023-05-15 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdadmin(1) that caused the 'View Raw XML [Front]
+	report to use locally generated XML.
+2023-05-15 Fred Gleason <fredg@paravelsystems.com>
+	* Remote debugging printf()s from 'web/rdxport/podcasts.cpp'.
+2023-05-16 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'apis/cdn/scripts/akamai_purge.cdn' that broke
+	content purging on Akamai.
+2023-05-16 Fred Gleason <fredg@paravelsystems.com>
+	* Remove the seconds field from the 'Air Date/Time' and 'Item Expires'
+	values on the 'Editing Item' dialog in rdcastmanager(1).
+2023-05-16 Fred Gleason <fredg@paravelsystems.com>
+	* Added a usage note to 'apis/cdn/scripts/akamai_purge.cdn'.
+2023-05-16 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdrssd(8) to process feeds at two seconds after each
+	minute.

@@ -2,7 +2,7 @@
 ##
 ## Automake.am for rivendell/rdadmin
 ##
-## (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -93,6 +93,7 @@ dist_rdadmin_SOURCES = add_feed.cpp add_feed.h\
                        edit_user_perms.cpp edit_user_perms.h\
                        edit_user_service_perms.cpp edit_user_service_perms.h\
                        edit_vguest_resource.cpp edit_vguest_resource.h\
+                       feedlistview.cpp feedlistview.h\
                        globals.h\
                        help_audios.cpp help_audios.h\
                        importfields.cpp importfields.h\
@@ -176,6 +177,7 @@ nodist_rdadmin_SOURCES = global_credits.cpp\
                          moc_edit_user_perms.cpp\
                          moc_edit_user_service_perms.cpp\
                          moc_edit_vguest_resource.cpp\
+                         moc_feedlistview.cpp\
                          moc_help_audios.cpp\
                          moc_importfields.cpp\
                          moc_info_dialog.cpp\

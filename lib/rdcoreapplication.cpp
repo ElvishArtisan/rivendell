@@ -381,31 +381,79 @@ QString RDCoreApplication::shortDateString(const QDate &date) const
 }
 
 
-QString RDCoreApplication::shortDateTimeString(const QDateTime &dt) const
+QString RDCoreApplication::shortDateTimeString(const QDateTime &dt,
+					       bool show_secs) const
 {
-  return shortDateString(dt.date())+" "+timeString(dt.time());
+  return shortDateString(dt.date())+" "+timeString(dt.time(),show_secs);
 }
 
 
-QString RDCoreApplication::timeString(const QTime &time,
+QString RDCoreApplication::timeString(const QTime &time,bool show_secs,
 				      const QString &padding) const
 {
+  QString ret;
+
+  QTime rounded_time=time;
+  if(!show_secs) {
+    if(time.second()>29) {
+      rounded_time=time.addSecs(1);
+    }
+  }
   if(app_show_twelve_hour_time) {
     QString time_str=time.toString(RD_TWELVE_HOUR_FORMAT);
     if(!padding.isEmpty()) {
       if((time.hour()==0)||((time.hour()>=10)&&(time.hour()<13))||
 	 (time.hour()>=22)) {
-	return time_str.left(8)+" "+time_str.right(2);
+	ret=time_str.left(8)+" "+time_str.right(2);
       }
-      return padding+time_str.left(7)+" "+time_str.right(2);
+      else {
+	ret=padding+time_str.left(7)+" "+time_str.right(2);
+      }
     }
-    if((time.hour()==0)||((time.hour()>=10)&&(time.hour()<13))||
-       (time.hour()>=22)) {
-      return time_str.left(8)+" "+time_str.right(2);
+    else {
+      if((time.hour()==0)||((time.hour()>=10)&&(time.hour()<13))||
+	 (time.hour()>=22)) {
+	ret=time_str.left(8)+" "+time_str.right(2);
+      }
+      else {
+	ret=time_str.left(7)+" "+time_str.right(2);
+      }
     }
-    return time_str.left(7)+" "+time_str.right(2);
+    if(!show_secs) {
+      ret=ret.left(ret.length()-6);
+      ret+=" "+time.toString("AP");
+    }
   }
-  return time.toString(RD_TWENTYFOUR_HOUR_FORMAT).left(10);
+  else {
+    ret=time.toString(RD_TWENTYFOUR_HOUR_FORMAT).left(10);
+    if(!show_secs) {
+      ret=ret.left(ret.length()-3);
+    }
+  }
+
+  return ret;
+}
+
+
+QString RDCoreApplication::timeFormat(bool show_secs) const
+{
+  QString ret;
+
+  if(app_show_twelve_hour_time) {
+    ret="h:mm";
+    if(show_secs) {
+      ret+=":ss";
+    }
+    ret+=" AP";
+  }
+  else {
+    ret="hh:mm";
+    if(show_secs) {
+      ret+=":ss";
+    }
+  }
+
+  return ret;
 }
 
 

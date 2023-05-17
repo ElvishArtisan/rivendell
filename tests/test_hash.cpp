@@ -62,12 +62,27 @@ MainObject::MainObject(QObject *parent)
     exit(256);
   }
 
-  if(!filename.isEmpty()) {  // Hash the specified file
-    hash=RDSha1HashFile(filename);
-    if(hash.isEmpty()) {
-      fprintf(stderr,"test_hash: unable to open \"%s\"\n",
-	      filename.toUtf8().constData());
-      exit(256);
+  if(!filename.isEmpty()) {
+    if(filename=="-") {  // Read from stdin
+      char data[1024];
+      ssize_t n;
+      QByteArray bytes;
+      while((n=read(0,data,1024))>0) {
+	bytes+=QByteArray(data,n);
+      }
+      if(n<0) {
+	fprintf(stderr,"test_hash: %s\n",strerror(errno));
+	exit(256);
+      }
+      hash=RDSha1HashData(bytes);
+    }
+    else {  // Hash the specified file
+      hash=RDSha1HashFile(filename);
+      if(hash.isEmpty()) {
+	fprintf(stderr,"test_hash: unable to open \"%s\"\n",
+		filename.toUtf8().constData());
+	exit(256);
+      }
     }
     printf("%s\n",hash.toUtf8().constData());
     exit(0);

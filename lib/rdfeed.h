@@ -30,6 +30,7 @@
 #include <rdrssschemas.h>
 #include <rdsettings.h>
 #include <rdstation.h>
+#include <rdtempdirectory.h>
 #include <rduser.h>
 #include <rdweb.h>
 
@@ -128,6 +129,10 @@ class RDFeed : public QObject
   void setUploadMimetype(const QString &str);
   int normalizeLevel() const;
   void setNormalizeLevel(int lvl) const;
+  QString sha1Hash() const;
+  void setSha1Hash(const QString &str) const;
+  QString cdnPurgePluginPath() const;
+  void setCdnPurgePluginPath(const QString &str) const;
   QByteArray imageData(int img_id) const;
   int importImageFile(const QString &pathname,QString *err_msg,
 		      QString desc="") const;
@@ -135,18 +140,24 @@ class RDFeed : public QObject
   bool postPodcast(unsigned cast_id,QString *err_msg);
   QString audioUrl(unsigned cast_id);
   QString imageUrl(int img_id) const;
-  bool postXml(QString *err_msg);
+  bool postXml(QString *err_msg);  // WebAPI Call
   bool postXmlConditional(const QString &caption,QWidget *widget);
-  bool removeRss();
-  bool postImage(int img_id) const;
-  bool removeImage(int img_id) const;
+  bool removeRss();  // WebAPI Call
+  bool postImage(int img_id) const;  // WebAPI Call
+  bool removeImage(int img_id) const;  // WebAPI Call
   void removeAllImages();
   unsigned postCut(const QString &cutname,QString *err_msg);
   unsigned postFile(const QString &srcfile,QString *err_msg);
   unsigned postLog(const QString &logname,const QTime &start_time,
 		   bool stop_at_stop,int start_line,int end_line,
 		   QString *err_msg);
-  QString rssXml(QString *err_msg,const QDateTime &now,bool *ok=NULL);
+  QString rssXml(QString *err_msg,const QDateTime &now,bool *ok,
+		 QList<unsigned> *active_cast_ids=NULL);
+  bool rssFrontXml(QByteArray *xml,QString *err_msg) const;  // WebAPI Call
+  bool rssBackXml(QByteArray *xml,QString *err_msg) const;// Public HTTP(S) Call
+  void activeCasts(QList<unsigned> *cast_ids);
+  bool frontActiveCasts(QList<unsigned> *cast_ids,QString *err_msg);
+  bool backActiveCasts(QList<unsigned> *cast_ids,QString *err_msg);
   static unsigned create(const QString &keyname,bool enable_users,
 			 QString *err_msg);
   static QString imageFilename(int feed_id,int img_id,const QString &ext);

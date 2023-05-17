@@ -2,7 +2,7 @@
 //
 // RSS schema definitions for Rivendell
 //
-//   (C) Copyright 2020-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2020-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -57,13 +57,13 @@ RDRssSchemas::RDRssSchemas()
   c_header_templates.push_back("");
 
   // Rss202Schema
-  c_header_templates.push_back("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\">");
+  c_header_templates.push_back("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\" xmlns:rivendell=\"http://www.rivendellaudio.org/dtds/rivendell-0.1.dtd\">");
 
   // AppleSchema
-  c_header_templates.push_back("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rss version=\"2.0\" xmlns:itunes=\"http://www.itunes.com/dtds/podcast-1.0.dtd\" xmlns:content=\"http://purl.org/rss/1.0/modules/content/\" xmlns:atom=\"http://www.w3.org/2005/Atom\" xmlns:superfeed=\"http://www.rivendellaudio.org/dtds/superfeed-0.1.dtd\" xmlns:direct=\"http://www.rivendellaudio.org/dtds/direct-0.1.dtd\">");
+  c_header_templates.push_back("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rss version=\"2.0\" xmlns:itunes=\"http://www.itunes.com/dtds/podcast-1.0.dtd\" xmlns:content=\"http://purl.org/rss/1.0/modules/content/\" xmlns:atom=\"http://www.w3.org/2005/Atom\" xmlns:superfeed=\"http://www.rivendellaudio.org/dtds/superfeed-0.1.dtd\" xmlns:direct=\"http://www.rivendellaudio.org/dtds/direct-0.1.dtd\" xmlns:rivendell=\"http://www.rivendellaudio.org/dtds/rivendell-0.1.dtd\">");
 
   // AppleSuperfeedSchema
-  c_header_templates.push_back("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rss version=\"2.0\" xmlns:itunes=\"http://www.itunes.com/dtds/podcast-1.0.dtd\" xmlns:content=\"http://purl.org/rss/1.0/modules/content/\" xmlns:atom=\"http://www.w3.org/2005/Atom\" xmlns:superfeed=\"http://www.rivendellaudio.org/dtds/superfeed-0.1.dtd\" xmlns:direct=\"http://www.rivendellaudio.org/dtds/direct-0.1.dtd\">");
+  c_header_templates.push_back("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rss version=\"2.0\" xmlns:itunes=\"http://www.itunes.com/dtds/podcast-1.0.dtd\" xmlns:content=\"http://purl.org/rss/1.0/modules/content/\" xmlns:atom=\"http://www.w3.org/2005/Atom\" xmlns:superfeed=\"http://www.rivendellaudio.org/dtds/superfeed-0.1.dtd\" xmlns:direct=\"http://www.rivendellaudio.org/dtds/direct-0.1.dtd\" xmlns:rivendell=\"http://www.rivendellaudio.org/dtds/rivendell-0.1.dtd\">");
 
   //
   // Channel Templates
