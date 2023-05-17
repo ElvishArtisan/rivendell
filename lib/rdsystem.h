@@ -2,7 +2,7 @@
 //
 // System-wide Rivendell settings
 //
-//   (C) Copyright 2009-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2009-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -36,8 +36,8 @@ class RDSystem
   void setAllowDuplicateCartTitles(bool state) const;
   bool fixDuplicateCartTitles() const;
   void setFixDuplicateCartTitles(bool state) const;
-  unsigned maxPostLength() const;
-  void setMaxPostLength(unsigned bytes) const;
+  int64_t maxPostLength() const;
+  void setMaxPostLength(int64_t bytes) const;
   QString isciXreferencePath() const;
   void setIsciXreferencePath(const QString &str) const;
   QString originEmailAddress() const;

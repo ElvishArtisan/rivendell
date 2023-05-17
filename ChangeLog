@@ -24121,3 +24121,6 @@
 2023-05-16 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored rdrssd(8) to process feeds at two seconds after each
 	minute.
+2023-05-17 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the WebAPI that caused imports to bypass the
+	maximum file size limitation set the 'System Settings' in rdadmin(1).

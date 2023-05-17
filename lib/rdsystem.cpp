@@ -106,14 +106,14 @@ void RDSystem::setFixDuplicateCartTitles(bool state) const
 }
 
 
-unsigned RDSystem::maxPostLength() const
+int64_t RDSystem::maxPostLength() const
 {
-  unsigned ret;
+  int64_t ret;
 
   QString sql="select `MAX_POST_LENGTH` from `SYSTEM`";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
-    ret=q->value(0).toUInt();
+    ret=q->value(0).toLongLong();
   }
   else {
     ret=RD_DEFAULT_MAX_POST_LENGTH;
@@ -123,10 +123,10 @@ unsigned RDSystem::maxPostLength() const
 }
 
 
-void RDSystem::setMaxPostLength(unsigned bytes) const
+void RDSystem::setMaxPostLength(int64_t bytes) const
 {
   QString sql=
-    QString::asprintf("update `SYSTEM` set `MAX_POST_LENGTH`=%u",bytes);
+    QString::asprintf("update `SYSTEM` set `MAX_POST_LENGTH`=%ld",bytes);
   RDSqlQuery::apply(sql);
 }
 

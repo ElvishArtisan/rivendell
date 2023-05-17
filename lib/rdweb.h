@@ -38,6 +38,8 @@ extern QString RDXmlField(const QString &tag,const char *value,
 			  const QString &attrs="");
 extern QString RDXmlField(const QString &tag,const int value,
 			  const QString &attrs="");
+extern QString RDXmlField(const QString &tag,const int64_t value,
+			  const QString &attrs="");
 extern QString RDXmlField(const QString &tag,const unsigned value,
 			  const QString &attrs="");
 extern QString RDXmlField(const QString &tag,const bool value,

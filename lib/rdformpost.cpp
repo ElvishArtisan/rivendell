@@ -33,7 +33,7 @@
 
 #include <rdformpost.h>
 
-RDFormPost::RDFormPost(RDFormPost::Encoding encoding,unsigned maxsize,
+RDFormPost::RDFormPost(RDFormPost::Encoding encoding,int64_t maxsize,
 		       bool auto_delete)
 {
   bool ok=false;
@@ -70,8 +70,12 @@ RDFormPost::RDFormPost(RDFormPost::Encoding encoding,unsigned maxsize,
     post_error=RDFormPost::ErrorPostTooLarge;
     return;
   }
-  post_content_length=QString(getenv("CONTENT_LENGTH")).toUInt(&ok);
-  if((!ok)||((maxsize>0)&&(post_content_length>maxsize))) {
+  post_content_length=QString(getenv("CONTENT_LENGTH")).toLongLong(&ok);
+  if((!ok)||(post_content_length<0)) {
+    post_error=RDFormPost::ErrorMalformedData;
+    return;
+  }
+  if((maxsize>0)&&(post_content_length>maxsize)) {
     post_error=RDFormPost::ErrorPostTooLarge;
     return;
   }
@@ -562,7 +566,8 @@ void RDFormPost::LoadUrlEncoding(char first)
     total_read+=n;
   }
 
-  post_data[post_content_length]=0;
+  //  post_data[post_content_length]=0;
+  post_data[total_read]=0;
   lines=QString(post_data).split("&");
   for(int i=0;i<lines.size();i++) {
     line=lines[i].split("=",QString::KeepEmptyParts);
