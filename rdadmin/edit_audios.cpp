@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Audio Port Configuration
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -47,7 +47,7 @@ EditAudioPorts::EditAudioPorts(RDStation *station,QWidget *parent)
 	  this,SLOT(cardSelectedData(int)));
   edit_card_label=new QLabel(tr("Card:"),this);
   edit_card_label->setFont(labelFont());
-  edit_card_label->setAlignment(Qt::AlignRight);
+  edit_card_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Card Label
@@ -189,7 +189,7 @@ EditAudioPorts::~EditAudioPorts()
 
 QSize EditAudioPorts::sizeHint() const
 {
-  return QSize(1404,889);
+  return QSize(1380,880);
 } 
 
 
@@ -241,14 +241,14 @@ void EditAudioPorts::resizeEvent(QResizeEvent *e)
   //
   // Header
   //
-  edit_card_label->setGeometry(10,16,60,22);
-  edit_card_box->setGeometry(75,10,60,26);
+  edit_card_label->setGeometry(0,4,60,26);
+  edit_card_box->setGeometry(65,4,60,26);
 
-  card_label_label->setGeometry(140,16,80,22);
-  card_label_edit->setGeometry(225,16,300,22);
+  card_label_label->setGeometry(130,16,80,26);
+  card_label_edit->setGeometry(215,18,300,22);
 
-  card_driver_label->setGeometry(550,16,80,22);
-  card_driver_edit->setGeometry(635,16,300,22);
+  card_driver_label->setGeometry(540,16,80,26);
+  card_driver_edit->setGeometry(625,18,300,22);
 
   edit_clock_label->setGeometry(size().width()-265,16,100,26);
   edit_clock_box->setGeometry(size().width()-160,16,150,26);
@@ -260,30 +260,30 @@ void EditAudioPorts::resizeEvent(QResizeEvent *e)
     //
     // Input Section
     //
-    edit_inportnum_label[i]->setGeometry(50+170*col,55+row*260,170,22);
+    edit_inportnum_label[i]->setGeometry(40+170*col,55+row*260,170,22);
 
-    edit_input_label_label[i]->setGeometry(50+170*col,76+row*260,40,24);
-    edit_input_label_edit[i]->setGeometry(95+170*col,76+row*260,60,24);
+    edit_input_label_label[i]->setGeometry(40+170*col,76+row*260,40,24);
+    edit_input_label_edit[i]->setGeometry(85+170*col,76+row*260,60,24);
 
-    edit_type_label[i]->setGeometry(50+170*col,105+row*260,40,26);
-    edit_type_box[i]->setGeometry(95+170*col,105+row*260,110,26);
+    edit_type_label[i]->setGeometry(40+170*col,105+row*260,40,26);
+    edit_type_box[i]->setGeometry(85+170*col,105+row*260,110-15,26);
 
-    edit_mode_label[i]->setGeometry(50+170*col,135+row*260,40,26);
-    edit_mode_box[i]->setGeometry(95+170*col,135+row*260,110,26);
+    edit_mode_label[i]->setGeometry(40+170*col,135+row*260,40,26);
+    edit_mode_box[i]->setGeometry(85+170*col,135+row*260,110-15,26);
 
-    edit_input_label[i]->setGeometry(10+170*col,165+row*260,80,24);
-    edit_input_box[i]->setGeometry(95+170*col,165+row*260,60,24);
+    edit_input_label[i]->setGeometry(170*col,165+row*260,80,24);
+    edit_input_box[i]->setGeometry(85+170*col,165+row*260,60,24);
 
     //
     // Output Section
     //
-    edit_outportnum_label[i]->setGeometry(50+170*col,200+row*260,170,22);
+    edit_outportnum_label[i]->setGeometry(40+170*col,200+row*260,170,22);
 
-    edit_output_label_label[i]->setGeometry(10+170*col,225+row*260,80,24);
-    edit_output_label_edit[i]->setGeometry(95+170*col,225+row*260,60,24);
+    edit_output_label_label[i]->setGeometry(170*col,225+row*260,80,24);
+    edit_output_label_edit[i]->setGeometry(85+170*col,225+row*260,60,24);
 
-    edit_output_label[i]->setGeometry(10+170*col,255+row*260,80,24);
-    edit_output_box[i]->setGeometry(95+170*col,255+row*260,60,24);
+    edit_output_label[i]->setGeometry(170*col,255+row*260,80,24);
+    edit_output_box[i]->setGeometry(85+170*col,255+row*260,60,24);
   }
 
   //
