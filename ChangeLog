@@ -24134,3 +24134,6 @@
 2023-05-18 Fred Gleason <fredg@paravelsystems.com>
 	* Adjusted the layout of the 'Edit Audio Ports' dialog in rdamin(1)
 	to use a size of 1380x880.
+2023-05-18 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the 'Edit Clock' dialog in rdlogmanager(1) to be
+	resizeable.
