@@ -24131,6 +24131,6 @@
 2023-05-17 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in the rdxport service that caused temporary
 	directories to be left behind after processing audio imports.
-2023-05-17 Fred Gleason <fredg@paravelsystems.com>
+2023-05-18 Fred Gleason <fredg@paravelsystems.com>
 	* Adjusted the layout of the 'Edit Audio Ports' dialog in rdamin(1)
 	to use a size of 1380x880.
