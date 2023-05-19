@@ -62,7 +62,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
   // Clock Names
   //
   edit_clockname_label=new QLabel(clockname,this);
-  edit_clockname_label->setFont(labelFont());
+  edit_clockname_label->setFont(bigLabelFont());
   edit_shortname_edit=new QLineEdit(this);
   edit_shortname_edit->setMaxLength(3);
   edit_shortname_label=new QLabel(tr("Code:"),this);

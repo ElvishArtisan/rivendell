@@ -24137,3 +24137,6 @@
 2023-05-18 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the 'Edit Clock' dialog in rdlogmanager(1) to be
 	resizeable.
+2023-05-19 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdlogmanager(1) that caused the font of the
+	title field in the 'Edit Clock' dialog to be incorrect.
