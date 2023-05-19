@@ -73,6 +73,7 @@ int RDDropbox::duplicate() const
   new_box->setTitleFromCartchunkId(titleFromCartchunkId());
   new_box->setDeleteCuts(deleteCuts());
   new_box->setDeleteSource(deleteSource());
+  new_box->setUpdateMetadata(updateMetadata());
   new_box->setSendEmail(sendEmail());
   new_box->setMetadataPattern(metadataPattern());
   new_box->setUserDefined(userDefined());
@@ -250,6 +251,19 @@ bool RDDropbox::sendEmail() const
 void RDDropbox::setSendEmail(bool state) const
 {
   SetRow("SEND_EMAIL",state);
+}
+
+
+bool RDDropbox::updateMetadata() const
+{
+  return RDBool(RDGetSqlValue("DROPBOXES", "ID", box_id, "UPDATE_METADATA").
+    toString());
+}
+
+
+void RDDropbox::setUpdateMetadata(bool state)const
+{
+  SetRow("UPDATE_METADATA", state);
 }
 
 

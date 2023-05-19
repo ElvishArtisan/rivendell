@@ -249,7 +249,8 @@ bool MainObject::StartDropboxes(QString *err_msg)
     "`FORCE_TO_MONO`,"+            // 21
     "`SEGUE_LEVEL`,"+              // 22
     "`SEGUE_LENGTH`,"+             // 23
-    "`SEND_EMAIL` "+               // 24
+    "`SEND_EMAIL`,"+               // 24
+    "`UPDATE_METADATA` "+          // 25
     "from `DROPBOXES` where "+
     "`STATION_NAME`='"+RDEscapeString(rda->config()->stationName())+"'";
   q=new RDSqlQuery(sql);
@@ -304,6 +305,9 @@ bool MainObject::StartDropboxes(QString *err_msg)
     if(q->value(24).toString()=="Y") {
       args.push_back("--send-mail");
       args.push_back("--mail-per-file");
+    }
+    if(q->value(25).toString()=="Y") {
+      args.push_back("--update-metadata");
     }
     if(q->value(17).toString()=="Y") {
       args.push_back(QString::asprintf("--create-startdate-offset=%d",

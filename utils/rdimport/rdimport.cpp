@@ -98,6 +98,7 @@ MainObject::MainObject(QObject *parent)
   import_to_mono=false;
   import_failed_imports=0;
   import_send_mail=false;
+  import_update_metadata = false;
   import_mail_per_file=false;
   import_journal=NULL;
   import_dump_isci_xref=false;
@@ -174,6 +175,10 @@ MainObject::MainObject(QObject *parent)
     if(rda->cmdSwitch()->key(i)=="--delete-cuts") {
       import_delete_cuts=true;
       rda->cmdSwitch()->setProcessed(i,true);
+    }
+    if (rda->cmdSwitch()->key(i)=="--update-metadata") {
+      import_update_metadata=true;
+      rda->cmdSwitch()->setProcessed(i, true);
     }
     if(rda->cmdSwitch()->key(i)=="--dump-isci-xref") {
       import_dump_isci_xref=true;
@@ -711,8 +716,14 @@ MainObject::MainObject(QObject *parent)
   else {
     Log(LOG_INFO,QString(" Delete cuts mode is OFF\n"));
   }
-  if(import_dump_isci_xref) {
-    Log(LOG_INFO,QString(" Dump ISCI Cross Reference File is ON\n"));
+  if(import_update_metadata) {
+    Log(LOG_INFO,QString(" Update Metadata mode is ON\n"));
+  }
+  else {
+    Log(LOG_INFO,QString(" Update Metadata mode is OFF\n"));
+  }
+  if (import_dump_isci_xref) {
+      Log(LOG_INFO, QString(" Dump ISCI Cross Reference File is ON\n"));
   }
   else {
     Log(LOG_INFO,QString(" Dump ISCI Cross Reference File is OFF\n"));
@@ -1186,11 +1197,19 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
     //
     // If the cart already exists and no title was found in metadata,
     // then keep the existing title. Otherwise, generate a default title.
+    // - OR -
+    // If the cart already exists and a title was found in metadata,
+    // AND --update-metadata was specified on the command line,
+    // then use that title.
     //
     if((!cart_exists)&&wavedata->metadataFound()&&wavedata->title().isEmpty()) {
       wavedata->setTitle(effective_group->generateTitle(filename));
     }
-  } 
+    else if ((cart_exists)&&wavedata->metadataFound()&&
+      !wavedata->title().isEmpty()&&(import_update_metadata)) {
+      wavedata->setTitle(import_string_title);
+    }
+  }
   else {  // Use specified title
     wavedata->setTitle(import_string_title);
   }
@@ -1397,7 +1416,7 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   settings->setNormalizationLevel(import_normalization_level/100);
   settings->setAutotrimLevel(import_autotrim_level/100);
   conv->setDestinationSettings(settings);
-  conv->setUseMetadata(false);
+  conv->setUseMetadata(import_update_metadata);
   Log(LOG_INFO,QString().
       sprintf(" Importing file \"%s\" [%s] to cart %06u ... ",
 	      RDGetBasePart(filename).toUtf8().constData(),

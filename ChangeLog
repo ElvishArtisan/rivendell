@@ -24142,3 +24142,7 @@
 	title field in the 'Edit Clock' dialog to be incorrect.
 2023-05-19 Fred Gleason <fredg@paravelsystems.com>
 	* Added a formal video display resolution requirement to 'INSTALL'.
+2023-05-19 David Klann <dklann@broadcasttool.com>
+	* Added support for updating library metadata on subsequent
+	dropbox imports
+	* Incremented the database version to 370.
