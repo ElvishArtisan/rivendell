@@ -20,6 +20,8 @@ USE_CARTCHUNK_ID             enum('N','Y')
 TITLE_FROM_CARTCHUNK_ID      enum('N','Y') Set Rivendell cart title from cartchunk cutid.
 DELETE_CUTS                  enum('N','Y')
 DELETE_SOURCE                enum('N','Y')
+UPDATE_METADATA              enum('N','Y') Update Library with source file metadata
+                                           on subsquent imports.
 SEND_EMAIL                   enum('N','Y')
 METADATA_PATTERN             varchar(64)
 STARTDATE_OFFSET             int(11)

@@ -197,6 +197,19 @@
 
     <varlistentry>
       <term>
+	<option>--update-metadata</option>
+      </term>
+      <listitem>
+	<para>
+	  Attempt to update the library metadata from the embedded data in
+	  the source audio file when importing <emphasis>new</emphasis> audio
+	  into an <emphasis>existing</emphasis> cart.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
 	<option>--drop-box</option>
       </term>
       <listitem>
@@ -1097,4 +1110,3 @@
 </refsect1>
 
 </refentry>
-

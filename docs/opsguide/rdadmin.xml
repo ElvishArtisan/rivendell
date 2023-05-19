@@ -2043,6 +2043,16 @@
 	  </varlistentry>
 	  <varlistentry>
 	    <term>
+	      <computeroutput>Update Metadata</computeroutput>
+	    </term>
+	    <listitem>
+	      <para>
+		Update Library metadata on successful importation <emphasis>when replacing audio in an existing cart</emphasis>. Checked or unchecked, this option has no effect on updating the metadata when importing audio into a cart for the first time.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>
 	      <computeroutput>Send e-mail reports</computeroutput>
 	    </term>
 	    <listitem>

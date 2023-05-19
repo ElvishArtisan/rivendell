@@ -123,6 +123,7 @@ class MainObject : public QObject
   int import_segue_length;
   bool import_send_mail;
   bool import_mail_per_file;
+  bool import_update_metadata;
   unsigned import_cart_number;
   QString import_metadata_pattern;
   QString import_output_pattern;
