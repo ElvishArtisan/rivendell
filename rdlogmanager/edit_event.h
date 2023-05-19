@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Log Event
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -39,6 +39,7 @@
 #include <rdlibrarymodel.h>
 #include <rdsimpleplayer.h>
 
+#include "eventwidget.h"
 #include "importcartsmodel.h"
 #include "importcartsview.h"
 #include "librarytableview.h"
@@ -65,21 +66,6 @@ class EditEvent : public RDDialog
   void searchData();
   void selectionChangedData(const QItemSelection &before,
 			    const QItemSelection &after);
-  void prepositionToggledData(bool state);
-  void timeToggledData(bool);
-  void graceClickedData(int);
-  void timeTransitionData(int);
-  void autofillToggledData(bool);
-  void autofillWarnToggledData(bool);
-  void importClickedData(int);
-  void preimportLengthChangedData(int msecs);
-  void preimportUpData();
-  void preimportDownData();
-  void postimportUpData();
-  void postimportDownData();
-  void postimportLengthChangedData(int msecs);
-  void artistData();
-  void titleData();
   void saveData();
   void saveAsData();
   void svcData();
@@ -89,6 +75,7 @@ class EditEvent : public RDDialog
 
  protected:
   void closeEvent(QCloseEvent *e);
+  void resizeEvent(QResizeEvent *e);
   void paintEvent(QPaintEvent *e);
 
  private:
@@ -96,84 +83,42 @@ class EditEvent : public RDDialog
   void Save();
   void CopyEventPerms(QString old_name,QString new_name);
   void AbandonEvent(QString name);
-  QString GetProperties();
   QString event_name;
   RDEvent *event_event;
+  QLabel *event_lib_filter_label;
   QLineEdit *event_lib_filter_edit;
   QButtonGroup *event_lib_type_group;
+  QLabel *event_lib_type_none_label;
+  QRadioButton *event_lib_type_none_radio;
+  QLabel *event_lib_type_audio_label;
+  QRadioButton *event_lib_type_audio_radio;
+  QLabel *event_lib_type_macro_label;
+  QRadioButton *event_lib_type_macro_radio;
+  QLabel *event_group_label;
   QComboBox *event_group_box;
   RDGroupListModel *event_group_model;
   RDComboBox *event_sched_group_box;
-  QSpinBox* event_artist_sep_spinbox;
-  QLabel *event_artist_sep_label;
-  QPushButton *event_artist_none_button;
-  QSpinBox* event_title_sep_spinbox;
-  QLabel *event_title_sep_label;
-  QPushButton *event_title_none_button;
-  RDComboBox* event_have_code_box;
-  QLabel *event_have_code_label;
-  RDComboBox* event_have_code2_box;
-  QLabel *event_have_code2_label;
+  QPushButton *event_search_button;
   LibraryTableView *event_lib_view;
   RDLibraryModel *event_lib_model;
-  QPushButton *event_search_button;
-  QGroupBox *event_position_group;
-  QLabel *event_position_label;
-  QLabel *event_position_unit;
-  QCheckBox *event_position_box;
-  QTimeEdit *event_position_edit;
-  QGroupBox *event_timetype_group;
-  QCheckBox *event_timetype_check;
-  QLabel *event_timetype_label;
-  QButtonGroup *event_grace_group;
-  QGroupBox *event_grace_groupbox;
-  QRadioButton *event_immediate_button;
-  QRadioButton *event_next_button;
-  QRadioButton *event_wait_button;
-  QTimeEdit *event_grace_edit;
-  QGroupBox *event_autofill_group;
-  QCheckBox *event_autofill_box;
-  QCheckBox *event_autofill_slop_box;
-  QLabel *event_autofill_slop_label1;
-  QLabel *event_autofill_slop_label;
-  QTimeEdit *event_autofill_slop_edit;
-  QCheckBox *event_timescale_box;
-  QGroupBox *event_stack_group;
-  ImportCartsView *event_preimport_view;
-  ImportCartsModel *event_preimport_model;
-  QLineEdit *event_preimport_length_edit;
-  RDTransportButton *event_preimport_up_button;
-  RDTransportButton *event_preimport_down_button;
-  QButtonGroup *event_source_group;
-  QTimeEdit *event_startslop_edit;
-  QLabel *event_startslop_label;
-  QLabel *event_startslop_unit;
-  QTimeEdit *event_endslop_edit;
-  QLabel *event_endslop_label;
-  QLabel *event_endslop_unit;
-  QGroupBox *event_transitions_group;
-  QComboBox *event_firsttrans_box;
-  QLabel *event_firsttrans_label;
-  QLabel *event_firsttrans_unit;
-  QComboBox *event_defaulttrans_box;
-  QLabel *event_defaulttrans_label;
-  QLabel *event_defaulttrans_unit;
-  QLabel *event_nestevent_label;
-  QComboBox *event_nestevent_box;
-  ImportCartsView *event_postimport_view;
-  ImportCartsModel *event_postimport_model;
-  QLineEdit *event_postimport_length_edit;
   RDTransportButton *event_postimport_up_button;
   RDTransportButton *event_postimport_down_button;
+  QPushButton *event_save_button;
+  QPushButton *event_saveas_button;
+  QPushButton *event_services_list_button;
   QPushButton *event_color_button;
+  QPushButton *event_ok_button;
+  QPushButton *event_cancel_button;
   QColor event_color;
   bool event_saved;
   bool event_new_event;
   QStringList *event_new_events;
   QStringList *event_modified_events;
   RDSimplePlayer *event_player;
+  QLabel *event_remarks_label;
   QTextEdit *event_remarks_edit;
   RDEmptyCart *event_empty_cart;
+  EventWidget *event_widget;
 };
 
 

@@ -1,6 +1,6 @@
 ## Makefile.am
 ##
-## (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -53,6 +53,7 @@ dist_rdlogmanager_SOURCES = add_clock.cpp add_clock.h\
                             edit_schedcoderules.cpp edit_schedcoderules.h\
                             edit_track.cpp edit_track.h\
                             eventlistmodel.cpp eventlistmodel.h\
+                            eventwidget.cpp eventwidget.h\
                             generate_log.cpp generate_log.h\
                             importcartsmodel.cpp importcartsmodel.h\
                             importcartsview.cpp importcartsview.h\
@@ -84,6 +85,7 @@ nodist_rdlogmanager_SOURCES = moc_add_clock.cpp\
                               moc_edit_schedcoderules.cpp\
                               moc_edit_track.cpp\
                               moc_eventlistmodel.cpp\
+                              moc_eventwidget.cpp\
                               moc_generate_log.cpp\
                               moc_importcartsmodel.cpp\
                               moc_importcartsview.cpp\
