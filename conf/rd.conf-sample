@@ -199,6 +199,11 @@ TranscodingDelay=0
 ; meters. You should only change this if you have another service
 ; using UDP Port numbers in the range MeterPortBaseNumber to
 ; (MeterPortBaseNumber + MeterPortRange) (extremely rare).
+;
+; N.B. If you change either of these meter port settings, be sure to update
+;      the firewalld(8) settings in '/usr/lib/firewalld/services/rivendell.xml'
+;      as well.
+;
 ; MeterPortBaseNumber=30000
 
 ; Maximum number of UDP Ports to consider for VU meters. You may need

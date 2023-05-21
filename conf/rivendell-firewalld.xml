@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>Rivendell Radio Automation System</short>
+  <description>System for automating the capture, management and play-out of audio content.</description>
+  <port protocol="udp" port="2055"/>        <!-- Livewire GPIO Send -->
+  <port protocol="udp" port="2060"/>        <!-- Livewire GPIO Receive -->
+  <port protocol="udp" port="4001"/>        <!-- Livewire Adverts -->
+  <port protocol="tcp" port="5005"/>        <!-- IPC [caed(8)] -->
+  <port protocol="tcp" port="5006"/>        <!-- IPC [ripcd(8)] -->
+  <port protocol="udp" port="5858-5860"/>   <!-- RML [ripcd(8)] -->
+  <port protocol="udp" port="20539"/>       <!-- Mcast Notify [ripcd(8)] -->
+  <port protocol="udp" port="30000-30100"/> <!-- Meters [caed(8)] -->
+  <port protocol="tcp" port="34289"/>       <!-- PAD [ripcd(8)] -->
+</service>

@@ -1,6 +1,6 @@
 ## Makefile.am
 ##
-## (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -23,18 +23,25 @@ install-exec-am:
 	cp rd-bin.conf $(DESTDIR)/$(sysconfdir)/
 	mkdir -p $(DESTDIR)/etc/pam.d
 	cp @RIVENDELL_PAM_FILE@ $(DESTDIR)/etc/pam.d/rivendell
+	mkdir -p $(DESTDIR)/usr/lib/firewalld/services
+	cp rivendell-firewalld.xml $(DESTDIR)/usr/lib/firewalld/services/rivendell.xml
+	./firewalld.sh reload
 
 uninstall:	
 	rm -f $(DESTDIR)/$(sysconfdir)/rd-bin.conf
 	rm -f $(DESTDIR)/etc/pam.d/rivendell
+	rm -f $(DESTDIR)/usr/lib/firewalld/services/rivendell.xml
+	./firewalld.sh reload
 
 EXTRA_DIST = asound.conf-sample\
+             firewalld.sh\
              logrotate-sample\
              rd-bin.conf.in\
              rd.conf-sample\
              rivendell-rhel.pam\
              rivendell-ubuntu.pam\
              rivendell-env.sh\
+             rivendell-firewalld.xml\
              rivendell-webapi.conf\
              syslog.conf-sample
 

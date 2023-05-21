@@ -24054,3 +24054,5 @@
 2023-04-29 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug where a pending hard start with a non-zero grace time
 	was not cleared properly during a log chain event.
+2023-05-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'rivendell' service for firewalld(1).

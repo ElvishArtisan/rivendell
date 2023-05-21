@@ -274,6 +274,7 @@ if test ! -e /etc/rsyslog.d/rivendell.conf ; then
     cp @DOC_PATH@/syslog.conf-sample /etc/rsyslog.d/rivendell.conf
 fi
 /bin/systemctl restart rsyslog
+/bin/systemctl reload firewalld
 /usr/sbin/groupadd -r -g 151 pypad &>/dev/null || :
 /usr/sbin/useradd -o -u 151 -g pypad -s /bin/false -r -c "Rivendell PyPAD scripts" -d /dev/null pypad &>/dev/null || :
 exit 0
@@ -298,6 +299,7 @@ if [ -x %{_bindir}/gtk-update-icon-cache ] ; then
   %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
 fi
 /bin/systemctl daemon-reload
+/bin/systemctl reload firewalld
 
 
 %clean
@@ -503,6 +505,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/rivendell/html/*
 %{_datadir}/rivendell/apis
 %{_datadir}/rivendell/manpages
+/usr/lib/firewalld/services/rivendell.xml
+
 
 %files webapi
 %{_libdir}/librivwebcapi.so.@INTERFACE_RIVWEBCAPI_MAJOR@
