@@ -2,7 +2,7 @@
 ##
 ## Makefile.am for rivendell/web/stylesheets
 ##
-##   (C) Copyright 2022 Fred Gleason <fredg@paravelsystems.com>
+##   (C) Copyright 2022-2023 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -21,12 +21,18 @@
 
 install-exec-am:       
 	mkdir -p $(DESTDIR)/usr/share/rivendell
-	cp rdcastmanager-report.xsl $(DESTDIR)/usr/share/rivendell/
+	cp rss-item-enclosures.xsl $(DESTDIR)/usr/share/rivendell/
+	cp rss-front-item-report.xsl $(DESTDIR)/usr/share/rivendell/
+	cp rss-back-item-report.xsl $(DESTDIR)/usr/share/rivendell/
 
 uninstall-local:	
-	rm -f $(DESTDIR)/usr/share/rivendell/rdcastmanager-report.xsl
+	rm -f $(DESTDIR)/usr/share/rivendell/rss-item-enclosures.xsl
+	rm -f $(DESTDIR)/usr/share/rivendell/rss-front-item-report.xsl
+	rm -f $(DESTDIR)/usr/share/rivendell/rss-back-item-report.xsl
 
-EXTRA_DIST = rdcastmanager-report.xsl
+EXTRA_DIST = rss-front-item-report.xsl\
+             rss-back-item-report.xsl\
+             rss-item-enclosures.xsl
 
 CLEANFILES = *~
 MAINTAINERCLEANFILES = *~\

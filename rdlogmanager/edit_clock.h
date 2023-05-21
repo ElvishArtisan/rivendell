@@ -33,7 +33,7 @@
 //
 // Layout
 //
-#define CENTER_LINE 400
+#define CLOCK_EDGE 624
 #define PIE_X_MARGIN 100
 #define PIE_Y_MARGIN 125
 
@@ -64,6 +64,7 @@ class EditClock : public RDDialog
   void cancelData();
 
  protected:
+  void resizeEvent(QResizeEvent *e);
   void paintEvent(QPaintEvent *e);
   void closeEvent(QCloseEvent *e);
 
@@ -82,6 +83,7 @@ class EditClock : public RDDialog
   QPushButton *edit_color_button;
   QColor edit_color;
   QLabel *edit_clockname_label;
+  QLabel *edit_shortname_label;
   QLineEdit *edit_shortname_edit;
   QLabel *edit_clock_label;
   QFont *edit_title_font;
@@ -91,7 +93,14 @@ class EditClock : public RDDialog
   bool edit_new_clock;
   QStringList *edit_new_clocks;
   RDSchedRulesList* sched_rules_list;
+  QLabel *edit_remarks_label;
   QTextEdit *edit_remarks_edit;
+  QPushButton *edit_scheduler_rules_button;
+  QPushButton *edit_save_button;
+  QPushButton *edit_saveas_button;
+  QPushButton *edit_services_list_button;
+  QPushButton *edit_ok_button;
+  QPushButton *edit_cancel_button;
 };
 
 

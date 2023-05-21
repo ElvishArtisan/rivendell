@@ -31,6 +31,7 @@
 #include <rdtreeview.h>
 #include <rdtempdirectory.h>
 #include <rdwidget.h>
+#include <rdxsltengine.h>
 
 #define RDCASTMANAGER_USAGE "\n"
 
@@ -65,7 +66,7 @@ class MainWidget : public RDMainWindow
   QPushButton *cast_report_button;
   QPushButton *cast_close_button;
   bool cast_resize;
-  QList<RDTempDirectory *> cast_temp_directories;
+  RDXsltEngine *cast_xslt_engine;
 };
 
 

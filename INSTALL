@@ -1,5 +1,10 @@
 This is the installation file for the Rivendell package.
 
+HARDWARE REQUIREMENTS
+A graphical display capable of at least 1400x900 pixels resolution.
+(1920x1080 or higher recommended).
+
+
 MANDATORY PREREQUISITES
 You will need the following installed and configured properly on your 
 system before building Rivendell:

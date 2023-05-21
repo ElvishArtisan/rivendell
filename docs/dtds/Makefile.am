@@ -2,7 +2,7 @@
 ##
 ## docs/dtds/Makefile.am for Rivendell
 ##
-## (C) Copyright 2020 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2020-2023 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -29,15 +29,20 @@
 
 all-local:	direct.html\
                 direct.pdf\
+                rivendell.html\
+                rivendell.pdf\
                 superfeed.html\
                 superfeed.pdf
 
-EXTRA_DIST = superfeed.html\
-             superfeed.pdf\
-             superfeed.xml\
-             direct.html\
+EXTRA_DIST = direct.html\
              direct.pdf\
-             direct.xml
+             direct.xml\
+             rivendell.html\
+             rivendell.pdf\
+             rivendell.xml\
+             superfeed.html\
+             superfeed.pdf\
+             superfeed.xml
 
 CLEANFILES = *~
 MAINTAINERCLEANFILES = *~\

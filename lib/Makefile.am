@@ -2,7 +2,7 @@
 ##
 ## Automake.am for rivendell/lib
 ##
-## (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -295,7 +295,8 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdweb.cpp rdweb.h\
                         rdwebresult.cpp rdwebresult.h\
                         rdwidget.cpp rdwidget.h\
-                        rdxport_interface.h
+                        rdxport_interface.h\
+                        rdxsltengine.cpp rdxsltengine.h
 
 
 nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
@@ -440,7 +441,8 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdwavedata_dialog.cpp\
                           moc_rdwavescene.cpp\
                           moc_rdwavewidget.cpp\
-                          moc_rdwidget.cpp
+                          moc_rdwidget.cpp\
+                          moc_rdxsltengine.cpp
 
 librd_la_LDFLAGS = -release $(VERSION)
 

@@ -2,7 +2,7 @@
 //
 // Edit Rivendell Log Clock
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -50,7 +50,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
   // Fix the Window Size
   //
   setMinimumSize(sizeHint());
-  setMaximumSize(sizeHint());
+  //  setMaximumSize(sizeHint());
 
   //
   // Create Fonts
@@ -62,21 +62,17 @@ EditClock::EditClock(QString clockname,bool new_clock,
   // Clock Names
   //
   edit_clockname_label=new QLabel(clockname,this);
-  edit_clockname_label->setGeometry(10,10,280,20);
-  edit_clockname_label->setFont(labelFont());
+  edit_clockname_label->setFont(bigLabelFont());
   edit_shortname_edit=new QLineEdit(this);
-  edit_shortname_edit->setGeometry(350,10,40,20);
   edit_shortname_edit->setMaxLength(3);
-  QLabel *label=new QLabel(tr("Code:"),this);
-  label->setGeometry(295,10,50,20);
-  label->setFont(labelFont());
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  edit_shortname_label=new QLabel(tr("Code:"),this);
+  edit_shortname_label->setFont(labelFont());
+  edit_shortname_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Clock List
   //
   edit_clocks_view=new ClockListView(this);
-  edit_clocks_view->setGeometry(10,35,CENTER_LINE-20,sizeHint().height()-250);
   edit_clocks_model=new RDClockModel(rda->station(),this);
   edit_clocks_model->setFont(font());
   edit_clocks_model->setPalette(palette());
@@ -99,7 +95,6 @@ EditClock::EditClock(QString clockname,bool new_clock,
   //  Add Button
   //
   edit_add_button=new QPushButton(this);
-  edit_add_button->setGeometry(10,sizeHint().height()-210,80,50);
   edit_add_button->setFont(buttonFont());
   edit_add_button->setText(tr("Add"));
   connect(edit_add_button,SIGNAL(clicked()),this,SLOT(addData()));
@@ -108,7 +103,6 @@ EditClock::EditClock(QString clockname,bool new_clock,
   //  Clone Button
   //
   edit_clone_button=new QPushButton(this);
-  edit_clone_button->setGeometry(110,sizeHint().height()-210,80,50);
   edit_clone_button->setFont(buttonFont());
   edit_clone_button->setText(tr("Clone"));
   connect(edit_clone_button,SIGNAL(clicked()),this,SLOT(cloneData()));
@@ -117,7 +111,6 @@ EditClock::EditClock(QString clockname,bool new_clock,
   //  Edit Button
   //
   edit_edit_button=new QPushButton(this);
-  edit_edit_button->setGeometry(210,sizeHint().height()-210,80,50);
   edit_edit_button->setFont(buttonFont());
   edit_edit_button->setText(tr("Edit"));
   connect(edit_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
@@ -126,7 +119,6 @@ EditClock::EditClock(QString clockname,bool new_clock,
   //  Delete Button
   //
   edit_delete_button=new QPushButton(this);
-  edit_delete_button->setGeometry(310,sizeHint().height()-210,80,50);
   edit_delete_button->setFont(buttonFont());
   edit_delete_button->setText(tr("Delete"));
   connect(edit_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
@@ -135,58 +127,48 @@ EditClock::EditClock(QString clockname,bool new_clock,
   // Remarks
   //
   edit_remarks_edit=new QTextEdit(this);
-  edit_remarks_edit->setGeometry(10,sizeHint().height()-140,CENTER_LINE-20,130);
   edit_remarks_edit->setAcceptRichText(false);
-  label=new QLabel(tr("USER NOTES"),this);
-  label->setGeometry(15,sizeHint().height()-155,CENTER_LINE-20,15);
-  label->setFont(labelFont());
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+  edit_remarks_label=new QLabel(tr("USER NOTES"),this);
+  edit_remarks_label->setFont(labelFont());
+  edit_remarks_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   //  Scheduler-Rules button
   //
-  QPushButton *button=new QPushButton(this);
-  button->setGeometry(CENTER_LINE+10,sizeHint().height()-60,80,50);
-  button->setFont(buttonFont());
-  button->setText(tr("Scheduler\nRules"));
-  connect(button,SIGNAL(clicked()),this,SLOT(schedRules()));
+  edit_scheduler_rules_button=new QPushButton(this);
+  edit_scheduler_rules_button->setFont(buttonFont());
+  edit_scheduler_rules_button->setText(tr("Scheduler\nRules"));
+  connect(edit_scheduler_rules_button,SIGNAL(clicked()),this,SLOT(schedRules()));
 
   //
   //  Save Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(CENTER_LINE+110,sizeHint().height()-60,70,50);
-  button->setFont(buttonFont());
-  button->setText(tr("Save"));
-  connect(button,SIGNAL(clicked()),this,SLOT(saveData()));
+  edit_save_button=new QPushButton(this);
+  edit_save_button->setFont(buttonFont());
+  edit_save_button->setText(tr("Save"));
+  connect(edit_save_button,SIGNAL(clicked()),this,SLOT(saveData()));
 
   //
   //  Save As Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(CENTER_LINE+190,sizeHint().height()-60,70,50);
-  button->setFont(buttonFont());
-  button->setText(tr("Save As"));
-  connect(button,SIGNAL(clicked()),this,SLOT(saveAsData()));
-  button->setDisabled(new_clock);
+  edit_saveas_button=new QPushButton(this);
+  edit_saveas_button->setFont(buttonFont());
+  edit_saveas_button->setText(tr("Save As"));
+  connect(edit_saveas_button,SIGNAL(clicked()),this,SLOT(saveAsData()));
+  edit_saveas_button->setDisabled(new_clock);
 
   //
   //  Service Associations Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(CENTER_LINE+(sizeHint().width()-CENTER_LINE)/2-25,
-		      sizeHint().height()-60,70,50);
-  button->setFont(buttonFont());
-  button->setText(tr("Services\nList"));
-  connect(button,SIGNAL(clicked()),this,SLOT(svcData()));
+  edit_services_list_button=new QPushButton(this);
+  edit_services_list_button->setFont(buttonFont());
+  edit_services_list_button->setText(tr("Services\nList"));
+  connect(edit_services_list_button,SIGNAL(clicked()),this,SLOT(svcData()));
 
   //
   //  Color Button
   //
   edit_color_button=new QPushButton(this);
-  edit_color_button->
-    setGeometry(CENTER_LINE+(sizeHint().width()-CENTER_LINE)/2+55,
-		sizeHint().height()-60,70,50);
   edit_color_button->setFont(buttonFont());
   edit_color_button->setText(tr("Color"));
   connect(edit_color_button,SIGNAL(clicked()),this,SLOT(colorData()));
@@ -196,28 +178,23 @@ EditClock::EditClock(QString clockname,bool new_clock,
   // Clock Display
   //
   edit_clock_label=new QLabel(this);
-  edit_clock_label->
-    setGeometry(CENTER_LINE+10,10,
-		sizeHint().width()-CENTER_LINE-20,sizeHint().height()-80);
 
   //
   //  OK Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(sizeHint().width()-160,sizeHint().height()-60,70,50);
-  button->setDefault(true);
-  button->setFont(buttonFont());
-  button->setText(tr("OK"));
-  connect(button,SIGNAL(clicked()),this,SLOT(okData()));
+  edit_ok_button=new QPushButton(this);
+  edit_ok_button->setDefault(true);
+  edit_ok_button->setFont(buttonFont());
+  edit_ok_button->setText(tr("OK"));
+  connect(edit_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
   //  Cancel Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(sizeHint().width()-80,sizeHint().height()-60,70,50);
-  button->setFont(buttonFont());
-  button->setText(tr("Cancel"));
-  connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
+  edit_cancel_button=new QPushButton(this);
+  edit_cancel_button->setFont(buttonFont());
+  edit_cancel_button->setText(tr("Cancel"));
+  connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //
   // Populate Data
@@ -240,7 +217,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
 
 QSize EditClock::sizeHint() const
 {
-  return QSize(1024,698);
+  return QSize(1200,700);
 } 
 
 
@@ -538,11 +515,55 @@ void EditClock::cancelData()
 }
 
 
+void EditClock::resizeEvent(QResizeEvent *e)
+{
+  edit_clockname_label->setGeometry(10,10,280,20);
+
+  edit_shortname_edit->setGeometry(size().width()-(1024-350),10,40,20);
+  edit_shortname_label->setGeometry(size().width()-(1024-295),10,50,20);
+
+  edit_clocks_view->
+    setGeometry(10,35,
+		size().width()-CLOCK_EDGE-20,size().height()-250);
+  edit_add_button->setGeometry(10,size().height()-210,80,50);
+  edit_clone_button->setGeometry(110,size().height()-210,80,50);
+  edit_edit_button->setGeometry(210,size().height()-210,80,50);
+  edit_delete_button->setGeometry(310,size().height()-210,80,50);
+
+  edit_remarks_label->setGeometry(15,size().height()-155,
+				  size().width()-CLOCK_EDGE-20,15);
+  edit_remarks_edit->setGeometry(10,size().height()-140,
+				 size().width()-CLOCK_EDGE-20,130);
+
+  edit_clock_label->
+    setGeometry(size().width()-CLOCK_EDGE+10,10,CLOCK_EDGE,CLOCK_EDGE);
+
+  edit_scheduler_rules_button->
+    setGeometry(size().width()-615,size().height()-60,70,50);
+
+  edit_save_button->
+    setGeometry(size().width()-520,size().height()-60,70,50);
+  edit_saveas_button->
+    setGeometry(size().width()-440,size().height()-60,70,50);
+
+  edit_services_list_button->
+    setGeometry(size().width()-340,size().height()-60,70,50);
+  edit_color_button->
+    setGeometry(size().width()-260,size().height()-60,70,50);
+
+  edit_ok_button->
+    setGeometry(size().width()-160,size().height()-60,70,50);
+  edit_cancel_button->
+    setGeometry(size().width()-80,size().height()-60,70,50);
+}
+
+
 void EditClock::paintEvent(QPaintEvent *e)
 {
   QPainter *p=new QPainter(this);
   p->setPen(QColor(Qt::black));
-  p->drawLine(CENTER_LINE,10,CENTER_LINE,sizeHint().height()-10);
+  p->drawLine(size().width()-CLOCK_EDGE,10,
+	      size().width()-CLOCK_EDGE,size().height()-10);
 
   p->end();
 }
@@ -570,7 +591,7 @@ void EditClock::Save()
 
 void EditClock::UpdateClock(int line)
 {
-  QPixmap *map=new QPixmap(edit_clock_label->size());
+  QPixmap *map=new QPixmap(CLOCK_EDGE,CLOCK_EDGE);
   map->fill();
   QPainter *p=new QPainter();
   p->begin(map);
@@ -578,47 +599,49 @@ void EditClock::UpdateClock(int line)
   p->setBrush(Qt::black);
   p->setFont(*edit_title_font);
 
-  //
-  // Title
-  //
-  p->drawText((edit_clock_label->size().width()-
-	       edit_title_metrics->width(edit_clocks_model->clockName()))/2,
-	      50,edit_clocks_model->clockName());
+  if(line>=0) {
+    //
+    // Title
+    //
+    p->drawText((edit_clock_label->size().width()-
+		 edit_title_metrics->width(edit_clocks_model->clockName()))/2,
+		50,edit_clocks_model->clockName());
 
-  //
-  // Pie Circle
-  //
-  p->translate(edit_clock_label->size().width()/2,
-	       edit_clock_label->size().height()/2);
-  p->rotate(-90.0);
-  int size_x=edit_clock_label->size().width()-2*PIE_X_MARGIN;
-  int size_y=edit_clock_label->size().width()-2*PIE_X_MARGIN;
-  p->drawArc(-size_x/2,-size_y/2,size_x,size_y,0,5760);     
+    //
+    // Pie Circle
+    //
+    p->translate(edit_clock_label->size().width()/2,
+		 edit_clock_label->size().height()/2);
+    p->rotate(-90.0);
+    int size_x=edit_clock_label->size().width()-2*PIE_X_MARGIN;
+    int size_y=edit_clock_label->size().width()-2*PIE_X_MARGIN;
+    p->drawArc(-size_x/2,-size_y/2,size_x,size_y,0,5760);     
 
-  //
-  // Segments
-  //
-  for(int i=0;i<edit_clocks_model->size();i++) {
-    if(i==line) {
-      p->setBrush(edit_clocks_view->palette().
-		  color(QPalette::Active,QPalette::Highlight));
-      p->drawPie(-size_x/2,-size_y/2,size_x,size_y,
-	  -QTime(0,0,0).secsTo(edit_clocks_model->eventLine(line)->startTime())*5760/3600,
-	  -(edit_clocks_model->eventLine(line)->length()/1000)*5760/3600);
-    }
-    else {
-      if(edit_clocks_model->eventLine(i)->color().isValid()) {
-	p->setBrush(edit_clocks_model->eventLine(i)->color());
+    //
+    // Segments
+    //
+    for(int i=0;i<edit_clocks_model->size();i++) {
+      if(i==line) {
+	p->setBrush(edit_clocks_view->palette().
+		    color(QPalette::Active,QPalette::Highlight));
+	p->drawPie(-size_x/2,-size_y/2,size_x,size_y,
+		   -QTime(0,0,0).secsTo(edit_clocks_model->eventLine(line)->startTime())*5760/3600,
+		   -(edit_clocks_model->eventLine(line)->length()/1000)*5760/3600);
       }
       else {
-	p->setBrush(palette().color(QPalette::Active,QPalette::Base));
+	if(edit_clocks_model->eventLine(i)->color().isValid()) {
+	  p->setBrush(edit_clocks_model->eventLine(i)->color());
+	}
+	else {
+	  p->setBrush(palette().color(QPalette::Active,QPalette::Base));
+	}
+	p->drawPie(-size_x/2,-size_y/2,size_x,size_y,
+		   -QTime(0,0,0).secsTo(edit_clocks_model->eventLine(i)->startTime())*5760/3600,
+		   -(edit_clocks_model->eventLine(i)->length()/1000)*5760/3600);
       }
-      p->drawPie(-size_x/2,-size_y/2,size_x,size_y,
-	     -QTime(0,0,0).secsTo(edit_clocks_model->eventLine(i)->startTime())*5760/3600,
-	     -(edit_clocks_model->eventLine(i)->length()/1000)*5760/3600);
     }
+    p->end();
   }
-  p->end();
   delete p;
   edit_clock_label->setPixmap(*map);
   delete map;

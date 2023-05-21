@@ -112,7 +112,8 @@ Xport::Xport(QObject *parent)
   //
   // Generate Post
   //
-  xport_post=new RDFormPost(RDFormPost::AutoEncoded,false);
+  xport_post=new RDFormPost(RDFormPost::AutoEncoded,
+			    rda->system()->maxPostLength(),true);
   if(xport_post->error()!=RDFormPost::ErrorOk) {
     XmlExit(xport_post->errorString(xport_post->error()),400,"rdxport.cpp",
 	    LINE_NUMBER);
@@ -351,6 +352,11 @@ void Xport::ripcConnectedData(bool state)
   case RDXPORT_COMMAND_REMOVE_PODCAST:
     rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_REMOVE_PODCAST");
     RemovePodcast();
+    break;
+
+  case RDXPORT_COMMAND_DOWNLOAD_RSS:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_DOWNLOAD_RSS");
+    DownloadRss();
     break;
 
   case RDXPORT_COMMAND_POST_RSS:

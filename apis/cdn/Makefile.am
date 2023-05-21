@@ -1,8 +1,8 @@
-## Makefile.am
+## automake.am
 ##
-## Makefile.am for rivendell/apis
+## Automake.am for Rivendell CDN interface
 ##
-##   (C) Copyright 2018-2023 Fred Gleason <fredg@paravelsystems.com>
+##   (C) Copyright 2023 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License as
@@ -20,31 +20,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-SUBDIRS = cdn\
-          pypad\
-          rivwebcapi\
-          rivwebpyapi
-
-pypi:	
-	rm -rf pypi
-	mkdir -p pypi/src/rivendellaudio
-	touch pypi/src/rivendellaudio/__init__.py
-	cp pypad/api/pypad.py pypi/src/rivendellaudio/
-	cp rivwebpyapi/api/rivwebpyapi.py pypi/src/rivendellaudio/
-	cp ../LICENSES/LGPLv2.txt pypi/LICENSE
-	cp pyproject.toml pypi/
-	cp setup.cfg pypi/
-	mkdir -p pypi/tests
-	python3 -m build pypi
-	cp pypi/dist/* .
-	cp pypi/src/rivendellaudio.egg-info/* .
-	rm -rf pypi
-
-post-pypi:	
-	python3 -m twine upload --repository pypi *.tar.gz *.whl
-
-EXTRA_DIST = pyproject.toml\
-             setup.cfg.in
+SUBDIRS = scripts
 
 CLEANFILES = *~\
              *.idb\
@@ -52,15 +28,7 @@ CLEANFILES = *~\
              *.obj\
              *.pdb\
              *.qm\
-             *.tar.gz\
-             *.whl\
-             PKG-INFO\
-             SOURCES.txt\
-             dependency_links.txt\
-             moc_*\
-             not-zip-safe\
-             requires.txt\
-             top_level.txt
+             moc_*
 
 MAINTAINERCLEANFILES = *~\
                        *.tar.gz\

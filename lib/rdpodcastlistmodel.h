@@ -77,7 +77,8 @@ class RDPodcastListModel : public QAbstractTableModel
   QList<QList<QVariant> > d_texts;
   QList<int> d_item_image_ids;
   QList<QVariant> d_status_pixmaps;
-  unsigned d_feed_id;
+  //  unsigned d_feed_id;
+  QList<unsigned> d_feed_ids;
   QString d_filter_sql;
   QStringList d_column_fields;
   int d_sort_column;

@@ -159,20 +159,8 @@
 	      Install a copy of the script, along with a copy of the
 	      sample configuration file (if needed) in the Rivendell
 	      PyPAD script directory
-	      <userinput><replaceable>$(libdir)</replaceable>/rivendell/pypad/</userinput>.
+	      <userinput>/usr/lib/rivendell/pypad/</userinput>.
 	    </para>
-	    <note>
-	      In the RHEL/CentOS reference installation, this directory
-	      is <userinput>/usr/lib64/rivendell/pypad/</userinput>.
-	    </note>
-	    <note>
-	      The <userinput><replaceable>$(libdir)</replaceable></userinput>
-	      path component evaluates to
-	      the value used for the <userinput>--libdir</userinput>
-	      switch that was passed to the &quot;configure&quot; script
-	      when Rivendell was built [default value:
-	      <userinput>/usr/local/lib</userinput>].
-	    </note>
 	  </listitem>
 	</itemizedlist>
 	<para>

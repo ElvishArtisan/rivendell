@@ -48,6 +48,24 @@ QString __RDSha1Hash_MakePasswordHash(const QString &secret,const QString &salt)
   return ret;
 }
 
+
+QString RDSha1HashData(const QByteArray &data)
+{
+  SHA_CTX ctx;
+  unsigned char md[SHA_DIGEST_LENGTH];
+  QString ret;
+
+  SHA1_Init(&ctx);
+  SHA1_Update(&ctx,data,data.length());
+  SHA1_Final(md,&ctx);
+  for(int i=0;i<SHA_DIGEST_LENGTH;i++) {
+    ret+=QString::asprintf("%02x",0xff&md[i]);
+  }
+  
+  return ret;
+}
+
+
 QString RDSha1HashFile(const QString &filename,bool throttle)
 {
   QString ret;

@@ -88,11 +88,13 @@ class Xport : public QObject
   void DeletePodcast();
   void PostPodcast();
   void RemovePodcast();
+  void DownloadRss();
   bool PostRssElemental(RDFeed *feed,const QDateTime &now,QString *err_msg);
   void PostRss();
   void RemoveRss();
   void PostImage();
   void RemoveImage();
+  void RunCdnScript(const QString &cmd,const QStringList &args);
   void LockLog();
   QString LogLockXml(bool result,const QString &log_name,const QString &guid,
 		     const QString &username,const QString &stationname,
@@ -110,8 +112,11 @@ class Xport : public QObject
   QHostAddress xport_remote_address;
   QByteArray xport_curl_data;
   int xport_curl_data_ptr;
-  friend size_t __PostRss_Readfunction_Callback(char *buffer,size_t size,
-						size_t nitems,void *userdata);
+  friend size_t __PostRss_UploadFunction_Callback(char *buffer,size_t size,
+						  size_t nitems,void *userdata);
+  friend size_t __PostRss_DownloadFunction_Callback(char *buffer,size_t size,
+						    size_t nitems,
+						    void *userdata);
 };
 
 

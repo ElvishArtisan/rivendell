@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal -- Podcast services
 //
-//   (C) Copyright 2010-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,6 +26,9 @@
 
 #include <curl/curl.h>
 
+#include <QProcess>
+#include <QProcessEnvironment>
+
 #include <rdapplication.h>
 #include <rdconf.h>
 #include <rddelete.h>
@@ -40,8 +43,8 @@
 
 #include "rdxport.h"
 
-size_t __PostRss_Readfunction_Callback(char *buffer,size_t size,size_t nitems,
-				       void *userdata)
+size_t __PostRss_UploadFunction_Callback(char *buffer,size_t size,
+					 size_t nitems,void *userdata)
 {
   Xport *xport=(Xport *)userdata;
 
@@ -57,7 +60,18 @@ size_t __PostRss_Readfunction_Callback(char *buffer,size_t size,size_t nitems,
 }
 
 
-void Xport::SavePodcast()
+size_t __PostRss_DownloadFunction_Callback(char *buffer,size_t size,
+					   size_t nitems,void *userdata)
+{
+  Xport *xport=(Xport *)userdata;
+
+  (xport->xport_curl_data)+=QByteArray(buffer,size*nitems);
+
+  return size*nitems;
+}
+
+
+void Xport::SavePodcast()  // Save posted audio to the Rivendell audio store
 {
   int cast_id=0;
   QString keyname;
@@ -122,7 +136,7 @@ void Xport::SavePodcast()
 }
 
 
-void Xport::GetPodcast()
+void Xport::GetPodcast()  // Get posted podcast audio from the audio store
 {
   int cast_id=0;
   QString keyname;
@@ -186,7 +200,7 @@ void Xport::GetPodcast()
 }
 
 
-void Xport::DeletePodcast()
+void Xport::DeletePodcast() // Deleted posted podcast audio from the audio store
 {
   int cast_id=0;
   QString keyname;
@@ -234,7 +248,8 @@ void Xport::DeletePodcast()
 }
 
 
-void Xport::PostPodcast()
+void Xport::PostPodcast()  // Upload podcast audio from the audio store to
+                           // the remote archive
 {
   int cast_id=0;
   QString keyname;
@@ -294,7 +309,7 @@ void Xport::PostPodcast()
 }
 
 
-void Xport::RemovePodcast()
+void Xport::RemovePodcast()  // Delete podcast audio from the remote archive
 {
   int cast_id=0;
   QString keyname;
@@ -352,18 +367,148 @@ void Xport::RemovePodcast()
 }
 
 
+void Xport::DownloadRss()  // Download feed XML from the remote archive
+{
+  CURL *curl=NULL;
+  CURLcode curl_err;
+  char errstr[CURL_ERROR_SIZE];
+  int feed_id=0;
+  QString keyname;
+  QString destpath;
+  QString err_msg;
+  RDFeed *feed=NULL;
+  QString msg="OK";
+
+  QDateTime now=QDateTime::currentDateTime();
+
+  if(!xport_post->getValue("ID",&feed_id)) {
+    XmlExit("Missing ID",400,"podcasts.cpp",LINE_NUMBER);
+  }
+  feed=new RDFeed(feed_id,rda->config(),this);
+  if(!feed->exists()) {
+    XmlExit("No such feed",404,"podcasts.cpp",LINE_NUMBER);
+  }
+  keyname=feed->keyName();
+
+  if(((!rda->user()->editPodcast())||
+      (!rda->user()->feedAuthorized(keyname)))&&
+     (!rda->user()->adminConfig())) {
+    delete feed;
+    XmlExit("No such feed",404,"podcasts.cpp",LINE_NUMBER);
+  }
+
+  if((curl=curl_easy_init())==NULL) {
+    XmlExit("unable to get CURL handle",500,"podcasts.cpp",LINE_NUMBER);
+  }
+  //  xport_curl_data=feed->rssXml(err_msg,now).toUtf8();
+  //  xport_curl_data_ptr=0;
+
+  //
+  // Authentication Parameters
+  //
+  if((QUrl(feed->feedUrl()).scheme().toLower()=="sftp")&&
+     (!rda->station()->sshIdentityFile().isEmpty())&&feed->purgeUseIdFile()) {
+    //
+    // Enable host key verification
+    //
+    curl_easy_setopt(curl,CURLOPT_SSL_VERIFYHOST,0);
+
+    curl_easy_setopt(curl,CURLOPT_USERNAME,
+		     feed->purgeUsername().toUtf8().constData());
+    curl_easy_setopt(curl,CURLOPT_SSH_PRIVATE_KEYFILE,
+		     rda->station()->sshIdentityFile().toUtf8().constData());
+    curl_easy_setopt(curl,CURLOPT_KEYPASSWD,
+		     feed->purgePassword().toUtf8().constData());
+    rda->syslog(LOG_DEBUG,"using ssh key at \"%s\"",
+		rda->station()->sshIdentityFile().toUtf8().constData());
+  }
+  else {
+    //
+    // Disable host key verification
+    //
+    curl_easy_setopt(curl,CURLOPT_SSL_VERIFYHOST,0);
+
+    curl_easy_setopt(curl,CURLOPT_USERNAME,
+		     feed->purgeUsername().toUtf8().constData());
+    curl_easy_setopt(curl,CURLOPT_PASSWORD,
+		     feed->purgePassword().toUtf8().constData());
+  }
+
+  //
+  // Transfer Parameters
+  //
+  curl_easy_setopt(curl,CURLOPT_URL,feed->feedUrl().toUtf8().constData());
+  curl_easy_setopt(curl,CURLOPT_UPLOAD,0);
+  xport_curl_data.clear();
+  curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,
+		   __PostRss_DownloadFunction_Callback);
+  curl_easy_setopt(curl,CURLOPT_WRITEDATA,this);
+
+  curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
+  curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
+  curl_easy_setopt(curl,CURLOPT_USERAGENT,
+		   rda->config()->userAgent().toUtf8().constData());
+  curl_easy_setopt(curl,CURLOPT_ERRORBUFFER,errstr);
+
+  //
+  // Execute it
+  //
+  switch((curl_err=curl_easy_perform(curl))) {
+  case CURLE_OK:
+  case CURLE_PARTIAL_FILE:
+    feed->setLastBuildDateTime(now);
+    rda->syslog(LOG_DEBUG,
+		"posted RSS XML to \"%s\"",
+		feed->feedUrl().toUtf8().constData());
+    break;
+
+  default:
+    rda->syslog(LOG_ERR,"RSS XML upload failed: curl error %d [%s]",
+		curl_err,curl_easy_strerror(curl_err));
+    err_msg+=errstr;
+    break;
+  }
+  curl_easy_cleanup(curl);
+
+  printf("Content-type: application/rss+xml; charset: UTF-8\n");
+  printf("Status: 200\n\n");
+  printf("%s",xport_curl_data.constData());
+
+  Exit(0);
+}
+
+
 bool Xport::PostRssElemental(RDFeed *feed,const QDateTime &now,QString *err_msg)
 {
   CURL *curl=NULL;
   CURLcode curl_err;
   char errstr[CURL_ERROR_SIZE];
   bool ret=false;
+  bool ok=false;
 
   if((curl=curl_easy_init())==NULL) {
     XmlExit("unable to get CURL handle",500,"podcasts.cpp",LINE_NUMBER);
   }
-  xport_curl_data=feed->rssXml(err_msg,now).toUtf8();
+
+  //
+  // Avoid pointless uploads
+  //
+  // We use the date/time of the UNIX Epoch for <lastBuildDate> here so the
+  // internal Rivendell hashes remain consistent.
+  //
+  QDateTime epoch(QDate(1970,1,1),QTime(0,0,0));
+  QString new_hash=RDSha1HashData(xport_curl_data=feed->
+				  rssXml(err_msg,epoch,&ok).toUtf8());
+  if(feed->sha1Hash()==new_hash) {
+    rda->syslog(LOG_DEBUG,
+		"SHA1 hash for feed \"%s\" is unchanged, skipping the XML upload",
+		feed->keyName().toUtf8().constData());
+    return true;
+  }
+
+  xport_curl_data=feed->rssXml(err_msg,now,&ok).toUtf8();
   xport_curl_data_ptr=0;
+
 
   //
   // Authentication Parameters
@@ -401,7 +546,7 @@ bool Xport::PostRssElemental(RDFeed *feed,const QDateTime &now,QString *err_msg)
   //
   curl_easy_setopt(curl,CURLOPT_URL,feed->feedUrl().toUtf8().constData());
   curl_easy_setopt(curl,CURLOPT_UPLOAD,1);
-  curl_easy_setopt(curl,CURLOPT_READFUNCTION, __PostRss_Readfunction_Callback);
+  curl_easy_setopt(curl,CURLOPT_READFUNCTION, __PostRss_UploadFunction_Callback);
   curl_easy_setopt(curl,CURLOPT_READDATA,this);
 
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
@@ -417,6 +562,7 @@ bool Xport::PostRssElemental(RDFeed *feed,const QDateTime &now,QString *err_msg)
   case CURLE_OK:
   case CURLE_PARTIAL_FILE:
     feed->setLastBuildDateTime(now);
+    feed->setSha1Hash(new_hash);
     rda->syslog(LOG_DEBUG,
 		"posted RSS XML to \"%s\"",
 		feed->feedUrl().toUtf8().constData());
@@ -432,11 +578,23 @@ bool Xport::PostRssElemental(RDFeed *feed,const QDateTime &now,QString *err_msg)
   }
   curl_easy_cleanup(curl);
 
+  //
+  // Cache Management
+  //
+  if(ret) {
+    QString cdn_script=feed->cdnPurgePluginPath();
+    if(!cdn_script.isEmpty()) {
+      QStringList args;
+      args.push_back(RDFeed::publicUrl(feed->baseUrl(""),feed->keyName()));
+      RunCdnScript(cdn_script,args);
+    }
+  }
+
   return ret;
 }
 
 
-void Xport::PostRss()
+void Xport::PostRss()  // Post feed XML to the remote archive
 {
   int feed_id=0;
   QString keyname;
@@ -492,7 +650,7 @@ void Xport::PostRss()
 }
 
 
-void Xport::RemoveRss()
+void Xport::RemoveRss()  // Delete feed XML from the remote archive
 {
   int feed_id=0;
   RDFeed *feed=NULL;
@@ -546,7 +704,7 @@ void Xport::RemoveRss()
 }
 
 
-void Xport::PostImage()
+void Xport::PostImage()  // Upload podcast image to the remote archive
 {
   int img_id=0;
   QString keyname;
@@ -622,7 +780,7 @@ void Xport::PostImage()
   //
   curl_easy_setopt(curl,CURLOPT_URL,desturl.toUtf8().constData());
   curl_easy_setopt(curl,CURLOPT_UPLOAD,1);
-  curl_easy_setopt(curl,CURLOPT_READFUNCTION, __PostRss_Readfunction_Callback);
+  curl_easy_setopt(curl,CURLOPT_READFUNCTION, __PostRss_UploadFunction_Callback);
   curl_easy_setopt(curl,CURLOPT_READDATA,this);
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
@@ -662,7 +820,7 @@ void Xport::PostImage()
 }
 
 
-void Xport::RemoveImage()
+void Xport::RemoveImage()  // Remove podcast image from the remote archive
 {
   int img_id=0;
   QString keyname;
@@ -728,3 +886,35 @@ void Xport::RemoveImage()
   Exit(0);
 }
 
+
+void Xport::RunCdnScript(const QString &cmd,const QStringList &args)
+{
+  QStringList f0=cmd.split("/",QString::KeepEmptyParts);
+  f0.removeLast();
+  QProcess *proc=new QProcess(this);
+  QProcessEnvironment env=QProcessEnvironment::systemEnvironment();
+  QString path=env.value("PATH");
+  env.remove("PATH");
+  env.insert("PATH",f0.join("/")+":"+path);
+  proc->setEnvironment(env.toStringList());
+
+  proc->start(cmd,args);
+  proc->waitForFinished();
+  if(proc->exitStatus()!=QProcess::NormalExit) {
+    rda->syslog(LOG_WARNING,"cdn script \"%s\" crashed",
+		(cmd+" "+args.join(" ")).toUtf8().constData());
+  }
+  else {
+    if(proc->exitCode()!=0) {
+      rda->syslog(LOG_WARNING,"cdn script \"%s\" returned exit code %d [%s]",
+		  (cmd+" "+args.join(" ")).toUtf8().constData(),
+		  proc->exitCode(),
+		  proc->readAllStandardError().constData());
+    }
+    else {
+      rda->syslog(LOG_DEBUG,"ran cdn script \"%s\"",
+		  (cmd+" "+args.join(" ")).toUtf8().constData());
+    }
+  }
+  delete proc;
+}

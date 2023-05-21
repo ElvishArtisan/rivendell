@@ -9,6 +9,9 @@ Major Changes Between v3.x and v4.x:
    Qt Toolkit. Rivendell v4.x uses and is fully compatibile with major
    version 5 of Qt (Qt5). See the INSTALL documents for specifics.
 
+   Display Requirements. A graphical display capable of at least 1400x900
+   pixels resolution is required (1920x1080 or higher recommended).
+
    Date/Time Customizability. Date/Time presentation formats can now be
    customized on the basis of site preferences.
 

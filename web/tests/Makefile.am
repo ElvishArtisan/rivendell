@@ -2,7 +2,7 @@
 ##
 ## Automake.am for rivendell/web/tests
 ##
-##   (C) Copyright 2010-2020 Fred Gleason <fredg@paravelsystems.com>
+##   (C) Copyright 2010-2023 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -32,6 +32,7 @@ install-exec-am:
 	cp delete_audio.html $(DESTDIR)@libexecdir@
 	cp deletelog.html $(DESTDIR)@libexecdir@
 	cp deletepodcast.html $(DESTDIR)@libexecdir@
+	cp downloadrss.html $(DESTDIR)@libexecdir@
 	cp editcart.html $(DESTDIR)@libexecdir@
 	cp editcut.js $(DESTDIR)@libexecdir@
 	cp editcut.html $(DESTDIR)@libexecdir@
@@ -81,6 +82,7 @@ uninstall-local:
 	rm -f $(DESTDIR)@libexecdir@/delete_audio.html
 	rm -f $(DESTDIR)@libexecdir@/deletelog.html
 	rm -f $(DESTDIR)@libexecdir@/deletepodcast.html
+	rm -f $(DESTDIR)@libexecdir@/downloadrss.html
 	rm -f $(DESTDIR)@libexecdir@/editcart.html
 	rm -f $(DESTDIR)@libexecdir@/editcart.js
 	rm -f $(DESTDIR)@libexecdir@/editcut.html
@@ -130,6 +132,7 @@ EXTRA_DIST = addcart.html\
              delete_audio.html\
              deletelog.html\
              deletepodcast.html\
+             downloadrss.html\
              editcart.html\
              editcart.js\
              editcut.html\

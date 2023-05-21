@@ -80,6 +80,17 @@ QString RDXmlField(const QString &tag,const int value,const QString &attrs)
 }
 
 
+QString RDXmlField(const QString &tag,const int64_t value,const QString &attrs)
+{
+  QString str="";
+
+  if(!attrs.isEmpty()) {
+    str=" "+attrs;
+  }
+  return QString("<")+tag+str+">"+QString::asprintf("%ld",value)+"</"+tag+">\n";
+}
+
+
 QString RDXmlField(const QString &tag,const unsigned value,const QString &attrs)
 {
   QString str="";

@@ -23,6 +23,7 @@
 
 #include <qstring.h>
 
+QString RDSha1HashData(const QByteArray &data);
 QString RDSha1HashFile(const QString &filename,bool throttle=false);
 QString RDSha1HashPassword(const QString &secret);
 bool RDSha1HashCheckPassword(const QString &secret,const QString &hash);

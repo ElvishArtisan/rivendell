@@ -27,7 +27,31 @@
 RDPodcastListModel::RDPodcastListModel(unsigned feed_id,QObject *parent)
   : QAbstractTableModel(parent)
 {
-  d_feed_id=feed_id;
+  QString sql=QString("select ")+
+    "`IS_SUPERFEED` "+  // 00
+    "from `FEEDS` where "+
+    QString::asprintf("`ID`=%u",feed_id);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    if(q->value(0).toString()=="Y") {
+      sql=QString("select ")+
+	"`MEMBER_FEED_ID` "+  // 00
+	"from `SUPERFEED_MAPS` where "+
+	QString::asprintf("`FEED_ID`=%u ",feed_id);
+      RDSqlQuery *q1=new RDSqlQuery(sql);
+      while(q1->next()) {
+	d_feed_ids.push_back(q1->value(0).toUInt());
+      }
+      delete q1;
+    }
+    else {
+      d_feed_ids.push_back(feed_id);
+    }
+  }
+  else {
+    d_feed_ids.push_back(feed_id);
+  }
+  
   d_font_metrics=NULL;
   d_bold_font_metrics=NULL;
   d_sort_column=0;
@@ -304,7 +328,8 @@ void RDPodcastListModel::processNotification(RDNotification *notify)
     case RDNotification::AddAction:
       cast_id=notify->id().toUInt();
       cast=new RDPodcast(rda->config(),cast_id);
-      if(cast->feedId()==d_feed_id) {
+      //      if(cast->feedId()==d_feed_id) {
+      if(d_feed_ids.contains(cast->feedId())) {
 	addCast(cast_id);
       }
       delete cast;
@@ -333,9 +358,13 @@ void RDPodcastListModel::updateModel()
 
   RDSqlQuery *q=NULL;
   QString sql=sqlFields()+
-    "where "+
-    QString::asprintf("`PODCASTS`.`FEED_ID`=%u ",d_feed_id)+
-    d_filter_sql+
+    "where ";
+  //  sql+=QString::asprintf("`PODCASTS`.`FEED_ID`=%u ",d_feed_ids.at(0));
+  for(int i=0;i<d_feed_ids.size();i++) {
+    sql+=(QString::asprintf("`PODCASTS`.`FEED_ID`=%u || ",d_feed_ids.at(i)));
+  }
+  sql=sql.left(sql.length()-3);
+  sql+=d_filter_sql+
     " order by "+d_column_fields.at(d_sort_column)+" ";
   if(d_sort_order==Qt::DescendingOrder) {
     sql+="desc ";
@@ -419,32 +448,28 @@ void RDPodcastListModel::updateRow(int row,RDSqlQuery *q)
     if(q->value(3).toDateTime()<=QDateTime::currentDateTime()) {
       d_status_pixmaps[row]=
 	rda->iconEngine()->listIcon(RDIconEngine::GreenBall);
-    //      icons.push_back(rda->iconEngine()->listIcon(RDIconEngine::GreenBall));
     }
     else {
       d_status_pixmaps[row]=rda->iconEngine()->listIcon(RDIconEngine::BlueBall);
-      //      icons.push_back(rda->iconEngine()->listIcon(RDIconEngine::BlueBall));
     }
     break;
 
 
   case RDPodcast::StatusPending:
     d_status_pixmaps[row]=rda->iconEngine()->listIcon(RDIconEngine::RedBall);
-    //    icons.push_back(rda->iconEngine()->listIcon(RDIconEngine::RedBall));
     break;
 
   case RDPodcast::StatusExpired:
     d_status_pixmaps[row]=rda->iconEngine()->listIcon(RDIconEngine::WhiteBall);
-    //    icons.push_back(rda->iconEngine()->listIcon(RDIconEngine::WhiteBall));
   }
 
   // Start
-  texts.push_back(q->value(3).toDateTime().toString("MM/dd/yyyy hh:mm:ss"));
+  texts.push_back(rda->shortDateTimeString(q->value(3).toDateTime(),false));
   icons.push_back(QVariant());
 
   // Expiration
   if(q->value(4).toDateTime().isValid()) {
-    texts.push_back(q->value(4).toDateTime().toString("MM/dd/yyyy hh:mm:ss"));
+    texts.push_back(rda->shortDateTimeString(q->value(4).toDateTime(),false));
   }
   else {
     texts.push_back(tr("Never"));
@@ -466,12 +491,12 @@ void RDPodcastListModel::updateRow(int row,RDSqlQuery *q)
   // Posted By
   if(q->value(9).isNull()) {
     texts.push_back(tr("unknown")+" "+tr("at")+" "+
-		    q->value(11).toDateTime().toString("MM/dd/yyyy hh:mm:ss"));
+		    rda->shortDateTimeString(q->value(11).toDateTime()));
     }
   else {
     texts.push_back(q->value(9).toString()+" "+tr("on")+" "+
 		    q->value(10).toString()+" "+tr("at")+" "+
-		    q->value(11).toDateTime().toString("MM/dd/yyyy hh:mm:ss"));
+		    rda->shortDateTimeString(q->value(11).toDateTime()));
   }
   icons.push_back(QVariant());
 

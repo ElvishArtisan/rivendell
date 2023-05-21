@@ -53,6 +53,8 @@ docs/apis/*.html
 docs/apis/*.pdf
 docs/dtds/direct.html
 docs/dtds/direct.pdf
+docs/dtds/rivendell.html
+docs/dtds/rivendell.pdf
 docs/dtds/superfeed.html
 docs/dtds/superfeed.pdf
 docs/manpages/*.html

@@ -225,6 +225,7 @@ SOURCES += rdwavescene.cpp
 SOURCES += rdwavewidget.cpp
 SOURCES += rdweb.cpp
 SOURCES += rdwidget.cpp
+SOURCES += rdxsltengine.cpp
 
 HEADERS += rd.h
 HEADERS += rdadd_cart.h
@@ -417,6 +418,7 @@ HEADERS += rdwavescene.h
 HEADERS += rdwavewidget.h
 HEADERS += rdweb.h
 HEADERS += rdwidget.h
+HEADERS += rdxsltengine.h
 
 TRANSLATIONS += librd_cs.ts
 TRANSLATIONS += librd_de.ts
