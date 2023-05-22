@@ -599,7 +599,17 @@ void EditClock::UpdateClock(int line)
   p->setBrush(Qt::black);
   p->setFont(*edit_title_font);
 
-  if(line>=0) {
+  if(line<0) {
+    //
+    // Pie Circle
+    //
+    p->translate(map->width()/2,map->height()/2);
+    p->rotate(-90.0);
+    int size_x=map->width()-2*PIE_X_MARGIN;
+    int size_y=map->height()-2*PIE_X_MARGIN;
+    p->drawArc(-size_x/2,-size_y/2,size_x,size_y,0,5760);     
+  }
+  else {
     //
     // Title
     //

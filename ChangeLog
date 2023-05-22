@@ -24149,3 +24149,6 @@
 	* Added a 'rivendell' service for firewalld(1).
 2023-05-22 Fred Gleason <fredg@paravelsystems.com>
 	* Removed 'conf/firewalld.sh'.
+2023-05-22 Fred Gleason <fredg@paravelsystems.com>
+	* Restored blank circle to the clock display when no clock event is
+	selected in the 'Edit Clock' dialog in rdlogmanager(1).
