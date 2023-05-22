@@ -24147,3 +24147,5 @@
 	resizeable.
 2023-05-21 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'rivendell' service for firewalld(1).
+2023-05-22 Fred Gleason <fredg@paravelsystems.com>
+	* Removed 'conf/firewalld.sh'.

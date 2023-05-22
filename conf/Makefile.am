@@ -25,16 +25,13 @@ install-exec-am:
 	cp @RIVENDELL_PAM_FILE@ $(DESTDIR)/etc/pam.d/rivendell
 	mkdir -p $(DESTDIR)/usr/lib/firewalld/services
 	cp rivendell-firewalld.xml $(DESTDIR)/usr/lib/firewalld/services/rivendell.xml
-	./firewalld.sh reload
 
 uninstall:	
 	rm -f $(DESTDIR)/$(sysconfdir)/rd-bin.conf
 	rm -f $(DESTDIR)/etc/pam.d/rivendell
 	rm -f $(DESTDIR)/usr/lib/firewalld/services/rivendell.xml
-	./firewalld.sh reload
 
 EXTRA_DIST = asound.conf-sample\
-             firewalld.sh\
              logrotate-sample\
              rd-bin.conf.in\
              rd.conf-sample\
