@@ -57,6 +57,7 @@ dist_rdlogmanager_SOURCES = add_clock.cpp add_clock.h\
                             generate_log.cpp generate_log.h\
                             importcartsmodel.cpp importcartsmodel.h\
                             importcartsview.cpp importcartsview.h\
+                            importcartswidget.cpp importcartswidget.h\
                             librarytableview.cpp librarytableview.h\
                             list_clocks.cpp list_clocks.h\
                             list_events.cpp list_events.h\
@@ -89,6 +90,7 @@ nodist_rdlogmanager_SOURCES = moc_add_clock.cpp\
                               moc_generate_log.cpp\
                               moc_importcartsmodel.cpp\
                               moc_importcartsview.cpp\
+                              moc_importcartswidget.cpp\
                               moc_librarytableview.cpp\
                               moc_list_clocks.cpp\
                               moc_list_events.cpp\

@@ -29,8 +29,6 @@ EventWidget::EventWidget(QWidget *parent)
   : RDWidget(parent)
 {
   event_event=NULL;
-  event_preimport_model=NULL;
-  event_postimport_model=NULL;
 
   // *******************************
   // Pre-Position Log Section
@@ -165,31 +163,12 @@ EventWidget::EventWidget(QWidget *parent)
   // *******************************
   event_stack_group=new QGroupBox(tr("CART STACK"),this);
   event_stack_group->setFont(labelFont());
-  //
-  // Pre-Import Carts Section
-  //
-  event_preimport_carts_label=new QLabel(tr("PRE-IMPORT CARTS"),this);
-  event_preimport_carts_label->setFont(labelFont());
 
-  //
-  // Pre-Import Carts List
-  //
-  event_preimport_length_edit=new QLineEdit(this);
-  event_preimport_length_edit->setReadOnly(true);
-  event_preimport_length_label=new QLabel(tr("Len:"),this);
-  event_preimport_length_label->setFont(labelFont());
-  event_preimport_length_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
-
-  event_preimport_view=new ImportCartsView(this);
-  event_preimport_view->setDragEnabled(true);
-
-  event_preimport_up_button=new RDTransportButton(RDTransportButton::Up,this);
-  connect(event_preimport_up_button,SIGNAL(clicked()),
-	  this,SLOT(preimportUpData()));
-  event_preimport_down_button=
-    new RDTransportButton(RDTransportButton::Down,this);
-  connect(event_preimport_down_button,SIGNAL(clicked()),
-	  this,SLOT(preimportDownData()));
+  // *******************************
+  // Pre-Import Events Section
+  // *******************************
+  event_preimport_widget=
+    new ImportCartsWidget(ImportCartsModel::PreImport,this);
 
   //
   // Imports
@@ -314,33 +293,11 @@ EventWidget::EventWidget(QWidget *parent)
   event_nestevent_box=new QComboBox(this);
   event_nestevent_box->insertItem(0,tr("[none]"));
 
-  //
+  // *******************************
   // Post-Import Carts Section
-  //
-  event_postimport_carts_label=new QLabel(tr("POST-IMPORT CARTS"),this);
-  event_postimport_carts_label->setFont(labelFont());
-  
-  //
-  // Post-Import Carts List
-  //
-  event_postimport_length_edit=new QLineEdit(this);
-  event_postimport_length_edit->setReadOnly(true);
-  event_postimport_length_label=new QLabel(tr("Len:"),this);
-  event_postimport_length_label->setFont(labelFont());
-  event_postimport_length_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
-
-  event_postimport_view=new ImportCartsView(this);
-  event_postimport_view->setDragEnabled(true);
-
-  event_postimport_up_button=
-    new RDTransportButton(RDTransportButton::Up,this);
-  connect(event_postimport_up_button,SIGNAL(clicked()),
-	  this,SLOT(postimportUpData()));
-  event_postimport_down_button=
-    new RDTransportButton(RDTransportButton::Down,this);
-  connect(event_postimport_down_button,SIGNAL(clicked()),
-	  this,SLOT(postimportDownData()));
-  
+  // *******************************
+  event_postimport_widget=new ImportCartsWidget(ImportCartsModel::PostImport,
+						this);
 }
 
 
@@ -402,8 +359,8 @@ QString EventWidget::properties() const
 
 void EventWidget::rename(const QString &str)
 {
-  event_preimport_model->setEventName(str);
-  event_postimport_model->setEventName(str);
+  event_preimport_widget->setEventName(str);
+  event_postimport_widget->setEventName(str);
 }
 
 
@@ -465,44 +422,10 @@ void EventWidget::load(RDEvent *evt)
   delete q;
 
   //
-  // Pre-Import Carts
+  // Import Events
   //
-  if(event_preimport_model!=NULL) {
-    delete event_preimport_model;
-  }
-  event_preimport_model=
-    new ImportCartsModel(evt->name(),ImportCartsModel::PreImport,true,this);
-  event_preimport_model->setFont(font());
-  event_preimport_model->setPalette(palette());
-  event_preimport_view->setModel(event_preimport_model);
-  connect(event_preimport_model,SIGNAL(modelReset()),
-	  event_preimport_view,SLOT(resizeColumnsToContents()));
-  connect(event_preimport_view,SIGNAL(cartDropped(int,RDLogLine *)),
-	  event_preimport_model,SLOT(processCartDrop(int,RDLogLine *)));
-  connect(event_preimport_model,SIGNAL(totalLengthChanged(int)),
-	  this,SLOT(preimportLengthChangedData(int)));
-  event_preimport_view->resizeColumnsToContents();
-  preimportLengthChangedData(event_preimport_model->totalLength());
-
-  //
-  // Post-Import Carts
-  //
-  if(event_postimport_model!=NULL) {
-    delete event_postimport_model;
-  }
-  event_postimport_model=
-    new ImportCartsModel(evt->name(),ImportCartsModel::PostImport,false,this);
-  event_postimport_model->setFont(font());
-  event_postimport_model->setPalette(palette());
-  event_postimport_view->setModel(event_postimport_model);
-  connect(event_postimport_model,SIGNAL(modelReset()),
-	  event_postimport_view,SLOT(resizeColumnsToContents()));
-  connect(event_postimport_view,SIGNAL(cartDropped(int,RDLogLine *)),
-	  event_postimport_model,SLOT(processCartDrop(int,RDLogLine *)));
-  connect(event_postimport_model,SIGNAL(totalLengthChanged(int)),
-	  this,SLOT(postimportLengthChangedData(int)));
-  event_postimport_view->resizeColumnsToContents();
-  postimportLengthChangedData(event_postimport_model->totalLength());
+  event_preimport_widget->load(event_event);
+  event_postimport_widget->load(event_event);
 
   pos=event_event->preposition();
   if(pos<0) {
@@ -710,9 +633,10 @@ void EventWidget::save(RDEvent *evt) const
     event_event->setHaveCode2("");
   }
 
-  event_preimport_model->
-    save((RDLogLine::TransType)event_firsttrans_box->currentIndex());
-  event_postimport_model->save();
+  event_preimport_widget->
+    save(event_event,
+	 (RDLogLine::TransType)event_firsttrans_box->currentIndex());
+  event_postimport_widget->save(event_event);
 }
 
 
@@ -861,70 +785,6 @@ void EventWidget::importClickedData(int id)
 }
 
 
-void EventWidget::preimportLengthChangedData(int msecs)
-{
-  event_preimport_length_edit->setText(RDGetTimeLength(msecs,true,false));
-}
-
-
-void EventWidget::preimportUpData()
-{
-  QModelIndexList rows=event_preimport_view->selectionModel()->selectedRows();
-
-  if(rows.size()!=1) {
-    return;
-  }
-  if(event_preimport_model->moveUp(rows.first())) {
-    event_preimport_view->selectRow(rows.first().row()-1);
-  }
-}
-
-
-void EventWidget::preimportDownData()
-{
-  QModelIndexList rows=event_preimport_view->selectionModel()->selectedRows();
-
-  if(rows.size()!=1) {
-    return;
-  }
-  if(event_preimport_model->moveDown(rows.first())) {
-    event_preimport_view->selectRow(rows.first().row()+1);
-  }
-}
-
-
-void EventWidget::postimportUpData()
-{
-  QModelIndexList rows=event_postimport_view->selectionModel()->selectedRows();
-
-  if(rows.size()!=1) {
-    return;
-  }
-  if(event_postimport_model->moveUp(rows.first())) {
-    event_postimport_view->selectRow(rows.first().row()-1);
-  }
-}
-
-
-void EventWidget::postimportDownData()
-{
-  QModelIndexList rows=event_postimport_view->selectionModel()->selectedRows();
-
-  if(rows.size()!=1) {
-    return;
-  }
-  if(event_postimport_model->moveDown(rows.first())) {
-    event_postimport_view->selectRow(rows.first().row()+1);
-  }
-}
-
-
-void EventWidget::postimportLengthChangedData(int msecs)
-{
-  event_postimport_length_edit->setText(RDGetTimeLength(msecs,true,false));
-}
-
-
 void EventWidget::artistData()
 {
   event_artist_sep_spinbox->setValue(-1);
@@ -1024,98 +884,96 @@ void EventWidget::resizeEvent(QResizeEvent *e)
   // Cart Stack Section
   //
   event_stack_group->
-    setGeometry(0,235,sizeHint().width()-15,408);
+    setGeometry(0,235,sizeHint().width()-15,size().height()-235);
 
   //
   // Pre-Import Carts Section
   //
-  event_preimport_carts_label->setGeometry(5,255,200,16);
-  event_preimport_length_edit->setGeometry(sizeHint().width()-150,253,80,20);
-  event_preimport_length_label->setGeometry(sizeHint().width()-340,255,185,16);
-  event_preimport_view->setGeometry(5,272,
-				    sizeHint().width()-75,115);
-  event_preimport_up_button->setGeometry(sizeHint().width()-60,277,40,40);
-  event_preimport_down_button->setGeometry(sizeHint().width()-60,342,40,40);
+  int events_h=(size().height()-235-106)/2;
+
+  event_preimport_widget->
+    setGeometry(0,250,event_preimport_widget->sizeHint().width(),events_h);
 
   //
   // Imports Section
   //
-  event_imports_label->setGeometry(5,392,200,16);
-  event_source_none_radio->setGeometry(70,392,15,15);
-  event_source_traffic_radio->setGeometry(150,392,15,15);
-  event_source_music_radio->setGeometry(270,392,15,15);
-  event_source_scheduler_radio->setGeometry(390,392,15,15);
-  event_source_group_none_label->setGeometry(90,392,150,15);
-  event_source_group_traffic_label->setGeometry(170,392,150,15);
-  event_source_group_music_label->setGeometry(290,392,150,15);
-  event_source_group_scheduler_label->setGeometry(410,392,150,15);
+  int import_y=250+events_h-15;
+
+  event_imports_label->setGeometry(5,import_y+3,200,16);
+  event_source_none_radio->setGeometry(70,import_y+3,15,15);
+  event_source_traffic_radio->setGeometry(150,import_y+3,15,15);
+  event_source_music_radio->setGeometry(270,import_y+3,15,15);
+  event_source_scheduler_radio->setGeometry(390,import_y+3,15,15);
+  event_source_group_none_label->setGeometry(90,import_y+3,150,15);
+  event_source_group_traffic_label->setGeometry(170,import_y+3,150,15);
+  event_source_group_music_label->setGeometry(290,import_y+3,150,15);
+  event_source_group_scheduler_label->setGeometry(410,import_y+3,150,15);
 
   //
   // Scheduler Group
   //
-  event_sched_group_box->setGeometry(500,389,100,20);
+  event_sched_group_box->setGeometry(500,import_y,100,20);
 
   //
   // Artist Separation
   //
-  event_artist_sep_label->setGeometry(400,412,100,20);
-  event_artist_sep_spinbox->setGeometry(505,413,53,20);
-  event_artist_none_button->setGeometry(565,413,40,20);
+  event_artist_sep_label->setGeometry(400,import_y+23,100,20);
+  event_artist_sep_spinbox->setGeometry(505,import_y+24,53,20);
+  event_artist_none_button->setGeometry(565,import_y+24,40,20);
 
   //
   // Title Separation
   //
-  event_title_sep_label->setGeometry(400,434,100,20);
-  event_title_sep_spinbox->setGeometry(505,434,53,20);
-  event_title_none_button->setGeometry(565,434,40,20);
+  event_title_sep_label->setGeometry(400,import_y+45,100,20);
+  event_title_sep_spinbox->setGeometry(505,import_y+45,53,20);
+  event_title_none_button->setGeometry(565,import_y+45,40,20);
 
   //
   // Must Have Code
   //
-  event_have_code_label->setGeometry(400,457,100,20);
-  event_have_code_box->setGeometry(505,457,100,20);
+  event_have_code_label->setGeometry(400,import_y+68,100,20);
+  event_have_code_box->setGeometry(505,import_y+68,100,20);
 
   //
   // And Code
   //
-  event_have_code2_label->setGeometry(400,478,100,20);
-  event_have_code2_box->setGeometry(505,478,100,20);
+  event_have_code2_label->setGeometry(400,import_y+89,100,20);
+  event_have_code2_box->setGeometry(505,import_y+89,100,20);
 
   // Start Slop
   //
-  event_startslop_label->setGeometry(20,413,140,22);
-  event_startslop_edit->setGeometry(156,413,60,22);
-  event_startslop_unit->setGeometry(220,413,sizeHint().width()-450,22);
+  event_startslop_label->setGeometry(20,import_y+24,140,22);
+  event_startslop_edit->setGeometry(156,import_y+24,60,22);
+  event_startslop_unit->setGeometry(220,import_y+24,sizeHint().width()-450,22);
 
   //
   // End Slop
   //
-  event_endslop_label->setGeometry(20,434,140,22);
-  event_endslop_edit->setGeometry(156,434,60,22);
-  event_endslop_unit->setGeometry(220,434,sizeHint().width()-460,22);
+  event_endslop_label->setGeometry(20,import_y+45,140,22);
+  event_endslop_edit->setGeometry(156,import_y+45,60,22);
+  event_endslop_unit->setGeometry(220,import_y+45,sizeHint().width()-460,22);
 
   //
   // Nested Event
   //
-  event_nestevent_label->setGeometry(25,459,190,20);
-  event_nestevent_box->setGeometry(20,478,365,20);
+  event_nestevent_label->setGeometry(25,import_y+70,190,20);
+  event_nestevent_box->setGeometry(20,import_y+89,365,20);
 
   //
   // Post-Import Carts Section
   //
-  event_postimport_carts_label->setGeometry(5,510,200,16);
-  event_postimport_length_edit->setGeometry(sizeHint().width()-150,506,80,20);
-  event_postimport_length_label->setGeometry(sizeHint().width()-340,508,185,16);
-  event_postimport_view->setGeometry(5,525,sizeHint().width()-75,125-10);
-  event_postimport_up_button->setGeometry(sizeHint().width()-60,532,40,40);
-  event_postimport_down_button->setGeometry(sizeHint().width()-60,592,40,40);
+  event_postimport_widget->
+    setGeometry(0,import_y+106+20,event_postimport_widget->sizeHint().width(),
+		events_h);
 }
 
 
 void EventWidget::paintEvent(QPaintEvent *e)
 {
+  int y=85+size().height()/2;
+
   QPainter *p=new QPainter(this);
   p->setPen(Qt::black);
-  p->drawLine(408,408,408,493);
+  p->drawLine(396,y,396,y+84);
   p->end();
 }

@@ -24155,3 +24155,6 @@
 2023-05-22 Fred Gleason <fredg@paravelsystems.com>
 	* Adjusted layout positions of elements in the 'Edit Event' dialog
 	in rdlogmanager(1).
+2023-05-22 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the right-side of the 'Edit Event' dialog in
+	rdlogmanager(1) to be fully resizeable.

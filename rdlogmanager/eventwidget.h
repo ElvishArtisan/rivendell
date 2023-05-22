@@ -41,6 +41,7 @@
 
 #include "importcartsmodel.h"
 #include "importcartsview.h"
+#include "importcartswidget.h"
 #include "librarytableview.h"
 
 //
@@ -69,12 +70,6 @@ class EventWidget : public RDWidget
   void autofillToggledData(bool);
   void autofillWarnToggledData(bool);
   void importClickedData(int);
-  void preimportLengthChangedData(int msecs);
-  void preimportUpData();
-  void preimportDownData();
-  void postimportUpData();
-  void postimportDownData();
-  void postimportLengthChangedData(int msecs);
   void artistData();
   void titleData();
 
@@ -122,13 +117,8 @@ class EventWidget : public RDWidget
   QLabel *event_timescale_label;
   QCheckBox *event_timescale_box;
   QGroupBox *event_stack_group;
-  QLabel *event_preimport_carts_label;
-  ImportCartsView *event_preimport_view;
-  ImportCartsModel *event_preimport_model;
-  QLabel *event_preimport_length_label;
-  QLineEdit *event_preimport_length_edit;
-  RDTransportButton *event_preimport_up_button;
-  RDTransportButton *event_preimport_down_button;
+  ImportCartsWidget *event_preimport_widget;
+  ImportCartsWidget *event_postimport_widget;
   QRadioButton *event_source_none_radio;
   QRadioButton *event_source_traffic_radio;
   QRadioButton *event_source_music_radio;
@@ -154,13 +144,6 @@ class EventWidget : public RDWidget
   QLabel *event_defaulttrans_unit;
   QLabel *event_nestevent_label;
   QComboBox *event_nestevent_box;
-  QLabel *event_postimport_carts_label;
-  ImportCartsView *event_postimport_view;
-  ImportCartsModel *event_postimport_model;
-  QLabel *event_postimport_length_label;
-  QLineEdit *event_postimport_length_edit;
-  RDTransportButton *event_postimport_up_button;
-  RDTransportButton *event_postimport_down_button;
 };
 
 

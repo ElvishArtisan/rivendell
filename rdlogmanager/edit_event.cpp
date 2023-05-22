@@ -463,14 +463,13 @@ void EditEvent::resizeEvent(QResizeEvent *e)
   event_remarks_edit->setGeometry(10,h/2+150,x_divide-20,h-(h/2+160));
   event_widget->setGeometry(10+x_divide,0,
 			    event_widget->sizeHint().width(),
-			    event_widget->sizeHint().height());
+			    h-70);
 
   event_save_button->setGeometry(w-610,h-60,80,50);
   event_saveas_button->setGeometry(w-520,h-60,80,50);
 
   event_services_list_button->setGeometry(w-395,h-60,80,50);
-  event_color_button->
-    setGeometry(w-305,h-60,80,50);
+  event_color_button->setGeometry(w-305,h-60,80,50);
 
   event_ok_button->setGeometry(w-180,h-60,80,50);
   event_cancel_button->setGeometry(w-90,h-60,80,50);
