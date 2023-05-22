@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the BroadcastTools ACS 8.2
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -65,11 +65,9 @@ BtAcs82::BtAcs82(RDMatrix *matrix,QObject *parent)
   // Interval OneShots
   //
   bt_gpi_oneshot=new RDOneShot(this);
-  connect(bt_gpi_oneshot,SIGNAL(timeout(void *)),
-	  this,SLOT(gpiOneshotData(int)));
+  connect(bt_gpi_oneshot,SIGNAL(timeout(int)),this,SLOT(gpiOneshotData(int)));
   bt_gpo_oneshot=new RDOneShot(this);
-  connect(bt_gpo_oneshot,SIGNAL(timeout(void *)),
-	  this,SLOT(gpoOneshotData(int)));
+  connect(bt_gpo_oneshot,SIGNAL(timeout(int)),this,SLOT(gpoOneshotData(int)));
 }
 
 

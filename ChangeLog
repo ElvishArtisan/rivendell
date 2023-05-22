@@ -24160,3 +24160,5 @@
 	rdlogmanager(1) to be fully resizeable.
 2023-05-22 Fred Gleason <fredg@paravelsystems.com>
 	* Updated screenshot for rdlogmanager(1) in the Operations Guide.
+2023-05-22 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the BroadcastTools ACS8.2 driver in ripcd(8).
