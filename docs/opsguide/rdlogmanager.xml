@@ -158,7 +158,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdlogmanager.log_clock_list.png" width="97mm" depth="69mm" />
+	    <imagedata align="center" fileref="rdlogmanager.log_clock_list.png" width="97mm" />
 	  </imageobject>
 	  <caption><para>The Log Clock List Dialog</para></caption>
 	</mediaobject>
@@ -166,7 +166,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdlogmanager.edit_clock_dialog.png" width="145mm" depth="104mm" />
+	    <imagedata align="center" fileref="rdlogmanager.edit_clock_dialog.png" width="145mm" />
 	  </imageobject>
 	  <caption><para>The Edit Clock Dialog</para></caption>
 	</mediaobject>
@@ -283,7 +283,7 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="rdlogmanager.editing_event.png" width="145mm" depth="114mm" />
+	  <imagedata align="center" fileref="rdlogmanager.editing_event.png" width="145mm" />
 	</imageobject>
 	<caption><para>The Editing Event Dialog</para></caption>
       </mediaobject>
