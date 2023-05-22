@@ -24152,3 +24152,6 @@
 2023-05-22 Fred Gleason <fredg@paravelsystems.com>
 	* Restored blank circle to the clock display when no clock event is
 	selected in the 'Edit Clock' dialog in rdlogmanager(1).
+2023-05-22 Fred Gleason <fredg@paravelsystems.com>
+	* Adjusted layout positions of elements in the 'Edit Event' dialog
+	in rdlogmanager(1).

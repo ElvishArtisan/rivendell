@@ -460,8 +460,8 @@ void EditEvent::resizeEvent(QResizeEvent *e)
     event_player->stopButton()->setGeometry(x_divide-90,h/2+90,80,50);
   }
   event_remarks_label->setGeometry(15,h/2+135,100,15);
-  event_remarks_edit->setGeometry(10,h/2+150,x_divide-20,h-(h/2+180));
-  event_widget->setGeometry(30+x_divide,0,
+  event_remarks_edit->setGeometry(10,h/2+150,x_divide-20,h-(h/2+160));
+  event_widget->setGeometry(10+x_divide,0,
 			    event_widget->sizeHint().width(),
 			    event_widget->sizeHint().height());
 
