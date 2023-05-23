@@ -24162,3 +24162,7 @@
 	* Updated screenshot for rdlogmanager(1) in the Operations Guide.
 2023-05-22 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in the BroadcastTools ACS8.2 driver in ripcd(8).
+2023-05-23 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented the 'Heartbeat' ['HB'] protocol command in ripcd(8).
+	* Added support for the 'Heartbeat' ['HB'] RIPC protocol command
+	to 'RDRipc'.

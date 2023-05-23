@@ -481,7 +481,7 @@
       Return current GPI mask states.
     </para>
     <para>
-      <userinput>GM <replaceable>matrix</replaceable>!</userinput>
+      <userinput>GI <replaceable>matrix</replaceable>!</userinput>
     </para>
     <para>
       Request the list of current GPI mask states for
@@ -521,6 +521,24 @@
 	</listitem>
       </varlistentry>
     </variablelist>
+  </sect2>
+
+  <sect2 xml:id="privileged_commands.heartbeat">
+    <title>Heartbeat</title>
+    <para>
+      Verify the TCP network connection.
+    </para>
+    <para>
+      <userinput>HB!</userinput>
+    </para>
+    <para>
+      Request a heartbeat response from the
+      <command>ripcd</command><manvolnum>8</manvolnum>.
+    </para>
+    <para>
+      <command>ripcd</command><manvolnum>8</manvolnum> will respond with
+      <computeroutput>HB!</computeroutput>.
+    </para>
   </sect2>
 
   <sect2 xml:id="privileged_commands.get_gpo_mask_states">

@@ -34,6 +34,7 @@
 #define RIPC_MAX_ARGS 100
 #define RIPC_MAX_LENGTH 256
 #define RIPC_START_DELAY 2000
+#define RIPC_HEARTBEAT_POLL_INTERVAL 10000
 
 class RDRipc : public QObject
 {
@@ -59,7 +60,6 @@ class RDRipc : public QObject
   void sendCatchEvent(RDCatchEvent *evt);
   void sendOnairFlag();
   void sendRml(RDMacro *macro);
-  void reloadHeartbeat();
   
  signals:
   void connected(bool state);
@@ -77,6 +77,9 @@ class RDRipc : public QObject
   
  private slots:
   void connectedData();
+  void disconnectedData();
+  void sendHeartbeatData();
+  void watchdogRetryData();
   void errorData(QAbstractSocket::SocketError err);
   void readyData();
 
@@ -85,6 +88,8 @@ class RDRipc : public QObject
   void DispatchCommand();
   QTcpSocket *ripc_socket;
   QString ripc_user;
+  QString ripc_hostname;
+  uint16_t ripc_hostport;
   QString ripc_password;
   RDStation *ripc_station;
   RDConfig *ripc_config;
@@ -93,6 +98,9 @@ class RDRipc : public QObject
   bool debug;
   QString ripc_accum;
   bool ripc_connected;
+  QTimer *ripc_heartbeat_timer;
+  QTimer *ripc_watchdog_timer;
+  bool ripc_watchdog_pending;
 };
 
 

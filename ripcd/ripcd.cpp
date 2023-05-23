@@ -522,6 +522,10 @@ bool MainObject::DispatchCommand(RipcdConnection *conn)
     EchoCommand(conn->id(),cmds.join(" ")+"-!");
     return true;
   }
+  if(cmds[0]=="HB") {  // Heartbeat
+    EchoCommand(conn->id(),"HB!");
+  }
+
   if(cmds[0]=="RU") {  // Request User
     EchoCommand(conn->id(),(QString("RU ")+rda->station()->userName()+"!").
 		toUtf8());

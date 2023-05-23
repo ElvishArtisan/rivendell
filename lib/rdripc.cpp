@@ -29,21 +29,26 @@ RDRipc::RDRipc(RDStation *station,RDConfig *config,QObject *parent)
 {
   ripc_station=station;
   ripc_config=config;
+  ripc_socket=NULL;
   ripc_onair_flag=false;
   ripc_ignore_mask=false;
   ripc_accum="";
+  ripc_watchdog_pending=false;
   debug=false;
 
   ripc_connected=false;
 
   //
-  // TCP Connection
+  // Watchdog Timers
   //
-  ripc_socket=new QTcpSocket(this);
-  connect(ripc_socket,SIGNAL(connected()),this,SLOT(connectedData()));
-  connect(ripc_socket,SIGNAL(error(QAbstractSocket::SocketError)),
-	  this,SLOT(errorData(QAbstractSocket::SocketError)));
-  connect(ripc_socket,SIGNAL(readyRead()),this,SLOT(readyData()));
+  ripc_watchdog_timer=new QTimer(this);
+  ripc_watchdog_timer->setSingleShot(true);
+  connect(ripc_watchdog_timer,SIGNAL(timeout()),this,SLOT(watchdogRetryData()));
+
+  ripc_heartbeat_timer=new QTimer(this);
+  ripc_heartbeat_timer->setSingleShot(true);
+  connect(ripc_heartbeat_timer,SIGNAL(timeout()),
+	  this,SLOT(sendHeartbeatData()));
 }
 
 
@@ -85,14 +90,63 @@ void RDRipc::setIgnoreMask(bool state)
 
 void RDRipc::connectHost(QString hostname,uint16_t hostport,QString password)
 {
+  ripc_hostname=hostname;
+  ripc_hostport=hostport;
   ripc_password=password;
+
+  //
+  // TCP Connection
+  //
+  ripc_heartbeat_timer->stop();
+  if(ripc_socket!=NULL) {
+    ripc_socket->deleteLater();
+  }
+  ripc_socket=new QTcpSocket(this);
+  connect(ripc_socket,SIGNAL(connected()),this,SLOT(connectedData()));
+  connect(ripc_socket,SIGNAL(error(QAbstractSocket::SocketError)),
+	  this,SLOT(errorData(QAbstractSocket::SocketError)));
+  connect(ripc_socket,SIGNAL(readyRead()),this,SLOT(readyData()));
+
   ripc_socket->connectToHost(hostname,hostport);
+  ripc_heartbeat_timer->start(RIPC_HEARTBEAT_POLL_INTERVAL);
 }
 
 
 void RDRipc::connectedData()
 {
   SendCommand(QString("PW ")+ripc_password+"!");
+  if(ripc_watchdog_pending) {
+    rda->syslog(LOG_WARNING,"connection to ripcd(8) restored");
+    ripc_watchdog_pending=false;
+  }
+}
+
+
+void RDRipc::disconnectedData()
+{
+  ripc_heartbeat_timer->stop();
+  ripc_watchdog_timer->stop();
+  ripc_watchdog_timer->start(RIPC_HEARTBEAT_POLL_INTERVAL);
+}
+
+
+void RDRipc::sendHeartbeatData()
+{
+  ripc_watchdog_timer->stop();
+  SendCommand("HB!");
+  ripc_watchdog_timer->start(RIPC_HEARTBEAT_POLL_INTERVAL);
+}
+
+
+void RDRipc::watchdogRetryData()
+{
+  if(!ripc_watchdog_pending) {
+    rda->syslog(LOG_WARNING,
+		"connection to ripcd(8) timed out, attempting reconnect");
+  }
+  ripc_watchdog_pending=true;
+  connectHost(ripc_hostname,ripc_hostport,ripc_password);
+  ripc_watchdog_timer->start(RIPC_HEARTBEAT_POLL_INTERVAL);
 }
 
 
@@ -201,12 +255,6 @@ void RDRipc::sendRml(RDMacro *macro)
 }
 
 
-void RDRipc::reloadHeartbeat()
-{
-  SendCommand("RH!");
-}
-
-
 void RDRipc::errorData(QAbstractSocket::SocketError err)
 {
   rda->syslog(LOG_DEBUG,"received socket error %d",err);
@@ -269,6 +317,14 @@ void RDRipc::DispatchCommand()
       }
       emit userChanged();
     }
+  }
+
+  if(cmds[0]=="HB") {  // Heartbeat
+    if(cmds.size()!=1) {
+      return;
+    }
+    ripc_watchdog_timer->stop();
+    ripc_heartbeat_timer->start(RIPC_HEARTBEAT_POLL_INTERVAL);
   }
 
   if(cmds[0]=="MS") {  // Macro Sent
