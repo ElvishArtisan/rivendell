@@ -24168,3 +24168,6 @@
 	to 'RDRipc'.
 2023-05-23 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression that broke the 'make rpm' rule.
+2023-05-23 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for firewalld to the 'rivendell' DEB package.
+	* Added CDN scripts to the 'rivendell' DEB package.

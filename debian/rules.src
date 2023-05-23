@@ -156,6 +156,11 @@ binary:
 	cp docs/misc/RDMONITOR.txt debian/rivendell/usr/share/doc/rivendell/misc/
 	cp docs/misc/scheduler_formats.ods debian/rivendell/usr/share/doc/rivendell/misc/
 	cp docs/misc/ando_interface.odt debian/rivendell/usr/share/doc/rivendell/misc/
+	mkdir -p debian/rivendell/usr/lib/firewalld/services
+	cp conf/rivendell-firewalld.xml debian/rivendell/usr/lib/firewalld/services/rivendell.xml
+	mkdir -p debian/rivendell/usr/lib/rivendell/cdn
+	cp apis/cdn/scripts/aka_purge.sh debian/rivendell/usr/lib/rivendell/cdn/aka_purge.sh
+	cp apis/cdn/scripts/akamai_purge.cdn debian/rivendell/usr/lib/rivendell/cdn/akamai_purge.cdn
 
 
 	dh_strip_nondeterminism
