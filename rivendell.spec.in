@@ -481,7 +481,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/librd.a
 %{_libdir}/librd.la
 %{_libdir}/librd.so
-%{_libdir}/rivendell/pypad/*
 %{_libdir}/python@PYTHON_VERSION@/site-packages/rivendellaudio/*
 %{_sbindir}/rdservice
 %{_sbindir}/caed
@@ -505,7 +504,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/rivendell/html/*
 %{_datadir}/rivendell/apis
 %{_datadir}/rivendell/manpages
+/usr/lib/rivendell/pypad/*
 /usr/lib/firewalld/services/rivendell.xml
+/usr/lib/rivendell/cdn/aka_purge.sh
+/usr/lib/rivendell/cdn/akamai_purge.cdn
 
 
 %files webapi

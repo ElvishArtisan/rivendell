@@ -24166,3 +24166,5 @@
 	* Implemented the 'Heartbeat' ['HB'] protocol command in ripcd(8).
 	* Added support for the 'Heartbeat' ['HB'] RIPC protocol command
 	to 'RDRipc'.
+2023-05-23 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression that broke the 'make rpm' rule.
