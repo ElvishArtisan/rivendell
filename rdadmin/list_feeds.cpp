@@ -24,6 +24,7 @@
 
 #include <QApplication>
 #include <QMessageBox>
+#include <QProgressDialog>
 
 #include <rdapplication.h>
 #include <rddb.h>
@@ -60,6 +61,7 @@ ListFeeds::ListFeeds(QWidget *parent)
   list_edit_button=new QPushButton(this);
   list_edit_button->setFont(buttonFont());
   list_edit_button->setText(tr("Edit"));
+  list_edit_button->setDisabled(true);
   connect(list_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
 
   //
@@ -68,6 +70,7 @@ ListFeeds::ListFeeds(QWidget *parent)
   list_delete_button=new QPushButton(this);
   list_delete_button->setFont(buttonFont());
   list_delete_button->setText(tr("Delete"));
+  list_delete_button->setDisabled(true);
   connect(list_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
 
   //
@@ -76,6 +79,7 @@ ListFeeds::ListFeeds(QWidget *parent)
   list_repost_button=new QPushButton(this);
   list_repost_button->setFont(buttonFont());
   list_repost_button->setText(tr("Repost"));
+  list_repost_button->setDisabled(true);
   connect(list_repost_button,SIGNAL(clicked()),this,SLOT(repostData()));
 
   //
@@ -84,6 +88,7 @@ ListFeeds::ListFeeds(QWidget *parent)
   list_unpost_button=new QPushButton(this);
   list_unpost_button->setFont(buttonFont());
   list_unpost_button->setText(tr("Unpost"));
+  list_unpost_button->setDisabled(true);
   connect(list_unpost_button,SIGNAL(clicked()),this,SLOT(unpostData()));
 
   //
@@ -109,6 +114,10 @@ ListFeeds::ListFeeds(QWidget *parent)
   connect(list_feeds_model,SIGNAL(modelReset()),this,SLOT(resetModelData()));
   connect(list_feeds_view,SIGNAL(doubleClicked(const QModelIndex &)),
   	  this,SLOT(doubleClickedData(const QModelIndex &)));
+  connect(list_feeds_view->selectionModel(),
+	SIGNAL(selectionChanged(const QItemSelection &,const QItemSelection &)),
+	this,
+	SLOT(feedSelectionChangedData(const QItemSelection &,const QItemSelection &)));
   resetModelData();
 }
 
@@ -282,11 +291,22 @@ void ListFeeds::doubleClickedData(const QModelIndex &index)
 }
 
 
+void ListFeeds::feedSelectionChangedData(const QItemSelection &selected,
+					 const QItemSelection &unselected)
+{
+  QModelIndexList rows=list_feeds_view->selectionModel()->selectedRows();
+
+  list_edit_button->setEnabled(rows.size()==1);
+  list_delete_button->setEnabled(rows.size()==1);
+  list_repost_button->setEnabled(rows.size()==1);
+  list_unpost_button->setEnabled(rows.size()==1);
+}
+
+
 void ListFeeds::repostData()
 {
   QString err_msg;
   QString sql;
-  RDSqlQuery *q=NULL;
   RDFeed *feed=NULL;
   int count;
   QModelIndexList rows=list_feeds_view->selectionModel()->selectedRows();
@@ -305,43 +325,49 @@ void ListFeeds::repostData()
      QMessageBox::Yes) {
     return;
   }
-
   feed=new RDFeed(keyname,rda->config(),this);
-  QProgressDialog *pd=new QProgressDialog(this);
-  pd->setCancelButton(NULL);
 
   //
-  // Post Images
+  // Generate Queries
   //
   sql=QString("select ")+
     "`ID` "+              // 00
     "from `FEED_IMAGES` where "+
     QString::asprintf("`FEED_ID`=%u",feed->id());
-  q=new RDSqlQuery(sql);
-  pd->setLabelText(tr("Posting images..."));
-  pd->setRange(0,q->size());
-  count=0;
-  pd->setValue(0);
-  while(q->next()) {
-    feed->postImage(q->value(0).toUInt());
-    pd->setValue(++count);
-  }
-  delete q;
+  RDSqlQuery *image_q=new RDSqlQuery(sql);
 
-  //
-  // Post Item Data
-  //
   sql=QString("select ")+
     "`ID` "+        // 00
     "from `PODCASTS` where "+
     QString::asprintf("`FEED_ID`=%u",feed->id());
-  q=new RDSqlQuery(sql);
-  pd->setLabelText(tr("Posting item data..."));
-  pd->setRange(0,q->size());
+  RDSqlQuery *item_q=new RDSqlQuery(sql);
+
+  //
+  // Progress Dialog
+  //
+  QProgressDialog *pd=new QProgressDialog(this);
+  pd->setWindowTitle("RDAdmin");
+  pd->setLabelText(tr("Reposting feed")+" "+feed->keyName()+".");
+  pd->setCancelButton(NULL);
+  pd->setMinimumDuration(0);
+  pd->setWindowModality(Qt::WindowModal);
+  pd->setRange(0,image_q->size()+item_q->size());
   count=0;
-  pd->setValue(0);
-  while(q->next()) {
-    if(!feed->postPodcast(q->value(0).toUInt(),&err_msg)) {
+  pd->setValue(count);
+
+  //
+  // Post Images
+  //
+  while(image_q->next()) {
+    feed->postImage(image_q->value(0).toUInt());
+    pd->setValue(++count);
+  }
+
+  //
+  // Post Item Data
+  //
+  while(item_q->next()) {
+    if(!feed->postPodcast(item_q->value(0).toUInt(),&err_msg)) {
       QMessageBox::warning(this,"RDAdmin - "+tr("Error"),
 			   tr("Error posting audio to feed")+" \""+
 			   feed->keyName()+"\"\n"+
@@ -349,22 +375,21 @@ void ListFeeds::repostData()
     }
     pd->setValue(++count);
   }
-  delete q;
 
   //
   // Post RSS XML
   //
-  pd->setLabelText(tr("Posting RSS XML data..."));
-  pd->setRange(0,1);
-  pd->setValue(0);
+  feed->setSha1Hash("");  // So we force a new upload
   if(!feed->postXml(&err_msg)) {
-    pd->setValue(1);
+    pd->setValue(++count);
     QMessageBox::warning(this,"RDAdmin - "+tr("Error"),
 			 tr("Error posting updated XML to feed")+" \""+
 			 feed->keyName()+"\"\n"+
 			 "["+err_msg+"].");
   }
 
+  delete image_q;
+  delete item_q;
   delete pd;
 }
 
@@ -372,7 +397,6 @@ void ListFeeds::repostData()
 void ListFeeds::unpostData()
 {
   QString sql;
-  RDSqlQuery *q=NULL;
   RDFeed *feed=NULL;
   int count;
   QModelIndexList rows=list_feeds_view->selectionModel()->selectedRows();
@@ -393,57 +417,61 @@ void ListFeeds::unpostData()
   }
 
   feed=new RDFeed(keyname,rda->config(),this);
-  QProgressDialog *pd=new QProgressDialog(this);
-  pd->setCancelButton(NULL);
 
   //
-  // Remove RSS XML
-  //
-  pd->setLabelText(tr("Unposting RSS XML data..."));
-  pd->setRange(0,1);
-  pd->setValue(0);
-  feed->removeRss();
-  pd->setValue(1);
-
-  //
-  // Remove Item Data
+  // Generate Queries
   //
   sql=QString("select ")+
     "`ID` "+              // 00
     "from `PODCASTS` where "+
     QString::asprintf("`FEED_ID`=%u",feed->id());
-  q=new RDSqlQuery(sql);
-  pd->setLabelText(tr("Unposting item data..."));
-  pd->setRange(0,q->size());
-  count=0;
-  pd->setValue(0);
-  while(q->next()) {
-    RDPodcast *cast=new RDPodcast(rda->config(),q->value(0).toUInt());
-    cast->removePodcast();
-    delete cast;
-    pd->setValue(++count);
+  RDSqlQuery *item_q=new RDSqlQuery(sql);
 
-  }
-  delete q;
-
-  //
-  // Remove Images
-  //
   sql=QString("select ")+
     "`ID` "+              // 00
     "from `FEED_IMAGES` where "+
     QString::asprintf("`FEED_ID`=%u",feed->id());
-  q=new RDSqlQuery(sql);
-  pd->setLabelText(tr("Unposting images..."));
-  pd->setRange(0,q->size());
+  RDSqlQuery *image_q=new RDSqlQuery(sql);
+
+  //
+  // Progress Dialog
+  //
+  QProgressDialog *pd=new QProgressDialog(this);
+  pd->setWindowTitle("RDAdmin");
+  pd->setLabelText(tr("Unposting feed")+" "+feed->keyName()+".");
+  pd->setCancelButton(NULL);
+  pd->setMinimumDuration(0);
+  pd->setWindowModality(Qt::WindowModal);
+  pd->setRange(0,image_q->size()+item_q->size());
   count=0;
-  pd->setValue(0);
-  while(q->next()) {
-    feed->removeImage(q->value(0).toUInt());
+  pd->setValue(count);
+
+  //
+  // Remove RSS XML
+  //
+  feed->removeRss();
+  pd->setValue(++count);
+
+  //
+  // Remove Item Data
+  //
+  while(item_q->next()) {
+    RDPodcast *cast=new RDPodcast(rda->config(),item_q->value(0).toUInt());
+    cast->removePodcast();
+    delete cast;
     pd->setValue(++count);
   }
-  delete q;
 
+  //
+  // Remove Images
+  //
+  while(image_q->next()) {
+    feed->removeImage(image_q->value(0).toUInt());
+    pd->setValue(++count);
+  }
+
+  delete item_q;
+  delete image_q;
   delete pd;
 }
 

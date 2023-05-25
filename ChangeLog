@@ -24180,3 +24180,6 @@
 2023-05-25 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in caed(8) that caused spurious 'sent unrecognized
 	command "ME"' messages to be sent to the syslog.
+2023-05-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression that caused the 'Repost' action in the 'List
+	Feeds' dialog to fail to post the feed XML in rdadmin(1).

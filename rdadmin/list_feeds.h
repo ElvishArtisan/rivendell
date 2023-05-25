@@ -43,6 +43,8 @@ class ListFeeds : public RDDialog
   void editData();
   void deleteData();
   void doubleClickedData(const QModelIndex &index);
+  void feedSelectionChangedData(const QItemSelection &selected,
+				const QItemSelection &unselected);
   void repostData();
   void unpostData();
   void closeData();

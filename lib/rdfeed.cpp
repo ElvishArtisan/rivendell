@@ -1059,7 +1059,7 @@ bool RDFeed::postXml(QString *err_msg)
     ProcessCurlLogging("RDFeed::postPodcast()",err_msgs);
     return false;
   }
-  delete err_msgs;
+  ProcessCurlLogging("RDFeed::postXml()",err_msgs);
 
   return true;
 }
