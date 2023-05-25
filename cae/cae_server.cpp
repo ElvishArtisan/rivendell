@@ -2,7 +2,7 @@
 //
 // Network server for caed(8).
 //
-//   (C) Copyright 2019-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2019-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -580,16 +580,18 @@ bool CaeServer::ProcessCommand(int id,const QString &cmd)
     }
   }
 
-  if((f0.at(0)=="ME")&&(f0.size()>=3)) {  // Meter Enable
-    uint16_t udp_port=0xFFFF&f0.at(1).toUInt(&ok);
-    if(ok) {
-      QList<unsigned> cards;
-      for(int i=2;i<f0.size();i++) {
-	cards.push_back(f0.at(i).toUInt());
+  if(f0.at(0)=="ME") {  // Meter Enable
+    if(f0.size()>2) {  // So we don't warn if no cards are specified
+      uint16_t udp_port=0xFFFF&f0.at(1).toUInt(&ok);
+      if(ok) {
+	QList<unsigned> cards;
+	for(int i=2;i<f0.size();i++) {
+	  cards.push_back(f0.at(i).toUInt());
+	}
+	emit meterEnableReq(id,udp_port,cards);
       }
-      emit meterEnableReq(id,udp_port,cards);
-      was_processed=true;
     }
+    was_processed=true;
   }
 
   if(!was_processed) {  // Send generic error response
