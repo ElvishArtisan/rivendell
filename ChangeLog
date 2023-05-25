@@ -24174,3 +24174,6 @@
 2023-05-25 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the podcasting subsystem that could cause SFTP
 	operations to fail due to unknown SSH host certificates.
+2023-05-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdvairplayd(8) that caused spurious 'sent
+	unrecognized command "TS -1"' messages to be sent to the syslog.

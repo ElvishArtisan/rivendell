@@ -2,7 +2,7 @@
 //
 // Rivendell Log Playout Machine
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -242,7 +242,9 @@ void RDLogPlay::setChannels(int cards[2],int ports[2],QString labels[2],
     play_label[i]=labels[i];
     play_start_rml[i]=start_rml[i];
     play_stop_rml[i]=stop_rml[i];
-    play_cae->requestTimescale(play_card[i]);
+    if(play_card[i]>=0) {
+      play_cae->requestTimescale(play_card[i]);
+    }
   }
 }
 
