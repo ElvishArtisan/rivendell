@@ -24171,3 +24171,6 @@
 2023-05-23 Fred Gleason <fredg@paravelsystems.com>
 	* Added support for firewalld to the 'rivendell' DEB package.
 	* Added CDN scripts to the 'rivendell' DEB package.
+2023-05-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the podcasting subsystem that could cause SFTP
+	operations to fail due to unknown SSH host certificates.

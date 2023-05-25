@@ -2,7 +2,7 @@
 //
 // Delete a file from the audio store via the Rivendell Web Service
 //
-//   (C) Copyright 2010-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -127,12 +127,14 @@ RDDelete::ErrorCode RDDelete::runDelete(const QString &username,
   //
   if((conv_target_url.scheme().toLower()=="sftp")&&
      (!id_filename.isEmpty())&&use_id_filename) {
+    curl_easy_setopt(curl,CURLOPT_SSL_VERIFYHOST,0);  // Don't verify hostkey
     curl_easy_setopt(curl,CURLOPT_USERNAME,username.toUtf8().constData());
     curl_easy_setopt(curl,CURLOPT_SSH_PRIVATE_KEYFILE,
 		     id_filename.toUtf8().constData());
     curl_easy_setopt(curl,CURLOPT_KEYPASSWD,password.toUtf8().constData());
   }
   else {
+    curl_easy_setopt(curl,CURLOPT_SSL_VERIFYHOST,0);  // Don't verify hostkey
     curl_easy_setopt(curl,CURLOPT_USERPWD,
 		     (username+":"+password).toUtf8().constData());
   }

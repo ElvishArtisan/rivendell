@@ -43,19 +43,36 @@
 
 #include "rdxport.h"
 
+// #define ENABLE_EXTENDED_CURL_LOGGING
+
+int __PostRss_Debug_Callback(CURL *handle,curl_infotype type,char *data,
+			     size_t size,void *userptr)
+{
+  QStringList *lines=(QStringList *)userptr;
+
+  if(type==CURLINFO_TEXT) {
+    lines->push_back(QString::fromUtf8(QByteArray(data,size)));
+  }
+
+  return 0;
+}
+
+
 size_t __PostRss_UploadFunction_Callback(char *buffer,size_t size,
 					 size_t nitems,void *userdata)
 {
   Xport *xport=(Xport *)userdata;
 
   int curlsize=size*nitems;
-  int segsize=xport->xport_curl_data.size()-xport->xport_curl_data_ptr;
+  int segsize=
+    xport->xport_curl_upload_data.size()-xport->xport_curl_upload_data_ptr;
   if(segsize<curlsize) {
     curlsize=segsize;
   }
-  memcpy(buffer,xport->xport_curl_data.mid(xport->xport_curl_data_ptr,curlsize).constData(),
+  memcpy(buffer,xport->xport_curl_upload_data.
+	 mid(xport->xport_curl_upload_data_ptr,curlsize).constData(),
 	 curlsize);
-  xport->xport_curl_data_ptr+=curlsize;
+  xport->xport_curl_upload_data_ptr+=curlsize;
   return curlsize;
 }
 
@@ -65,7 +82,7 @@ size_t __PostRss_DownloadFunction_Callback(char *buffer,size_t size,
 {
   Xport *xport=(Xport *)userdata;
 
-  (xport->xport_curl_data)+=QByteArray(buffer,size*nitems);
+  (xport->xport_curl_download_data)+=QByteArray(buffer,size*nitems);
 
   return size*nitems;
 }
@@ -439,7 +456,7 @@ void Xport::DownloadRss()  // Download feed XML from the remote archive
   //
   curl_easy_setopt(curl,CURLOPT_URL,feed->feedUrl().toUtf8().constData());
   curl_easy_setopt(curl,CURLOPT_UPLOAD,0);
-  xport_curl_data.clear();
+  xport_curl_download_data.clear();
   curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,
 		   __PostRss_DownloadFunction_Callback);
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,this);
@@ -472,7 +489,7 @@ void Xport::DownloadRss()  // Download feed XML from the remote archive
 
   printf("Content-type: application/rss+xml; charset: UTF-8\n");
   printf("Status: 200\n\n");
-  printf("%s",xport_curl_data.constData());
+  printf("%s",xport_curl_download_data.constData());
 
   Exit(0);
 }
@@ -497,7 +514,7 @@ bool Xport::PostRssElemental(RDFeed *feed,const QDateTime &now,QString *err_msg)
   // internal Rivendell hashes remain consistent.
   //
   QDateTime epoch(QDate(1970,1,1),QTime(0,0,0));
-  QString new_hash=RDSha1HashData(xport_curl_data=feed->
+  QString new_hash=RDSha1HashData(xport_curl_upload_data=feed->
 				  rssXml(err_msg,epoch,&ok).toUtf8());
   if(feed->sha1Hash()==new_hash) {
     rda->syslog(LOG_DEBUG,
@@ -506,8 +523,8 @@ bool Xport::PostRssElemental(RDFeed *feed,const QDateTime &now,QString *err_msg)
     return true;
   }
 
-  xport_curl_data=feed->rssXml(err_msg,now,&ok).toUtf8();
-  xport_curl_data_ptr=0;
+  xport_curl_upload_data=feed->rssXml(err_msg,now,&ok).toUtf8();
+  xport_curl_upload_data_ptr=0;
 
 
   //
@@ -733,8 +750,8 @@ void Xport::PostImage()  // Upload podcast image to the remote archive
   q=new RDSqlQuery(sql);
   if(q->first()) {
     feed_id=q->value(0).toUInt();
-    xport_curl_data=q->value(1).toByteArray();
-    xport_curl_data_ptr=0;
+    xport_curl_upload_data=q->value(1).toByteArray();
+    xport_curl_upload_data_ptr=0;
     file_ext=q->value(2).toString();
   }
   delete q;
@@ -761,6 +778,10 @@ void Xport::PostImage()  // Upload podcast image to the remote archive
   //
   if((QUrl(feed->feedUrl()).scheme().toLower()=="sftp")&&
      (!rda->station()->sshIdentityFile().isEmpty())&&feed->purgeUseIdFile()) {
+    //
+    // Disable host key verification
+    //
+    curl_easy_setopt(curl,CURLOPT_SSL_VERIFYHOST,0);
     curl_easy_setopt(curl,CURLOPT_USERNAME,
 		     feed->purgeUsername().toUtf8().constData());
     curl_easy_setopt(curl,CURLOPT_SSH_PRIVATE_KEYFILE,
@@ -769,6 +790,10 @@ void Xport::PostImage()  // Upload podcast image to the remote archive
 		     feed->purgePassword().toUtf8().constData());
   }
   else {
+    //
+    // Disable host key verification
+    //
+    curl_easy_setopt(curl,CURLOPT_SSL_VERIFYHOST,0);
     curl_easy_setopt(curl,CURLOPT_USERNAME,
 		     feed->purgeUsername().toUtf8().constData());
     curl_easy_setopt(curl,CURLOPT_PASSWORD,
@@ -778,9 +803,10 @@ void Xport::PostImage()  // Upload podcast image to the remote archive
   //
   // Transfer Parameters
   //
+  QStringList *err_msgs=SetupCurlLogging(curl);
   curl_easy_setopt(curl,CURLOPT_URL,desturl.toUtf8().constData());
   curl_easy_setopt(curl,CURLOPT_UPLOAD,1);
-  curl_easy_setopt(curl,CURLOPT_READFUNCTION, __PostRss_UploadFunction_Callback);
+  curl_easy_setopt(curl,CURLOPT_READFUNCTION,__PostRss_UploadFunction_Callback);
   curl_easy_setopt(curl,CURLOPT_READDATA,this);
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
@@ -803,9 +829,11 @@ void Xport::PostImage()  // Upload podcast image to the remote archive
     ret=false;
     break;
   }
+  ProcessCurlLogging("RDFeed::postImage()",err_msgs);
   curl_easy_cleanup(curl);
 
   if(!ret) {
+    rda->syslog(LOG_NOTICE,"errstr: %s  errnum: %d",errstr,curl_err);
     XmlExit(err_msg,500,"podcasts.cpp",LINE_NUMBER);
   }
 
@@ -917,4 +945,36 @@ void Xport::RunCdnScript(const QString &cmd,const QStringList &args)
     }
   }
   delete proc;
+}
+
+
+QStringList *Xport::SetupCurlLogging(CURL *curl) const
+{
+  QStringList *err_msgs=new QStringList();
+
+#ifdef ENABLE_EXTENDED_CURL_LOGGING
+  curl_easy_setopt(curl,CURLOPT_DEBUGFUNCTION,__PostRss_Debug_Callback);
+  curl_easy_setopt(curl,CURLOPT_DEBUGDATA,err_msgs);
+  curl_easy_setopt(curl,CURLOPT_VERBOSE,1);
+#endif  // ENABLE_EXTENDED_CURL_LOGGING
+
+  return err_msgs;
+}
+
+
+void Xport::ProcessCurlLogging(const QString &label,
+                               QStringList *err_msgs) const
+{
+#ifdef ENABLE_EXTENDED_CURL_LOGGING
+  if(err_msgs->size()>0) {
+    rda->syslog(LOG_ERR,"*** %s: extended CURL information begins ***",
+               label.toUtf8().constData());
+    for(int i=0;i<err_msgs->size();i++) {
+      rda->syslog(LOG_ERR,"[%d]: %s",i,err_msgs->at(i).toUtf8().constData());
+    }
+    rda->syslog(LOG_ERR,"*** %s: extended CURL information ends ***",
+               label.toUtf8().constData());
+  }
+#endif  // ENABLE_EXTENDED_CURL_LOGGING
+  delete err_msgs;
 }

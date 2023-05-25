@@ -110,13 +110,17 @@ class Xport : public QObject
   RDFormPost *xport_post;
   QString xport_remote_hostname;
   QHostAddress xport_remote_address;
-  QByteArray xport_curl_data;
-  int xport_curl_data_ptr;
+  //  QByteArray xport_curl_data;
+  QByteArray xport_curl_upload_data;
+  QByteArray xport_curl_download_data;
+  int xport_curl_upload_data_ptr;
   friend size_t __PostRss_UploadFunction_Callback(char *buffer,size_t size,
 						  size_t nitems,void *userdata);
   friend size_t __PostRss_DownloadFunction_Callback(char *buffer,size_t size,
 						    size_t nitems,
 						    void *userdata);
+  QStringList *SetupCurlLogging(CURL *curl) const;
+  void ProcessCurlLogging(const QString &label,QStringList *err_msgs) const;
 };
 
 

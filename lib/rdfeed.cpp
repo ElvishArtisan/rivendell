@@ -46,6 +46,8 @@
 #include "rdxport_interface.h"
 #include "rdxsltengine.h"
 
+// #define ENABLE_EXTENDED_CURL_LOGGING
+
 int __RDFeed_Debug_Callback(CURL *handle,curl_infotype type,char *data,
                            size_t size,void *userptr)
 {
@@ -942,10 +944,8 @@ bool RDFeed::postPodcast(unsigned cast_id,QString *err_msg)
       *err_msg=tr("Unspecified error");
     }
     delete wr;
-    delete err_msgs;
     return false;
   }
-  delete err_msgs;
 
   return true;
 }
@@ -2553,9 +2553,11 @@ QStringList *RDFeed::SetupCurlLogging(CURL *curl) const
 {
   QStringList *err_msgs=new QStringList();
 
+#ifdef ENABLE_EXTENDED_CURL_LOGGING
   curl_easy_setopt(curl,CURLOPT_DEBUGFUNCTION,__RDFeed_Debug_Callback);
   curl_easy_setopt(curl,CURLOPT_DEBUGDATA,err_msgs);
   curl_easy_setopt(curl,CURLOPT_VERBOSE,1);
+#endif  // ENABLE_EXTENDED_CURL_LOGGING
 
   return err_msgs;
 }
@@ -2564,6 +2566,7 @@ QStringList *RDFeed::SetupCurlLogging(CURL *curl) const
 void RDFeed::ProcessCurlLogging(const QString &label,
                                QStringList *err_msgs) const
 {
+#ifdef ENABLE_EXTENDED_CURL_LOGGING
   if(err_msgs->size()>0) {
     rda->syslog(LOG_ERR,"*** %s: extended CURL information begins ***",
                label.toUtf8().constData());
@@ -2573,6 +2576,7 @@ void RDFeed::ProcessCurlLogging(const QString &label,
     rda->syslog(LOG_ERR,"*** %s: extended CURL information ends ***",
                label.toUtf8().constData());
   }
+#endif  // ENABLE_EXTENDED_CURL_LOGGING
   delete err_msgs;
 }
 
