@@ -24183,3 +24183,5 @@
 2023-05-25 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression that caused the 'Repost' action in the 'List
 	Feeds' dialog to fail to post the feed XML in rdadmin(1).
+2023-05-26 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.0.0rc3int0.
