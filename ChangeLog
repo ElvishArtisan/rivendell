@@ -24188,3 +24188,5 @@
 2023-05-30 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdairplay(1) that could cause random delays when
 	starting audio events in logs.
+2023-05-30 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed uninitiated variables in rdairplay(1).

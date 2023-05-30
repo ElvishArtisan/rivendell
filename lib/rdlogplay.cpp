@@ -90,6 +90,9 @@ RDLogPlay::RDLogPlay(int id,RDEventPlayer *player,bool enable_cue,QObject *paren
     play_card[i]=0;
     play_port[i]=0;
   }
+  for(int i=0;i<RD_MAX_CARDS;i++) {
+    play_timescaling_supported[i]=false;
+  }
 
   //
   // Play Decks
@@ -132,6 +135,7 @@ RDLogPlay::RDLogPlay(int id,RDEventPlayer *player,bool enable_cue,QObject *paren
   // Audition Player
   //
   play_audition_line=-1;
+  play_audition_head_played=false;
   if(enable_cue&&(rda->station()->cueCard()>=0)&&
      (rda->station()->cuePort()>=0)) {
     play_audition_player=
