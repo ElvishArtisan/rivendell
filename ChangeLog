@@ -24185,3 +24185,6 @@
 	Feeds' dialog to fail to post the feed XML in rdadmin(1).
 2023-05-26 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.0.0rc3int0.
+2023-05-30 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdairplay(1) that could cause random delays when
+	starting audio events in logs.

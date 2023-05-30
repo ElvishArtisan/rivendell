@@ -63,6 +63,7 @@ RDLogPlay::RDLogPlay(int id,RDEventPlayer *player,bool enable_cue,QObject *paren
   play_rescan_pos=0;
   play_refreshable=false;
   play_audition_preroll=rda->airplayConf()->auditionPreroll();
+  play_line_counter=0;
   play_slot_quantity=1;
   for(int i=0;i<LOGPLAY_MAX_PLAYS;i++) {
     play_slot_id[i]=i;
