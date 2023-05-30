@@ -24190,3 +24190,5 @@
 	starting audio events in logs.
 2023-05-30 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed uninitiated variables in rdairplay(1).
+2023-05-30 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.0.0rc3int1.
