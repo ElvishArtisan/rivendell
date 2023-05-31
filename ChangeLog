@@ -24196,3 +24196,5 @@
 	* Fixed a regression in 'RDFormPost' that caused the last character
 	of the last variable in the post to be truncated when using
 	'application/x-www-form-urlencoded' encoding.
+2023-05-31 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.0.0rc3int2.
