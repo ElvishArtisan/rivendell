@@ -414,6 +414,50 @@ QString RDFormPost::headerContentType() const
 }
 
 
+QByteArray RDFormPost::rawPost() const
+{
+  return QByteArray(post_data,post_bytes_downloaded);
+}
+
+
+QString RDFormPost::parsedPost() const
+{
+  QString ret="";
+
+  ret+="<table cellpadding=\"5\" cellspacing=\"0\" border=\"1\">\n";
+  ret+="<tr>\n";
+  ret+="<td colspan=\"3\" align=\"center\"><strong>RDFormPost Data Dump</strong></td>\n";
+  ret+="</tr>\n";
+
+  ret+="<tr>\n";
+  ret+="<th align=\"center\">NAME</th>\n";
+  ret+="<th align=\"center\">VALUE</th>\n";
+  ret+="<th align=\"center\">FILE</th>\n";
+  ret+="</tr>\n";
+
+  for(QMap<QString,QVariant>::const_iterator ci=post_values.begin();
+      ci!=post_values.end();ci++) {
+    ret+="<tr>\n";
+
+    ret+=QString::asprintf("<td align=\"left\">|%s|</td>\n",ci.key().toUtf8().constData());
+    ret+=QString::asprintf("<td align=\"left\">|%s|</td>\n",
+			   ci.value().toString().toUtf8().constData());
+
+    if(post_filenames[ci.key()]) {
+      ret+="<td align=\"center\">Yes</td>\n";
+    }
+    else {
+      ret+="<td align=\"center\">No</td>\n";
+    }
+    ret+="</tr>\n";
+  }
+
+  ret+="</table>\n";
+
+  return ret;
+}
+
+
 void RDFormPost::dump()
 {
   printf("Content-type: text/html\n\n");
@@ -576,7 +620,7 @@ void RDFormPost::LoadUrlEncoding(char first)
     total_read+=n;
   }
 
-  post_data[total_read]=0;
+  post_data[total_read+1]=0;
   lines=QString(post_data).split("&");
 
   for(int i=0;i<lines.size();i++) {

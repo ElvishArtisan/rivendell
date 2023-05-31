@@ -58,6 +58,8 @@ class RDFormPost
   QString tempDir() const;
   unsigned headerContentLength() const;
   QString headerContentType() const;
+  QByteArray rawPost() const;
+  QString parsedPost() const;
   void dump();
   void dumpRawPost();
   static QString errorString(RDFormPost::Error err);
