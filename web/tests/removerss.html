@@ -1,33 +1,80 @@
 <html>
-<head>
-<title>Rivendell REMOVERSS Service Test Harness</title>
-<body>
-<form action="/rd-bin/rdxport.cgi" method="post" enctype="multipart/form-data">
-<input type="hidden" name="COMMAND" value="43">
-<table cellpadding="0" cellspacing="2" border="0">
-<tr>
-<td align="right">LOGIN NAME:</td>
-<td><input type="text" name="LOGIN_NAME" size="20" maxlength="255"></td>
-</tr>
-<tr>
-<td align="right">PASSWORD:</td>
-<td><input type="password" name="PASSWORD" size="20" maxlength="32"></td>
-</tr>
-<tr>
-<td align="right">TICKET:</td>
-<td><input type="text" name="TICKET" size="40" maxlength="40"></td>
-</tr>
-<tr>
-<td align="right">ID:</td>
-<td><input type="text" name="ID" size="12" maxlength="12"></td>
-</tr>
-<tr>
-<td colspan="2" align="right">&nbsp;</td>
-</tr>
-<tr>
-<td colspan="2" align="right"><input type="submit" value="OK"></td>
-</tr>
-</table>
-</form>
-</body>
+  <head>
+    <link rel="stylesheet" href="styles.html">
+    <title>Rivendell REMOVERSS Service Test Harness</title>
+  </head>
+  <body bgcolor="darkgray">
+    <!-- TITLE -->
+    <table class="title-rounded-block">
+      <tr>
+	<td class="center-aligned">Rivendell REMOVERSS Service Test Harness</td>
+      </tr>
+    </table>
+
+    <!-- URL Encoding -->
+    <table class="active-rounded-block">
+      <tr class="subtitle">
+	<td colspan="3">Via application/x-www-form-urlencoded Encoding</td>
+      </tr>
+      <tr><td colspan="2">&nbsp;</td></tr>
+      <form action="/rd-bin/rdxport.cgi" method="post" enctype="application/x-www-form-urlencoded">
+	<input type="hidden" name="COMMAND" value="43">
+	<tr>
+	  <td class="field-label">LOGIN NAME:</td>
+	  <td><input type="text" name="LOGIN_NAME" size="20" maxlength="255"></td>
+	</tr>
+	<tr>
+	  <td class="field-label">PASSWORD:</td>
+	  <td><input type="password" name="PASSWORD" size="20" maxlength="32"></td>
+	</tr>
+	<tr>
+	  <td class="field-label">TICKET:</td>
+	  <td><input type="text" name="TICKET" size="40" maxlength="40"></td>
+	</tr>
+	<tr>
+	  <td class="field-label">ID:</td>
+	  <td><input type="text" name="ID" size="12" maxlength="12"></td>
+	</tr>
+	<tr>
+	  <td colspan="2" class="field-label">&nbsp;</td>
+	</tr>
+	<tr>
+	  <td colspan="2" class="field-label"><input type="submit" value="OK"></td>
+	</tr>
+      </form>
+    </table>
+
+    <!-- Multipart Encoding -->
+    <table class="active-rounded-block">
+      <tr class="subtitle">
+	<td colspan="3">Via multipart/form-data Encoding</td>
+      </tr>
+      <tr><td colspan="2">&nbsp;</td></tr>
+      <form action="/rd-bin/rdxport.cgi" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="COMMAND" value="43">
+	<tr>
+	  <td class="field-label">LOGIN NAME:</td>
+	  <td><input type="text" name="LOGIN_NAME" size="20" maxlength="255"></td>
+	</tr>
+	<tr>
+	  <td class="field-label">PASSWORD:</td>
+	  <td><input type="password" name="PASSWORD" size="20" maxlength="32"></td>
+	</tr>
+	<tr>
+	  <td class="field-label">TICKET:</td>
+	  <td><input type="text" name="TICKET" size="40" maxlength="40"></td>
+	</tr>
+	<tr>
+	  <td class="field-label">ID:</td>
+	  <td><input type="text" name="ID" size="12" maxlength="12"></td>
+	</tr>
+	<tr>
+	  <td colspan="2" class="field-label">&nbsp;</td>
+	</tr>
+	<tr>
+	  <td colspan="2" class="field-label"><input type="submit" value="OK"></td>
+	</tr>
+      </form>
+    </table>
+  </body>
 </html>

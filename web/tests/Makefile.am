@@ -67,6 +67,7 @@ install-exec-am:
 	cp savelog.html $(DESTDIR)@libexecdir@
 	cp savepodcast.html $(DESTDIR)@libexecdir@
 	cp savestring.html $(DESTDIR)@libexecdir@
+	cp styles.html $(DESTDIR)@libexecdir@
 	cp trimaudio.html $(DESTDIR)@libexecdir@
 	cp unassignschedcode.html $(DESTDIR)@libexecdir@
 
@@ -118,6 +119,7 @@ uninstall-local:
 	rm -f $(DESTDIR)@libexecdir@/savelog.html
 	rm -f $(DESTDIR)@libexecdir@/savepodcast.html
 	rm -f $(DESTDIR)@libexecdir@/savestring.html
+	rm -f $(DESTDIR)@libexecdir@/styles.html
 	rm -f $(DESTDIR)@libexecdir@/trimaudio.html
 	rm -f $(DESTDIR)@libexecdir@/unassignschedcode.html
 
@@ -167,6 +169,7 @@ EXTRA_DIST = addcart.html\
              savelog.html\
              savepodcast.html\
              savestring.html\
+             styles.html\
              trimaudio.html\
              unassignschedcode.html
 

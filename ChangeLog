@@ -24198,3 +24198,7 @@
 	'application/x-www-form-urlencoded' encoding.
 2023-05-31 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.0.0rc3int2.
+2023-06-01 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the WebAPI HTML test harnesses to allow testing via both
+	 'multipart/form-data' and 'application/x-www-form-urlencoded'
+	  encodings.

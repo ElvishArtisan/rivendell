@@ -2,7 +2,7 @@
 //
 // Common java script utility functions.
 //
-//   (C) Copyright 2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2015-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,7 +20,7 @@
 
 function RD_PostForm(form,url)
 {
-    var http=GetXMLHttpRequest();
+    var http=RD_GetXMLHttpRequest();
     if(http==null) {
 	return;
     }

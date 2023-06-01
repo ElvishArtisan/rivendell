@@ -1,167 +1,180 @@
 <html>
-<head>
-<title>Rivendell EDITCART Service Test Harness</title>
-<script type="text/javascript" src="editcart.js"></script>
-<script type="text/javascript" src="utils.js"></script>
-</head>
-<body>
-<form action="/rd-bin/rdxport.cgi" method="post" enctype="multipart/form-data">
-<input type="hidden" name="COMMAND" value="14">
-<table cellpadding="0" cellspacing="2" border="0">
-<tr>
-<td align="right">LOGIN NAME:</td>
-<td><input type="text" name="LOGIN_NAME" id="LOGIN_NAME" size="64" maxlength="255"></td>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-</tr>
-<tr>
-<td align="right">PASSWORD:</td>
-<td><input type="password" name="PASSWORD" id="PASSWORD" size="64" maxlength="32"></td>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-</tr>
-<tr>
-<td align="right">TICKET:</td>
-<td><input type="text" name="TICKET" id="TICKET" size="40" maxlength="40"></td>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-</tr>
-<tr>
-<td align="right">CART NUMBER:</td>
-<td><input type="text" name="CART_NUMBER" id="CART_NUMBER" size="64" maxlength="255"></td>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-</tr>
-<tr>
-<td align="right">INCLUDE CUTS:</td>
-<td><input type="text" name="INCLUDE_CUTS" id="INCLUDE_CUTS" size="2" maxlength="1"></td>
-<td align="right">&nbsp;</td>
-<td align="right">&nbsp;</td>
-</tr>
-<tr>
-<td align="right">&nbsp;</td>
-<td align="right">&nbsp;</td>
-<td align="right">&nbsp;</td>
-<td align="right">&nbsp;</td>
-</tr>
-<tr>
-<td align="right">ASYNCHRONOUS:</td>
-<td><input type="text" name="ASYNCHRONOUS" id="ASYNCHRONOUS" size="2" maxlength="1"></td>
-<td><input type="checkbox" id="USE_ASYNCHRONOUS"></td>
-<td>Modify</td>
-</tr>
-<tr>
-<td align="right">ENFORCE_LENGTH:</td>
-<td><input type="text" name="ENFORCE_LENGTH" id="ENFORCE_LENGTH" size="2" maxlength="1"></td>
-<td><input type="checkbox" id="USE_ENFORCE_LENGTH"></td>
-<td>Modify</td>
-</tr>
-<tr>
-<td align="right">FORCED_LENGTH:</td>
-<td><input type="text" name="FORCEE_LENGTH" id="FORCED_LENGTH" size="7" maxlength="7"></td>
-<td><input type="checkbox" id="USE_FORCED_LENGTH"></td>
-<td>Modify</td>
-</tr>
-<tr>
-<td align="right">GROUP NAME:</td>
-<td><input type="text" name="GROUP_NAME" id="GROUP_NAME" size="64" maxlength="20"></td>
-<td><input type="checkbox" id="USE_GROUP_NAME"></td>
-<td>Modify</td>
-</tr>
-<tr>
-<td align="right">TITLE:</td>
-<td><input type="text" name="TITLE" id="TITLE" size="64" maxlength="255"></td>
-<td><input type="checkbox" id="USE_TITLE"></td>
-<td>Modify</td>
-</tr>
-<tr>
-<td align="right">ARTIST:</td>
-<td><input type="text" name="ARTIST" id="ARTIST" size="64" maxlength="255"></td>
-<td><input type="checkbox" id="USE_ARTIST"></td>
-<td>Modify</td>
-</tr>
-<tr>
-<td align="right">YEAR:</td>
-<td><input type="text" name="YEAR" id="YEAR" size="8" maxlength="4"></td>
-<td><input type="checkbox" id="USE_YEAR"></td>
-<td>Modify</td>
-</tr>
-<tr>
-<td align="right">SONG ID:</td>
-<td><input type="text" name="SONG_ID" id="SONG_ID" size="64" maxlength="32"></td>
-<td><input type="checkbox" id="USE_SONG_ID"></td>
-<td>Modify</td>
-</tr>
-<tr>
-<td align="right">ALBUM:</td>
-<td><input type="text" name="ALBUM" id="ALBUM" size="64" maxlength="255"></td>
-<td><input type="checkbox" id="USE_ALBUM"></td>
-<td>Modify</td>
-</tr>
-<tr>
-<td align="right">LABEL:</td>
-<td><input type="text" name="LABEL" id="LABEL" size="64" maxlength="64"></td>
-<td><input type="checkbox" id="USE_LABEL"></td>
-<td>Modify</td>
-</tr>
-<tr>
-<td align="right">CLIENT:</td>
-<td><input type="text" name="CLIENT" id="CLIENT" size="64" maxlength="64"></td>
-<td><input type="checkbox" id="USE_CLIENT"></td>
-<td>Modify</td>
-</tr>
-<tr>
-<td align="right">AGENCY:</td>
-<td><input type="text" name="AGENCY" id="AGENCY" size="64" maxlength="64"></td>
-<td><input type="checkbox" id="USE_AGENCY"></td>
-<td>Modify</td>
-</tr>
-<tr>
-<td align="right">PUBLISHER:</td>
-<td><input type="text" name="PUBLISHER" id="PUBLISHER" size="64" maxlength="64"></td>
-<td><input type="checkbox" id="USE_PUBLISHER"></td>
-<td>Modify</td>
-</tr>
-<tr>
-<td align="right">COMPOSER:</td>
-<td><input type="text" name="COMPOSER" id="COMPOSER" size="64" maxlength="64"></td>
-<td><input type="checkbox" id="USE_COMPOSER"></td>
-<td>Modify</td>
-</tr>
-<tr>
-<td align="right">CONDUCTOR:</td>
-<td><input type="text" name="CONDUCTOR" id="CONDUCTOR" size="64" maxlength="64"></td>
-<td><input type="checkbox" id="USE_CONDUCTOR"></td>
-<td>Modify</td>
-</tr>
-<tr>
-<td align="right">USER_DEFINED:</td>
-<td><input type="text" name="USER_DEFINED" id="USER_DEFINED" size="64" maxlength="255"></td>
-<td><input type="checkbox" id="USE_USER_DEFINED"></td>
-<td>Modify</td>
-</tr>
-<tr>
-<td align="right">OWNER:</td>
-<td><input type="text" name="OWNER" id="OWNER" size="64" maxlength="64"></td>
-<td><input type="checkbox" id="USE_OWNER"></td>
-<td>Modify</td>
-</tr>
-<tr>
-<td align="right" valign="top">NOTES:</td>
-<td><textarea name="NOTES" id="NOTES" cols="64" rows="4"></textarea></td>
-<td><input type="checkbox" id="USE_NOTES"></td>
-<td>Modify</td>
-</tr>
-<tr>
-<td colspan="4" align="right">&nbsp;</td>
-</tr>
-<tr>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-<td align="left"><input type="button" onclick="EditCart_Submit();" value="OK"></td>
-<td align="right"><input type="button" onclick="EditCart_ShowPost();" value="Show POST"></td>
-</tr>
-</table>
-</form>
-</body>
+  <head>
+    <link rel="stylesheet" href="styles.html">
+    <title>Rivendell EDITCART Service Test Harness</title>
+    <script type="text/javascript" src="editcart.js"></script>
+    <script type="text/javascript" src="utils.js"></script>
+  </head>
+  <body bgcolor="darkgray">
+    <!-- TITLE -->
+    <table class="title-rounded-block">
+      <tr>
+	<td class="center-aligned">Rivendell EDITCART Service Test Harness</td>
+      </tr>
+    </table>
+
+    <!-- Multipart Encoding -->
+    <table class="active-rounded-block">
+      <tr class="subtitle">
+	<td colspan="3">Via multipart/form-data Encoding</td>
+      </tr>
+      <tr><td colspan="2">&nbsp;</td></tr>
+      <form action="/rd-bin/rdxport.cgi" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="COMMAND" value="14">
+	<tr>
+	  <td class="field-label">LOGIN NAME:</td>
+	  <td><input type="text" name="LOGIN_NAME" id="LOGIN_NAME" size="64" maxlength="255"></td>
+	  <td>&nbsp;</td>
+	  <td>&nbsp;</td>
+	</tr>
+	<tr>
+	  <td class="field-label">PASSWORD:</td>
+	  <td><input type="password" name="PASSWORD" id="PASSWORD" size="64" maxlength="32"></td>
+	  <td>&nbsp;</td>
+	  <td>&nbsp;</td>
+	</tr>
+	<tr>
+	  <td class="field-label">TICKET:</td>
+	  <td><input type="text" name="TICKET" id="TICKET" size="40" maxlength="40"></td>
+	  <td>&nbsp;</td>
+	  <td>&nbsp;</td>
+	</tr>
+	<tr>
+	  <td class="field-label">CART NUMBER:</td>
+	  <td><input type="text" name="CART_NUMBER" id="CART_NUMBER" size="64" maxlength="255"></td>
+	  <td>&nbsp;</td>
+	  <td>&nbsp;</td>
+	</tr>
+	<tr>
+	  <td class="field-label">INCLUDE CUTS:</td>
+	  <td><input type="text" name="INCLUDE_CUTS" id="INCLUDE_CUTS" size="2" maxlength="1"></td>
+	  <td class="field-label">&nbsp;</td>
+	  <td class="field-label">&nbsp;</td>
+	</tr>
+	<tr>
+	  <td class="field-label">&nbsp;</td>
+	  <td class="field-label">&nbsp;</td>
+	  <td class="field-label">&nbsp;</td>
+	  <td class="field-label">&nbsp;</td>
+	</tr>
+	<tr>
+	  <td class="field-label">ASYNCHRONOUS:</td>
+	  <td><input type="text" name="ASYNCHRONOUS" id="ASYNCHRONOUS" size="2" maxlength="1"></td>
+	  <td><input type="checkbox" id="USE_ASYNCHRONOUS"></td>
+	  <td>Modify</td>
+	</tr>
+	<tr>
+	  <td class="field-label">ENFORCE_LENGTH:</td>
+	  <td><input type="text" name="ENFORCE_LENGTH" id="ENFORCE_LENGTH" size="2" maxlength="1"></td>
+	  <td><input type="checkbox" id="USE_ENFORCE_LENGTH"></td>
+	  <td>Modify</td>
+	</tr>
+	<tr>
+	  <td class="field-label">FORCED_LENGTH:</td>
+	  <td><input type="text" name="FORCEE_LENGTH" id="FORCED_LENGTH" size="7" maxlength="7"></td>
+	  <td><input type="checkbox" id="USE_FORCED_LENGTH"></td>
+	  <td>Modify</td>
+	</tr>
+	<tr>
+	  <td class="field-label">GROUP NAME:</td>
+	  <td><input type="text" name="GROUP_NAME" id="GROUP_NAME" size="64" maxlength="20"></td>
+	  <td><input type="checkbox" id="USE_GROUP_NAME"></td>
+	  <td>Modify</td>
+	</tr>
+	<tr>
+	  <td class="field-label">TITLE:</td>
+	  <td><input type="text" name="TITLE" id="TITLE" size="64" maxlength="255"></td>
+	  <td><input type="checkbox" id="USE_TITLE"></td>
+	  <td>Modify</td>
+	</tr>
+	<tr>
+	  <td class="field-label">ARTIST:</td>
+	  <td><input type="text" name="ARTIST" id="ARTIST" size="64" maxlength="255"></td>
+	  <td><input type="checkbox" id="USE_ARTIST"></td>
+	  <td>Modify</td>
+	</tr>
+	<tr>
+	  <td class="field-label">YEAR:</td>
+	  <td><input type="text" name="YEAR" id="YEAR" size="8" maxlength="4"></td>
+	  <td><input type="checkbox" id="USE_YEAR"></td>
+	  <td>Modify</td>
+	</tr>
+	<tr>
+	  <td class="field-label">SONG ID:</td>
+	  <td><input type="text" name="SONG_ID" id="SONG_ID" size="64" maxlength="32"></td>
+	  <td><input type="checkbox" id="USE_SONG_ID"></td>
+	  <td>Modify</td>
+	</tr>
+	<tr>
+	  <td class="field-label">ALBUM:</td>
+	  <td><input type="text" name="ALBUM" id="ALBUM" size="64" maxlength="255"></td>
+	  <td><input type="checkbox" id="USE_ALBUM"></td>
+	  <td>Modify</td>
+	</tr>
+	<tr>
+	  <td class="field-label">LABEL:</td>
+	  <td><input type="text" name="LABEL" id="LABEL" size="64" maxlength="64"></td>
+	  <td><input type="checkbox" id="USE_LABEL"></td>
+	  <td>Modify</td>
+	</tr>
+	<tr>
+	  <td class="field-label">CLIENT:</td>
+	  <td><input type="text" name="CLIENT" id="CLIENT" size="64" maxlength="64"></td>
+	  <td><input type="checkbox" id="USE_CLIENT"></td>
+	  <td>Modify</td>
+	</tr>
+	<tr>
+	  <td class="field-label">AGENCY:</td>
+	  <td><input type="text" name="AGENCY" id="AGENCY" size="64" maxlength="64"></td>
+	  <td><input type="checkbox" id="USE_AGENCY"></td>
+	  <td>Modify</td>
+	</tr>
+	<tr>
+	  <td class="field-label">PUBLISHER:</td>
+	  <td><input type="text" name="PUBLISHER" id="PUBLISHER" size="64" maxlength="64"></td>
+	  <td><input type="checkbox" id="USE_PUBLISHER"></td>
+	  <td>Modify</td>
+	</tr>
+	<tr>
+	  <td class="field-label">COMPOSER:</td>
+	  <td><input type="text" name="COMPOSER" id="COMPOSER" size="64" maxlength="64"></td>
+	  <td><input type="checkbox" id="USE_COMPOSER"></td>
+	  <td>Modify</td>
+	</tr>
+	<tr>
+	  <td class="field-label">CONDUCTOR:</td>
+	  <td><input type="text" name="CONDUCTOR" id="CONDUCTOR" size="64" maxlength="64"></td>
+	  <td><input type="checkbox" id="USE_CONDUCTOR"></td>
+	  <td>Modify</td>
+	</tr>
+	<tr>
+	  <td class="field-label">USER_DEFINED:</td>
+	  <td><input type="text" name="USER_DEFINED" id="USER_DEFINED" size="64" maxlength="255"></td>
+	  <td><input type="checkbox" id="USE_USER_DEFINED"></td>
+	  <td>Modify</td>
+	</tr>
+	<tr>
+	  <td class="field-label">OWNER:</td>
+	  <td><input type="text" name="OWNER" id="OWNER" size="64" maxlength="64"></td>
+	  <td><input type="checkbox" id="USE_OWNER"></td>
+	  <td>Modify</td>
+	</tr>
+	<tr>
+	  <td class="field-label">NOTES:</td>
+	  <td><textarea name="NOTES" id="NOTES" cols="64" rows="4"></textarea></td>
+	  <td><input type="checkbox" id="USE_NOTES"></td>
+	  <td>Modify</td>
+	</tr>
+	<tr>
+	  <td colspan="4" class="field-label">&nbsp;</td>
+	</tr>
+	<tr>
+	  <td>&nbsp;</td>
+	  <td>&nbsp;</td>
+	  <td><input type="button" onclick="EditCart_Submit();" value="OK"></td>
+	  <td class="field-label"><input type="button" onclick="EditCart_ShowPost();" value="Show POST"></td>
+	</tr>
+      </form>
+    </table>
+  </body>
 </html>
