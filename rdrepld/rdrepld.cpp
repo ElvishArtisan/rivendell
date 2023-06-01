@@ -71,7 +71,8 @@ MainObject::MainObject(QObject *parent)
   //
   // Open the Database
   //
-  rda=static_cast<RDApplication *>(new RDCoreApplication("rdrepld","rdrepld",RDREPLD_USAGE,this));
+  rda=static_cast<RDApplication *>(new RDCoreApplication("rdrepld","rdrepld",
+						    RDREPLD_USAGE,false,this));
   if(!rda->open(&err_msg,&err_type,false)) {
     fprintf(stderr,"rdrepld: %s\n",err_msg.toUtf8().constData());
     exit(1);

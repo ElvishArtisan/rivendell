@@ -42,7 +42,8 @@ MainObject::MainObject(QObject *parent)
   //
   // Open the Database
   //
-  rda=static_cast<RDApplication *>(new RDApplication("db_charset_test","rdvairplayd",DB_CHARSET_TEST_USAGE,this));
+  rda=static_cast<RDApplication *>(new RDApplication("db_charset_test",
+			     "rdvairplayd",DB_CHARSET_TEST_USAGE,false,this));
   if(!rda->open(&err_msg,NULL,true)) {
     fprintf(stderr,"db_charset_test: %s\n",err_msg.toUtf8().constData());
     exit(1);

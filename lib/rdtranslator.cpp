@@ -26,13 +26,14 @@
 
 RDTranslator *rdt=NULL;
 
-RDTranslator::RDTranslator(const QString &cmdname,QObject *parent)
+RDTranslator::RDTranslator(const QString &cmdname,bool use_translations,
+			   QObject *parent)
   : QObject(parent)
 {
   d_command_name=cmdname;
 
   QString loc=RDApplication::locale().left(2)+".qm";
-  if(loc.left(2)!="en") {  // There are no English translations
+  if(use_translations&&(loc.left(2)!="en")) { // There are no English translations
     LoadTranslation("qt_"+loc,"/usr/share/qt5/translations");
     LoadTranslation("librd_"+loc,"/usr/share/rivendell");
     LoadTranslation("rdhpi_"+loc,"/usr/share/rivendell");

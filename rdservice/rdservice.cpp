@@ -66,7 +66,8 @@ MainObject::MainObject(QObject *parent)
   //
   // Open the Database
   //
-  rda=static_cast<RDApplication *>(new RDCoreApplication("rdservice","rdservice","\n\n",this));
+  rda=static_cast<RDApplication *>(new RDCoreApplication("rdservice","rdservice",
+						      "\n\n",false,this));
   if(!rda->open(&err_msg,&err_type,false)) {
     rda->syslog(LOG_ERR,"unable to open database [%s]",
 		err_msg.toUtf8().constData());

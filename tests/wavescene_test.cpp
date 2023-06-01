@@ -42,7 +42,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Open the database
   //
   rda=new RDApplication("wavescene_test","wavescene_test",WAVESCENE_TEST_USAGE,
-			this);
+			false,this);
   if(!rda->open(&err_msg,NULL,true)) {
     QMessageBox::critical(this,"wavescene_test - "+tr("Error"),err_msg);
     exit(RDApplication::ExitNoDb);

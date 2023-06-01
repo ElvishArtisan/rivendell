@@ -108,7 +108,7 @@ MainObject::MainObject(QObject *parent)
   // Open the Database
   //
   rda=static_cast<RDApplication *>(new RDCoreApplication("rdimport","rdimport",
-							 RDIMPORT_USAGE,this));
+						   RDIMPORT_USAGE,false,this));
   if(!rda->open(&err_msg,NULL,true)) {
     fprintf(stderr,"rdimport: %s\n",err_msg.toUtf8().constData());
     ErrorExit(RDApplication::ExitNoDb);

@@ -82,7 +82,8 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // Open the Database
   //
-  rda=new RDApplication("RDAlsaConfig","rdalsaconfig",RDALSACONFIG_USAGE,this);
+  rda=new RDApplication("RDAlsaConfig","rdalsaconfig",RDALSACONFIG_USAGE,false,
+			this);
   if(!rda->open(&err_msg,NULL,false)) {
     QMessageBox::critical(this,"RDAlsaConfig - "+tr("Error"),err_msg);
     exit(1);
@@ -362,7 +363,8 @@ Autogen::Autogen()
   //
   // Open the Database
   //
-  rda=new RDApplication("RDAlsaConfig","rdalsaconfig",RDALSACONFIG_USAGE,this);
+  rda=new RDApplication("RDAlsaConfig","rdalsaconfig",RDALSACONFIG_USAGE,
+			false,this);
   if(!rda->open(&err_msg,NULL,false)) {
     fprintf(stderr,"rdalsaconfig: unable to open database [%s]\n",
 	    (const char *)err_msg.toUtf8());

@@ -42,8 +42,8 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Open the database
   //
-  rda=new RDApplication("wavefactory_test","wavefactory_test",WAVEFACTORY_TEST_USAGE,
-			this);
+  rda=new RDApplication("wavefactory_test","wavefactory_test",
+			WAVEFACTORY_TEST_USAGE,false,this);
   if(!rda->open(&err_msg,NULL,true)) {
     QMessageBox::critical(this,"wavefactory_test - "+tr("Error"),err_msg);
     exit(RDApplication::ExitNoDb);

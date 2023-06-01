@@ -90,7 +90,7 @@ MainObject::MainObject(QObject *parent)
   // Open the Database
   //
   rda=static_cast<RDApplication *>(new RDCoreApplication("rdcatchd","rdcatchd",
-							 RDCATCHD_USAGE,this));
+						    RDCATCHD_USAGE,false,this));
   if(!rda->open(&err_msg,&err_type,false)) {
     fprintf(stderr,"rdcatchd: %s\n",err_msg.toUtf8().constData());
     exit(1);

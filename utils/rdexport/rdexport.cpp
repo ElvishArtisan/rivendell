@@ -56,7 +56,8 @@ MainObject::MainObject(QObject *parent)
   //
   // Open the Database
   //
-  rda=static_cast<RDApplication *>(new RDCoreApplication("rdexport","rdexport",RDEXPORT_USAGE,this));
+  rda=static_cast<RDApplication *>(new RDCoreApplication("rdexport","rdexport",
+						     RDEXPORT_USAGE,false,this));
   if(!rda->open(&err_msg,NULL,true)) {
     fprintf(stderr,"rdexport: %s\n",(const char *)err_msg.toUtf8());
     exit(1);

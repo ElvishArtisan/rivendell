@@ -66,7 +66,8 @@ MainObject::MainObject(QObject *parent)
   //
   // Open the Database
   //
-  rda=static_cast<RDApplication *>(new RDCoreApplication("rdvairplayd","rdvairplayd",RDVAIRPLAYD_USAGE,this));
+  rda=static_cast<RDApplication *>(new RDCoreApplication("rdvairplayd",
+				  "rdvairplayd",false,RDVAIRPLAYD_USAGE,this));
   if(!rda->open(&err_msg,&err_type,false)) {
     fprintf(stderr,"rdvairplayd: %s\n",err_msg.toUtf8().constData());
     exit(1);

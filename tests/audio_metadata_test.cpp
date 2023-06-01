@@ -35,7 +35,8 @@ MainObject::MainObject(QObject *parent)
   //
   // Open the Database
   //
-  rda=static_cast<RDApplication *>(new RDCoreApplication("audio_metadata_test","audio_metadata_test",AUDIO_METADATA_TEST_USAGE,this));
+  rda=static_cast<RDApplication *>(new RDCoreApplication("audio_metadata_test",
+		   "audio_metadata_test",AUDIO_METADATA_TEST_USAGE,false,this));
   if(!rda->open(&err_msg,NULL,true)) {
     fprintf(stderr,"audio_metadata_test: %s\n",(const char *)err_msg.toUtf8());
     exit(1);

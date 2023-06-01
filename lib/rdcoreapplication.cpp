@@ -45,7 +45,8 @@ void __RDCoreApplication_ExitCallback()
 
 RDCoreApplication::RDCoreApplication(const QString &module_name,
 				     const QString &cmdname,
-				     const QString &usage,QObject *parent)
+				     const QString &usage,bool use_translations,
+				     QObject *parent)
   : QObject(parent)
 {
   app_module_name=module_name;
@@ -81,7 +82,7 @@ RDCoreApplication::RDCoreApplication(const QString &module_name,
   //
   // Translations
   //
-  rdt=new RDTranslator(app_command_name,this);
+  rdt=new RDTranslator(app_command_name,use_translations,this);
 
   atexit(__RDCoreApplication_ExitCallback);
 }

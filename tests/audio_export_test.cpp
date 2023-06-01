@@ -44,7 +44,8 @@ MainObject::MainObject(QObject *parent)
   //
   // Open the Database
   //
-  rda=static_cast<RDApplication *>(new RDCoreApplication("audio_export_test","audio_export_test",AUDIO_EXPORT_TEST_USAGE,this));
+  rda=static_cast<RDApplication *>(new RDCoreApplication("audio_export_test",
+		       "audio_export_test",AUDIO_EXPORT_TEST_USAGE,false,this));
   if(!rda->open(&err_msg,NULL,true)) {
     fprintf(stderr,"audio_export_test: %s\n",err_msg.toUtf8().constData());
     exit(1);

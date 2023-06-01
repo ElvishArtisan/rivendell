@@ -71,7 +71,8 @@ MainObject::MainObject(QObject *parent)
   QString err_msg;
   RDApplication::ErrorType err_type=RDApplication::ErrorOk;
 
-  rda=static_cast<RDApplication *>(new RDCoreApplication("ripcd","ripcd",RIPCD_USAGE,this));
+  rda=static_cast<RDApplication *>(new RDCoreApplication("ripcd","ripcd",
+							 RIPCD_USAGE,false,this));
   if(!rda->open(&err_msg,&err_type,false)) {
     fprintf(stderr,"ripcd: %s\n",(const char *)err_msg.toUtf8());
     exit(1);

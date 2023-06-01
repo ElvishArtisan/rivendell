@@ -53,7 +53,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // Open the Database
   //
-  rda=new RDApplication("RDPanel","rdpanel",RDPANEL_USAGE,this);
+  rda=new RDApplication("RDPanel","rdpanel",RDPANEL_USAGE,true,this);
   if(!rda->open(&err_msg,NULL,true)) {
     QMessageBox::critical(this,"RDPanel - "+tr("Error"),err_msg);
     exit(1);

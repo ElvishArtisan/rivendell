@@ -50,7 +50,8 @@ MainObject::MainObject(QObject *parent)
   //
   // Open the Database
   //
-  rda=static_cast<RDApplication *>(new RDCoreApplication("webget.cgi","webget.cgi",WEBGET_CGI_USAGE,this));
+  rda=static_cast<RDApplication *>(new RDCoreApplication("webget.cgi",
+				"webget.cgi",WEBGET_CGI_USAGE,false,this));
   if(!rda->open(&err_msg,NULL,true)) {
     TextExit(err_msg,500,LINE_NUMBER);
   }

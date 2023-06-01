@@ -41,7 +41,7 @@ MainObject::MainObject(QObject *parent)
   rda=static_cast<RDApplication *>(new RDCoreApplication("timeengine_test",
 							 "timeengine_test",
 							 TIMEENGINE_TEST_USAGE,
-							 this));
+							 false,this));
   if(!rda->open(&err_msg,&err_type,false)) {
     fprintf(stderr,"timeengine_test: %s\n",err_msg.toUtf8().constData());
     exit(1);

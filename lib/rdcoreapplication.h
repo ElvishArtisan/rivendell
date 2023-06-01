@@ -56,7 +56,7 @@ class RDCoreApplication : public QObject
 		 ExitInvalidCart=16,ExitNoSchedCode=17,
 		 ExitBadTicket=18,ExitNoStation=19,ExitLast=20};
   RDCoreApplication(const QString &module_name,const QString &cmdname,
-		const QString &usage,QObject *parent=0);
+		    const QString &usage,bool use_translations,QObject *parent);
   ~RDCoreApplication();
   bool open(QString *err_msg,ErrorType *err_type,bool check_svc);
   RDAirPlayConf *airplayConf();

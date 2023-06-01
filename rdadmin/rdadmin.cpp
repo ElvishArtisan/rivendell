@@ -83,7 +83,7 @@ MainWidget::MainWidget(RDConfig *config,RDWidget *parent)
   //
   // Open the Database
   //
-  rda=new RDApplication("RDAdmin","rdadmin",RDADMIN_USAGE,this);
+  rda=new RDApplication("RDAdmin","rdadmin",RDADMIN_USAGE,true,this);
   if(!rda->open(&err_msg,&err_type,false)) {
     if(err_type!=RDApplication::ErrorNoHostEntry) {
       QMessageBox::critical(this,"RDAdmin - "+tr("Error"),err_msg);

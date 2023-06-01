@@ -27,7 +27,7 @@ class RDTranslator : public QObject
 {
   Q_OBJECT;
  public:
-  RDTranslator(const QString &cmdname,QObject *parent=0);
+  RDTranslator(const QString &cmdname,bool use_translations,QObject *parent=0);
 
  private:
   bool LoadTranslation(const QString &filename,const QString &dirname);

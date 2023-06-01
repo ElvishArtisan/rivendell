@@ -91,7 +91,8 @@ MainObject::MainObject(QObject *parent)
   //
   // Open Database
   //
-  rda=static_cast<RDApplication *>(new RDCoreApplication("caed","caed",CAED_USAGE,this));
+  rda=static_cast<RDApplication *>(new RDCoreApplication("caed","caed",
+							 CAED_USAGE,false,this));
   if(!rda->open(&err_msg,&err_type,false)) {
     fprintf(stderr,"caed: %s\n",err_msg.toUtf8().constData());
     exit(1);

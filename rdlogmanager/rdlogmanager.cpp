@@ -52,7 +52,8 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // Open the Database
   //
-  rda=new RDApplication("RDLogManager","rdlogmanager",RDLOGMANAGER_USAGE,this);
+  rda=new RDApplication("RDLogManager","rdlogmanager",RDLOGMANAGER_USAGE,true,
+			this);
   if(!rda->open(&err_msg,NULL,true)) {
     QMessageBox::critical(this,"RDLogManager - "+tr("Error"),err_msg);
     exit(RDApplication::ExitNoDb);

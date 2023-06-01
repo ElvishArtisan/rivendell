@@ -42,7 +42,8 @@ MainObject::MainObject(QObject *parent)
   //
   // Open the Database
   //
-  rda=static_cast<RDApplication *>(new RDCoreApplication("rdcheckcuts","rdcheckcuts",RDCHECKCUTS_USAGE,this));
+  rda=static_cast<RDApplication *>(new RDCoreApplication("rdcheckcuts",
+			      "rdcheckcuts",RDCHECKCUTS_USAGE,false,this));
   if(!rda->open(&err_msg,NULL,true)) {
     fprintf(stderr,"rdcheckcuts: %s\n",err_msg.toUtf8().constData());
     exit(1);

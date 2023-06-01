@@ -40,7 +40,7 @@ MainObject::MainObject(QObject *parent)
   // Open the Database
   //
   rda=new RDApplication("metadata_wildcard_test","metadata_wildcard_test",
-			METADATA_WILDCARD_TEST_USAGE,this);
+			METADATA_WILDCARD_TEST_USAGE,false,this);
   if(!rda->open(&err_msg,NULL,true)) {
     fprintf(stderr,"metadata_wildcard_test: %s\n",(const char *)err_msg.toUtf8());
     exit(1);

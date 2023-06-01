@@ -41,7 +41,8 @@ MainObject::MainObject(QObject *parent)
   //
   // Open the Database
   //
-  rda=new RDApplication("download_test","download_test",DOWNLOAD_TEST_USAGE,this);
+  rda=new RDApplication("download_test","download_test",DOWNLOAD_TEST_USAGE,
+			false,this);
   if(!rda->open(&err_msg,NULL,true)) {
     fprintf(stderr,"download_test: %s\n",err_msg.toUtf8().constData());
     exit(1);

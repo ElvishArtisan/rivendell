@@ -2,7 +2,7 @@
 //
 // A Library import filter for the Prophet NexGen system
 //
-//   (C) Copyright 2012-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -62,7 +62,8 @@ MainObject::MainObject(QObject *parent)
   //
   // Open the Database
   //
-  rda=static_cast<RDApplication *>(new RDCoreApplication("nexgen_filter","nexgen_filter",NEXGEN_FILTER_USAGE,this));
+  rda=static_cast<RDApplication *>(new RDCoreApplication("nexgen_filter",
+			     "nexgen_filter",NEXGEN_FILTER_USAGE,false,this));
   if(!rda->open(&err_msg,NULL,false)) {
     fprintf(stderr,"nexgen_filter: %s\n",err_msg.toUtf8().constData());
     exit(1);

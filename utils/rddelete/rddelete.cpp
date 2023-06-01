@@ -43,7 +43,8 @@ MainObject::MainObject(QObject *parent)
   //
   // Open the Database
   //
-  rda=static_cast<RDApplication *>(new RDCoreApplication("rddelete","rddelete",RDDELETE_USAGE,this));
+  rda=static_cast<RDApplication *>(new RDCoreApplication("rddelete","rddelete",
+						   RDDELETE_USAGE,false,this));
   if(!rda->open(&err_msg,NULL,true)) {
     fprintf(stderr,"rddelete: %s\n",err_msg.toUtf8().constData());
     exit(1);

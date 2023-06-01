@@ -35,7 +35,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Open the database
   //
   rda=new RDApplication("meterstrip_test","meterstrip_test",METERSTRIP_TEST_USAGE,
-			this);
+			false,this);
   if(!rda->open(&err_msg,NULL,true)) {
     QMessageBox::critical(this,"meterstrip_test - "+tr("Error"),err_msg);
     exit(RDApplication::ExitNoDb);

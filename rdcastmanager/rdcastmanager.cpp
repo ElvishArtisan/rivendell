@@ -57,7 +57,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // Open the Database/
   //
-  rda=new RDApplication("RDCastManager","rdcastmanager",RDCASTMANAGER_USAGE,
+  rda=new RDApplication("RDCastManager","rdcastmanager",RDCASTMANAGER_USAGE,true,
 			this);
   if(!rda->open(&err_msg,NULL,true)) {
     QMessageBox::critical(this,"RDCastManager - "+tr("Error"),err_msg);

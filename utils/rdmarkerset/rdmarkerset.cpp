@@ -57,7 +57,8 @@ MainObject::MainObject(QObject *parent)
   //
   // Open the Database
   //
-  rda=static_cast<RDApplication *>(new RDCoreApplication("rdmarkerset","rdmarkerset",RDMARKERSET_USAGE,this));
+  rda=static_cast<RDApplication *>(new RDCoreApplication("rdmarkerset",
+				"rdmarkerset",RDMARKERSET_USAGE,false,this));
   if(!rda->open(&err_msg,NULL,true)) {
     fprintf(stderr,"rdmarkerset: %s\n",err_msg.toUtf8().constData());
     exit(1);

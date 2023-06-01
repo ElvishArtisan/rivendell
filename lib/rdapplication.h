@@ -29,7 +29,7 @@ class RDApplication : public RDCoreApplication
   Q_OBJECT;
  public:
   RDApplication(const QString &module_name,const QString &cmdname,
-		const QString &usage,QObject *parent);
+		const QString &usage,bool use_translations,QObject *parent);
   ~RDApplication();
   RDIconEngine *iconEngine() const;
   static QString locale();

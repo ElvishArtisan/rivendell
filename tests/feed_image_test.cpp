@@ -45,7 +45,8 @@ MainObject::MainObject(QObject *parent)
   //
   // Open the Database
   //
-  rda=new RDApplication("feed_image_test","feed_image_test",FEED_IMAGE_TEST_USAGE,this);
+  rda=new RDApplication("feed_image_test","feed_image_test",
+			FEED_IMAGE_TEST_USAGE,false,this);
   if(!rda->open(&err_msg,NULL,true)) {
     fprintf(stderr,"feed_image_test: %s\n",err_msg.toUtf8().constData());
     exit(1);

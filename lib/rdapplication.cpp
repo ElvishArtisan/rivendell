@@ -25,8 +25,9 @@
 RDApplication *rda=NULL;
 
 RDApplication::RDApplication(const QString &module_name,const QString &cmdname,
-			     const QString &usage,QObject *parent)
-  : RDCoreApplication(module_name,cmdname,usage,parent)
+			     const QString &usage,bool use_translations,
+			     QObject *parent)
+  : RDCoreApplication(module_name,cmdname,usage,use_translations,parent)
 {
   app_icon_engine=new RDIconEngine();
 }

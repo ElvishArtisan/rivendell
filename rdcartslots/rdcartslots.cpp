@@ -34,7 +34,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // Open the Database
   //
-  rda=new RDApplication("RDCartSlots","rdcartslots",RDCARTSLOTS_USAGE,this);
+  rda=new RDApplication("RDCartSlots","rdcartslots",RDCARTSLOTS_USAGE,true,this);
   if(!rda->open(&err_msg,NULL,false)) {
     QMessageBox::critical(this,"RDCartSlots - "+tr("Error"),err_msg);
     exit(1);
