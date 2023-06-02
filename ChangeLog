@@ -24205,3 +24205,8 @@
 2023-06-01 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug that would cause 'failed to load translation file'
 	warnings to be sent to the Apache error log.
+2023-06-02 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the minimum size of the rdairplay(1) main window to
+	1555x870 pixels.
+	* Changed the minimum required display resolution in 'INSTALL' to
+	1680x1050 pixels.

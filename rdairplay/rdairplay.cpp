@@ -716,7 +716,7 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
 
 QSize MainWidget::sizeHint() const
 {
-  return QSize(1075,870);
+  return QSize(1555,870);
 }
 
 
