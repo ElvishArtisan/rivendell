@@ -24210,3 +24210,6 @@
 	1555x870 pixels.
 	* Changed the minimum required display resolution in 'INSTALL' to
 	1680x1050 pixels.
+2023-06-05 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdvairplayd(8) that caused the build to
+	break on Debian-ish setups.
