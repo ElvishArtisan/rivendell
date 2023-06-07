@@ -1,9 +1,9 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v4.0.0rc3int2 -- 31 May 2023
+v4.0.0rc4 -- 7 June 2023
 
-Interrim Release Candidate
+Fifth Release Candidate
 
 Major Changes Between v3.x and v4.x:
    Qt Toolkit. Rivendell v4.x uses and is fully compatibile with major
@@ -34,7 +34,7 @@ Major Changes Between v3.x and v4.x:
    Many bug and regression fixes. See the 'ChangeLog' for details.
 
 Database Update:
-   This version of Rivendell uses database schema version 367, and will
+   This version of Rivendell uses database schema version 369, and will
    automatically upgrade any earlier versions. To see the current schema
    version prior to upgrade, see RDAdmin->SystemInfo.
 

@@ -24216,3 +24216,6 @@
 2023-06-07 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the 'README' file.
 	* Updated the 'UPGRADING' file.
+2023-06-07 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.0.0rc4.
+	* Incremented the Python API version to 4.0.0rc4.
