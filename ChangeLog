@@ -24213,3 +24213,6 @@
 2023-06-05 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdvairplayd(8) that caused the build to
 	break on Debian-ish setups.
+2023-06-07 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the 'README' file.
+	* Updated the 'UPGRADING' file.

@@ -1,15 +1,15 @@
 IMPORTANT NOTE: BE SURE TO SEE THE SECTION ON 'PASSWORD STORAGE' BELOW,
 OTHERWISE YOU MAY BE LOCKED OUT OF THE SYSTEM AFTER THE UPDATE!
 
-This file provides some notes to those performing an upgrade from a v1.x or
-v2.x version of Rivendell. It is an attempt to provide some pointers about
-things which have changed, but is in no way a substitute for reading the
+This file provides some notes to those performing an upgrade from a v1.x,
+v2.x or v3.x version of Rivendell. It is an attempt to provide some pointers
+about things which have changed, but is in no way a substitute for reading the
 'INSTALL' file and other documentation!
 
 1) DEPENDENCIES
 The set of external packages required to build and run Rivendell has changed
-significantly from that required for a 1.x or 2.x system. See 'INSTALL' for
-a full list.
+significantly from that required for earlier 1.x, 2.x or 3.x systems. See
+'INSTALL' for a full list.
 
 2) MPEG SUPPORT
 This version of Rivendell includes optional support for MPEG Layer 2 
@@ -23,7 +23,7 @@ specifics.
 Recommended file ownership and permissions for the '/var/snd' directory and 
 its contents have changed.  These items should be owned by system user and 
 group accounts created specifically for Rivendell; no 'real' user on the 
-system should use these accounts.  The Rivendell system user and group 
+system should use these accounts. The Rivendell system user and group 
 accounts are specified in the 'AudioOwner=' and 'AudioGroup=' directives in
 the '[Identity]' section of rd.conf(5); see 'conf/rd.conf-sample' for an
 example.  Permissions for '/var/snd' should be read, write and execute bits
@@ -42,13 +42,13 @@ automatically as part of the build process; it can be found in
 'conf/rd-bin.conf' after the build is complete.
 
 5) PASSWORD STORAGE (v1.x only)
-The method of storing passwords in the database has changed in Rivendell 2.x
-and 3.x, requiring that all non-null passwords be reset after performing the
-upgrade. This means that it is important that the account used to access
-RDAdmin be set to use a null (blank) password *before* applying the update,
-otherwise you will not be able to access RDAdmin afterwards!  Once the update
-has been applied, passwords should be re-entered for all user accounts in
-RDAdmin (including administrative ones) in the usual manner.
+The method of storing Rivendell user passwords in the database has changed
+in subsequent Rivendell versions, thus requiring that all non-null passwords
+be reset after performing the upgrade. Thus, it is important that the account
+used to access RDAdmin be set to use a null (blank) password *before* applying
+the update, otherwise you will not be able to access RDAdmin afterwards!
+Once the update has been applied, passwords should be re-entered for all
+user accounts in RDAdmin (including administrative ones) in the usual manner.
 
 6) AUDIO SAMPLE RATE (v1.x only)
 The sample rate to be used for the Rivendell audio library is now a single
@@ -62,13 +62,13 @@ recommended.
 7) RDCATCH CHANGES
 Upload and Download events in RDCatch that use the 'file:' protocol now 
 require that a username/password for an appropriate shell user account be 
-entered.  'Appropriate' here means one with write or read permissions for 
+entered. 'Appropriate' here means one with write or read permissions for 
 the target file, respectively.
 
 The 'smb:' protocol is no longer supported.
 
 8) Now & Next / PAD Updates
-The built-in UDP and RLM PAD transmission subsystems found in previous
+The built-in UDP and RLM PAD transmission subsystems found in some earlier
 Rivendell versions have been replaced with a Python 3 based scripting
 system known as 'PyPAD'. Documentation for the full API can be found
 by entering the following at a Python 3 interactive prompt:
@@ -141,7 +141,7 @@ utilites have also been subsumed into rddbmgr(8).
 
 11) ARTIST SEPARATION
 This version of Rivendell moves artist separation in rdlogmanager(1) from
-clocks to events. The artist separation value from Rivendell 2.x is still
-visible in the EditClock->SchedulerRules dialog but will not be used
+clocks to events. The artist separation value from Rivendell 2.x and earlier
+is still visible in the EditClock->SchedulerRules dialog but will not be used
 by the "Generate Log" scheduler. New artist separation values will have
 to be entered into each event.
