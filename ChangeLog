@@ -24230,3 +24230,7 @@
 2023-06-09 Fred Gleason <fredg@paravelsystems.com>
 	* Dropped the 'SYSTEM.MAX_POST_LENGTH' field from the database.
 	* Incremented the database version to 370.
+2023-06-09 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the Operations Guide so as to reflect the removal of the
+	'Maximum Remote Post Length' control from the 'System-Wide Settings'
+	dialog in rdadmin(1).

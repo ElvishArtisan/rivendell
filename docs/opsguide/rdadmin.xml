@@ -2773,11 +2773,6 @@
       multicast address.
     </para>
     <para>
-      The <computeroutput>Maximum Remote Post Length:</computeroutput> field
-      sets the maximum length POST submission that will be processed by the
-      RDXport service.
-    </para>
-    <para>
       The <computeroutput>Temporary Cart Group:</computeroutput> dropdown
       sets the Rivendell group to be used for storing temporary carts
       --e.g. carts used for processing direct file play-outs in
