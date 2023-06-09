@@ -33,8 +33,7 @@
 
 #include <rdformpost.h>
 
-RDFormPost::RDFormPost(RDFormPost::Encoding encoding,int64_t maxsize,
-		       bool auto_delete)
+RDFormPost::RDFormPost(RDFormPost::Encoding encoding,bool auto_delete)
 {
   bool ok=false;
 
@@ -76,7 +75,7 @@ RDFormPost::RDFormPost(RDFormPost::Encoding encoding,int64_t maxsize,
     post_error=RDFormPost::ErrorMalformedData;
     return;
   }
-  if((maxsize>0)&&(post_content_length>maxsize)) {
+  if(post_content_length>RD_MAX_POST_LENGTH) {
     post_error=RDFormPost::ErrorPostTooLarge;
     return;
   }

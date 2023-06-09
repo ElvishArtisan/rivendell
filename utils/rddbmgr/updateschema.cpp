@@ -5025,8 +5025,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 
     sql=QString("alter table `SYSTEM` ")+
       "add column `MAX_POST_LENGTH` "+
-      QString::asprintf("int unsigned default %u after `DUP_CART_TITLES`",
-			RD_DEFAULT_MAX_POST_LENGTH);
+      "int unsigned default 10000000 after `DUP_CART_TITLES`";
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }

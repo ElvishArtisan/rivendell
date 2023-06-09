@@ -36,8 +36,6 @@ class RDSystem
   void setAllowDuplicateCartTitles(bool state) const;
   bool fixDuplicateCartTitles() const;
   void setFixDuplicateCartTitles(bool state) const;
-  int64_t maxPostLength() const;
-  void setMaxPostLength(int64_t bytes) const;
   QString isciXreferencePath() const;
   void setIsciXreferencePath(const QString &str) const;
   QString originEmailAddress() const;

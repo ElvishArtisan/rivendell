@@ -130,21 +130,6 @@ EditSystem::EditSystem(QWidget *parent)
     setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
-  // Maximum POST Size
-  //
-  edit_maxpost_spin=new QSpinBox(this);
-  edit_maxpost_spin->setRange(1,1000);
-  edit_maxpost_label=
-    new QLabel(tr("Maximum Remote Post Length:"),this);
-  edit_maxpost_label->setFont(labelFont());
-  edit_maxpost_label->
-    setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  edit_maxpost_unit_label=new QLabel(tr("Mbytes"),this);
-  edit_maxpost_unit_label->setFont(labelFont());
-  edit_maxpost_unit_label->
-    setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-
-  //
   // Temporary Cart Group
   //
   edit_temp_cart_group_box=new RDComboBox(this);
@@ -269,7 +254,6 @@ EditSystem::EditSystem(QWidget *parent)
   edit_fix_duplicate_carts_box->
     setChecked(edit_system->fixDuplicateCartTitles());
   duplicatesCheckedData(edit_system->allowDuplicateCartTitles());
-  edit_maxpost_spin->setValue(edit_system->maxPostLength()/1000000);
   edit_isci_path_edit->setText(edit_system->isciXreferencePath());
   edit_origin_email_addr_edit->setText(edit_system->originEmailAddress());
   edit_notification_address_edit->
@@ -316,7 +300,7 @@ EditSystem::~EditSystem()
 
 QSize EditSystem::sizeHint() const
 {
-  return QSize(500,428+y_pos);
+  return QSize(500,406+y_pos);
 } 
 
 
@@ -514,7 +498,6 @@ void EditSystem::okData()
   edit_system->
     setFixDuplicateCartTitles(edit_fix_duplicate_carts_box->isChecked());
   edit_system->setSampleRate(edit_sample_rate_box->currentText().toUInt());
-  edit_system->setMaxPostLength(edit_maxpost_spin->value()*1000000);
   edit_system->setIsciXreferencePath(edit_isci_path_edit->text());
   edit_system->setOriginEmailAddress(edit_origin_email_addr_edit->text());
   edit_system->
@@ -589,17 +572,13 @@ void EditSystem::resizeEvent(QResizeEvent *e)
   edit_notification_address_edit->setGeometry(250,164,150,20);
   edit_notification_address_label->setGeometry(10,164,235,20);
 
-  edit_maxpost_spin->setGeometry(250,186,60,20);
-  edit_maxpost_label->setGeometry(10,186,235,20);
-  edit_maxpost_unit_label->setGeometry(315,186,60,20);
+  edit_temp_cart_group_box->setGeometry(250,185,140,20);
+  edit_temp_cart_group_label->setGeometry(10,185,235,20);
 
-  edit_temp_cart_group_box->setGeometry(250,207,140,20);
-  edit_temp_cart_group_label->setGeometry(10,207,235,20);
+  edit_rss_processor_label->setGeometry(10,207,235,20);
+  edit_rss_processor_box->setGeometry(250,207,200,20);
 
-  edit_rss_processor_label->setGeometry(10,229,235,20);
-  edit_rss_processor_box->setGeometry(250,229,200,20);
-
-  edit_datetime_group->setGeometry(10,251,size().width()-20,100);
+  edit_datetime_group->setGeometry(10,229,size().width()-20,100);
   edit_datetime_test_button->setGeometry(5,22,80,35);
   edit_datetime_defaults_button->setGeometry(5,60,80,35);
   edit_long_date_label->setGeometry(110,27,120,20);
@@ -609,9 +588,9 @@ void EditSystem::resizeEvent(QResizeEvent *e)
   edit_time_label->setGeometry(110,71,120,20);
   edit_time_box->setGeometry(235,71,edit_time_box->sizeHint().width(),20);
 
-  edit_duplicate_hidden_label->setGeometry(15,351,size().width()-30,50);
-  edit_duplicate_view->setGeometry(10,399,size().width()-20,215);
-  edit_save_button->setGeometry(size().width()-85,619,70,25);
+  edit_duplicate_hidden_label->setGeometry(15,329,size().width()-30,50);
+  edit_duplicate_view->setGeometry(10,377,size().width()-20,215);
+  edit_save_button->setGeometry(size().width()-85,597,70,25);
 
   edit_encoders_button->setGeometry(10,size().height()-60,120,50);
   edit_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);

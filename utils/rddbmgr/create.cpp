@@ -1524,8 +1524,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
 		      RD_DEFAULT_SAMPLE_RATE)+
     "`DUP_CART_TITLES` enum('N','Y') not null default 'Y',"+
     "`FIX_DUP_CART_TITLES` enum('N','Y') not null default 'Y',"+
-    QString::asprintf("`MAX_POST_LENGTH` int unsigned default %u,",
-		      RD_DEFAULT_MAX_POST_LENGTH)+
+    "`MAX_POST_LENGTH` int unsigned default 10000000,"+
     "`ISCI_XREFERENCE_PATH` char(255),"+
     "`TEMP_CART_GROUP` char(10),"+
     "`SHOW_USER_LIST` enum('N','Y') not null default 'Y',"+

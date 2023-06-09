@@ -2,7 +2,7 @@
 //
 // Edit Rivendell System-wide Settings.
 //
-//   (C) Copyright 2009-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2009-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -73,9 +73,6 @@ class EditSystem : public RDDialog
   QCheckBox *edit_duplicate_carts_box;
   QCheckBox *edit_fix_duplicate_carts_box;
   QLabel *edit_fix_duplicate_carts_label;
-  QLabel *edit_maxpost_label;
-  QSpinBox *edit_maxpost_spin;
-  QLabel *edit_maxpost_unit_label;
   QLabel *edit_isci_path_label;
   QLineEdit *edit_isci_path_edit;
   QLabel *edit_origin_email_addr_label;

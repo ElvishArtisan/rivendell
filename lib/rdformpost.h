@@ -37,8 +37,7 @@ class RDFormPost
   enum Encoding {UrlEncoded=0,MultipartEncoded=1,AutoEncoded=2};
   enum Error {ErrorOk=0,ErrorNotPost=1,ErrorNoTempDir=2,ErrorMalformedData=3,
 	      ErrorPostTooLarge=4,ErrorInternal=5,ErrorNotInitialized=6};
-  RDFormPost(RDFormPost::Encoding encoding,int64_t maxsize=0,
-	     bool auto_delete=true);
+  RDFormPost(RDFormPost::Encoding encoding,bool auto_delete);
   ~RDFormPost();
   RDFormPost::Error error() const;
   QHostAddress clientAddress() const;

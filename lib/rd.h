@@ -264,7 +264,7 @@
 /*
  * Default Maximum POST Length (bytes)
  */
-#define RD_DEFAULT_MAX_POST_LENGTH 10000000
+#define RD_MAX_POST_LENGTH 2147483648
 
 /*
  * Pause Time for Starting Daemons (secs)

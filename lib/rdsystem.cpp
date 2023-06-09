@@ -106,31 +106,6 @@ void RDSystem::setFixDuplicateCartTitles(bool state) const
 }
 
 
-int64_t RDSystem::maxPostLength() const
-{
-  int64_t ret;
-
-  QString sql="select `MAX_POST_LENGTH` from `SYSTEM`";
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  if(q->first()) {
-    ret=q->value(0).toLongLong();
-  }
-  else {
-    ret=RD_DEFAULT_MAX_POST_LENGTH;
-  }
-  delete q;
-  return ret;
-}
-
-
-void RDSystem::setMaxPostLength(int64_t bytes) const
-{
-  QString sql=
-    QString::asprintf("update `SYSTEM` set `MAX_POST_LENGTH`=%ld",bytes);
-  RDSqlQuery::apply(sql);
-}
-
-
 QString RDSystem::isciXreferencePath() const
 {
   return GetValue("ISCI_XREFERENCE_PATH").toString();
@@ -260,7 +235,6 @@ QString RDSystem::xml() const
   xml+=RDXmlField("sampleRate",sampleRate());
   xml+=RDXmlField("duplicateTitles",allowDuplicateCartTitles());
   xml+=RDXmlField("fixDuplicateTitles",fixDuplicateCartTitles());
-  xml+=RDXmlField("maxPostLength",maxPostLength());
   xml+=RDXmlField("isciXreferencePath",isciXreferencePath());
   xml+=RDXmlField("tempCartGroup",tempCartGroup());
   xml+=RDXmlField("longDateFormat",longDateFormat());

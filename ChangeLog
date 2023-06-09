@@ -24219,3 +24219,11 @@
 2023-06-07 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.0.0rc4.
 	* Incremented the Python API version to 4.0.0rc4.
+2023-06-09 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the '#define RD_DEFAULT_MAX_POST_LENGTH' statement from
+	'lib/rd.h'.
+	* Added a '#define RD_MAX_POST_LENGTH' statement in 'lib/rd.h'.
+	* Removed the 'RDSystem::maxPostLength()' and
+	'RDSystem::setMaxPostLength()' methods.
+	* Removed the 'Maximum Remote Post Length' control from the
+	'System-Wide Settings' dialog in rdadmin(1).
