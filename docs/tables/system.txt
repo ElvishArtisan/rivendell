@@ -9,7 +9,6 @@ REALM_NAME            varchar(64)
 SAMPLE_RATE           int(10) unsigned
 DUP_CART_TITLE        enum('N','Y')
 FIX_DUP_CART_TITLES   enum('N','Y')
-MAX_POST_LENGTH       int(10) unsigned
 ISCI_XREFERENCE_PATH  varchar(191)
 TEMP_CART_GROUP       varchar(10)        From 'GROUPS.NAME'
 SHOW_USER_LIST        enum('N','Y')

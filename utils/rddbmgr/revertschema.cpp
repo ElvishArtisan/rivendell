@@ -42,6 +42,20 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
+  // Revert 370
+  //
+  if((cur_schema==370)&&(set_schema<cur_schema)) {
+    sql=QString("alter table `SYSTEM` ")+
+      "add column `MAX_POST_LENGTH` int unsigned default 10000000 "+
+      "after `FIX_DUP_CART_TITLES`";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 369
   //
   if((cur_schema==369)&&(set_schema<cur_schema)) {

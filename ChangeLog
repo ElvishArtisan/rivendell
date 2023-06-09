@@ -24227,3 +24227,6 @@
 	'RDSystem::setMaxPostLength()' methods.
 	* Removed the 'Maximum Remote Post Length' control from the
 	'System-Wide Settings' dialog in rdadmin(1).
+2023-06-09 Fred Gleason <fredg@paravelsystems.com>
+	* Dropped the 'SYSTEM.MAX_POST_LENGTH' field from the database.
+	* Incremented the database version to 370.
