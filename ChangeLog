@@ -24230,3 +24230,5 @@
 2023-06-09 Fred Gleason <fredg@paravelsystems.com>
 	* Dropped the 'SYSTEM.MAX_POST_LENGTH' field from the database.
 	* Incremented the database version to 370.
+2023-06-11 Fred Gleason <fredg@paravelsystems.com>
+	* Updated I18N data.

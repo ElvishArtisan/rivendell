@@ -211,143 +211,7 @@ List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>PRE-POSITION LOG</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cue to this event</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>before scheduled start.  (First cart will have a STOP transition.)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>TIMED START</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Use hard start time</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Action If Previous Event Still Playing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start immediately</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Make next</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Wait up to</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Play</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Segue</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Stop</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>ENFORCING LENGTH</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Use AutoFill</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Warn if fill is over or under</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>by at least</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Use Timescaling</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>None</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>From Traffic</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>From Music</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Select from:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Title Separation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Must have code</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Import carts scheduled</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>prior to the start of this event.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>after the end of this event.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>First cart has a</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[none]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>POST-IMPORT CARTS</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Edit Event</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Len:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>PRE-IMPORT CARTS</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>IMPORT</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>and code</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Artist Separation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -355,31 +219,7 @@ List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Imported carts have a</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>transition.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>TRANSITIONS</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>CART STACK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Import inline traffic event</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>USER NOTES</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[None]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -849,6 +689,21 @@ All</source>
     </message>
     <message>
         <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ImportCartsWidget</name>
+    <message>
+        <source>PRE-IMPORT EVENTS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>POST-IMPORT EVENTS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Len</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

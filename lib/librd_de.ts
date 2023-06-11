@@ -1049,6 +1049,14 @@
         <source>Len</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Curl error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to create temporary directory.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>
@@ -5164,6 +5172,33 @@ therefore only existing transitions will be editable.</source>
     </message>
     <message>
         <source>Energy export failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>RDXsltEngine</name>
+    <message>
+        <source>Unable to initialize CURL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to create output file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unable to start xsltproc(1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>xsltproc(1) is apparently hung!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>xsltproc(1) crashed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>xsltproc(1) returned an error</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

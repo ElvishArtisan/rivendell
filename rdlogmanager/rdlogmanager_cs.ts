@@ -377,23 +377,23 @@ List</source>
     </message>
     <message>
         <source>PRE-POSITION LOG</source>
-        <translation>ZÁPIS PŘED-POLOHY</translation>
+        <translation type="vanished">ZÁPIS PŘED-POLOHY</translation>
     </message>
     <message>
         <source>Cue to this event</source>
-        <translation>CUE k této události</translation>
+        <translation type="vanished">CUE k této události</translation>
     </message>
     <message>
         <source>before scheduled start.  (First cart will have a STOP transition.)</source>
-        <translation>před naplánovaným začátkem. (První vozík bude mít přechod ZASTAVENÍ.)</translation>
+        <translation type="vanished">před naplánovaným začátkem. (První vozík bude mít přechod ZASTAVENÍ.)</translation>
     </message>
     <message>
         <source>TIMED START</source>
-        <translation>PEVNÝ ZAČÁTEK</translation>
+        <translation type="vanished">PEVNÝ ZAČÁTEK</translation>
     </message>
     <message>
         <source>Use hard start time</source>
-        <translation>Použít pevný počáteční čas</translation>
+        <translation type="vanished">Použít pevný počáteční čas</translation>
     </message>
     <message>
         <source>Make Post Point</source>
@@ -401,31 +401,31 @@ List</source>
     </message>
     <message>
         <source>Action If Previous Event Still Playing</source>
-        <translation>Činnost, když předchozí událost ještě běží</translation>
+        <translation type="vanished">Činnost, když předchozí událost ještě běží</translation>
     </message>
     <message>
         <source>Start immediately</source>
-        <translation>Spustit ihned</translation>
+        <translation type="vanished">Spustit ihned</translation>
     </message>
     <message>
         <source>Make next</source>
-        <translation>Jako další</translation>
+        <translation type="vanished">Jako další</translation>
     </message>
     <message>
         <source>Wait up to</source>
-        <translation>Počkat až do</translation>
+        <translation type="vanished">Počkat až do</translation>
     </message>
     <message>
         <source>Play</source>
-        <translation>Přehrát</translation>
+        <translation type="vanished">Přehrát</translation>
     </message>
     <message>
         <source>Segue</source>
-        <translation>Přechod</translation>
+        <translation type="vanished">Přechod</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation>Zastavit</translation>
+        <translation type="vanished">Zastavit</translation>
     </message>
     <message>
         <source>Transition if previous event ends before start time:</source>
@@ -433,23 +433,23 @@ List</source>
     </message>
     <message>
         <source>ENFORCING LENGTH</source>
-        <translation>VYNUCENÁ DÉLKA</translation>
+        <translation type="vanished">VYNUCENÁ DÉLKA</translation>
     </message>
     <message>
         <source>Use AutoFill</source>
-        <translation>Použít automatické vyplnění</translation>
+        <translation type="vanished">Použít automatické vyplnění</translation>
     </message>
     <message>
         <source>Warn if fill is over or under</source>
-        <translation>Varovat, když je automatické vyplnění větší nebo menší</translation>
+        <translation type="vanished">Varovat, když je automatické vyplnění větší nebo menší</translation>
     </message>
     <message>
         <source>by at least</source>
-        <translation>než alespoň</translation>
+        <translation type="vanished">než alespoň</translation>
     </message>
     <message>
         <source>Use Timescaling</source>
-        <translation>Použít změnu času</translation>
+        <translation type="vanished">Použít změnu času</translation>
     </message>
     <message>
         <source>TRANSITION</source>
@@ -461,51 +461,51 @@ List</source>
     </message>
     <message>
         <source>None</source>
-        <translation>Žádný</translation>
+        <translation type="vanished">Žádný</translation>
     </message>
     <message>
         <source>From Traffic</source>
-        <translation>Z přenosu</translation>
+        <translation type="vanished">Z přenosu</translation>
     </message>
     <message>
         <source>From Music</source>
-        <translation>Z hudby</translation>
+        <translation type="vanished">Z hudby</translation>
     </message>
     <message>
         <source>Select from:</source>
-        <translation>Vybrat z:</translation>
+        <translation type="vanished">Vybrat z:</translation>
     </message>
     <message>
         <source>Title Separation</source>
-        <translation>Odstup názvů</translation>
+        <translation type="vanished">Odstup názvů</translation>
     </message>
     <message>
         <source>Must have code</source>
-        <translation>Vynutit kód</translation>
+        <translation type="vanished">Vynutit kód</translation>
     </message>
     <message>
         <source>Import carts scheduled</source>
-        <translation>Rozvrženy vozíky zavedení</translation>
+        <translation type="vanished">Rozvrženy vozíky zavedení</translation>
     </message>
     <message>
         <source>prior to the start of this event.</source>
-        <translation>před začátkem této události.</translation>
+        <translation type="vanished">před začátkem této události.</translation>
     </message>
     <message>
         <source>after the end of this event.</source>
-        <translation>po začátku této události.</translation>
+        <translation type="vanished">po začátku této události.</translation>
     </message>
     <message>
         <source>First cart has a</source>
-        <translation>První vozík má</translation>
+        <translation type="vanished">První vozík má</translation>
     </message>
     <message>
         <source>Imported carts have a</source>
-        <translation type="unfinished">Zavedené vozíky mají</translation>
+        <translation type="obsolete">Zavedené vozíky mají</translation>
     </message>
     <message>
         <source>transition.</source>
-        <translation type="unfinished">přechod.</translation>
+        <translation type="obsolete">přechod.</translation>
     </message>
     <message>
         <source>Import inline traffic with the</source>
@@ -513,7 +513,7 @@ List</source>
     </message>
     <message>
         <source>[none]</source>
-        <translation>[žádný]</translation>
+        <translation type="vanished">[žádný]</translation>
     </message>
     <message>
         <source>event.</source>
@@ -521,7 +521,7 @@ List</source>
     </message>
     <message>
         <source>POST-IMPORT CARTS</source>
-        <translation>VOZÍKY PO ZAVEDENÍ</translation>
+        <translation type="vanished">VOZÍKY PO ZAVEDENÍ</translation>
     </message>
     <message>
         <source>&amp;Save</source>
@@ -633,19 +633,7 @@ Chcete ji přepsat?</translation>
     </message>
     <message>
         <source>Len:</source>
-        <translation>Délka:</translation>
-    </message>
-    <message>
-        <source>PRE-IMPORT CARTS</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>IMPORT</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>and code</source>
-        <translation type="unfinished"></translation>
+        <translation type="vanished">Délka:</translation>
     </message>
     <message>
         <source>Length</source>
@@ -664,31 +652,11 @@ Chcete ji přepsat?</translation>
         <translation type="obsolete">Počet</translation>
     </message>
     <message>
-        <source>Artist Separation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>TRANSITIONS</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>CART STACK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Import inline traffic event</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>USER NOTES</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[None]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1341,6 +1309,21 @@ Opětovné sloučení tato data smaže. Sloučit znovu?</translation>
     </message>
     <message>
         <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ImportCartsWidget</name>
+    <message>
+        <source>PRE-IMPORT EVENTS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>POST-IMPORT EVENTS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Len</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

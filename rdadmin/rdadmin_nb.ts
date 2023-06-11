@@ -1652,7 +1652,7 @@ Feeds</source>
     </message>
     <message>
         <source>[none]</source>
-        <translation type="obsolete">[ingen]</translation>
+        <translation type="unfinished">[ingen]</translation>
     </message>
     <message>
         <source>Default Shelf Life</source>
@@ -1693,6 +1693,30 @@ Clipboard</source>
     </message>
     <message>
         <source>Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CDN Purge Plug-In</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select</source>
+        <translation type="unfinished">Vel</translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select Plug-In</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rivendell CDN Scripts (*.cdn)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All Files (*)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4541,14 +4565,6 @@ Music</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Maximum Remote Post Length:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Mbytes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Temporary Cart Group:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5204,6 +5220,37 @@ Password</source>
     </message>
 </context>
 <context>
+    <name>FeedListView</name>
+    <message>
+        <source>Generate Item Report [Front]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Generate Item Report [Back]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View Raw XML [Front]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View Raw XML [Back]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Validate with Bluebrry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error accessing from XML data.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ImportModel</name>
     <message>
         <source>Start Time</source>
@@ -5631,35 +5678,11 @@ License</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Posting images...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Posting item data...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Posting RSS XML data...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>This operation will unpost (remove) all XML, image and</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>audio data from the remote archive, and thus may</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unposting RSS XML data...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unposting item data...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unposting images...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5696,6 +5719,14 @@ License</source>
     </message>
     <message>
         <source>Error posting updated XML to feed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reposting feed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unposting feed</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
