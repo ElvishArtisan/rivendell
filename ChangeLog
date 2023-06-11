@@ -24232,3 +24232,6 @@
 	* Incremented the database version to 370.
 2023-06-11 Fred Gleason <fredg@paravelsystems.com>
 	* Updated I18N data.
+2023-06-11 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.0.0rc5.
+	* Incremented the Python API version to 4.0.0rc5.
