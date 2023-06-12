@@ -169,6 +169,18 @@ Episodios</translation>
         <source>Continue saving feed parameters anyway?</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Enter item title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter author e-mail address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter item description</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListCasts</name>
@@ -467,10 +479,6 @@ Feed</source>
     <message>
         <source>Online Feed
 Report</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to create temporary directory.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

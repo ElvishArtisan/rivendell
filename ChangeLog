@@ -24234,3 +24234,8 @@
 	* Updated the Operations Guide so as to reflect the removal of the
 	'Maximum Remote Post Length' control from the 'System-Wide Settings'
 	dialog in rdadmin(1).
+2023-06-11 Fred Gleason <fredg@paravelsystems.com>
+	* Updated I18N data.
+2023-06-11 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.0.0rc5.
+	* Incremented the Python API version to 4.0.0rc5.

@@ -379,23 +379,23 @@ List</source>
     </message>
     <message>
         <source>PRE-POSITION LOG</source>
-        <translation>LISTA PRE-POSICIÓN</translation>
+        <translation type="vanished">LISTA PRE-POSICIÓN</translation>
     </message>
     <message>
         <source>Cue to this event</source>
-        <translation>Señalar este evento</translation>
+        <translation type="vanished">Señalar este evento</translation>
     </message>
     <message>
         <source>before scheduled start.  (First cart will have a STOP transition.)</source>
-        <translation>antes de su inicio programado  (el 1er cartucho tendrá transición PARAR)</translation>
+        <translation type="vanished">antes de su inicio programado  (el 1er cartucho tendrá transición PARAR)</translation>
     </message>
     <message>
         <source>TIMED START</source>
-        <translation>INICIO PROGRAMADO</translation>
+        <translation type="vanished">INICIO PROGRAMADO</translation>
     </message>
     <message>
         <source>Use hard start time</source>
-        <translation>Usar inicio forzado</translation>
+        <translation type="vanished">Usar inicio forzado</translation>
     </message>
     <message>
         <source>Make Post Point</source>
@@ -403,31 +403,31 @@ List</source>
     </message>
     <message>
         <source>Action If Previous Event Still Playing</source>
-        <translation>Acción si hay algún evento sonando</translation>
+        <translation type="vanished">Acción si hay algún evento sonando</translation>
     </message>
     <message>
         <source>Start immediately</source>
-        <translation>Iniciar de inmediato</translation>
+        <translation type="vanished">Iniciar de inmediato</translation>
     </message>
     <message>
         <source>Make next</source>
-        <translation>Hacer siguiente</translation>
+        <translation type="vanished">Hacer siguiente</translation>
     </message>
     <message>
         <source>Wait up to</source>
-        <translation>Espera hasta</translation>
+        <translation type="vanished">Espera hasta</translation>
     </message>
     <message>
         <source>Play</source>
-        <translation>Reproducir</translation>
+        <translation type="vanished">Reproducir</translation>
     </message>
     <message>
         <source>Segue</source>
-        <translation>Segue</translation>
+        <translation type="vanished">Segue</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation>Parar</translation>
+        <translation type="vanished">Parar</translation>
     </message>
     <message>
         <source>Transition if previous event ends before start time:</source>
@@ -435,15 +435,15 @@ List</source>
     </message>
     <message>
         <source>ENFORCING LENGTH</source>
-        <translation>FORZAR DURACIÓN</translation>
+        <translation type="vanished">FORZAR DURACIÓN</translation>
     </message>
     <message>
         <source>Use AutoFill</source>
-        <translation>Usar Autofill</translation>
+        <translation type="vanished">Usar Autofill</translation>
     </message>
     <message>
         <source>Use Timescaling</source>
-        <translation>Usar Timescaling</translation>
+        <translation type="vanished">Usar Timescaling</translation>
     </message>
     <message>
         <source>TRANSITION</source>
@@ -455,43 +455,43 @@ List</source>
     </message>
     <message>
         <source>None</source>
-        <translation>Ninguno</translation>
+        <translation type="vanished">Ninguno</translation>
     </message>
     <message>
         <source>From Traffic</source>
-        <translation>De Tráfico</translation>
+        <translation type="vanished">De Tráfico</translation>
     </message>
     <message>
         <source>From Music</source>
-        <translation>De Música</translation>
+        <translation type="vanished">De Música</translation>
     </message>
     <message>
         <source>Import carts scheduled</source>
-        <translation>Importar carts programados</translation>
+        <translation type="vanished">Importar carts programados</translation>
     </message>
     <message>
         <source>prior to the start of this event.</source>
-        <translation>antes del inicio de este evento.</translation>
+        <translation type="vanished">antes del inicio de este evento.</translation>
     </message>
     <message>
         <source>after the end of this event.</source>
-        <translation>después del fin del evento.</translation>
+        <translation type="vanished">después del fin del evento.</translation>
     </message>
     <message>
         <source>First cart has a</source>
-        <translation>Transic 1er cart</translation>
+        <translation type="vanished">Transic 1er cart</translation>
     </message>
     <message>
         <source>Imported carts have a</source>
-        <translation type="unfinished">Transic. cart. importados</translation>
+        <translation type="obsolete">Transic. cart. importados</translation>
     </message>
     <message>
         <source>transition.</source>
-        <translation type="unfinished">.</translation>
+        <translation type="obsolete">.</translation>
     </message>
     <message>
         <source>POST-IMPORT CARTS</source>
-        <translation>CARTUCHOS AL TERMINAR</translation>
+        <translation type="vanished">CARTUCHOS AL TERMINAR</translation>
     </message>
     <message>
         <source>&amp;Save</source>
@@ -591,15 +591,15 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>Warn if fill is over or under</source>
-        <translation>Advertir si relleno está encima o debajo </translation>
+        <translation type="vanished">Advertir si relleno está encima o debajo </translation>
     </message>
     <message>
         <source>by at least</source>
-        <translation>por al menos</translation>
+        <translation type="vanished">por al menos</translation>
     </message>
     <message>
         <source>[none]</source>
-        <translation>[ninguno]</translation>
+        <translation type="vanished">[ninguno]</translation>
     </message>
     <message>
         <source>event.</source>
@@ -615,15 +615,15 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>Select from:</source>
-        <translation>Elegir desde:</translation>
+        <translation type="vanished">Elegir desde:</translation>
     </message>
     <message>
         <source>Title Separation</source>
-        <translation>Separar títulos</translation>
+        <translation type="vanished">Separar títulos</translation>
     </message>
     <message>
         <source>Must have code</source>
-        <translation>Con el código</translation>
+        <translation type="vanished">Con el código</translation>
     </message>
     <message>
         <source>, Scheduler</source>
@@ -635,19 +635,15 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>Len:</source>
-        <translation>Long:</translation>
+        <translation type="vanished">Long:</translation>
     </message>
     <message>
         <source>PRE-IMPORT CARTS</source>
-        <translation>PRE-IMPORTAR CARTUCHOS</translation>
+        <translation type="vanished">PRE-IMPORTAR CARTUCHOS</translation>
     </message>
     <message>
         <source>IMPORT</source>
-        <translation>IMPORTAR</translation>
-    </message>
-    <message>
-        <source>and code</source>
-        <translation type="unfinished"></translation>
+        <translation type="vanished">IMPORTAR</translation>
     </message>
     <message>
         <source>Length</source>
@@ -666,31 +662,11 @@ Do you want to overwrite it?</source>
         <translation type="obsolete">Cuenta</translation>
     </message>
     <message>
-        <source>Artist Separation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>TRANSITIONS</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>CART STACK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Import inline traffic event</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>USER NOTES</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[None]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1347,6 +1323,21 @@ removerá estos datos.  ¿Remezclar?</translation>
     </message>
     <message>
         <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ImportCartsWidget</name>
+    <message>
+        <source>PRE-IMPORT EVENTS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>POST-IMPORT EVENTS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Len</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

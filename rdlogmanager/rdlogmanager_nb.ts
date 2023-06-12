@@ -374,23 +374,23 @@ List</source>
     </message>
     <message>
         <source>PRE-POSITION LOG</source>
-        <translation>LOGG FOR FØR-POSISJON</translation>
+        <translation type="vanished">LOGG FOR FØR-POSISJON</translation>
     </message>
     <message>
         <source>Cue to this event</source>
-        <translation>Spol til denne hendinga</translation>
+        <translation type="vanished">Spol til denne hendinga</translation>
     </message>
     <message>
         <source>before scheduled start.  (First cart will have a STOP transition.)</source>
-        <translation>før den planlagde starten (Fyrste korga får ein STOPP-overgang.)</translation>
+        <translation type="vanished">før den planlagde starten (Fyrste korga får ein STOPP-overgang.)</translation>
     </message>
     <message>
         <source>TIMED START</source>
-        <translation>TIDLAGT START</translation>
+        <translation type="vanished">TIDLAGT START</translation>
     </message>
     <message>
         <source>Use hard start time</source>
-        <translation>Bruk hard starttid</translation>
+        <translation type="vanished">Bruk hard starttid</translation>
     </message>
     <message>
         <source>Make Post Point</source>
@@ -398,31 +398,31 @@ List</source>
     </message>
     <message>
         <source>Action If Previous Event Still Playing</source>
-        <translation>Handling viss førre hendinga spelar enno</translation>
+        <translation type="vanished">Handling viss førre hendinga spelar enno</translation>
     </message>
     <message>
         <source>Start immediately</source>
-        <translation>Start med ein gong</translation>
+        <translation type="vanished">Start med ein gong</translation>
     </message>
     <message>
         <source>Make next</source>
-        <translation>Gjer til neste</translation>
+        <translation type="vanished">Gjer til neste</translation>
     </message>
     <message>
         <source>Wait up to</source>
-        <translation>Vent opp til</translation>
+        <translation type="vanished">Vent opp til</translation>
     </message>
     <message>
         <source>Play</source>
-        <translation>Spel</translation>
+        <translation type="vanished">Spel</translation>
     </message>
     <message>
         <source>Segue</source>
-        <translation>Krysston</translation>
+        <translation type="vanished">Krysston</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation>Stopp</translation>
+        <translation type="vanished">Stopp</translation>
     </message>
     <message>
         <source>Overlap</source>
@@ -434,23 +434,23 @@ List</source>
     </message>
     <message>
         <source>ENFORCING LENGTH</source>
-        <translation>TVINGELENGD</translation>
+        <translation type="vanished">TVINGELENGD</translation>
     </message>
     <message>
         <source>Use AutoFill</source>
-        <translation>Bruk Autofyll</translation>
+        <translation type="vanished">Bruk Autofyll</translation>
     </message>
     <message>
         <source>Warn if fill is over or under</source>
-        <translation>Åtvar viss fyllet er over eller under</translation>
+        <translation type="vanished">Åtvar viss fyllet er over eller under</translation>
     </message>
     <message>
         <source>by at least</source>
-        <translation>med minst</translation>
+        <translation type="vanished">med minst</translation>
     </message>
     <message>
         <source>Use Timescaling</source>
-        <translation>Bruk tidsskalering</translation>
+        <translation type="vanished">Bruk tidsskalering</translation>
     </message>
     <message>
         <source>TRANSITION</source>
@@ -462,51 +462,51 @@ List</source>
     </message>
     <message>
         <source>None</source>
-        <translation>Ingen</translation>
+        <translation type="vanished">Ingen</translation>
     </message>
     <message>
         <source>From Traffic</source>
-        <translation>Frå trafikk</translation>
+        <translation type="vanished">Frå trafikk</translation>
     </message>
     <message>
         <source>From Music</source>
-        <translation>Frå musikk</translation>
+        <translation type="vanished">Frå musikk</translation>
     </message>
     <message>
         <source>Select from:</source>
-        <translation>Vel frå:</translation>
+        <translation type="vanished">Vel frå:</translation>
     </message>
     <message>
         <source>Title Separation</source>
-        <translation>Titteloppdeling</translation>
+        <translation type="vanished">Titteloppdeling</translation>
     </message>
     <message>
         <source>Must have code</source>
-        <translation>Må ha kode</translation>
+        <translation type="vanished">Må ha kode</translation>
     </message>
     <message>
         <source>Import carts scheduled</source>
-        <translation>Importer korger planlagt</translation>
+        <translation type="vanished">Importer korger planlagt</translation>
     </message>
     <message>
         <source>prior to the start of this event.</source>
-        <translation>før starten av denne hendinga.</translation>
+        <translation type="vanished">før starten av denne hendinga.</translation>
     </message>
     <message>
         <source>after the end of this event.</source>
-        <translation>etter slutten på denne hendinga.</translation>
+        <translation type="vanished">etter slutten på denne hendinga.</translation>
     </message>
     <message>
         <source>First cart has a</source>
-        <translation>Fyrste korga har</translation>
+        <translation type="vanished">Fyrste korga har</translation>
     </message>
     <message>
         <source>Imported carts have a</source>
-        <translation type="unfinished">Importerte korger har</translation>
+        <translation type="obsolete">Importerte korger har</translation>
     </message>
     <message>
         <source>transition.</source>
-        <translation type="unfinished">ein overgang.</translation>
+        <translation type="obsolete">ein overgang.</translation>
     </message>
     <message>
         <source>Import inline traffic with the</source>
@@ -514,7 +514,7 @@ List</source>
     </message>
     <message>
         <source>[none]</source>
-        <translation>[ingen]</translation>
+        <translation type="vanished">[ingen]</translation>
     </message>
     <message>
         <source>event.</source>
@@ -522,7 +522,7 @@ List</source>
     </message>
     <message>
         <source>POST-IMPORT CARTS</source>
-        <translation>ETTER-IMPORT-KORGER</translation>
+        <translation type="vanished">ETTER-IMPORT-KORGER</translation>
     </message>
     <message>
         <source>&amp;Save</source>
@@ -633,22 +633,6 @@ Vil du byta henne ut?</translation>
         <translation type="obsolete">, Innlinje-trafikk</translation>
     </message>
     <message>
-        <source>Len:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>PRE-IMPORT CARTS</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>IMPORT</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>and code</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Length</source>
         <translation type="obsolete">Lengd</translation>
     </message>
@@ -665,31 +649,11 @@ Vil du byta henne ut?</translation>
         <translation type="obsolete">Tellign</translation>
     </message>
     <message>
-        <source>Artist Separation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>TRANSITIONS</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>CART STACK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Import inline traffic event</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>USER NOTES</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[None]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1334,6 +1298,21 @@ Flettar du på nytt, vil du fjerna desse dataa. Flett på nytt?</translation>
     </message>
     <message>
         <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ImportCartsWidget</name>
+    <message>
+        <source>PRE-IMPORT EVENTS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>POST-IMPORT EVENTS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Len</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

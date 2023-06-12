@@ -1879,7 +1879,7 @@ Feeds</source>
     </message>
     <message>
         <source>[none]</source>
-        <translation type="obsolete">[žádný]</translation>
+        <translation type="unfinished">[žádný]</translation>
     </message>
     <message>
         <source>Default Shelf Life</source>
@@ -1920,6 +1920,30 @@ Clipboard</source>
     </message>
     <message>
         <source>Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CDN Purge Plug-In</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select</source>
+        <translation type="unfinished">Vybrat</translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation type="unfinished">Smazat</translation>
+    </message>
+    <message>
+        <source>Select Plug-In</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rivendell CDN Scripts (*.cdn)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All Files (*)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5031,11 +5055,11 @@ Music</source>
     </message>
     <message>
         <source>Maximum Remote Post Length:</source>
-        <translation type="unfinished">Největší délka vzdáleného vyvěšení:</translation>
+        <translation type="obsolete">Největší délka vzdáleného vyvěšení:</translation>
     </message>
     <message>
         <source>Mbytes</source>
-        <translation type="unfinished">MiB</translation>
+        <translation type="obsolete">MiB</translation>
     </message>
     <message>
         <source>Temporary Cart Group:</source>
@@ -5703,6 +5727,37 @@ Password</source>
     </message>
 </context>
 <context>
+    <name>FeedListView</name>
+    <message>
+        <source>Generate Item Report [Front]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Generate Item Report [Back]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View Raw XML [Front]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View Raw XML [Back]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Validate with Bluebrry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error accessing from XML data.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ImportModel</name>
     <message>
         <source>Start Time</source>
@@ -6281,35 +6336,11 @@ Stále ještě jej chcete smazat?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Posting images...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Posting item data...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Posting RSS XML data...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>This operation will unpost (remove) all XML, image and</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>audio data from the remote archive, and thus may</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unposting RSS XML data...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unposting item data...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unposting images...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6346,6 +6377,14 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>Error posting updated XML to feed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reposting feed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unposting feed</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
