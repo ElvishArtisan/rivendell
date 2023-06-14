@@ -24240,6 +24240,7 @@
 	* Incremented the package version to 4.0.0rc5.
 	* Incremented the Python API version to 4.0.0rc5.
 2023-06-14 David Klann <dklann@broadcasttool.com>
+2023-06-14 David Klann <dklann@broadcasttool.com>
 	* Added support for updating library metadata on subsequent
 	dropbox imports
 	* Incremented the database version to 370.
