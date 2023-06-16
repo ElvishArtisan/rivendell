@@ -1,5 +1,10 @@
 This is the README file for the Rivendell package.
 
+## WARNING: This branch has been frozen, and is of historical interest only.
+
+The Git branch for ongoing development of v3.x (in the unlikely event of
+their being any) is 'v3'.
+
 This software comes with ABSOLUTELY NO WARRANTY. See the file COPYING for
 details.
 
