@@ -1,4 +1,7 @@
-This is the README file for the Rivendell package.
+#This is the README file for the Rivendell package.
+
+## WARNING: This branch has been frozen, and is of historical interest only.
+The Git branch for ongoing development of Rivendell v4.x is 'v4'.
 
 This software comes with ABSOLUTELY NO WARRANTY. See the files in the
 LICENSES subdirectory for details.
