@@ -319,7 +319,6 @@ void RecordListModel::setRecordStatus(const QModelIndex &row,
 void RecordListModel::setRecordStatus(unsigned rec_id,RDDeck::Status status)
 {
   int index=d_ids.indexOf(rec_id);
-
   if(index>=0) {
     if(d_statuses.at(index)!=status) {
       d_statuses[index]=status;
@@ -364,6 +363,10 @@ void RecordListModel::channelCounts(int chan,int *waiting,int *active,
 
 QModelIndex RecordListModel::addRecord(unsigned id)
 {
+  if(id>=RDCATCHD_DYNAMIC_BASE_ID) {
+    return QModelIndex();  // Don't process dynamic record events!
+  }
+
   //
   // Find the insertion offset
   //

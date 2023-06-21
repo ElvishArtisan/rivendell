@@ -24248,3 +24248,7 @@
 2023-06-21 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdcatchd(8) that would cause a segfault after
 	reception of a 'Start Record Deck' ['RS'] RML.
+2023-06-21 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdcatch(1) that caused a phantom event
+	entry to appear in the Event List while processing the
+	'Start Record Deck' ['RS'] RML.
