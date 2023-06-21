@@ -24242,3 +24242,6 @@
 2023-06-16 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.0.1.
 	* Incremented the Python API version to 4.0.1.
+2023-06-21 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the voice tracker that caused the waveform displays
+	to be greyed out out immediately after creating a new track marker.

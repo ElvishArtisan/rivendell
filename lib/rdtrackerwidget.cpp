@@ -981,6 +981,9 @@ void RDTrackerWidget::insertData()
   else {
     d_log_model->remove(line,1);
   }
+  QItemSelection select(d_log_model->index(line,0),
+			d_log_model->index(line,d_log_model->columnCount()-1));
+  selectionChangedData(select,select);
   delete edit;
 }
 
