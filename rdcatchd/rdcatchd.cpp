@@ -2007,7 +2007,10 @@ void MainObject::PurgeEvent(int event)
   case RDRecording::LastType:
     break;
   }
-  catch_engine->removeEvent(catch_events[event].id());
+  if(catch_events[event].id()<RDCATCHD_DYNAMIC_BASE_ID) {
+    catch_engine->    // Not needed for RML Events!
+      removeEvent(catch_events[event].id());
+  }
   std::vector<CatchEvent>::iterator it=catch_events.begin()+event;
   catch_events.erase(it,it+1);
 }

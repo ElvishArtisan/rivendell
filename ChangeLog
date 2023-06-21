@@ -24245,3 +24245,6 @@
 2023-06-21 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the voice tracker that caused the waveform displays
 	to be greyed out out immediately after creating a new track marker.
+2023-06-21 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdcatchd(8) that would cause a segfault after
+	reception of a 'Start Record Deck' ['RS'] RML.
