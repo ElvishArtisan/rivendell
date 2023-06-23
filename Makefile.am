@@ -89,6 +89,7 @@ zip:	dist
 
 EXTRA_DIST = autogen.sh\
              CODINGSTYLE\
+             configure_build.sh\
              get_distro.pl\
              get_target.sh\
              INSTALL-WINDOWS\

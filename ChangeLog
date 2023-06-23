@@ -24255,3 +24255,5 @@
 2023-06-23 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.0.2.
 	* Incremented the Python API version to 4.0.2.
+2023-06-23 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'configure_build.sh' script.
