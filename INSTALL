@@ -144,11 +144,7 @@ capture. Available at http://www.twolame.org/.
 DOCUMENTATION
 -------------
 The larger pieces of the Rivendell documentation are written in XML-DocBook5.
-Pre-generated docs are included in the source tarball, so special tools will
-not normally be required to view or install them. However, if you need to
-rebuild them (either because you've modified the DocBook sources or are
-installing from the primary GitHub repository), then you will need the
-following:
+The following tools are required to build them:
 
 XML-DocBook5 Stylesheets. Available at 
 http://sourceforge.net/projects/docbook/. You will also need to create a
@@ -163,6 +159,9 @@ http://xmlsoft.org/XSLT/xsltproc2.html
 
 Apache FOP. Formatting Objects (FO) processor. Available at
 https://xmlgraphics.apache.org/fop/.
+
+For a list of the required set of development packages for various popular
+distros, see the 'DISTRO-SPECIFIC NOTES' section, below.
 
 INSTALLATION
 There are three major steps to getting a Rivendell system up and
@@ -196,16 +195,18 @@ documentation that accompanies the server itself.
 
 Once the prerequisites are set up, installation is most often a matter of 
 cd'ing to the top of the Rivendell source tree and typing
-'./configure', 'make', followed (as root) by 'make install'. Those
-who obtained the source via CVS will need to do './autogen.sh' first.
-
-The ./configure script will auto-detect what sound drivers (HPI, JACK
-or ALSA) are available and enable build support accordingly. To override
-this behavior, it's possible to specify '--disable-hpi',
-'--disable-jack' or '--disable-alsa' as an argument to './configure'.
-Be sure to see the important additional information regarding
-configuration in the 'docs/JACK.txt' or 'docs/ALSA.txt' files if you
-plan on using those sound driver architectures.
+'./configure_build.sh', 'make', followed (as root) by 'make install'. The
+'configure_build.sh' will attempt to determine which distribution is
+running and automatically invoke the './configure' script with the
+appropriate arguments. Should 'configure_build.sh' fail to recognize
+the distro environment, './configure' can be run directly. Do
+'./configure --help' for a list of the available arguments. This script
+will auto-detect what sound drivers (HPI, JACK or ALSA) are available and
+enable build support accordingly. To override this behavior, it's possible
+to specify '--disable-hpi', '--disable-jack' or '--disable-alsa' as an
+argument to './configure'. Be sure to see the important additional
+information regarding configuration in the 'docs/JACK.txt' or 'docs/ALSA.txt'
+files if you plan on using those sound driver architectures.
 
 The installation of Rivendell's web services components are controlled
 by two parameters passed to 'configure', as follows:
@@ -215,14 +216,8 @@ by two parameters passed to 'configure', as follows:
 --sysconfdir     Location to install Apache configuration
 
 The specific values to pass will vary widely depending upon the specific
-distro in question. Some known good values (assuming a default Apache
-setup):
-
-RHEL 5:	  --libexecdir=/var/httpd/rd-bin --sysconfdir=/etc/httpd/conf.d
-
-RHEL 6/7: --libexecdir=/var/www/rd-bin --sysconfdir=/etc/httpd/conf.d
-
-SuSE:     --libexecdir=/srv/www/rd-bin --sysconfdir=/etc/apache2/conf.d
+distro in question. For some specific examples for various popular distros,
+see the 'DISTRO-SPECIFIC NOTES' section below.
 
 After doing 'make install', be sure to restart the Apache web service.
 

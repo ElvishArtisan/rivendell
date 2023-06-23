@@ -24257,3 +24257,6 @@
 	* Incremented the Python API version to 4.0.2.
 2023-06-23 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'configure_build.sh' script.
+2023-06-23 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the 'INSTALL' file to cover use of the 'configure_build.sh'
+	script.
