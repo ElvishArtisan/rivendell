@@ -24252,3 +24252,6 @@
 	* Fixed a regression in rdcatch(1) that caused a phantom event
 	entry to appear in the Event List while processing the
 	'Start Record Deck' ['RS'] RML.
+2023-06-21 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.0.2.
+	* Incremented the Python API version to 4.0.2.
