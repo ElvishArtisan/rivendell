@@ -44,7 +44,7 @@ MainObject::MainObject(QObject *parent)
   //
   rda=static_cast<RDApplication *>(new RDCoreApplication("rdcheckcuts",
 			      "rdcheckcuts",RDCHECKCUTS_USAGE,false,this));
-  if(!rda->open(&err_msg,NULL,true)) {
+  if(!rda->open(&err_msg,NULL,true,false)) {
     fprintf(stderr,"rdcheckcuts: %s\n",err_msg.toUtf8().constData());
     exit(1);
   }

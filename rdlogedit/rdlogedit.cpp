@@ -61,7 +61,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   // Open the Database
   //
   rda=new RDApplication("RDLogEdit","rdlogedit",RDLOGEDIT_USAGE,true,this);
-  if(!rda->open(&err_msg,NULL,true)) {
+  if(!rda->open(&err_msg,NULL,true,false)) {
     QMessageBox::critical(this,"RDLogEdit - "+tr("Error"),err_msg);
     exit(1);
   }

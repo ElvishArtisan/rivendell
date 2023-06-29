@@ -68,7 +68,7 @@ MainObject::MainObject(QObject *parent)
   //
   rda=static_cast<RDApplication *>(new RDCoreApplication("rdvairplayd",
 		      "rdvairplayd",RDVAIRPLAYD_USAGE,false,this));
-  if(!rda->open(&err_msg,&err_type,false)) {
+  if(!rda->open(&err_msg,&err_type,false,true)) {
     fprintf(stderr,"rdvairplayd: %s\n",err_msg.toUtf8().constData());
     exit(1);
   }

@@ -2,7 +2,7 @@
 //
 // Test the RDTimeEngine class
 //
-//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -42,7 +42,7 @@ MainObject::MainObject(QObject *parent)
 							 "timeengine_test",
 							 TIMEENGINE_TEST_USAGE,
 							 false,this));
-  if(!rda->open(&err_msg,&err_type,false)) {
+  if(!rda->open(&err_msg,&err_type,false,false)) {
     fprintf(stderr,"timeengine_test: %s\n",err_msg.toUtf8().constData());
     exit(1);
   }

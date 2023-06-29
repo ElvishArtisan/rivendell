@@ -3,7 +3,7 @@
 // Command-line tool for setting Rivendell Cart Metadata
 //
 //   Patrick Linstruth <patrick@deltecent.com>
-//   (C) Copyright 2019-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2019-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -51,7 +51,7 @@ MainObject::MainObject(QObject *parent)
   //
   rda=static_cast<RDApplication *>(new RDCoreApplication("rdmetadata",
 				 "rdmetadata",RDMETADATA_USAGE,false,this));
-  if(!rda->open(&err_msg,NULL,true)) {
+  if(!rda->open(&err_msg,NULL,true,false)) {
     fprintf(stderr,"rdmetadata: %s\n",err_msg.toUtf8().constData());
     exit(1);
   }

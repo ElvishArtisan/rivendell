@@ -2,7 +2,7 @@
 //
 // Test Rivendell file deletion routines.
 //
-//   (C) Copyright 2010-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -41,7 +41,7 @@ MainObject::MainObject(QObject *parent)
   //
   rda=new RDApplication("delete_test","delete_test",DELETE_TEST_USAGE,false,
 			this);
-  if(!rda->open(&err_msg,NULL,true)) {
+  if(!rda->open(&err_msg,NULL,true,false)) {
     fprintf(stderr,"delete_test: %s\n",err_msg.toUtf8().constData());
     exit(1);
   }

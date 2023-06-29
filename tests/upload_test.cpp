@@ -43,7 +43,7 @@ MainObject::MainObject(QObject *parent)
   //
   rda=new RDApplication("upload_test","upload_test",UPLOAD_TEST_USAGE,false,
 			this);
-  if(!rda->open(&err_msg,NULL,true)) {
+  if(!rda->open(&err_msg,NULL,true,false)) {
     fprintf(stderr,"upload_test: %s\n",err_msg.toUtf8().constData());
     exit(1);
   }

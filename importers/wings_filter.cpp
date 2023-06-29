@@ -52,7 +52,7 @@ MainObject::MainObject(QObject *parent)
   //
   rda=static_cast<RDApplication *>(new RDCoreApplication("wings_filter",
 			       "wings_filter",WINGS_FILTER_USAGE,false,this));
-  if(!rda->open(&err_msg,NULL,false)) {
+  if(!rda->open(&err_msg,NULL,false,false)) {
     fprintf(stderr,"wings_filter: %s\n",err_msg.toUtf8().constData());
     exit(1);
   }

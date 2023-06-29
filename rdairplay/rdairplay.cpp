@@ -74,7 +74,7 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   // Open the Database
   //
   rda=new RDApplication("RDAirPlay","rdairplay",RDAIRPLAY_USAGE,true,this);
-  if(!rda->open(&err_msg,NULL,true)) {
+  if(!rda->open(&err_msg,NULL,true,true)) {
     QMessageBox::critical(this,"RDAirPlay - "+tr("Error"),err_msg);
     exit(1);
   }

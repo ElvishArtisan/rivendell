@@ -91,7 +91,7 @@ MainObject::MainObject(QObject *parent)
   //
   rda=static_cast<RDApplication *>(new RDCoreApplication("rdcatchd","rdcatchd",
 						    RDCATCHD_USAGE,false,this));
-  if(!rda->open(&err_msg,&err_type,false)) {
+  if(!rda->open(&err_msg,&err_type,false,false)) {
     fprintf(stderr,"rdcatchd: %s\n",err_msg.toUtf8().constData());
     exit(1);
   }

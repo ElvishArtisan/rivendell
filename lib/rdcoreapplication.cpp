@@ -1,4 +1,4 @@
-// rdapplication.cpp
+// rdcoreapplication.cpp
 //
 // Base Application Class
 //
@@ -22,6 +22,9 @@
 #include <syslog.h>
 
 #include <QApplication>
+#include <QDir>
+#include <QFile>
+#include <QIODevice>
 #include <QProcess>
 #include <QStyleFactory>
 #include <QTranslator>
@@ -132,8 +135,8 @@ RDCoreApplication::~RDCoreApplication()
 }
 
 
-bool RDCoreApplication::open(QString *err_msg,RDCoreApplication::ErrorType *err_type,
-			 bool check_svc)
+bool RDCoreApplication::open(QString *err_msg,ErrorType *err_type,
+			     bool check_svc,bool check_unique)
 {
   int schema=0;
   QString db_err;
@@ -174,6 +177,17 @@ bool RDCoreApplication::open(QString *err_msg,RDCoreApplication::ErrorType *err_
 	printf(" %s\n",f0.at(j).toUtf8().constData());
       }
       exit(0);
+    }
+  }
+
+  //
+  // Process Uniqueness Check
+  //
+  if(check_unique) {
+    if(!isUniqueProcess(app_command_name)) {
+      fprintf(stderr,"%s: prior instance found\n",
+	      app_command_name.toUtf8().constData());
+      exit(RDApplication::ExitPriorInstance);
     }
   }
 
@@ -635,6 +649,32 @@ QString RDCoreApplication::exitCodeText(RDCoreApplication::ExitCode code)
   }
 
   return ret;
+}
+
+
+bool RDCoreApplication::isUniqueProcess(const QString &cmdname)
+{
+  bool ok=false;
+  QStringList dirs=
+    QDir("/proc").entryList(QDir::Dirs|QDir::NoDotAndDotDot);
+
+  for(int i=0;i<dirs.size();i++) {
+    pid_t pid=dirs.at(i).toUInt(&ok);
+    if(ok&&(pid!=getpid())) {
+      QFile *file=new QFile("/proc/"+dirs.at(i)+"/cmdline");
+      if(file->open(QIODevice::ReadOnly)) {
+	QString cmdline(QString::fromUtf8(file->readAll()));
+	QStringList f0=cmdline.trimmed().split("/",QString::SkipEmptyParts);
+	if((f0.size()>0)&&(f0.last().trimmed()==cmdname)) {
+	  delete file;
+	  return false;
+	}
+      }
+      delete file;
+    }
+  }
+
+  return true;
 }
 
 

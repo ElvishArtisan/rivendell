@@ -2,7 +2,7 @@
 //
 // Test Rivendell RDNotification class.
 //
-//   (C) Copyright 2019-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2019-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -31,7 +31,7 @@ MainObject::MainObject(QObject *parent)
 
   rda=new RDApplication("notification_test","notification_test",
 			NOTIFICATION_TEST_USAGE,false,this);
-  if(!rda->open(&err_msg,NULL,true)) {
+  if(!rda->open(&err_msg,NULL,true,false)) {
     fprintf(stderr,"notification_test: %s\n",err_msg.toUtf8().constData());
     exit(1);
   }

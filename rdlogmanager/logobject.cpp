@@ -2,7 +2,7 @@
 //
 // Generate/merge logs from the command line.
 //
-//   (C) Copyright 2018-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -46,7 +46,7 @@ LogObject::LogObject(const QString &svcname,int start_offset,
   //
   rda=static_cast<RDApplication *>(new RDCoreApplication("RDLogManager",
 					       "rdlogmanager","",true,NULL));
-  if(!rda->open(&err_msg,NULL,false)) {
+  if(!rda->open(&err_msg,NULL,false,false)) {
     fprintf(stderr,"rdlogmanager: %s\n",err_msg.toUtf8().constData());
     exit(RDApplication::ExitNoDb);
   }

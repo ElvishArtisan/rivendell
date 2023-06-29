@@ -2,7 +2,7 @@
 //
 // Test Rivendell image storage
 //
-//   (C) Copyright 2010-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -47,7 +47,7 @@ MainObject::MainObject(QObject *parent)
   //
   rda=new RDApplication("feed_image_test","feed_image_test",
 			FEED_IMAGE_TEST_USAGE,false,this);
-  if(!rda->open(&err_msg,NULL,true)) {
+  if(!rda->open(&err_msg,NULL,true,false)) {
     fprintf(stderr,"feed_image_test: %s\n",err_msg.toUtf8().constData());
     exit(1);
   }

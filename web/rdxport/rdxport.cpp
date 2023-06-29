@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal
 //
-//   (C) Copyright 2010-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -51,7 +51,7 @@ Xport::Xport(QObject *parent)
   //
   rda=static_cast<RDApplication *>(new RDCoreApplication("rdxport.cgi",
 			      "rdxport.cgi",RDXPORT_CGI_USAGE,false,this));
-  if(!rda->open(&err_msg,NULL,false)) {
+  if(!rda->open(&err_msg,NULL,false,false)) {
     printf("Content-type: text/html\n");
     printf("Status: 500\n");
     printf("\n");

@@ -87,7 +87,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   // Open the Database
   //
   rda=new RDApplication("RDLibrary","rdlibrary",RDLIBRARY_USAGE,true,this);
-  if(!rda->open(&err_msg,NULL,true)) {
+  if(!rda->open(&err_msg,NULL,true,false)) {
     QMessageBox::critical(this,"RDLibrary - "+tr("Error"),err_msg);
     exit(1);
   }

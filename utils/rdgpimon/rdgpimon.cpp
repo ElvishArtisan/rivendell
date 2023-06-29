@@ -2,7 +2,7 @@
 //
 // A Qt-based application for testing General Purpose Input (GPI) devices.
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -39,7 +39,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   // Open the Database
   //
   rda=new RDApplication("RDGpiMon","rdgpimon",RDGPIMON_USAGE,true,this);
-  if(!rda->open(&err_msg,NULL,true)) {
+  if(!rda->open(&err_msg,NULL,true,false)) {
     QMessageBox::critical(this,"RDGpiMon - "+tr("Error"),err_msg);
     exit(1);
   }

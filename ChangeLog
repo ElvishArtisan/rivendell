@@ -24260,3 +24260,8 @@
 2023-06-23 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the 'INSTALL' file to cover use of the 'configure_build.sh'
 	script.
+2023-06-29 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'RDCoreApplication::isUniqueProcess()' static method.
+	* Added processuniqueness checks to caed(8), rdairplay(1),
+	rdrepld(8), rdrssd(8), rdservice(8), rdvairplayd(8), ripcd(8) and
+	rdalsaconfig(8).

@@ -2,7 +2,7 @@
 //
 // Base Application Class
 //
-//   (C) Copyright 2018-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -58,7 +58,8 @@ class RDCoreApplication : public QObject
   RDCoreApplication(const QString &module_name,const QString &cmdname,
 		    const QString &usage,bool use_translations,QObject *parent);
   ~RDCoreApplication();
-  bool open(QString *err_msg,ErrorType *err_type,bool check_svc);
+  bool open(QString *err_msg,ErrorType *err_type,
+	    bool check_svc,bool check_unique);
   RDAirPlayConf *airplayConf();
   RDCae *cae();
   RDCmdSwitch *cmdSwitch();
@@ -89,6 +90,7 @@ class RDCoreApplication : public QObject
 				const QString &login_name=QString());
   static void syslog(RDConfig *config,int priority,const char *fmt,...);
   static QString exitCodeText(ExitCode code);
+  static bool isUniqueProcess(const QString &cmdname);
 
  private slots:
   void userChangedData();

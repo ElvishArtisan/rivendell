@@ -48,7 +48,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   // Open the database
   //
   rda=new RDApplication("RDLogin","rdlogin",RDLOGIN_USAGE,true,this);
-  if(!rda->open(&err_msg,NULL,true)) {
+  if(!rda->open(&err_msg,NULL,true,false)) {
     QMessageBox::critical(this,"RDLogin - "+tr("Error"),err_msg);
     exit(1);
   }

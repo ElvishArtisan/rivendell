@@ -2,7 +2,7 @@
 //
 // Test harness for RDWaveWidget
 //
-//   (C) Copyright 2021-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -42,7 +42,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   rda=new RDApplication("wavewidget_test","wavewidget_test",WAVEWIDGET_TEST_USAGE,
 			false,this);
-  if(!rda->open(&err_msg,NULL,true)) {
+  if(!rda->open(&err_msg,NULL,true,false)) {
     QMessageBox::critical(this,"wavewidget_test - "+tr("Error"),err_msg);
     exit(RDApplication::ExitNoDb);
   }
