@@ -716,7 +716,7 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
 
 QSize MainWidget::sizeHint() const
 {
-  return QSize(1555,870);
+  return QSize(1310,870);
 }
 
 
@@ -1319,7 +1319,7 @@ void MainWidget::fullLogButtonData(int id)
   }
   else {
     air_panel->hide();
-    ShowTracker(false);
+    air_tracker->hide();
     air_tracker_button->setPalette(palette());
     for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
       if(air_log_list[i]->isVisible()) {
@@ -1344,7 +1344,7 @@ void MainWidget::panelButtonData()
       air_log_button[i]->setPalette(palette());
     }
   }
-  ShowTracker(false);
+  air_tracker->hide();
   air_tracker_button->setPalette(palette());
   air_panel->show();
   air_panel_button->setPalette(active_color);
@@ -1361,7 +1361,7 @@ void MainWidget::trackerButtonData()
   }
   air_panel->hide();
   air_panel_button->setPalette(palette());
-  ShowTracker(true);
+  air_tracker->show();
   air_tracker_button->setPalette(active_color);
 }
 
@@ -1841,15 +1841,11 @@ void MainWidget::resizeEvent(QResizeEvent *e)
   int xpos=562;
   air_panel_button->setGeometry(xpos,h-65,80,60);
   xpos+=85;
-  if((size().width()>=(510+air_tracker->sizeHint().width()))&&
-     (h>=(140+air_tracker->sizeHint().height()))) {
-    air_tracker_button->setGeometry(xpos,h-65,80,60);
-    xpos+=85;
-    air_tracker_button->show();
-  }
-  else {
-    air_tracker_button->hide();
-  }
+
+  air_tracker_button->setGeometry(xpos,h-65,80,60);
+  xpos+=85;
+  air_tracker_button->show();
+
   int log_button_w=(w-xpos-5)/3;
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
     air_log_button[i]->setGeometry(xpos+i*log_button_w,h-65,log_button_w-5,60);
@@ -2250,20 +2246,6 @@ RDAirPlayConf::Channel MainWidget::PanelChannel(int mport) const
     break;
   }
   return chan;
-}
-
-
-void MainWidget::ShowTracker(bool state)
-{
-  if(state) {
-    setMinimumWidth(510+air_tracker->sizeHint().width());
-    setMinimumHeight(140+air_tracker->sizeHint().height());
-    air_tracker->show();
-  }
-  else {
-    setMinimumSize(sizeHint());
-    air_tracker->hide();
-  }
 }
 
 

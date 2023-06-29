@@ -24265,3 +24265,7 @@
 	* Added processuniqueness checks to caed(8), rdairplay(1),
 	rdrepld(8), rdrssd(8), rdservice(8), rdvairplayd(8), ripcd(8) and
 	rdalsaconfig(8).
+2023-06-29 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed regressions that caused spontaneous resizing of the main
+	window in rdairplay(1) when switching between Sound Panel and
+	Voice Tracker views on the right-hand side.
