@@ -24275,3 +24275,10 @@
 	dropbox imports
 2023-07-07 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the database version to 371.
+2023-07-07 Fred Gleason <fredg@paravelsystems.com>
+	* Moved the entry for the '--update-metadata' to its proper
+	alphabetical position on the rdimport(1) man page.
+	* Tweaked the layout of the 'Dropbox Configuration' dialog in
+	rdadmin(1).
+	* Updated the screenshot for the 'Dropbox Configuration' dialog in
+	rdadmin(1).

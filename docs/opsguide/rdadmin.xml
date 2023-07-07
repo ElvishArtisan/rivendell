@@ -1832,7 +1832,7 @@
 	<para>
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata align="center" fileref="rdadmin.dropbox_configuration_dialog.png" width="87mm" depth="123mm"/>
+	      <imagedata align="center" fileref="rdadmin.dropbox_configuration_dialog.png" width="87mm"/>
 	    </imageobject>
 	    <caption>
 	      <para>The Dropbox Configuration Dialog</para>
@@ -2047,7 +2047,11 @@
 	    </term>
 	    <listitem>
 	      <para>
-		Update Library metadata on successful importation <emphasis>when replacing audio in an existing cart</emphasis>. Checked or unchecked, this option has no effect on updating the metadata when importing audio into a cart for the first time.
+		Update cart-level metadata on successful importation
+		<emphasis>when adding an additional cut to an existing cart
+		</emphasis>. Checked or unchecked, this option has no effect
+		on updating the metadata when importing audio into a cart for
+		the first time.
 	      </para>
 	    </listitem>
 	  </varlistentry>

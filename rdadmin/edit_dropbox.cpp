@@ -135,25 +135,25 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   // Logging
   //
   box_log_to_syslog_check=new QCheckBox(this);
-  box_log_to_syslog_check->setGeometry(50,124,15,15);
+  box_log_to_syslog_check->setGeometry(50,125,15,15);
   label=new QLabel(tr("Log events in Syslog"),this);
   label->setGeometry(70,122,250,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   box_log_path_edit=new QLineEdit(this);
-  box_log_path_edit->setGeometry(140,137,sizeHint().width()-210,19);
-  box_log_path_edit->setMaxLength(255);
+  box_log_path_edit->setGeometry(140,141,sizeHint().width()-210,19);
+  box_log_path_edit->setMaxLength(191);
   connect(box_log_to_syslog_check,SIGNAL(toggled(bool)),
 	  box_log_path_edit,SLOT(setDisabled(bool)));
   box_log_path_label=new QLabel(tr("Log File:"),this);
-  box_log_path_label->setGeometry(10,141,125,19);
+  box_log_path_label->setGeometry(10,142,125,19);
   box_log_path_label->setFont(labelFont());
   box_log_path_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(box_log_to_syslog_check,SIGNAL(toggled(bool)),
 	  box_log_path_label,SLOT(setDisabled(bool)));
   box_log_path_button=new QPushButton(tr("Select"),this);
-  box_log_path_button->setGeometry(sizeHint().width()-60,136,50,23);
+  box_log_path_button->setGeometry(sizeHint().width()-60,138,50,23);
   box_log_path_button->setFont(subButtonFont());
   connect(box_log_path_button,SIGNAL(clicked()),
 	  this,SLOT(selectLogPathData()));
@@ -326,7 +326,7 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   box_startoffset_spin->setGeometry(215,486,50,20);
   box_startoffset_spin->setRange(-7,7);
   label=new QLabel(tr("Offset start date by"),this);
-  label->setGeometry(90,486,120,20);
+  label->setGeometry(10,486,200,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   label=new QLabel(tr("days"),this);
@@ -341,7 +341,7 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   box_endoffset_spin->setGeometry(215,510,50,20);
   box_endoffset_spin->setRange(-7,7);
   label=new QLabel(tr("Offset end date by"),this);
-  label->setGeometry(90,510,120,20);
+  label->setGeometry(10,510,200,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   label=new QLabel(tr("days"),this);

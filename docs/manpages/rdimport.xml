@@ -6,7 +6,7 @@
   <refmeta>
     <refentrytitle>rdimport</refentrytitle>
     <manvolnum>1</manvolnum>
-    <refmiscinfo class='source'>October 2020</refmiscinfo>
+    <refmiscinfo class='source'>July 2023</refmiscinfo>
     <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
   </refmeta>
   <refnamediv>
@@ -191,19 +191,6 @@
       <listitem>
 	<para>
 	  Delete each source file after successful import.  Use with caution!
-	</para>
-      </listitem>
-    </varlistentry>
-
-    <varlistentry>
-      <term>
-	<option>--update-metadata</option>
-      </term>
-      <listitem>
-	<para>
-	  Attempt to update the library metadata from the embedded data in
-	  the source audio file when importing <emphasis>new</emphasis> audio
-	  into an <emphasis>existing</emphasis> cart.
 	</para>
       </listitem>
     </varlistentry>
@@ -996,6 +983,19 @@
 	<para>
 	  Import the file as a monaural cut. If the file is stereo, both
 	  left and right channels will be mixed together.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--update-metadata</option>
+      </term>
+      <listitem>
+	<para>
+	  Attempt to update the library metadata from the embedded data in
+	  the source audio file when importing <emphasis>new</emphasis> audio
+	  into an <emphasis>existing</emphasis> cart.
 	</para>
       </listitem>
     </varlistentry>
