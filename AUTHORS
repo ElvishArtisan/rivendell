@@ -56,3 +56,8 @@ Scott Spillers <scotts@paravelsystems.com>
 
 Florent Peyraud <florent@draceo.fr>
    Pypad fix
+
+David Klann <dklann@broadcasttool.com>
+   General bug fixes.
+   Add support for FTPS.
+   Add optional metadata updates in dropboxes.

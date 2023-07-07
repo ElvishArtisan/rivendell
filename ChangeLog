@@ -24269,3 +24269,7 @@
 	* Fixed regressions that caused spontaneous resizing of the main
 	window in rdairplay(1) when switching between Sound Panel and
 	Voice Tracker views on the right-hand side.
+2023-07-07 David Klann <dklann@broadcasttool.com>
+	* Added support for updating library metadata on subsequent
+	dropbox imports
+	* Incremented the database version to 371.

@@ -40,6 +40,16 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
   // NEW SCHEMA REVERSIONS GO HERE...
 
+  //
+  // Revert 371
+  //
+  if((cur_schema == 371) && (set_schema < cur_schema))
+  {
+    DropColumn("DROPBOXES", "UPDATE_METADATA");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
 
   //
   // Revert 370

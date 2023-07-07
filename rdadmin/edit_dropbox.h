@@ -72,6 +72,7 @@ class EditDropbox : public RDDialog
   QPushButton *box_log_path_button;
   QCheckBox *box_delete_source_box;
   QCheckBox *box_send_email_box;
+  QCheckBox *box_update_metadata_box;
   QCheckBox *box_normalization_box;
   QLabel *box_normalization_level_label;
   QSpinBox *box_normalization_level_spin;

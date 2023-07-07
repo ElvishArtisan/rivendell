@@ -56,6 +56,8 @@ class RDDropbox
   void setDeleteSource(bool state) const;
   bool sendEmail() const;
   void setSendEmail(bool state) const;
+  bool updateMetadata() const;
+  void setUpdateMetadata(bool state) const;
   QString metadataPattern() const;
   void setMetadataPattern(const QString &str) const;
   QString userDefined() const;
