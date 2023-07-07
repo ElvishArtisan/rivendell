@@ -24273,5 +24273,5 @@
 	* Added 'DROPBOXES.UPDATE_METADATA' field to the database.
 	* Added support for updating library metadata on subsequent
 	dropbox imports
-2023-06-29 Fred Gleason <fredg@paravelsystems.com>
+2023-07-07 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the database version to 371.
