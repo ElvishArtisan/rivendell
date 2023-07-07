@@ -24270,6 +24270,8 @@
 	window in rdairplay(1) when switching between Sound Panel and
 	Voice Tracker views on the right-hand side.
 2023-07-07 David Klann <dklann@broadcasttool.com>
+	* Added 'DROPBOXES.UPDATE_METADATA' field to the database.
 	* Added support for updating library metadata on subsequent
 	dropbox imports
+2023-06-29 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the database version to 371.
