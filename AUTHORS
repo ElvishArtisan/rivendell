@@ -26,6 +26,11 @@ Federico Grau <grauf@rfa.org>
 Fred Gleason <fredg@paravelsystems.com>
    Application Architect
 
+David Klann <dklann@broadcasttool.com>
+   General bug fixes.
+   Add support for FTPS.
+   Add optional metadata updates in dropboxes.
+
 Patrick Linstruth <patrick@deltecent.com>
    General Bugfixes
    rddbconfig(8) Utility
@@ -45,6 +50,9 @@ Alban Peignier <alban.peignier@free.fr>
    RDScheduler music scheduler.
    Debian Packaging.
 
+Florent Peyraud <florent@draceo.fr>
+   Pypad fix
+
 Daniel Roviriego <danifernando@gmail.com>
    Portuguese Translation (pt_BR).
 
@@ -53,11 +61,3 @@ Chris Smowton
 
 Scott Spillers <scotts@paravelsystems.com>
    The original Icon set
-
-Florent Peyraud <florent@draceo.fr>
-   Pypad fix
-
-David Klann <dklann@broadcasttool.com>
-   General bug fixes.
-   Add support for FTPS.
-   Add optional metadata updates in dropboxes.
