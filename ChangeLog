@@ -24285,3 +24285,7 @@
 2023-07-07 Fred Gleason <fredg@paravelsystems.com>
 	* Tweaked 'AUTHORS' to maintain the correct entry sorting
 	(alphabetical by surname).
+2023-07-10 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdlogmanager(1) to caused the pie chart to
+	fail to be drawn correctly upon first displaying the 'Edit Clock'
+	dialog.
