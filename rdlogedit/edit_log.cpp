@@ -1028,7 +1028,7 @@ void EditLog::renderasData()
   }
   else {
     edit_render_dialog->exec(rda->user(),edit_log_model,rows.first().row(),
-			     1+rows.last().row());
+			     rows.last().row());
   }
 }
 

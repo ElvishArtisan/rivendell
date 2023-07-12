@@ -24289,3 +24289,8 @@
 	* Fixed a regression in rdlogmanager(1) to caused the pie chart to
 	fail to be drawn correctly upon first displaying the 'Edit Clock'
 	dialog.
+2023-07-12 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a fencepost bug in the 'Render Log' dialog in rdlogedit(1)
+	that caused rendered log to include the cart immediately after the
+	end of the selected section when setting the 'Include' dropdown to
+	'Only Selected Events'.

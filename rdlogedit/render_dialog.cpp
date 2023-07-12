@@ -2,7 +2,7 @@
 //
 // Render Log Dialog for Rivendell.
 //
-//   (C) Copyright 2017-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -295,16 +295,19 @@ void RenderDialog::renderData()
     QMessageBox::warning(this,"RDLogEdit - "+tr("Rendering Error"),
 			 err_msg);
     delete r;
+    render_progress_dialog->reset();
     return;
   }
   delete r;
 
+  render_progress_dialog->reset();
   done(true);
 }
 
 
 void RenderDialog::cancelData()
 {
+  render_progress_dialog->reset();
   done(false);
 }
 
