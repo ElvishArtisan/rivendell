@@ -24294,3 +24294,6 @@
 	that caused rendered log to include the cart immediately after the
 	end of the selected section when setting the 'Include' dropdown to
 	'Only Selected Events'.
+2023-07-12 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlibrary(1) that could cause the 'Add Cart' dialog
+	to display the incorrect type for the selected group.

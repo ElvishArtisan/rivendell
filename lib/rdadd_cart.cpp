@@ -171,6 +171,7 @@ void RDAddCart::groupActivatedData(const QString &groupname)
   }
   else {
     cart_number_edit->setText(QString::asprintf("%06u",cartnum));
+    cart_type_box->setCurrentIndex((int)group->defaultCartType()-1);
   }
   delete group;
 }
