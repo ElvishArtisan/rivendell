@@ -24297,3 +24297,6 @@
 2023-07-12 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdlibrary(1) that could cause the 'Add Cart' dialog
 	to display the incorrect type for the selected group.
+2023-07-28 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdcastmanager(1) where changes to podcast metadata
+	would fail to be reflected in the feed list.

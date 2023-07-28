@@ -2,7 +2,7 @@
 //
 // Data model for Rivendell RSS feeds
 //
-//   (C) Copyright 2021-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -405,8 +405,11 @@ void RDFeedListModel::removeFeed(const QString &keyname)
 void RDFeedListModel::refreshRow(const QModelIndex &index)
 {
   if(isFeed(index)) {
-    updateRowLine(index.row());
+    updateFeedLine(index.row());
     emit dataChanged(index,createIndex(index.row(),columnCount(),(quintptr)0));
+  }
+  else {
+    updateCastLine(index.parent().row(),index.row());
   }
 }
 
@@ -415,7 +418,7 @@ void RDFeedListModel::refreshFeed(const QString &keyname)
 {
   for(int i=0;i<d_texts.size();i++) {
     if(d_key_names.at(i)==keyname) {
-      updateRowLine(i);
+      updateFeedLine(i);
       emit dataChanged(createIndex(i,0,(quintptr)0),
 		       createIndex(i,columnCount(),(quintptr)0));
     }
@@ -537,7 +540,7 @@ void RDFeedListModel::updateModel(const QString &filter_sql)
 }
 
 
-void RDFeedListModel::updateRowLine(int line)
+void RDFeedListModel::updateFeedLine(int line)
 {
   QString sql=sqlFields()+
     "where "+
@@ -549,6 +552,53 @@ void RDFeedListModel::updateRowLine(int line)
 		     createIndex(line,columnCount(),(quintptr)0));
   }
   delete q;
+}
+
+
+void RDFeedListModel::updateCastLine(int feed_line,int cast_line)
+{
+  QString sql=QString("select ")+
+    castSqlFields()+
+    "from `PODCASTS` where "+
+    QString::asprintf("`ID`=%u",d_cast_ids.at(feed_line).at(cast_line));
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    updateCastRow(feed_line,cast_line,q,0);
+    emit dataChanged(createIndex(cast_line,0,(quintptr)feed_line),
+		     createIndex(cast_line,3,(quintptr)feed_line));
+  }
+  delete q;
+}
+
+
+void RDFeedListModel::updateCastRow(int feed_line,int cast_line,
+				    RDSqlQuery *q,int q_offset)
+{
+  switch((RDPodcast::Status)q->value(2+q_offset).toUInt()) {
+  case RDPodcast::StatusPending:
+    d_cast_icons[feed_line][cast_line]=
+      rda->iconEngine()->listIcon(RDIconEngine::RedBall);
+    break;
+
+  case RDPodcast::StatusActive:
+    if(q->value(4+q_offset).toDateTime()<=QDateTime::currentDateTime()) {
+      d_cast_icons[feed_line][cast_line]=
+	rda->iconEngine()->listIcon(RDIconEngine::GreenBall);
+    }
+    else {
+      d_cast_icons[feed_line][cast_line]=
+	rda->iconEngine()->listIcon(RDIconEngine::BlueBall);
+    }
+    break;
+
+  case RDPodcast::StatusExpired:
+    d_cast_icons[feed_line][cast_line]=
+      rda->iconEngine()->listIcon(RDIconEngine::WhiteBall);
+    break;
+  }
+  d_cast_texts[feed_line][cast_line][1]=q->value(1+q_offset);  // Item Title
+  d_cast_texts[feed_line][cast_line][3]=
+    rda->shortDateString(q->value(3+q_offset).toDateTime().date());
 }
 
 
@@ -564,17 +614,12 @@ void RDFeedListModel::updateRow(int row,RDSqlQuery *q)
   d_feed_ids[row]=q->value(0).toUInt();
   d_key_names[row]=q->value(1).toString();
   d_texts[row][0]=keyname;  // Key Name
-  if(q->value(12).isNull()) {
+  if(q->value(13).isNull()) {
     d_icons[row][0]=rda->iconEngine()->
       applicationIcon(RDIconEngine::RdCastManager,32);
   }
   else {
-    d_icons[row][0]=QImage::fromData(q->value(12).toByteArray());
-    /*
-    d_icons[row][0]=
-      QImage::fromData(q->value(12).toByteArray()).
-      scaled(32,32,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
-    */
+    d_icons[row][0]=QImage::fromData(q->value(13).toByteArray());
   }
   d_texts[row][1]=q->value(2);  // Title
   if(q->value(4).toString()=="Y") {
@@ -606,27 +651,9 @@ void RDFeedListModel::updateRow(int row,RDSqlQuery *q)
     // Process
     total_casts++;
     d_cast_ids[row].push_back(q->value(8).toUInt());
-    switch((RDPodcast::Status)q->value(10).toUInt()) {
-    case RDPodcast::StatusPending:
-      d_cast_icons[row].push_back(rda->iconEngine()->
-				  listIcon(RDIconEngine::BlueBall));
-      break;
-
-    case RDPodcast::StatusActive:
-      d_cast_icons[row].push_back(rda->iconEngine()->
-				  listIcon(RDIconEngine::GreenBall));
-      active_casts++;
-      break;
-
-    case RDPodcast::StatusExpired:
-      d_cast_icons[row].push_back(rda->iconEngine()->
-				  listIcon(RDIconEngine::WhiteBall));
-      break;
-    }
+    d_cast_icons[row].push_back(QVariant());
     d_cast_texts[row].push_back(list);
-    d_cast_texts[row].back()[1]=q->value(9);  // Item Title
-    d_cast_texts[row].back()[3]=
-      rda->shortDateString(q->value(11).toDateTime().date());
+    updateCastRow(row,d_cast_icons[row].size()-1,q,8);
   } while(q->next()&&(q->value(1).toString()==keyname));
   q->previous();
 
@@ -651,15 +678,23 @@ QString RDFeedListModel::sqlFields() const
     "`FEEDS`.`ID`,"+                      // 05
     "`FEEDS`.`BASE_URL`,"+                // 06
     "`FEEDS`.`ORIGIN_DATETIME`,"+         // 07
-    "`PODCASTS`.`ID`,"+                   // 08
-    "`PODCASTS`.`ITEM_TITLE`,"+           // 09
-    "`PODCASTS`.`STATUS`,"+               // 10
-    "`PODCASTS`.`ORIGIN_DATETIME`,"+      // 11
-    "`FEED_IMAGES`.`DATA_MID_THUMB` "+    // 12
+    castSqlFields()+","+                  // 08 - 12
+    "`FEED_IMAGES`.`DATA_MID_THUMB` "+    // 13
     "from `FEEDS` left join `FEED_IMAGES` "+
     "on `FEEDS`.`CHANNEL_IMAGE_ID`=`FEED_IMAGES`.`ID` left join `PODCASTS` "+
     "on `FEEDS`.`ID`=`PODCASTS`.`FEED_ID` ";
 
+  return sql;
+}
+
+
+QString RDFeedListModel::castSqlFields() const
+{
+  QString sql=QString("`PODCASTS`.`ID`,")+ // 00
+    "`PODCASTS`.`ITEM_TITLE`,"+            // 01
+    "`PODCASTS`.`STATUS`,"+                // 02
+    "`PODCASTS`.`ORIGIN_DATETIME`,"+       // 03
+    "`PODCASTS`.`EFFECTIVE_DATETIME` ";    // 04
   return sql;
 }
 

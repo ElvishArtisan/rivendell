@@ -75,9 +75,12 @@ class RDFeedListModel : public QAbstractItemModel
 
  protected:
   void updateModel(const QString &filter_sql);
-  void updateRowLine(int line);
+  void updateFeedLine(int line);
+  void updateCastLine(int feed_line,int cast_line);
+  void updateCastRow(int feed_line,int cast_line,RDSqlQuery *q,int q_offset);
   void updateRow(int row,RDSqlQuery *q);
   QString sqlFields() const;
+  QString castSqlFields() const;
 
  private:
   QByteArray DumpIndex(const QModelIndex &index,const QString &caption="") const;
