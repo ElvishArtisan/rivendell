@@ -24300,3 +24300,6 @@
 2023-07-28 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdcastmanager(1) where changes to podcast metadata
 	would fail to be reflected in the feed list.
+2023-08-01 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'ID' column to the 'Podcast Item List' dialog in
+	rdcastmanager(1).

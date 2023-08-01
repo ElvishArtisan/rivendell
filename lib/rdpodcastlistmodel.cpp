@@ -96,7 +96,11 @@ RDPodcastListModel::RDPodcastListModel(unsigned feed_id,QObject *parent)
   d_alignments.push_back(left);
   d_column_fields.push_back("`PODCASTS`.`ORIGIN_LOGIN_NAME`");
 
-  d_headers.push_back(tr("SHA1"));        // 08
+  d_headers.push_back(tr("ID"));          // 08
+  d_alignments.push_back(right);
+  d_column_fields.push_back("`PODCASTS`.`ID`");
+
+  d_headers.push_back(tr("SHA1"));        // 09
   d_alignments.push_back(left);
   d_column_fields.push_back("`PODCASTS`.`SHA1_HASH`");
 }
@@ -499,6 +503,9 @@ void RDPodcastListModel::updateRow(int row,RDSqlQuery *q)
 		    rda->shortDateTimeString(q->value(11).toDateTime()));
   }
   icons.push_back(QVariant());
+
+  // Cast ID
+  texts.push_back(QString::asprintf("%u",q->value(0).toUInt()));
 
   // SHA1
   if(q->value(12).toString().isEmpty()) {
