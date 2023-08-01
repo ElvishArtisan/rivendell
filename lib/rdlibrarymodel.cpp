@@ -114,6 +114,15 @@ RDLibraryModel::RDLibraryModel(QObject *parent)
   d_alignments.push_back(left);
   d_order_columns.push_back("`CART`.`USER_DEFINED`");
 
+
+
+  d_headers.push_back(tr("Plays"));             // 16
+  d_alignments.push_back(right);
+  d_order_columns.push_back("`CUTS`.`PLAY_COUNTER`");
+
+
+
+
   d_headers.push_back(tr("Cuts"));              // 16
   d_alignments.push_back(right);
   d_order_columns.push_back("`CART`.`CUT_QUANTITY`");
@@ -789,14 +798,15 @@ void RDLibraryModel::updateRow(int row,RDSqlQuery *q)
   d_texts[row][13]=q->value(6);   // Client
   d_texts[row][14]=q->value(7);   // Agency
   d_texts[row][15]=q->value(8);   // User Defined
-  d_texts[row][16]=               // Cut Quan
+  d_texts[row][16]=QString::asprintf("%u",q->value(32).toUInt()); // Play Quan.
+  d_texts[row][17]=               // Cut Quan
     QString::asprintf("%u",q->value(16).toUInt());
-  d_texts[row][17]=               // Last Cut Played
+  d_texts[row][18]=               // Last Cut Played
     QString::asprintf("%u",q->value(17).toUInt());
-  d_texts[row][18]=q->value(18);  // Enforce Length
-  d_texts[row][19]=               // Length Deviation
+  d_texts[row][19]=q->value(18);  // Enforce Length
+  d_texts[row][20]=               // Length Deviation
     QString::asprintf("%u",q->value(20).toUInt());
-  d_texts[row][20]=q->value(21);  // Owned By
+  d_texts[row][21]=q->value(21);  // Owned By
   d_notes[row]=q->value(30).toString();
 
   if(q->value(15).toUInt()==RDCart::Audio) {
@@ -858,6 +868,7 @@ void RDLibraryModel::updateRow(int row,RDSqlQuery *q)
     d_cut_texts[row].back()[3]=  // Talk Length
       RDGetTimeLength(q->value(28).toUInt()-q->value(27).toUInt());
     d_cut_texts[row].back()[4]=q->value(29).toString();  // Description
+    d_cut_texts[row].back()[16]=QString::asprintf("%d",q->value(32).toUInt());
   } while(q->next()&&(q->value(0).toUInt()==cartnum));
   q->previous();
 }
@@ -897,7 +908,8 @@ QString sql=QString("select distinct ")+
   "`CUTS`.`TALK_END_POINT`,"+     // 28
   "`CUTS`.`DESCRIPTION`,"+        // 29
   "`CART`.`NOTES`,"+              // 30
-  "`CUTS`.`PLAY_ORDER` "+         // 31
+  "`CUTS`.`PLAY_ORDER`,"+         // 31
+  "`CUTS`.`PLAY_COUNTER` "+       // 32
   "from `CART` "+
   "left join `GROUPS` on `CART`.`GROUP_NAME`=`GROUPS`.`NAME` "+
   "left join `CUTS` on `CART`.`NUMBER`=`CUTS`.`CART_NUMBER` "+

@@ -24306,3 +24306,5 @@
 2023-08-01 Fred Gleason <fredg@paravelsystems.com>
 	* Added the podcast ID to the first column of the item listing in
 	the feed list in rdcastmanager(1).
+2023-08-01 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Plays' column to the library list in rdlibrary(1).
