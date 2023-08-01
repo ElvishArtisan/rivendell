@@ -596,6 +596,8 @@ void RDFeedListModel::updateCastRow(int feed_line,int cast_line,
       rda->iconEngine()->listIcon(RDIconEngine::WhiteBall);
     break;
   }
+  d_cast_texts[feed_line][cast_line][0]=
+    QString::asprintf("%u",q->value(q_offset).toUInt());       // Cast ID
   d_cast_texts[feed_line][cast_line][1]=q->value(1+q_offset);  // Item Title
   d_cast_texts[feed_line][cast_line][3]=
     rda->shortDateString(q->value(3+q_offset).toDateTime().date());
