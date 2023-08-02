@@ -98,7 +98,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // Feed List
   //
-  cast_feed_view=new RDTreeView(this);
+  cast_feed_view=new RDTableView(this);
   cast_feed_model=new RDFeedListModel(false,false,this);
   cast_feed_model->setFont(font());
   cast_feed_model->setPalette(palette());
@@ -185,6 +185,7 @@ void MainWidget::modelResetData()
   for(int i=0;i<cast_feed_model->columnCount();i++) {
     cast_feed_view->resizeColumnToContents(i);
   }
+  cast_feed_view->resizeRowsToContents();
 }
 
 

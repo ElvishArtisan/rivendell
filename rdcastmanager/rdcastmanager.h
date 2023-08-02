@@ -2,7 +2,7 @@
 //
 // A RSS Feed Management Utility for Rivendell.
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,7 +28,7 @@
 #include <rdfeedlistmodel.h>
 #include <rdlog_line.h>
 #include <rdmainwindow.h>
-#include <rdtreeview.h>
+#include <rdtableview.h>
 #include <rdtempdirectory.h>
 #include <rdwidget.h>
 #include <rdxsltengine.h>
@@ -59,7 +59,7 @@ class MainWidget : public RDMainWindow
   void closeEvent(QCloseEvent *e);
   
  private:
-  RDTreeView *cast_feed_view;
+  RDTableView *cast_feed_view;
   RDFeedListModel *cast_feed_model;
   QPushButton *cast_open_button;
   QPushButton *cast_copy_button;

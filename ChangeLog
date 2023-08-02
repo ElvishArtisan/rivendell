@@ -24311,3 +24311,6 @@
 2023-08-02 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'Last Played' column to the library list in rdlibrary(1).
 	* Added a 'Ingested On' column to the library list in rdlibrary(1).
+2023-08-02 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the tree view widget on the main window of rdcastmananger(1)
+	to be a table view.
