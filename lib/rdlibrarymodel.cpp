@@ -114,32 +114,35 @@ RDLibraryModel::RDLibraryModel(QObject *parent)
   d_alignments.push_back(left);
   d_order_columns.push_back("`CART`.`USER_DEFINED`");
 
-
-
   d_headers.push_back(tr("Plays"));             // 16
   d_alignments.push_back(right);
   d_order_columns.push_back("`CUTS`.`PLAY_COUNTER`");
 
+  d_headers.push_back(tr("Last Played"));       // 17
+  d_alignments.push_back(center);
+  d_order_columns.push_back("`CUTS`.`LAST_PLAY_DATETIME`");
 
+  d_headers.push_back(tr("Ingested On"));       // 18
+  d_alignments.push_back(center);
+  d_order_columns.push_back("`CUTS`.`ORIGIN_DATETIME`");
 
-
-  d_headers.push_back(tr("Cuts"));              // 16
+  d_headers.push_back(tr("Cuts"));              // 19
   d_alignments.push_back(right);
   d_order_columns.push_back("`CART`.`CUT_QUANTITY`");
 
-  d_headers.push_back(tr("Last Cut Played"));   // 17
+  d_headers.push_back(tr("Last Cut Played"));   // 20
   d_alignments.push_back(right);
   d_order_columns.push_back("`CART`.`LAST_CUT_PLAYED`");
 
-  d_headers.push_back(tr("Enforce Length"));    // 18
+  d_headers.push_back(tr("Enforce Length"));    // 21
   d_alignments.push_back(center);
   d_order_columns.push_back("`CART`.`ENFORCE_LENGTH`");
 
-  d_headers.push_back(tr("Length Deviation"));  // 19
+  d_headers.push_back(tr("Length Deviation"));  // 22
   d_alignments.push_back(center);
   d_order_columns.push_back("`CART`.`LENGTH_DEVIATION`");
 
-  d_headers.push_back(tr("Owned By"));          // 20
+  d_headers.push_back(tr("Owned By"));          // 23
   d_alignments.push_back(left);
   d_order_columns.push_back("`CART`.`OWNER`");
 
@@ -799,14 +802,16 @@ void RDLibraryModel::updateRow(int row,RDSqlQuery *q)
   d_texts[row][14]=q->value(7);   // Agency
   d_texts[row][15]=q->value(8);   // User Defined
   d_texts[row][16]=QString::asprintf("%u",q->value(32).toUInt()); // Play Quan.
-  d_texts[row][17]=               // Cut Quan
+  d_texts[row][17]=rda->shortDateString(q->value(33).toDateTime().date());
+  d_texts[row][18]=rda->shortDateString(q->value(34).toDateTime().date());
+  d_texts[row][19]=               // Cut Quan
     QString::asprintf("%u",q->value(16).toUInt());
-  d_texts[row][18]=               // Last Cut Played
+  d_texts[row][20]=               // Last Cut Played
     QString::asprintf("%u",q->value(17).toUInt());
-  d_texts[row][19]=q->value(18);  // Enforce Length
-  d_texts[row][20]=               // Length Deviation
+  d_texts[row][21]=q->value(18);  // Enforce Length
+  d_texts[row][22]=               // Length Deviation
     QString::asprintf("%u",q->value(20).toUInt());
-  d_texts[row][21]=q->value(21);  // Owned By
+  d_texts[row][23]=q->value(21);  // Owned By
   d_notes[row]=q->value(30).toString();
 
   if(q->value(15).toUInt()==RDCart::Audio) {
@@ -869,6 +874,10 @@ void RDLibraryModel::updateRow(int row,RDSqlQuery *q)
       RDGetTimeLength(q->value(28).toUInt()-q->value(27).toUInt());
     d_cut_texts[row].back()[4]=q->value(29).toString();  // Description
     d_cut_texts[row].back()[16]=QString::asprintf("%d",q->value(32).toUInt());
+    d_cut_texts[row].back()[17]=
+      rda->shortDateString(q->value(33).toDateTime().date());
+    d_cut_texts[row].back()[18]=
+      rda->shortDateString(q->value(34).toDateTime().date());
   } while(q->next()&&(q->value(0).toUInt()==cartnum));
   q->previous();
 }
@@ -909,7 +918,9 @@ QString sql=QString("select distinct ")+
   "`CUTS`.`DESCRIPTION`,"+        // 29
   "`CART`.`NOTES`,"+              // 30
   "`CUTS`.`PLAY_ORDER`,"+         // 31
-  "`CUTS`.`PLAY_COUNTER` "+       // 32
+  "`CUTS`.`PLAY_COUNTER`,"+       // 32
+  "`CUTS`.`LAST_PLAY_DATETIME`,"+ // 33
+  "`CUTS`.`ORIGIN_DATETIME` "+    // 34
   "from `CART` "+
   "left join `GROUPS` on `CART`.`GROUP_NAME`=`GROUPS`.`NAME` "+
   "left join `CUTS` on `CART`.`NUMBER`=`CUTS`.`CART_NUMBER` "+
