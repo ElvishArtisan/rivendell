@@ -24321,3 +24321,5 @@
 2023-08-03 Fred Gleason <fredg@paravelsystems.com>
 	* Made the 'Script Path' control on the 'Edit PyPAD Instance' dialog
 	in rdadmin(1) read-write.
+2023-08-03 Fred Gleason <fredg@paravelsystems.com>
+	* Removed debugging statement from 'lib/rdmulticaster.cpp'.

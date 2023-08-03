@@ -105,7 +105,6 @@ void RDMulticaster::readyReadData()
 {
   while(multi_socket->hasPendingDatagrams()) {
     QNetworkDatagram dg=multi_socket->receiveDatagram();
-    printf("emitting: %s",dg.data().constData());
     emit received(QString::fromUtf8(dg.data()),dg.senderAddress());
   }
 }
