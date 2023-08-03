@@ -24314,3 +24314,7 @@
 2023-08-02 Fred Gleason <fredg@paravelsystems.com>
 	* Changed the tree view widget on the main window of rdcastmananger(1)
 	to be a table view.
+2023-08-03 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdlogmanager(1) that caused records to be
+	omitted from reports using the 'CBSI DeltaFlex Traffic Reconciliation
+	v2.01' export filter.

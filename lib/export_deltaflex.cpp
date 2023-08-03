@@ -69,7 +69,7 @@ bool RDReport::ExportDeltaflex(const QString &filename,const QDate &startdate,
     "`ELR_LINES`.`EXT_CART_NAME` "+   // 10
     "from `ELR_LINES` left join `CART` "+
     "on `ELR_LINES`.`CART_NUMBER`=`CART`.`NUMBER` where "+
-    "`ELR_LINES`.`SERVICE_NAME`=`"+RDEscapeString(mixtable)+"` "+
+    "`ELR_LINES`.`SERVICE_NAME`='"+RDEscapeString(mixtable)+"' "+
     "order by EVENT_DATETIME";
   q=new RDSqlQuery(sql);
 
