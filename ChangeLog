@@ -24318,3 +24318,6 @@
 	* Fixed a regression in rdlogmanager(1) that caused records to be
 	omitted from reports using the 'CBSI DeltaFlex Traffic Reconciliation
 	v2.01' export filter.
+2023-08-03 Fred Gleason <fredg@paravelsystems.com>
+	* Made the 'Script Path' control on the 'Edit PyPAD Instance' dialog
+	in rdadmin(1) read-write.

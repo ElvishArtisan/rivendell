@@ -2,7 +2,7 @@
 //
 // Edit a PyPAD Instance Configuration
 //
-//   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -39,7 +39,6 @@ EditPypad::EditPypad(int id,QWidget *parent)
   edit_script_path_label->setFont(labelFont());
   edit_script_path_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   edit_script_path_edit=new QLineEdit(this);
-  edit_script_path_edit->setReadOnly(true);
 
   //
   // Description
@@ -108,6 +107,7 @@ QSizePolicy EditPypad::sizePolicy() const
 void EditPypad::okData()
 {
   QString sql=QString("update `PYPAD_INSTANCES` set ")+
+    "`SCRIPT_PATH`='"+RDEscapeString(edit_script_path_edit->text())+"',"+
     "`DESCRIPTION`='"+RDEscapeString(edit_description_edit->text())+"',"+
     "`CONFIG`='"+RDEscapeString(edit_config_text->toPlainText())+"' where "+
     QString::asprintf("`ID`=%u",edit_id);
