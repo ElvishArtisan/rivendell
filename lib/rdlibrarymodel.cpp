@@ -424,9 +424,9 @@ RDCart::Type RDLibraryModel::cartType(const QModelIndex &index) const
 QString RDLibraryModel::cartOwnedBy(const QModelIndex &index)
 {
   if(isCart(index)) {
-    return d_texts.at(index.row()).at(20).toString();
+    return d_texts.at(index.row()).at(23).toString();
   }
-  return d_texts.at(index.internalId()-1).at(20).toString();
+  return d_texts.at(index.internalId()-1).at(23).toString();
 }
 
 
