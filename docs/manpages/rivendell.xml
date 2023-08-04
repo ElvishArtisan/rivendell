@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry id="stdin" xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <!--
+      Header
+  -->
+  <refmeta>
+    <refentrytitle>rivendell</refentrytitle>
+    <manvolnum>7</manvolnum>
+    <refmiscinfo class='source'>August 2023</refmiscinfo>
+    <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>rivendell</refname>
+    <refpurpose>
+      Common command-line switches for Rivendell modules
+    </refpurpose>
+  </refnamediv>
+  <info>
+    <author>
+      <personname>
+	<firstname>Fred</firstname>
+	<surname>Gleason</surname>
+	<email>fredg@paravelsystems.com</email>
+      </personname>
+      <contrib>Application Author</contrib>
+    </author>
+  </info>
+
+  <!--
+      Body
+  -->
+  <refsect1 id='description'><title>Description</title>
+  <para>
+    Rivendell is a complete radio broadcast automation system, with
+    facilities for the acquisition, management, scheduling and playout of
+    audio content. This man page covers the set of command-line options
+    supported by all Rivendell modules.
+  </para>
+  <para>
+    For a comprehensive overview of Rivendell and its features, see the
+    <link xlink:href="https://opsguide.rivendellaudio.org/html">
+      Rivendell Operations Guide
+      </link>.
+  </para>
+  </refsect1>
+
+  <refsect1 id='basic_options'><title>Basic Options</title>
+  <para>
+    The following command-line options work with nearly all Rivendell
+    modules:
+  </para>
+  <variablelist remap='TP'>
+    <varlistentry>
+      <term>
+	<userinput>--help</userinput>
+      </term>
+      <listitem>
+	<para>
+	  Print a list of available command-line options and then exit.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<userinput>--list-styles</userinput>
+      </term>
+      <listitem>
+	<para>
+	  Print the list of available Qt style plug-ins to standard output
+	  and then exit.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<userinput>--skip-db-check</userinput>
+      </term>
+      <listitem>
+	<para>
+	  Bypass the usual check to ensure that the Rivendell database
+	  is using the expected schema version. Useless except for debugging.
+	</para>
+	<warning>
+	  <para>
+	    This option is <emphasis>dangerous</emphasis>, and can cause
+	    <emphasis>database corruption</emphasis>! It should only used be as
+	    a debugging aid and when you know exactly what you are doing.
+	  </para>
+	</warning>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<userinput>--skip-db-check</userinput>
+      </term>
+      <listitem>
+	<para>
+	  Bypass the usual check to ensure that the &quot;rivendell&quot;
+	  service is running. Useless except for debugging.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<userinput>-style <replaceable>plugin-name</replaceable></userinput>
+      </term>
+      <listitem>
+	<para>
+	  Use the Qt style plug-in <replaceable>plugin-name</replaceable>.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<userinput>--ticket=<replaceable>tkt-str</replaceable></userinput>
+      </term>
+      <listitem>
+	<para>
+	  Manually add the ticket string <replaceable>tkt-str</replaceable>
+	  to the WebAPI ticket store. Useless except for debugging.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<userinput>--version</userinput>
+      </term>
+      <listitem>
+	<para>
+	  Print the Rivendell version and then exit.
+	</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+  </refsect1>
+
+  <refsect1 id='bugs'><title>Bugs</title>
+  <para>
+    The <userinput>-style</userinput> option uses the X11-style format
+    (single leading hyphen, with a space separating the switch and its value)
+    rather than the Rivendell-style one (double leading hyphens with an equal
+    sign separating the switch and its value).
+  </para>
+  </refsect1>
+
+  <refsect1 id='see_also'><title>See Also</title>
+    <para>
+      <citerefentry>
+	<refentrytitle>rdadmin</refentrytitle><manvolnum>1</manvolnum>
+      </citerefentry>
+      <literal>, </literal>
+      <citerefentry>
+	<refentrytitle>rdairplay</refentrytitle><manvolnum>1</manvolnum>
+      </citerefentry>
+      <literal>, </literal>
+      <citerefentry>
+	<refentrytitle>rdalsaconfig</refentrytitle><manvolnum>8</manvolnum>
+      </citerefentry>
+      <literal>, </literal>
+      <citerefentry>
+	<refentrytitle>rdclilogedit</refentrytitle><manvolnum>1</manvolnum>
+      </citerefentry>
+      <literal>, </literal>
+      <citerefentry>
+	<refentrytitle>rd.conf</refentrytitle><manvolnum>5</manvolnum>
+      </citerefentry>
+      <literal>, </literal>
+      <citerefentry>
+	<refentrytitle>rdconvert</refentrytitle><manvolnum>1</manvolnum>
+      </citerefentry>
+      <literal>, </literal>
+      <citerefentry>
+	<refentrytitle>rddbmgr</refentrytitle><manvolnum>8</manvolnum>
+      </citerefentry>
+      <literal>, </literal>
+      <citerefentry>
+	<refentrytitle>rdexport</refentrytitle><manvolnum>1</manvolnum>
+      </citerefentry>
+      <literal>, </literal>
+      <citerefentry>
+	<refentrytitle>rdimport</refentrytitle><manvolnum>1</manvolnum>
+      </citerefentry>
+      <literal>, </literal>
+      <citerefentry>
+	<refentrytitle>rdlogmanager</refentrytitle><manvolnum>1</manvolnum>
+      </citerefentry>
+      <literal>, </literal>
+      <citerefentry>
+	<refentrytitle>rdmarkerset</refentrytitle><manvolnum>8</manvolnum>
+      </citerefentry>
+      <literal>, </literal>
+      <citerefentry>
+	<refentrytitle>rdmetadata</refentrytitle><manvolnum>1</manvolnum>
+      </citerefentry>
+      <literal>, </literal>
+      <citerefentry>
+	<refentrytitle>rdrender</refentrytitle><manvolnum>1</manvolnum>
+      </citerefentry>
+      <literal>, </literal>
+      <citerefentry>
+	<refentrytitle>rdservice</refentrytitle><manvolnum>8</manvolnum>
+      </citerefentry>
+      <literal>, </literal>
+      <citerefentry>
+	<refentrytitle>rdsinglestart</refentrytitle><manvolnum>1</manvolnum>
+      </citerefentry>
+      <literal>, </literal>
+      <citerefentry>
+	<refentrytitle>rdsoftkeys</refentrytitle><manvolnum>1</manvolnum>
+      </citerefentry>
+      <literal>, </literal>
+      <citerefentry>
+	<refentrytitle>rmlsend</refentrytitle><manvolnum>1</manvolnum>
+      </citerefentry>
+    </para>
+
+  </refsect1>
+</refentry>
+

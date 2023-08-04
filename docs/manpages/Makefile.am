@@ -30,6 +30,8 @@
 	xsltproc $(DOCBOOK_STYLESHEETS)/manpages/docbook.xsl $<
 %.5:	%.xml
 	xsltproc $(DOCBOOK_STYLESHEETS)/manpages/docbook.xsl $<
+%.7:	%.xml
+	xsltproc $(DOCBOOK_STYLESHEETS)/manpages/docbook.xsl $<
 %.8:	%.xml
 	xsltproc $(DOCBOOK_STYLESHEETS)/manpages/docbook.xsl $<
 
@@ -93,7 +95,10 @@ all-local:	rdadmin.1\
                 rdsinglestart.pdf\
                 rdsoftkeys.1\
                 rdsoftkeys.html\
-                rdsoftkeys.pdf
+                rdsoftkeys.pdf\
+                rivendell.7\
+                rivendell.html\
+                rivendell.pdf
 
 man_MANS = rdadmin.1\
            rdairplay.1\
@@ -111,7 +116,8 @@ man_MANS = rdadmin.1\
            rmlsend.1\
            rdservice.8\
            rdsinglestart.1\
-           rdsoftkeys.1
+           rdsoftkeys.1\
+           rivendell.7
 
 EXTRA_DIST = exitcodes.xml\
              rdadmin.1\
@@ -181,13 +187,18 @@ EXTRA_DIST = exitcodes.xml\
              rdsoftkeys.1\
              rdsoftkeys.html\
              rdsoftkeys.pdf\
-             rdsoftkeys.xml
+             rdsoftkeys.xml\
+             rivendell.7\
+             rivendell.html\
+             rivendell.pdf\
+             rivendell.xml
 
 CLEANFILES = *~
 MAINTAINERCLEANFILES = *~\
                        *.1\
                        *.5\
-                       *.8\
+                       *.5\
+                       *.7\
                        *.html\
                        *.pdf\
                        aclocal.m4\

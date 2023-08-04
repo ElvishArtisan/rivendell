@@ -143,7 +143,7 @@ bool RDCoreApplication::open(QString *err_msg,ErrorType *err_type,
   bool skip_db_check=false;
   int persistent_dropbox_id=-1;
   bool ok=false;
-  QString sql;
+   QString sql;
   RDSqlQuery *q=NULL;
 
   if(err_type!=NULL) {
@@ -163,20 +163,30 @@ bool RDCoreApplication::open(QString *err_msg,ErrorType *err_type,
       app_ticket=app_cmd_switch->value(i);
       app_cmd_switch->setProcessed(i,true);
     }
-    if(app_cmd_switch->key(i)=="--persistent-dropbox-id") {
+    if((app_cmd_switch->key(i)=="--persistent-dropbox-id")&&
+       (app_command_name=="rdimport")) {
+      //
+      // Catch this here so we can include the dropbox ID the
+      // ident parameter to openlog(3).
+      //
       persistent_dropbox_id=app_cmd_switch->value(i).toUInt(&ok);
       if(ok) {
-	app_command_name=QString::asprintf("dropbox[%u]",persistent_dropbox_id);
+	strncpy(app_syslog_name,
+		QString::asprintf("dropbox[%u]",persistent_dropbox_id).toUtf8(),
+		PATH_MAX-1);
+	app_cmd_switch->setProcessed(i,true);
       }
-      app_cmd_switch->setProcessed(i,true);
     }
     if(app_cmd_switch->key(i)=="--list-styles") {
       QStringList f0=QStyleFactory::keys();
-      printf("Available styles:\n");
       for(int j=0;j<f0.size();j++) {
-	printf(" %s\n",f0.at(j).toUtf8().constData());
+	printf("%s\n",f0.at(j).toUtf8().constData());
       }
       exit(0);
+    }
+    if(app_cmd_switch->key(i)=="--skip-service-check") {
+      check_svc=false;
+      app_cmd_switch->setProcessed(i,true);
     }
   }
 
