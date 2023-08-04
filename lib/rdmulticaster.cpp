@@ -39,6 +39,12 @@ RDMulticaster::RDMulticaster(QObject *parent)
 }
 
 
+RDMulticaster::~RDMulticaster()
+{
+  delete multi_socket;
+}
+
+
 bool RDMulticaster::bind(uint16_t port)
 {
   return multi_socket->bind(QHostAddress("0.0.0.0"),port);

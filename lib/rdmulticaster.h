@@ -30,6 +30,7 @@ class RDMulticaster : public QObject
   Q_OBJECT
  public:
   RDMulticaster(QObject *parent=0);
+  ~RDMulticaster();
   bool bind(uint16_t port);
   void enableLoopback(bool state);
   void subscribe(const QHostAddress &addr);
