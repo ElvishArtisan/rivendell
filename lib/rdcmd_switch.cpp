@@ -26,7 +26,9 @@
 #include <QMessageBox>
 #include <QStyleFactory>
 
-#include <rdcmd_switch.h>
+#include "rd.h"
+#include "rdcmd_switch.h"
+#include "rdconf.h"
 
 RDCmdSwitch::RDCmdSwitch(const QString &modname,const QString &usage)
 {
@@ -38,6 +40,8 @@ RDCmdSwitch::RDCmdSwitch(const QString &modname,const QString &usage)
     QString value=args.at(i);
     if(value=="--version") {
       printf("Rivendell v%s [%s]\n",VERSION,modname.toUtf8().constData());
+      printf("%s\n",RD_COPYRIGHT_NOTICE);
+      printf("%s\n",RDWrapText(RD_LICENSE_NOTICE,78).toUtf8().constData());
       exit(0);
     }
     if(value=="--help") {
@@ -93,6 +97,7 @@ RDCmdSwitch::RDCmdSwitch(int argc,char *argv[],const QString &modname,
     QString value=QString::fromUtf8(argv[i]);
     if(value=="--version") {
       printf("Rivendell v%s [%s]\n",VERSION,modname.toUtf8().constData());
+      printf("%s\n",RD_COPYRIGHT_NOTICE);
       exit(0);
     }
     if(value=="--help") {

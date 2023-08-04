@@ -24332,3 +24332,6 @@
 	fail with the message "Voicetrack Found".
 2023-08-04 Fred Gleason <fredg@paravelsystems.com>
 	* Added a rivendell(7) man page.
+2023-08-04 Fred Gleason <fredg@paravelsystems.com>
+	* Added copyright and license notices to the standard '--version'
+	output.

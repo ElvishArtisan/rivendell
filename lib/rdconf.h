@@ -113,6 +113,6 @@ int RDCheckExitCode(RDConfig *config,const QString &msg,int exit_code);
 int RDCheckReturnCode(const QString &msg,int code,int ok_value);
 QString RDMimeType(const QString &filename,bool *ok);
 QString RDMimeType(const QByteArray &data,bool *ok);
-
+QString RDWrapText(const QString &str,int width);
 
 #endif   // RDCONF_H

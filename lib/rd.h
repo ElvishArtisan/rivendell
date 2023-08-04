@@ -21,10 +21,17 @@
 #ifndef RD_H
 #define RD_H
 
+#include <QObject>
+
 /*
  * Copyright Notice
  */
 #define RD_COPYRIGHT_NOTICE "© 2002-2023 Fred Gleason"
+
+/*
+ * License Notice
+ */
+#define RD_LICENSE_NOTICE QObject::tr("This is free software; see the source for copying conditions. There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.")
 
 /*
  * Default Configuration File

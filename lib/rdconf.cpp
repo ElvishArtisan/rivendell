@@ -1179,3 +1179,25 @@ QString RDMimeType(const QByteArray &data,bool *ok)
 
   return ret;
 }
+
+
+QString RDWrapText(const QString &str,int width)
+{
+  QString line;
+  QString ret;
+  QStringList f0=str.split(" ",QString::KeepEmptyParts);
+  int fn=0;
+
+  while(fn<f0.size()) {
+    if((line.length()+1+f0.at(fn).length())<width) {
+      line+=" "+f0.at(fn++);
+    }
+    else {
+      ret+=line.trimmed()+"\n";
+      line="";
+    }
+  }
+  ret+=line.trimmed()+"\n";
+  
+  return ret.trimmed();
+}
