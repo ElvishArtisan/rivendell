@@ -24335,3 +24335,5 @@
 2023-08-04 Fred Gleason <fredg@paravelsystems.com>
 	* Added copyright and license notices to the standard '--version'
 	output.
+2023-08-08 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.0.2int1.

@@ -1,7 +1,7 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v4.0.2int0 --3 August 2023
+v4.0.2int1 --8 August 2023
 
 Changes:
    RDImport/Dropbox Metadata Processing. Added an '--update-metadata='
