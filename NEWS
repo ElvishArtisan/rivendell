@@ -1,14 +1,14 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v4.0.2int1 --8 August 2023
+v4.1.0 -- 9 August 2023
 
 Changes:
-   RDImport/Dropbox Metadata Processing. Added an '--update-metadata='
+   RDImport/Dropbox Metadata Processing. Added an '--update-metadata'
    switch to rdimport(1) to specify when parent cart metadata is to be
    updated when using the '--to-cart=' switch, along with a corresponding
    'Update Cart Metadata' checkbox for dropboxes.
-   (Contributed by David Klann <dklann@broadcasttool.com>.
+   (Contributed by David Klann <dklann@broadcasttool.com>).
 
    Cart Library. Added 'Plays', 'Last Played' and 'Ingested' on columns
    to the cart library list.
