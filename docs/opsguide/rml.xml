@@ -653,7 +653,7 @@
       is <userinput>0</userinput>: duck all buttons in
       <replaceable>col</replaceable> or <replaceable>row</replaceable>. 
       If playing, the audio fades to <replaceable>level</replaceable>
-      (in dbFS) in <replaceable>fade</replaceable> msecs. 
+      (in db) in <replaceable>fade</replaceable> msecs. 
       If specified, only stop carts playing on panel port
       <replaceable>mport</replaceable>. The duck level will be set to 0 after
       the playback is finished, or the button is stopped or reset.
@@ -1944,7 +1944,7 @@
     <para>
       Set the duck level of <replaceable>mach</replaceable>, or 
       <userinput>0</userinput> for all log machines. If playing, the audio
-      fades to <replaceable>level</replaceable> (in dbFS) in
+      fades to <replaceable>level</replaceable> (in db) in
       <replaceable>fade</replaceable> msecs. If specified, only affect carts
       playing on machine port <replaceable>mport</replaceable>.
       Loading or clearing a log will set the duck level back to 0.
