@@ -34,7 +34,6 @@ void MainObject::rmlReceivedData(RDMacro *rml)
   int fade;
   RDLogLine *logline=NULL;
   int index=-1;
-  bool all_logs=false;
   int start;
   int end;
   int next_line;
@@ -392,8 +391,8 @@ void MainObject::rmlReceivedData(RDMacro *rml)
       }
       return;
     }
-    index=LogMachineIndex(rml->arg(0).toInt(),&all_logs);
-    if((index<0)&(!all_logs)) {
+    index=LogMachineIndex(rml->arg(0).toInt());
+    if(index<0) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
 	rda->ripc()->sendRml(rml);
@@ -404,7 +403,7 @@ void MainObject::rmlReceivedData(RDMacro *rml)
     if(rml->argQuantity()>1) {
       fade=rml->arg(1).toInt();
     }
-    if(all_logs) {
+    if(index==0) {
       for(int i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
 	air_logs[i]->stop(true,0,fade);
       }
@@ -434,15 +433,15 @@ void MainObject::rmlReceivedData(RDMacro *rml)
       }
       return;
     }
-    index=LogMachineIndex(rml->arg(0).toInt(),&all_logs);
-    if((index<0)&&(!all_logs)) {
+    index=LogMachineIndex(rml->arg(0).toInt());
+    if(index<0) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
 	rda->ripc()->sendRml(rml);
       }
       return;
     }
-    if(all_logs) {
+    if(index==0) {
       for(int i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
 	air_logs[i]->duckVolume(rml->arg(1).toInt()*100,rml->arg(2).toInt());
       }
@@ -590,14 +589,14 @@ void MainObject::rmlReceivedData(RDMacro *rml)
 }
 
 
-int MainObject::LogMachineIndex(int log_mach,bool *all) const
+int MainObject::LogMachineIndex(int log_mach) const
 {
+  if(log_mach==0) {
+    return 0;
+  }
   if((log_mach<=RD_RDVAIRPLAY_LOG_BASE)||
      (log_mach>RD_RDVAIRPLAY_LOG_BASE+RD_RDVAIRPLAY_LOG_QUAN)) {
     return -1;
-  }
-  if(all!=NULL) {
-    *all=log_mach-RD_RDVAIRPLAY_LOG_BASE==0;
   }
   return log_mach-RD_RDVAIRPLAY_LOG_BASE-1;
 }

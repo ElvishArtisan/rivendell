@@ -24339,3 +24339,7 @@
 	* Incremented the package version to 4.0.2int1.
 2023-08-09 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.1.0.
+2023-08-14 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdvairplayd(8) that caused virtual logs to fail
+	to process 'Load Log' ['LL'], 'Set Duck Level' ['MD'] and 'Stop' ['PS]
+	RMLs with a 'mach' parameter of '0'.

@@ -47,7 +47,7 @@ class MainObject : public QObject
   void SetAutoMode(int index);
   void SetLiveAssistMode(int index);
   void SetManualMode(int index);
-  int LogMachineIndex(int log_mach,bool *all=NULL) const;
+  int LogMachineIndex(int log_mach) const;
   RDLogPlay *air_logs[RD_RDVAIRPLAY_LOG_QUAN];
   QString air_start_lognames[RD_RDVAIRPLAY_LOG_QUAN];
   int air_start_lines[RD_RDVAIRPLAY_LOG_QUAN];
