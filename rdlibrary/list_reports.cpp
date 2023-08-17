@@ -506,58 +506,6 @@ void ListReports::GenerateCartDumpCsv(QString *report,bool prepend_names)
   //
   // Generate Rows
   //
-  /*
-  if(list_type_filter.isEmpty()) {
-    return;
-  }
-  sql=QString("select ")+
-    "CART.NUMBER,"+             // 00
-    "CART.TYPE,"+               // 01
-    "CUTS.CUT_NAME,"+           // 02
-    "CART.GROUP_NAME,"+         // 03
-    "CART.TITLE,"+              // 04
-    "CART.ARTIST,"+             // 05
-    "CART.ALBUM,"+              // 06
-    "CART.YEAR,"+               // 07
-    "CUTS.ISRC,"+               // 08
-    "CUTS.ISCI,"+               // 09
-    "CART.LABEL,"+              // 10
-    "CART.CLIENT,"+             // 11
-    "CART.AGENCY,"+             // 12
-    "CART.PUBLISHER,"+          // 13
-    "CART.COMPOSER,"+           // 14
-    "CART.CONDUCTOR,"+          // 15
-    "CART.SONG_ID,"+            // 16
-    "CART.USER_DEFINED,"+       // 17
-    "CUTS.DESCRIPTION,"+        // 18
-    "CUTS.OUTCUE,"+             // 19
-    "CUTS.LENGTH,"+             // 20
-    "CUTS.START_POINT,"+        // 21
-    "CUTS.END_POINT,"+          // 22
-    "CUTS.SEGUE_START_POINT,"+  // 23
-    "CUTS.SEGUE_END_POINT,"+    // 24
-    "CUTS.HOOK_START_POINT,"+   // 25
-    "CUTS.HOOK_END_POINT,"+     // 26
-    "CUTS.TALK_START_POINT,"+   // 27
-    "CUTS.TALK_END_POINT,"+     // 28
-    "CUTS.FADEUP_POINT,"+       // 29
-    "CUTS.FADEDOWN_POINT "+     // 30
-    "from CART left join CUTS "+
-    "on CART.NUMBER=CUTS.CART_NUMBER ";
-  if(list_group==QString("ALL")) {
-    sql+=RDAllCartSearchText(list_filter,schedcode,rda->user()->name(),true)+" && "+
-      list_type_filter+" order by CART.NUMBER,CUTS.CUT_NAME";
-  }
-  else {
-    sql+=RDCartSearchText(list_filter,list_group,schedcode,true)+" && "+
-      list_type_filter+" order by CART.NUMBER,CUTS.CUT_NAME";
-  }
-  q=new RDSqlQuery(sql);
-  */
-
-  //
-  // Generate Rows
-  //
   sql=QString("select ")+
     "`CART`.`NUMBER`,"+             // 00
     "`CART`.`TYPE`,"+               // 01
@@ -698,8 +646,8 @@ void ListReports::GenerateCartDumpCsv(QString *report,bool prepend_names)
       *report+=RDCsvField(q->value(29).toInt());
       *report+=RDCsvField(q->value(30).toInt());
     }
-    sql=QString("select SCHED_CODE from CART_SCHED_CODES where ")+
-      QString().sprintf("CART_NUMBER=%u",q->value(0).toUInt());
+    sql=QString("select `SCHED_CODE` from `CART_SCHED_CODES` where ")+
+      QString().sprintf("`CART_NUMBER`=%u",q->value(0).toUInt());
     QString schedcodes="";
     q1=new RDSqlQuery(sql);
     while(q1->next()) {

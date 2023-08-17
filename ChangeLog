@@ -24347,3 +24347,6 @@
 	* Fixed typos in the Operations Guide for the 'Duck Panel Button'
 	['PD'] and 'Set Duck Level' ['MD'] RMLs that incorrectly specified
 	'dBFS' as the unit for the 'level' parameter.
+2023-08-17 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlibrary(1) where a SQL call was not properly
+	escaped.
