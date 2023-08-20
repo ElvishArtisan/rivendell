@@ -702,6 +702,8 @@ void MainWidget::notificationReceivedData(RDNotification *notify)
 	  "from `CART` "+
 	  "left join `GROUPS` on `CART`.`GROUP_NAME`=`GROUPS`.`NAME` "+
 	  "left join `CUTS` on `CART`.`NUMBER`=`CUTS`.`CART_NUMBER` "+
+	  "left join `CART_SCHED_CODES` "+
+	  "on `CART`.`NUMBER`=`CART_SCHED_CODES`.`CART_NUMBER` "+
 	  lib_cart_filter->filterSql(and_fields);
 	q=new RDSqlQuery(sql);
 	if(q->first()) {

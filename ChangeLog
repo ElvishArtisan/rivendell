@@ -24350,3 +24350,7 @@
 2023-08-17 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdlibrary(1) where a SQL call was not properly
 	escaped.
+2023-08-20 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlibrary(1) that caused it to emit a SQL error when
+	processing notifications for cart object with one or more Scheduler
+	Codes selected.
