@@ -24354,3 +24354,5 @@
 	* Fixed a bug in rdlibrary(1) that caused it to emit a SQL error when
 	processing notifications for cart object with one or more Scheduler
 	Codes selected.
+2023-08-21 Fred Gleason <fredg@paravelsystems.com>
+	* Removed dead code from the 'RDPlayDeck' class.

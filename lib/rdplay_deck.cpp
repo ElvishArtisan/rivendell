@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Playback Deck
 //
-//   (C) Copyright 2003-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2003-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,10 +18,10 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qsignalmapper.h>
+#include <QSignalMapper>
 
-#include <rdplay_deck.h>
-#include <rdmixer.h>
+#include "rdmixer.h"
+#include "rdplay_deck.h"
 
 RDPlayDeck::RDPlayDeck(RDCae *cae,int id,QObject *parent)
   : QObject(parent)
@@ -159,10 +159,6 @@ bool RDPlayDeck::setCart(RDLogLine *logline,bool rotate)
   }
   if(logline->startPoint(RDLogLine::LogPointer)<0) {
     play_forced_length=logline->forcedLength();
-    /*
-    play_audio_point[0]=logline->startPoint();
-    play_audio_point[1]=logline->endPoint();
-    */
     play_audio_point[0]=play_cut->startPoint(RDLogLine::CartPointer);
     play_audio_point[1]=play_cut->endPoint();
   }
@@ -238,18 +234,6 @@ bool RDPlayDeck::setCart(RDLogLine *logline,bool rotate)
   }
   play_duck_gain[0]=logline->duckUpGain();
   play_duck_gain[1]=logline->duckDownGain();
-
-/*
-  if(play_timescale_active) {
-    play_timescale_speed=
-      (int)(1000*(double)(play_audio_point[1]-play_audio_point[0])/
-      (double)play_forced_length);
-  }
-  else {
-    play_timescale_speed=1000;
-  }
-*/
-
   if(play_state!=RDPlayDeck::Paused) {
     if(!play_cae->loadPlay(play_card,play_cut->cutName(),
 			   &play_stream,&play_handle)) {

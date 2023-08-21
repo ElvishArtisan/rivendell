@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Playback Deck
 //
-//   (C) Copyright 2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2003-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,10 +18,9 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdatetime.h>
-#include <qsqldatabase.h>
-#include <qobject.h>
-#include <qtimer.h>
+#include <QDateTime>
+#include <QObject>
+#include <QTimer>
 
 #include <rdcae.h>
 #include <rdcart.h>
@@ -71,7 +70,6 @@ class RDPlayDeck : public QObject
   void playHook();
   void pause();
   void stop();
- // void stop(int interval);
   void stop(int interval,int gain=-10000);
   void duckDown(int interval);
   void duckVolume(int level,int fade);
@@ -145,4 +143,4 @@ class RDPlayDeck : public QObject
 };
 
 
-#endif 
+#endif  // RDPLAY_DECK_H
