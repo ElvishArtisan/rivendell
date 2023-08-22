@@ -276,6 +276,17 @@ void RDCae::setOutputVolume(int card,int stream,int port,int level)
 }
 
 
+void RDCae::setOutputPort(int card,int stream,int port)
+{
+  for(int i=0;i<RD_MAX_PORTS;i++) {
+    if(i!=port) {
+      setOutputVolume(card,stream,i,-10000);
+    }
+  }
+  setOutputVolume(card,stream,port,0);
+}
+
+
 void RDCae::fadeOutputVolume(int card,int stream,int port,int level,int length)
 {
   SendCommand(QString::asprintf("FV %d %d %d %d %d!",

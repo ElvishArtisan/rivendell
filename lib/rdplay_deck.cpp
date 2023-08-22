@@ -20,7 +20,6 @@
 
 #include <QSignalMapper>
 
-#include "rdmixer.h"
 #include "rdplay_deck.h"
 
 RDPlayDeck::RDPlayDeck(RDCae *cae,int id,QObject *parent)

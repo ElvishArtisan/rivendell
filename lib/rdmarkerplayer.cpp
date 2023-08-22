@@ -2,7 +2,7 @@
 //
 // Audio player for RDMarkerDialog
 //
-//   (C) Copyright 2021-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,7 +20,6 @@
 
 #include "rdconf.h"
 #include "rdescape_string.h"
-#include "rdmixer.h"
 #include "rdmarkerplayer.h"
 
 RDMarkerPlayer::RDMarkerPlayer(int card,int port,QWidget *parent)
@@ -237,7 +236,7 @@ bool RDMarkerPlayer::setCut(unsigned cartnum,int cutnum)
     return false;
   }
   rda->cae()->positionPlay(d_cae_handle,0);
-  RDSetMixerOutputPort(rda->cae(),d_cards.first(),d_cae_stream,d_port);
+  rda->cae()->setOutputPort(d_cards.first(),d_cae_stream,d_port);
 
   QString sql=QString("select ")+
     "`START_POINT`,"+        // 00  

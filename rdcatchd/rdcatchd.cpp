@@ -2,7 +2,7 @@
 //
 // The Rivendell Netcatcher Daemon
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -44,7 +44,6 @@
 #include <rdescape_string.h>
 #include <rdhash.h>
 #include <rdlibrary_conf.h>
-#include <rdmixer.h>
 #include <rdpaths.h>
 #include <rdpodcast.h>
 #include <rdrecording.h>
@@ -1336,9 +1335,9 @@ void MainObject::StartPlayout(int event)
 		      catch_events[event].cutName(),
 		      &catch_playout_stream[deck-129],
 		      &catch_playout_handle[deck-129]);
-  RDSetMixerOutputPort(rda->cae(),catch_playout_card[deck-129],
-		       catch_playout_stream[deck-129],
-		       catch_playout_port[deck-129]);
+  rda->cae()->setOutputPort(catch_playout_card[deck-129],
+			    catch_playout_stream[deck-129],
+			    catch_playout_port[deck-129]);
   rda->cae()->positionPlay(catch_playout_handle[deck-129],start);
   catch_playout_event_player[deck-129]->start(start);
   rda->cae()->

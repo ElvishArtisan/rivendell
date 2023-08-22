@@ -25,7 +25,6 @@
 #include "rdescape_string.h"
 #include "rdlog.h"
 #include "rdlogplay.h"
-#include "rdmixer.h"
 #include "rdsvc.h"
 #include "rdweb.h"
 
@@ -2058,9 +2057,8 @@ bool RDLogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
     if(play_timescaling_available&&logline->enforceLength()) {
       logline->setTimescalingActive(true);
     }
-    RDSetMixerOutputPort(play_cae,playdeck->card(),
-			 playdeck->stream(),
-			 playdeck->port());
+    play_cae->
+      setOutputPort(playdeck->card(),playdeck->stream(),playdeck->port());
     if((int)logline->playPosition()>logline->effectiveLength()) {
       rda->syslog(LOG_DEBUG,"log engine: *** position out of bounds: Line: %d  Cart: %d  Pos: %d ***",line,logline->cartNumber(),logline->playPosition());
       logline->setPlayPosition(0);

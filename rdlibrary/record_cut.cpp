@@ -2,7 +2,7 @@
 //
 // Record a Rivendell Cut
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,7 +21,6 @@
 #include <QMessageBox>
 
 #include <rdconf.h>
-#include <rdmixer.h>
 #include <rdrehash.h>
 
 #include "globals.h"
@@ -656,7 +655,7 @@ void RecordCut::playData()
   if((!is_recording)&&(!is_playing)&&(!is_ready)) {  // Start Play
     rda->cae()->loadPlay(rec_card_no[1],rec_cut->cutName(),
 		    &rec_stream_no[1],&rec_play_handle);
-    RDSetMixerOutputPort(rda->cae(),rec_card_no[1],rec_stream_no[1],rec_port_no[1]);
+    rda->cae()->setOutputPort(rec_card_no[1],rec_stream_no[1],rec_port_no[1]);
     rda->cae()->positionPlay(rec_play_handle,start);
     rda->cae()->setPlayPortActive(rec_card_no[1],rec_port_no[1],rec_stream_no[1]);
     rda->cae()->setOutputVolume(rec_card_no[1],rec_stream_no[1],rec_port_no[1],

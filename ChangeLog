@@ -24358,3 +24358,7 @@
 	* Removed dead code from the 'RDPlayDeck' class.
 2023-08-22 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'RDPlayDeck::dumpCutPoints()' method.
+2023-08-22 Fred Gleason <fredg@paravelsystems.com>
+	* Removed 'RDSetMixerPorts()' from 'lib/rdmixer.[cpp|h]'.
+	* Removed 'RDSetMixerOutputPort()' from 'lib/rdmixer.[cpp|h]'.
+	* Added a 'RDCae::setOutputPort()' method.
