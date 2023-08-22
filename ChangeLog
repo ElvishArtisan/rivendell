@@ -24356,3 +24356,5 @@
 	Codes selected.
 2023-08-21 Fred Gleason <fredg@paravelsystems.com>
 	* Removed dead code from the 'RDPlayDeck' class.
+2023-08-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'RDPlayDeck::dumpCutPoints()' method.

@@ -158,11 +158,13 @@ bool RDPlayDeck::setCart(RDLogLine *logline,bool rotate)
     }
   }
   if(logline->startPoint(RDLogLine::LogPointer)<0) {
+    // Use values from the library
     play_forced_length=logline->forcedLength();
     play_audio_point[0]=play_cut->startPoint(RDLogLine::CartPointer);
     play_audio_point[1]=play_cut->endPoint();
   }
   else {
+    // Use values from the log
     play_forced_length=logline->effectiveLength();
     play_audio_point[0]=logline->startPoint(RDLogLine::LogPointer);
     play_audio_point[1]=logline->endPoint();
@@ -374,6 +376,57 @@ void RDPlayDeck::reset()
 	break;
   }
   play_state=RDPlayDeck::Stopped;
+}
+
+
+QString RDPlayDeck::dumpCutPoints() const
+{
+  QString ret;
+
+  ret=QString::asprintf("play_audio_point: start: %d  end: %d ",
+			play_audio_point[0],play_audio_point[1]);
+  if(play_stop_timer->isActive()) {
+    ret+=QString::asprintf("play_stop_timer: %d",play_stop_timer->interval()); 
+  }
+  else {
+    ret+="play_stop_timer: inactive";
+  }
+  ret+="\n";
+
+  ret+=QString::asprintf("play_point_value[SEGUE]: start: %d  end: %d ",
+			 play_point_value[0][0],play_point_value[0][1]);
+  if(play_point_timer[0]->isActive()) {
+    ret+=QString::asprintf("play_point_timer[SEGUE]: %d",
+			   play_point_timer[0]->interval());
+  }
+  else {
+    ret+="play_point_timer[SEGUE]: inactive";
+  }
+  ret+="\n";
+
+  ret+=QString::asprintf("play_point_value[TALK]: start: %d  end: %d ",
+			 play_point_value[1][0],play_point_value[1][1]);
+  if(play_point_timer[1]->isActive()) {
+    ret+=QString::asprintf("play_point_timer[TALK]: %d",
+			   play_point_timer[1]->interval());
+  }
+  else {
+    ret+="play_point_timer[TALK]: inactive";
+  }
+  ret+="\n";
+
+  ret+=QString::asprintf("play_point_value[HOOK]: start: %d  end: %d ",
+			 play_point_value[2][0],play_point_value[2][1]);
+  if(play_point_timer[2]->isActive()) {
+    ret+=QString::asprintf("play_point_timer[HOOK]: %d",
+			   play_point_timer[2]->interval());
+  }
+  else {
+    ret+="play_point_timer[HOOK]: inactive";
+  }
+  ret+="\n";
+
+  return ret;
 }
 
 

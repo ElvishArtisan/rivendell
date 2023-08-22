@@ -64,6 +64,7 @@ class RDPlayDeck : public QObject
   int lastStartPosition() const;
   void clear();
   void reset();
+  QString dumpCutPoints() const;
 
  public slots:
   void play(unsigned pos,int segue_start=-1,int segue_end=-1,int duck_up_end=0);
