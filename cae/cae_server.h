@@ -2,7 +2,7 @@
 //
 // Network server for caed(8).
 //
-//   (C) Copyright 2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2019-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -79,7 +79,9 @@ class CaeServer : public QObject
 		 int threshold_level);
   void stopRecordingReq(int id,unsigned card,unsigned stream);
   void setInputVolumeReq(int id,unsigned card,unsigned stream,int level);
-  void setOutputVolumeReq(int id,unsigned card,unsigned stream,unsigned port,
+  void setOutputPortReq(int id,unsigned card,unsigned stream,unsigned port,
+			int level);
+  void setOutputVolumeReq(int id,unsigned card,unsigned stream,int port,
 			  int level);
   void fadeOutputVolumeReq(int id,unsigned card,unsigned stream,unsigned port,
 			   int level,unsigned length);

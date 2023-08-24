@@ -173,7 +173,8 @@
   <sect2>
     <title><command>Unload Playback</command></title>
     <para>
-      Free an audio playback interface.
+      Free an audio playback interface. This will also mute all associated
+      output stream->output port volume controls.
     </para>
     <para>
       <userinput>UP <replaceable>conn-handle</replaceable>!</userinput>
@@ -663,6 +664,70 @@
   </sect2>
 
   <sect2>
+    <title><command>Set Output Port</command></title>
+    <para>
+      Configure an output stream to use a particular output port.
+    </para>
+    <para>
+      This will cause the <replaceable>stream-num</replaceable> output volume
+      control feeding the <replaceable>port-num</replaceable> port to be set
+      to the level given by <replaceable>level</replaceable>, while all other
+      output_volume controls for that stream to be muted --e.g. set to
+      -100 dB.
+    </para>
+    <para>
+      <userinput>OP <replaceable>card-num</replaceable>
+      <replaceable>stream-num</replaceable>
+      <replaceable>port-num</replaceable>
+      <replaceable>level</replaceable>!</userinput>
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term>
+	  <replaceable>card-num</replaceable>
+	</term>
+	<listitem>
+	  <para>
+	    The number of the audio adapter to use.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>
+	  <replaceable>stream-num</replaceable>
+	</term>
+	<listitem>
+	  <para>
+	    The stream  number to use. This is relative to the audio adapter
+	    selected.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>
+	  <replaceable>port-num</replaceable>
+	</term>
+	<listitem>
+	  <para>
+	    The port number to use. This is relative to the audio adapter
+	    selected.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>
+	  <replaceable>level</replaceable>
+	</term>
+	<listitem>
+	  <para>
+	    The  level, in hundreths of a dB.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </sect2>
+
+  <sect2>
     <title><command>Set Output Volume</command></title>
     <para>
       Set the volume of an output stream.
@@ -702,7 +767,10 @@
 	<listitem>
 	  <para>
 	    The port number to use. This is relative to the audio adapter
-	    selected.
+	    selected. If a value less than <userinput>0</userinput> is
+	    provided, then <emphasis>all</emphasis> output ports for
+	    <replaceable>stream-num</replaceable> will have their volume
+	    controls set to <replaceable>level</replaceable>.
 	  </para>
 	</listitem>
       </varlistentry>

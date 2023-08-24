@@ -178,9 +178,13 @@ MainObject::MainObject(QObject *parent)
   connect(cae_server,SIGNAL(setInputVolumeReq(int,unsigned,unsigned,int)),
 	  this,SLOT(setInputVolumeData(int,unsigned,unsigned,int)));
   connect(cae_server,
-	  SIGNAL(setOutputVolumeReq(int,unsigned,unsigned,unsigned,int)),
+	  SIGNAL(setOutputPortReq(int,unsigned,unsigned,unsigned,int)),
 	  this,
-	  SLOT(setOutputVolumeData(int,unsigned,unsigned,unsigned,int)));
+	  SLOT(setOutputPortData(int,unsigned,unsigned,unsigned,int)));
+  connect(cae_server,
+	  SIGNAL(setOutputVolumeReq(int,unsigned,unsigned,int,int)),
+	  this,
+	  SLOT(setOutputVolumeData(int,unsigned,unsigned,int,int)));
   connect(cae_server,SIGNAL(fadeOutputVolumeReq(int,unsigned,unsigned,
 						unsigned,int,unsigned)),
 	  this,SLOT(fadeOutputVolumeData(int,unsigned,unsigned,
@@ -318,6 +322,9 @@ MainObject::MainObject(QObject *parent)
   if(rda->config()->enableMixerLogging()) {
     rda->syslog(LOG_INFO,"mixer logging enabled");
   }
+  if(rda->config()->testOutputStreams()) {
+    rda->syslog(LOG_INFO,"output stream testing enabled");
+  }
   rda->syslog(LOG_INFO,"cae started");
 }
 
@@ -379,6 +386,11 @@ void MainObject::unloadPlaybackData(int id,unsigned handle)
   }
   if((play_owner[card][stream]==-1)||(play_owner[card][stream]==id)) {
     if(dvr->unloadPlayback(card,stream)) {
+      if(!rda->config()->testOutputStreams()) {
+	for(int i=0;i<RD_MAX_PORTS;i++) {
+	  dvr->setOutputVolume(card,stream,i,RD_MUTE_DEPTH);  // Clear mixer
+	}
+      }
       play_owner[card][stream]=-1;
       rda->syslog(LOG_INFO,"UnloadPlayback - Card: %d  Stream: %d  Handle: %d",
 		  card,stream,handle);
@@ -668,8 +680,38 @@ void MainObject::setInputVolumeData(int id,unsigned card,unsigned stream,
 }
 
 
+void MainObject::setOutputPortData(int id,unsigned card,unsigned stream,
+				   unsigned port,int level)
+{
+  Driver *dvr=GetDriver(card);
+
+  if(dvr==NULL) {
+    cae_server->sendCommand(id,QString::asprintf("OP %u %u %u %d -!",
+						 card,stream,port,level));
+    return;
+  }
+  if(!rda->config()->testOutputStreams()) {
+    for(unsigned i=0;i<RD_MAX_STREAMS;i++) {
+      if(i==port) {
+	dvr->setOutputVolume(card,i,port,level);
+      }
+      else {
+	dvr->setOutputVolume(card,i,port,RD_FADE_DEPTH);
+      }
+    }
+    if(rda->config()->enableMixerLogging()) {
+      rda->syslog(LOG_INFO,
+		  "SetOutputPort - Card: %d  Stream: %d  Port: %d  Level: %d",
+		  card,stream,port,level);
+    }
+  }
+  cae_server->sendCommand(id,QString::asprintf("OV %u %u %u %d +!",
+					       card,stream,port,level));
+}
+
+
 void MainObject::setOutputVolumeData(int id,unsigned card,unsigned stream,
-				     unsigned port,int level)
+				     int port,int level)
 {
   Driver *dvr=GetDriver(card);
 
@@ -678,15 +720,24 @@ void MainObject::setOutputVolumeData(int id,unsigned card,unsigned stream,
 						 card,stream,port,level));
     return;
   }
-  if(!dvr->setOutputVolume(card,stream,port,level)) {
-    cae_server->sendCommand(id,QString::asprintf("OV %u %u %u %d -!",
-						 card,stream,port,level));
-    return;
-  }
-  if(rda->config()->enableMixerLogging()) {
-    rda->syslog(LOG_INFO,
-	   "SetOutputVolume - Card: %d  Stream: %d  Port: %d  Level: %d",
-	   card,stream,port,level);
+  if(!rda->config()->testOutputStreams()) {
+    if(port>=0) {
+      if(!dvr->setOutputVolume(card,stream,port,level)) {
+	cae_server->sendCommand(id,QString::asprintf("OV %u %u %u %d -!",
+						     card,stream,port,level));
+	return;
+      }
+    }
+    else {
+      for(int i=0;i<RD_MAX_PORTS;i++) {
+	dvr->setOutputVolume(card,stream,i,level);
+      }
+    }
+    if(rda->config()->enableMixerLogging()) {
+      rda->syslog(LOG_INFO,
+		  "SetOutputVolume - Card: %d  Stream: %d  Port: %d  Level: %d",
+		  card,stream,port,level);
+    }
   }
   cae_server->sendCommand(id,QString::asprintf("OV %u %u %u %d +!",
 					       card,stream,port,level));
@@ -704,16 +755,18 @@ void MainObject::fadeOutputVolumeData(int id,unsigned card,unsigned stream,
 				       card,stream,port,level,length));
     return;
   }
-  if(!dvr->fadeOutputVolume(card,stream,port,level,length)) {
-    cae_server->
-      sendCommand(id,QString::asprintf("FV %u %u %u %d %u -!",
-				       card,stream,port,level,length));
-    return;
-  }
-  if(rda->config()->enableMixerLogging()) {
-    rda->syslog(LOG_INFO,
-     "FadeOutputVolume - Card: %d  Stream: %d  Port: %d  Level: %d  Length: %d",
-	   card,stream,port,level,length);
+  if(!rda->config()->testOutputStreams()) {
+    if(!dvr->fadeOutputVolume(card,stream,port,level,length)) {
+      cae_server->
+	sendCommand(id,QString::asprintf("FV %u %u %u %d %u -!",
+					 card,stream,port,level,length));
+      return;
+    }
+    if(rda->config()->enableMixerLogging()) {
+      rda->syslog(LOG_INFO,
+		  "FadeOutputVolume - Card: %d  Stream: %d  Port: %d  Level: %d  Length: %d",
+		  card,stream,port,level,length);
+    }
   }
   cae_server->
     sendCommand(id,QString::asprintf("FV %u %u %u %d %u +!",
@@ -1620,6 +1673,8 @@ Driver *MainObject::GetDriver(unsigned card) const
 
 void MainObject::MakeDriver(unsigned *next_card,RDStation::AudioDriver type)
 {
+  unsigned first_card=*next_card;
+  int initial_output_volume=RD_MUTE_DEPTH;
   Driver *dvr=NULL;
 
   switch(type) {
@@ -1653,6 +1708,9 @@ void MainObject::MakeDriver(unsigned *next_card,RDStation::AudioDriver type)
   case RDStation::None:
     break;
   }
+  if(rda->config()->testOutputStreams()) {
+    initial_output_volume=0;
+  }
   if(dvr!=NULL) {
     if(dvr->initialize(next_card)) {
       connect(dvr,SIGNAL(playStateChanged(int,int,int)),
@@ -1660,6 +1718,13 @@ void MainObject::MakeDriver(unsigned *next_card,RDStation::AudioDriver type)
       connect(dvr,SIGNAL(recordStateChanged(int,int,int)),
 	      this,SLOT(stateRecordUpdate(int,int,int)));
       d_drivers.push_back(dvr);
+      for(unsigned i=first_card;i<*next_card;i++) {
+	for(int j=0;j<RD_MAX_STREAMS;j++) {
+	  for(int k=0;k<RD_MAX_PORTS;k++) {
+	    dvr->setOutputVolume(i,j,k,initial_output_volume);
+	  }
+	}
+      }
     }
     else {
       delete dvr;

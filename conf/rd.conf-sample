@@ -225,6 +225,16 @@ TranscodingDelay=0
 ;
 ;SuppressRdcatchMeterUpdates=No
 
+[Caed]
+; When set to 'Yes', log all CAE mixer operations to syslog.
+;EnableMixerLogging=No
+
+; When set to 'Yes', set all output stream to port volume settings to 0 dB
+; and disable 'Set Output Port' ['OP'], 'Set Output Volume' ['OV'] and
+; 'Fade Output Volume' ['FV'] CAE commands.
+; TestOutputStreams=No
+TestOutputStreams=No
+
 [Debugging]
 ; IMPORTANT NOTE:
 ; The directives in this section can send large amounts of data to the

@@ -489,6 +489,12 @@ bool RDConfig::enableMixerLogging() const
 }
 
 
+bool RDConfig::testOutputStreams() const
+{
+  return conf_test_output_streams;
+}
+
+
 bool RDConfig::useRealtime()
 {
   return conf_use_realtime;
@@ -707,6 +713,7 @@ bool RDConfig::load()
   conf_syslog_facility=profile->intValue("Identity","SyslogFacility",LOG_USER);
 
   conf_enable_mixer_logging=profile->boolValue("Caed","EnableMixerLogging");
+  conf_test_output_streams=profile->boolValue("Caed","TestOutputStreams");
   conf_use_realtime=profile->boolValue("Tuning","UseRealtime",false);
   conf_realtime_priority=profile->intValue("Tuning","RealtimePriority",9);
   conf_transcoding_delay=profile->intValue("Tuning","TranscodingDelay");
@@ -824,6 +831,7 @@ void RDConfig::clear()
   conf_rn_rml_uid=65535;
   conf_rn_rml_gid=65535;
   conf_enable_mixer_logging=false;
+  conf_test_output_streams=false;
   conf_use_realtime=false;
   conf_realtime_priority=9;
   conf_transcoding_delay=0;

@@ -112,6 +112,7 @@ class RDConfig
   bool logSqlQueries() const;
   int logSqlQueriesLevel() const;
   bool enableMixerLogging() const;
+  bool testOutputStreams() const;
   uid_t uid() const;
   gid_t gid() const;
   uid_t pypadUid() const;
@@ -204,6 +205,7 @@ class RDConfig
   uid_t conf_rn_rml_uid;
   gid_t conf_rn_rml_gid;
   bool conf_enable_mixer_logging;
+  bool conf_test_output_streams;
   bool conf_use_realtime;
   int conf_transcoding_delay;
   int conf_realtime_priority;

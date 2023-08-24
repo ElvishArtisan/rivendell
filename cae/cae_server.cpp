@@ -413,13 +413,31 @@ bool CaeServer::ProcessCommand(int id,const QString &cmd)
       }
     }
   }
-  if((f0.at(0)=="OV")&&(f0.size()==5)) {  // Set Output Volume
+  if((f0.at(0)=="OP")&&(f0.size()==5)) {  // Set Output Port
     unsigned card=f0.at(1).toUInt(&ok);
     if(ok&&(card<RD_MAX_CARDS)) {
       unsigned stream=f0.at(2).toUInt(&ok);
       if(ok&&(stream<RD_MAX_STREAMS)) {
 	if(ok) {
 	  unsigned port=f0.at(3).toUInt(&ok);
+	  if(ok&&(port<RD_MAX_PORTS)) {
+	    int level=f0.at(4).toInt(&ok);
+	    if(ok) {
+	      emit setOutputPortReq(id,card,stream,port,level);
+	      was_processed=true;
+	    }
+	  }
+	}
+      }
+    }
+  }
+  if((f0.at(0)=="OV")&&(f0.size()==5)) {  // Set Output Volume
+    unsigned card=f0.at(1).toUInt(&ok);
+    if(ok&&(card<RD_MAX_CARDS)) {
+      unsigned stream=f0.at(2).toUInt(&ok);
+      if(ok&&(stream<RD_MAX_STREAMS)) {
+	if(ok) {
+	  int port=f0.at(3).toInt(&ok);
 	  if(ok&&(port<RD_MAX_PORTS)) {
 	    int level=f0.at(4).toInt(&ok);
 	    if(ok) {

@@ -2,7 +2,7 @@
 //
 // Connection to the Rivendell Core Audio Engine
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -278,12 +278,7 @@ void RDCae::setOutputVolume(int card,int stream,int port,int level)
 
 void RDCae::setOutputPort(int card,int stream,int port)
 {
-  for(int i=0;i<RD_MAX_PORTS;i++) {
-    if(i!=port) {
-      setOutputVolume(card,stream,i,-10000);
-    }
-  }
-  setOutputVolume(card,stream,port,0);
+  SendCommand(QString::asprintf("OP %d %d %d 0!",card,stream,port));
 }
 
 

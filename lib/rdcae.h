@@ -2,7 +2,7 @@
 //
 // Connection to the Rivendell Core Audio Engine
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -55,9 +55,7 @@ class RDCae : public QObject
   void setClockSource(int card,RDCae::ClockSource src);
   void setInputVolume(int card,int stream,int level);
   void setOutputVolume(int card,int stream,int port,int level);
-
   void setOutputPort(int card,int stream,int port);
-
   void fadeOutputVolume(int card,int stream,int port,int level,int length);
   void setInputLevel(int card,int port,int level);
   void setOutputLevel(int card,int port,int level);

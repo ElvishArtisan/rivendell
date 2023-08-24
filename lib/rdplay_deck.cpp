@@ -465,9 +465,7 @@ void RDPlayDeck::play(unsigned pos,int segue_start,int segue_end,
   pause_called=false;
   play_cae->positionPlay(play_handle,play_audio_point[0]+pos);
   play_cae->setPlayPortActive(play_card,play_port,play_stream);
-  for(int i=0;i<RD_MAX_PORTS;i++) {
-    play_cae->setOutputVolume(play_card,play_stream,i,RD_MUTE_DEPTH);
-  }
+  play_cae->setOutputVolume(play_card,play_stream,-1,RD_MUTE_DEPTH);
   if((play_fade_point[0]==-1)||(play_fade_point[0]==play_audio_point[0])||
      ((fadeup=play_fade_point[0]-play_audio_point[0]-pos)<=0)||
      (play_state==RDPlayDeck::Paused)) {
