@@ -61,7 +61,6 @@ volatile static int stream_mutex[HPI_MAX_ADAPTERS][HPI_MAX_STREAMS]=
 RDHPIPlayStream::RDHPIPlayStream(RDHPISoundCard *card,QWidget *parent) 
   :QObject(parent),RDWaveFile()
 {  
-  //  hpi_err_t hpi_err;
   int quan;
   uint16_t type[HPI_MAX_ADAPTERS];
   struct hpi_format fmt;
@@ -497,6 +496,7 @@ bool RDHPIPlayStream::play()
     }
 #endif
   }
+  bool restart_timer=false;
    if(!is_paused) {
     memset(pdata,0,fragment_size);
     left_to_write=getDataLength()-seekWave(0,SEEK_CUR);
@@ -524,10 +524,6 @@ bool RDHPIPlayStream::play()
     playing=true;
     is_paused=false;
     stopping=false;
-    if(play_length>0) {
-      play_timer->start(play_length);
-      start_time=QTime::currentTime();
-    }
     stream_state=RDHPIPlayStream::Playing;
     if(!restart_transport) {
       emit isStopped(false);
@@ -547,7 +543,13 @@ bool RDHPIPlayStream::play()
       emit played();
       emit stateChanged(card_number,stream_number,(int)stream_state);
     }
+    restart_timer=true;
   }      
+  if((play_length>0)&&restart_timer) {
+    play_timer->start(play_length);
+    start_time=QTime::currentTime();
+  }
+
   return true;
 }
 

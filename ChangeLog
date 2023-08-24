@@ -24362,3 +24362,6 @@
 	* Removed 'RDSetMixerPorts()' from 'lib/rdmixer.[cpp|h]'.
 	* Removed 'RDSetMixerOutputPort()' from 'lib/rdmixer.[cpp|h]'.
 	* Added a 'RDCae::setOutputPort()' method.
+2023-08-24 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the 'RDHPIPlayStream' that could cause
+	audio play-out to be truncated.
