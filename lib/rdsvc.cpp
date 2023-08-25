@@ -1668,6 +1668,11 @@ void RDSvc::remove(const QString &name)
   q=new RDSqlQuery(sql);
   delete q;
 
+  sql=QString("delete from `USER_SERVICE_PERMS` where ")+
+    "`SERVICE_NAME`='"+RDEscapeString(name)+"'";
+  q=new RDSqlQuery(sql);
+  delete q;
+
   sql=QString("update `RDAIRPLAY` set ")+
     "`DEFAULT_SERVICE`='' where "+
     "`DEFAULT_SERVICE`='"+RDEscapeString(name)+"'";
