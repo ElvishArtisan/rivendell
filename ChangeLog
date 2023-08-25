@@ -24373,3 +24373,5 @@
 	* Added a feature to the 'Set Output Port' ['OP'] CAE command where
 	passing a '-1' for the 'port-num' argument will cause all output
 	stream volume controls for the specified stream to be muted.
+2023-08-25 Fred Gleason <fredg@paravelsystems.com>
+	* Added profiling code (disabled by default) to the 'RDCae' class.

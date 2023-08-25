@@ -33,6 +33,11 @@
 #include "rddebug.h"
 #include "rdescape_string.h"
 
+//
+// Uncomment this to enable latency profiling in the syslog
+//
+// #define DEBUG_LATENCY
+
 RDCae::RDCae(RDStation *station,RDConfig *config,QObject *parent)
   : QObject(parent)
 {
@@ -161,6 +166,10 @@ void RDCae::enableMetering(QList<int> *cards)
 
 bool RDCae::loadPlay(int card,QString name,int *stream,int *handle)
 {
+#ifdef DEBUG_LATENCY
+  rda->syslog(LOG_NOTICE,"RDCae::loadPlay() starts",handle);
+#endif  // DEBUG_LATENCY
+
   int count=0;
 
   SendCommand("LP "+QString::asprintf(" %d ",card)+name+"!");
@@ -190,12 +199,19 @@ bool RDCae::loadPlay(int card,QString name,int *stream,int *handle)
       return false;
   }
 
+#ifdef DEBUG_LATENCY
+  rda->syslog(LOG_NOTICE,"RDCae::loadPlay(handle=%d) ends",*handle);
+#endif  // DEBUG_LATENCY
+
   return true;
 }
 
 
 void RDCae::unloadPlay(int handle)
 {
+#ifdef DEBUG_LATENCY
+  rda->syslog(LOG_NOTICE,"RDCae::unloadPlay(handle=%d) starts",handle);
+#endif  // DEBUG_LATENCY
   SendCommand(QString::asprintf("UP %d!",handle));
 }
 
@@ -211,6 +227,10 @@ void RDCae::positionPlay(int handle,int msec)
 
 void RDCae::play(int handle,unsigned length,int speed,bool pitch)
 {
+#ifdef DEBUG_LATENCY
+  rda->syslog(LOG_NOTICE,"RDCae::play(handle=%d) starts",handle);
+#endif  // DEBUG_LATENCY
+
   int pitch_state=0;
 
   if(pitch) {
@@ -223,6 +243,9 @@ void RDCae::play(int handle,unsigned length,int speed,bool pitch)
 
 void RDCae::stopPlay(int handle)
 {
+#ifdef DEBUG_LATENCY
+  rda->syslog(LOG_NOTICE,"RDCae::stopPlay(handle=%d) starts",handle);
+#endif  // DEBUG_LATENCY
   SendCommand(QString::asprintf("SP %d!",handle));
 }
 
@@ -240,6 +263,7 @@ void RDCae::loadRecord(int card,int stream,QString name,
 
 
 void RDCae::unloadRecord(int card,int stream)
+
 {
   SendCommand(QString::asprintf("UR %d %d!",card,stream));
 }
@@ -545,6 +569,10 @@ void RDCae::DispatchCommand(RDCmdCache *cmd)
 	  }
 	}
       }
+#ifdef DEBUG_LATENCY
+  rda->syslog(LOG_NOTICE,"RDCae::unloadPlay(handle=%d) ends ",
+	      GetHandle(cmd->arg(1)));
+#endif  // DEBUG_LATENCY
       emit playUnloaded(handle);
     }
   }
@@ -566,12 +594,20 @@ void RDCae::DispatchCommand(RDCmdCache *cmd)
 
   if(!strcmp(cmd->arg(0),"PY")) {   // Play
     if(cmd->arg(4)[0]=='+') {
+#ifdef DEBUG_LATENCY
+      rda->syslog(LOG_NOTICE,"RDCae::play(handle=%d) ends",
+		  GetHandle(cmd->arg(1)));
+#endif  // DEBUG_LATENCY
       emit playing(GetHandle(cmd->arg(1)));
     }
   }
 
   if(!strcmp(cmd->arg(0),"SP")) {   // Stop Play
     if(cmd->arg(2)[0]=='+') {
+#ifdef DEBUG_LATENCY
+  rda->syslog(LOG_NOTICE,"RDCae::stopPlay(handle=%d) ends ",
+	      GetHandle(cmd->arg(1)));
+#endif  // DEBUG_LATENCY
       emit playStopped(GetHandle(cmd->arg(1)));
     }
   }
