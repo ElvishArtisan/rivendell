@@ -1113,8 +1113,8 @@
       <userinput>PX
       <replaceable>mach</replaceable>
       <replaceable>cart</replaceable>
-      [<replaceable>offset</replaceable>]
-      [PLAY|SEGUE|STOP]!</userinput>
+      [<replaceable>offset</replaceable>
+      [PLAY|SEGUE|STOP]]!</userinput>
     </para>
     <para>
       Insert cart <replaceable>cart</replaceable> after the currently playing

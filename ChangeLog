@@ -24380,3 +24380,6 @@
 2023-08-25 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the 'RDSvc::remove()' method that failed to remove
 	records from the 'USER_SERVICE_PERMS' table.
+2023-08-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed an error in the invocation specification for the
+	'Insert Cart' ['PX'] RML in the Operations Guide.
