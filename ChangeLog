@@ -24375,3 +24375,5 @@
 	stream volume controls for the specified stream to be muted.
 2023-08-25 Fred Gleason <fredg@paravelsystems.com>
 	* Added profiling code (disabled by default) to the 'RDCae' class.
+2023-08-25 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'PadSegueOverlap=' directive to rd.conf(5).

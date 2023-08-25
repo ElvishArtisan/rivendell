@@ -20,6 +20,7 @@
 
 #include <QSignalMapper>
 
+#include "rdapplication.h"
 #include "rdplay_deck.h"
 
 RDPlayDeck::RDPlayDeck(RDCae *cae,int id,QObject *parent)
@@ -780,6 +781,11 @@ void RDPlayDeck::StartTimers(int offset)
 	  play_point_timer[i]->
 	    start(play_point_value[i][1]-audio_point-offset);
 	}
+      }
+      if((i==0)&&(rda->config()->padSegueOverlaps()>0)) {
+	play_point_timer[0]->stop();
+	play_point_timer[0]->start(play_point_timer[0]->interval()+
+				   rda->config()->padSegueOverlaps());;
       }
     }
   }

@@ -189,6 +189,10 @@ TranscodingDelay=0
 ;ServiceStartupDelay=5 
 
 [Hacks]
+; As implied by the name, directives in this section are generally for use
+; in troubleshooting or maintenance situations. Do *NOT* change these on
+; production systems unless you understand exactly what you are doing!
+
 ; Completely disable maintenance checks on this host.
 ; DisableMaintChecks=Yes
 
@@ -224,6 +228,11 @@ TranscodingDelay=0
 ; Suppress meter update messages on the notification multicast channel.
 ;
 ;SuppressRdcatchMeterUpdates=No
+
+; Pad the duration of segue overlaps. Takes milliseconds as value.
+;
+; PadSegueOverlaps=0;
+
 
 [Caed]
 ; When set to 'Yes', log all CAE mixer operations to syslog.

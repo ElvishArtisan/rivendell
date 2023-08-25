@@ -2,7 +2,7 @@
 //
 // A container class for a Rivendell Base Configuration
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -399,6 +399,12 @@ bool RDConfig::suppressRdcatchMeterUpdates() const
 }
 
 
+int RDConfig::padSegueOverlaps() const
+{
+  return conf_pad_segue_overlaps;
+}
+
+
 bool RDConfig::logSearchStrings() const
 {
   return conf_log_search_strings;
@@ -674,6 +680,7 @@ bool RDConfig::load()
     profile->boolValue("Hacks","DisableMaintChecks",false);
   conf_suppress_rdcatch_meter_updates=
     profile->boolValue("Hacks","SuppressRdcatchMeterUpdates",false);
+  conf_pad_segue_overlaps=profile->intValue("Hacks","PadSegueOverlaps");
   conf_log_search_strings_level=
     SyslogPriorityLevel(profile->stringValue("Debugging","LogSearchStrings",""),
 			&conf_log_search_strings);
@@ -815,6 +822,7 @@ void RDConfig::clear()
   conf_disable_maint_checks=false;
   conf_save_webget_files_directory="";
   conf_suppress_rdcatch_meter_updates=false;
+  conf_pad_segue_overlaps=0;
   conf_log_search_strings=false;
   conf_log_search_strings_level=LOG_DEBUG;
   conf_log_log_refresh=false;

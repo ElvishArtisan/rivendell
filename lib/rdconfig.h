@@ -2,7 +2,7 @@
 //
 // A container class for a Rivendell Base Configuration
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -105,6 +105,7 @@ class RDConfig
   int meterPortRange() const;
   QString saveWebgetFilesDirectory() const;
   bool suppressRdcatchMeterUpdates() const;
+  int padSegueOverlaps() const;
   bool logSearchStrings() const;
   int logSearchStringsLevel() const;
   bool logLogRefresh() const;
@@ -195,6 +196,7 @@ class RDConfig
   bool conf_lock_rdairplay_memory;
   QString conf_save_webget_files_directory;
   bool conf_suppress_rdcatch_meter_updates;
+  int conf_pad_segue_overlaps;
   int conf_meter_base_port;
   int conf_meter_port_range;
   std::vector<QString> conf_jack_ports[2];
