@@ -1969,7 +1969,7 @@ bool RDLogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
 	}
       }
       break;
-	  
+
     case RDLogLine::Segue:
       for(int i=0;i<running;i++) {
 	RDLogLine *prev_logline=logLine(lines[i]);
