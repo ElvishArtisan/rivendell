@@ -24386,3 +24386,20 @@
 2023-08-29 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the playback, record and mixer commands in the CAE
 	protocol design document.
+2023-08-29 Fred Gleason <fredg@paravelsystems.com>
+	* Removed support for the 'Set Input Volume' ['IV'] CAE command.
+	* Removed support for the 'Set Input Level' ['IL'] CAE command.
+	* Removed support for the 'Set Output Level' ['OL'] CAE command.
+	* Removed support for the 'Set Input Mode' ['IM'] CAE command.
+	* Removed support for the 'Set Output Mode' ['OM'] CAE command.
+	* Removed support for the 'Set Input Vox Level' ['IX'] CAE command.
+	* Removed support for the 'Set Input Type' ['IT'] CAE command.
+	* Removed support for the 'Set Clock Source' ['CS'] CAE command.
+	* Removed the 'RDCae::setClockSource()' method.
+	* Removed the 'RDCae::setInputVolume()' method.
+	* Removed the 'RDCae::setInputLevel()' method.
+	* Removed the 'RDCae::setOutputLevel()' method.
+	* Removed the 'RDCae::setInputMode()' method.
+	* Removed the 'RDCae::setOutputMode()' method.
+	* Removed the 'RDCae::setInputVOXLevel()' method.
+	* Removed the 'RDCae::setInputType()' method.

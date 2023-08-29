@@ -207,6 +207,8 @@ MainObject::MainObject(QObject *parent)
 	SIGNAL(setAudioPassthroughLevelReq(int,unsigned,unsigned,unsigned,int)),
 	  this,
 	SLOT(setAudioPassthroughLevelData(int,unsigned,unsigned,unsigned,int)));
+  connect(cae_server,SIGNAL(updateAudioPorts(int)),
+	  this,SLOT(updateAudioPortsData(int)));
   connect(cae_server,SIGNAL(setClockSourceReq(int,unsigned,int)),
 	  this,SLOT(setClockSourceData(int,unsigned,int)));
   connect(cae_server,
@@ -969,6 +971,31 @@ void MainObject::setAudioPassthroughLevelData(int id,unsigned card,
 }
 
 
+void MainObject::updateAudioPortsData(int id)
+{
+  for(int i=0;i<RD_MAX_CARDS;i++) {
+    RDAudioPort *port=new RDAudioPort(rda->config()->stationName(),i);
+    Driver *dvr=GetDriver(i);
+
+    if(dvr!=NULL) {
+      dvr->setClockSource(i,port->clockSource());
+      for(int j=0;j<RD_MAX_PORTS;j++) {
+	if(port->inputPortType(j)==RDAudioPort::Analog) {
+	  dvr->setInputType(i,j,RDCae::Analog);
+	}
+	else {
+	  dvr->setInputType(i,j,RDCae::AesEbu);
+	}
+	dvr->setInputLevel(i,j,RD_BASE_ANALOG+port->inputPortLevel(j));
+	dvr->setOutputLevel(i,j,RD_BASE_ANALOG+port->outputPortLevel(j));
+	dvr->setInputMode(i,j,port->inputPortMode(j));
+      }
+    }
+    delete port;
+  }
+}
+
+
 void MainObject::setClockSourceData(int id,unsigned card,int input)
 {
   if((card<0)||(input<0)) {
@@ -1229,28 +1256,17 @@ void MainObject::InitProvisioning() const
 
 void MainObject::InitMixers()
 {
-  for(int i=0;i<RD_MAX_CARDS;i++) {
-    RDAudioPort *port=new RDAudioPort(rda->config()->stationName(),i);
-    Driver *dvr=GetDriver(i);
+  Driver *dvr=NULL;
 
+  updateAudioPortsData(-1);
+  for(int i=0;i<RD_MAX_CARDS;i++) {
     if(dvr!=NULL) {
-      dvr->setClockSource(i,port->clockSource());
       for(int j=0;j<RD_MAX_PORTS;j++) {
 	for(int k=0;k<RD_MAX_PORTS;k++) {
 	  dvr->setPassthroughLevel(i,j,k,RD_MUTE_DEPTH);
 	}
-	if(port->inputPortType(j)==RDAudioPort::Analog) {
-	  dvr->setInputType(i,j,RDCae::Analog);
-	}
-	else {
-	  dvr->setInputType(i,j,RDCae::AesEbu);
-	}
-	dvr->setInputLevel(i,j,RD_BASE_ANALOG+port->inputPortLevel(j));
-	dvr->setOutputLevel(i,j,RD_BASE_ANALOG+port->outputPortLevel(j));
-	dvr->setInputMode(i,j,port->inputPortMode(j));
       }
     }
-    delete port;
   }
 }
 

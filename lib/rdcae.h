@@ -52,17 +52,9 @@ class RDCae : public QObject
   void unloadRecord(int card,int stream);
   void record(int card,int stream,unsigned length,int threshold);
   void stopRecord(int card,int stream);
-  void setClockSource(int card,RDCae::ClockSource src);
-  void setInputVolume(int card,int stream,int level);
   void setOutputVolume(int card,int stream,int port,int level);
   void setOutputPort(int card,int stream,int port);
   void fadeOutputVolume(int card,int stream,int port,int level,int length);
-  void setInputLevel(int card,int port,int level);
-  void setOutputLevel(int card,int port,int level);
-  void setInputMode(int card,int stream,RDCae::ChannelMode mode);
-  void setOutputMode(int card,int stream,RDCae::ChannelMode mode);
-  void setInputVOXLevel(int card,int stream,int level);
-  void setInputType(int card,int port,RDCae::SourceType type);
   void setPassthroughVolume(int card,int in_port,int out_port,int level);
   bool inputStatus(int card,int port) const;
   void inputMeterUpdate(int card,int port,short levels[2]);

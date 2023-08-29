@@ -282,18 +282,6 @@ void RDCae::stopRecord(int card,int stream)
 }
 
 
-void RDCae::setClockSource(int card,RDCae::ClockSource src)
-{
-  SendCommand(QString::asprintf("CS %d %d!",card,src));
-}
-
-
-void RDCae::setInputVolume(int card,int stream,int level)
-{
-  SendCommand(QString::asprintf("IV %d %d %d!",card,stream,level));
-}
-
-
 void RDCae::setOutputVolume(int card,int stream,int port,int level)
 {
   SendCommand(QString::asprintf("OV %d %d %d %d!",card,stream,port,level));
@@ -310,42 +298,6 @@ void RDCae::fadeOutputVolume(int card,int stream,int port,int level,int length)
 {
   SendCommand(QString::asprintf("FV %d %d %d %d %d!",
 				card,stream,port,level,length));
-}
-
-
-void RDCae::setInputLevel(int card,int port,int level)
-{
-  SendCommand(QString::asprintf("IL %d %d %d!",card,port,level));
-}
-
-
-void RDCae::setOutputLevel(int card,int port,int level)
-{
-  SendCommand(QString::asprintf("OL %d %d %d!",card,port,level));
-}
-
-
-void RDCae::setInputMode(int card,int stream,RDCae::ChannelMode mode)
-{
-  SendCommand(QString::asprintf("IM %d %d %d!",card,stream,mode));
-}
-
-
-void RDCae::setOutputMode(int card,int stream,RDCae::ChannelMode mode)
-{
-  SendCommand(QString::asprintf("OM %d %d %d!",card,stream,mode));
-}
-
-
-void RDCae::setInputVOXLevel(int card,int stream,int level)
-{
-  SendCommand(QString::asprintf("IX %d %d %d!",card,stream,level));
-}
-
-
-void RDCae::setInputType(int card,int port,RDCae::SourceType type)
-{
-  SendCommand(QString::asprintf("IT %d %d %d!",card,port,type));
 }
 
 

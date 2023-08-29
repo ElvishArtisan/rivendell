@@ -1171,6 +1171,18 @@
 	</varlistentry>
       </variablelist>
     </sect3>
+
+    <sect3 xml:id="sect.mixer_operations.commands.update_audio_ports">
+      <title><command>Update Audio Ports</command></title>
+      <para>
+	Update all audio ports to match current database settings.
+      </para>
+      <para>
+	<userinput>
+	  AP
+	</userinput>
+      </para>
+    </sect3>
   </sect2>
 
   <sect2 xml:id="sect.mixer_operations.responses">

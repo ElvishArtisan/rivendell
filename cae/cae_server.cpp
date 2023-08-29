@@ -398,21 +398,6 @@ bool CaeServer::ProcessCommand(int id,const QString &cmd)
       }
     }
   }
-  if((f0.at(0)=="IV")&&(f0.size()==4)) {  // Set Input Volume
-    unsigned card=f0.at(1).toUInt(&ok);
-    if(ok&&(card<RD_MAX_CARDS)) {
-      unsigned stream=f0.at(2).toUInt(&ok);
-      if(ok&&(stream<RD_MAX_STREAMS)) {
-	if(ok) {
-	  int level=f0.at(3).toInt(&ok);
-	  if(ok) {
-	    emit setInputVolumeReq(id,card,stream,level);
-	    was_processed=true;
-	  }
-	}
-      }
-    }
-  }
   if((f0.at(0)=="OP")&&(f0.size()==5)) {  // Set Output Port
     unsigned card=f0.at(1).toUInt(&ok);
     if(ok&&(card<RD_MAX_CARDS)) {
@@ -470,84 +455,6 @@ bool CaeServer::ProcessCommand(int id,const QString &cmd)
       }
     }
   }
-  if((f0.at(0)=="IL")&&(f0.size()==4)) {  // Set Input Level
-    unsigned card=f0.at(1).toUInt(&ok);
-    if(ok&&(card<RD_MAX_CARDS)) {
-      unsigned port=f0.at(2).toUInt(&ok);
-      if(ok&&(port<RD_MAX_PORTS)) {
-	int level=f0.at(3).toInt(&ok);
-	if(ok) {
-	  emit setInputLevelReq(id,card,port,level);
-	  was_processed=true;
-	}
-      }
-    }
-  }
-  if((f0.at(0)=="OL")&&(f0.size()==4)) {  // Set Output Level
-    unsigned card=f0.at(1).toUInt(&ok);
-    if(ok&&(card<RD_MAX_CARDS)) {
-      unsigned port=f0.at(2).toUInt(&ok);
-      if(ok&&(port<RD_MAX_PORTS)) {
-	int level=f0.at(3).toInt(&ok);
-	if(ok) {
-	  emit setOutputLevelReq(id,card,port,level);
-	  was_processed=true;
-	}
-      }
-    }
-  }
-  if((f0.at(0)=="IM")&&(f0.size()==4)) {  // Set Input Mode
-    unsigned card=f0.at(1).toUInt(&ok);
-    if(ok&&(card<RD_MAX_CARDS)) {
-      unsigned port=f0.at(2).toUInt(&ok);
-      if(ok&&(port<RD_MAX_PORTS)) {
-	unsigned mode=f0.at(3).toUInt(&ok);
-	if(ok&&(mode<=3)) {
-	  emit setInputModeReq(id,card,port,mode);
-	  was_processed=true;
-	}
-      }
-    }
-  }
-  if((f0.at(0)=="OM")&&(f0.size()==4)) {  // Set Output Mode
-    unsigned card=f0.at(1).toUInt(&ok);
-    if(ok&&(card<RD_MAX_CARDS)) {
-      unsigned port=f0.at(2).toUInt(&ok);
-      if(ok&&(port<RD_MAX_PORTS)) {
-	unsigned mode=f0.at(3).toUInt(&ok);
-	if(ok&&(mode<=3)) {
-	  emit setOutputModeReq(id,card,port,mode);
-	  was_processed=true;
-	}
-      }
-    }
-  }
-  if((f0.at(0)=="IX")&&(f0.size()==4)) {  // Set Input Vox Level
-    unsigned card=f0.at(1).toUInt(&ok);
-    if(ok&&(card<RD_MAX_CARDS)) {
-      unsigned stream=f0.at(2).toUInt(&ok);
-      if(ok&&(stream<RD_MAX_STREAMS)) {
-	int level=f0.at(3).toInt(&ok);
-	if(ok) {
-	  emit setInputVoxLevelReq(id,card,stream,level);
-	  was_processed=true;
-	}
-      }
-    }
-  }
-  if((f0.at(0)=="IT")&&(f0.size()==4)) {  // Set Input Type
-    unsigned card=f0.at(1).toUInt(&ok);
-    if(ok&&(card<RD_MAX_CARDS)) {
-      unsigned port=f0.at(2).toUInt(&ok);
-      if(ok&&(port<RD_MAX_PORTS)) {
-	int type=f0.at(3).toInt(&ok);
-	if(ok&&(type<=1)) {
-	  emit setInputTypeReq(id,card,port,type);
-	  was_processed=true;
-	}
-      }
-    }
-  }
   if((f0.at(0)=="IS")&&(f0.size()==3)) {  // Get Input Status
     unsigned card=f0.at(1).toUInt(&ok);
     if(ok&&(card<RD_MAX_CARDS)) {
@@ -574,15 +481,8 @@ bool CaeServer::ProcessCommand(int id,const QString &cmd)
       }
     }
   }
-  if((f0.at(0)=="CS")&&(f0.size()==3)) {  // Set Clock Source
-    unsigned card=f0.at(1).toUInt(&ok);
-    if(ok&&(card<RD_MAX_CARDS)) {
-      unsigned input=f0.at(2).toUInt(&ok);
-      if(ok&&(input<RD_MAX_PORTS)) {
-	emit setClockSourceReq(id,card,input);
-	was_processed=true;
-      }
-    }
+  if((f0.at(0)=="AP")&&(f0.size()==1)) {  // Update Audio Ports
+    emit updateAudioPortsReq(id);
   }
   if((f0.at(0)=="OS")&&(f0.size()==5)) {  // Set Output Status Flag
     unsigned card=f0.at(1).toUInt(&ok);
@@ -597,7 +497,6 @@ bool CaeServer::ProcessCommand(int id,const QString &cmd)
       }
     }
   }
-
   if(f0.at(0)=="ME") {  // Meter Enable
     if(f0.size()>2) {  // So we don't warn if no cards are specified
       uint16_t udp_port=0xFFFF&f0.at(1).toUInt(&ok);

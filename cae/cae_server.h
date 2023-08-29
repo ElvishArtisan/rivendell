@@ -68,7 +68,8 @@ class CaeServer : public QObject
   void loadPlaybackReq(int id,unsigned card,const QString &name);
   void unloadPlaybackReq(int id,unsigned handle);
   void playPositionReq(int id,unsigned handle,unsigned pos);
-  void playReq(int id,unsigned handle,unsigned length,unsigned speed,unsigned pitch_flag);
+  void playReq(int id,unsigned handle,unsigned length,unsigned speed,
+	       unsigned pitch_flag);
   void stopPlaybackReq(int id,unsigned handle);
   void timescalingSupportReq(int id,unsigned card);
   void loadRecordingReq(int id,unsigned card,unsigned port,unsigned coding,
@@ -78,23 +79,16 @@ class CaeServer : public QObject
   void recordReq(int id,unsigned card,unsigned stream,unsigned len,
 		 int threshold_level);
   void stopRecordingReq(int id,unsigned card,unsigned stream);
-  void setInputVolumeReq(int id,unsigned card,unsigned stream,int level);
   void setOutputPortReq(int id,unsigned card,unsigned stream,unsigned port,
-			int level);
+  			int level);
   void setOutputVolumeReq(int id,unsigned card,unsigned stream,int port,
 			  int level);
   void fadeOutputVolumeReq(int id,unsigned card,unsigned stream,unsigned port,
 			   int level,unsigned length);
-  void setInputLevelReq(int id,unsigned card,unsigned port,int level);
-  void setOutputLevelReq(int id,unsigned card,unsigned port,int level);
-  void setInputModeReq(int id,unsigned card,unsigned stream,unsigned mode);
-  void setOutputModeReq(int id,unsigned card,unsigned stream,unsigned mode);
-  void setInputVoxLevelReq(int id,unsigned card,unsigned stream,int level);
-  void setInputTypeReq(int id,unsigned card,unsigned port,unsigned type);
   void getInputStatusReq(int id,unsigned card,unsigned port);
   void setAudioPassthroughLevelReq(int id,unsigned card,unsigned input,
 				   unsigned output,int level);
-  void setClockSourceReq(int id,unsigned card,int input);
+  void updateAudioPortsReq(int id);
   void setOutputStatusFlagReq(int id,unsigned card,unsigned port,
 			      unsigned stream,bool state);
   void openRtpCaptureChannelReq(int id,unsigned card,unsigned port,uint16_t udp_port,

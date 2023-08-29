@@ -100,6 +100,7 @@ class MainObject : public QObject
   void getInputStatusData(int id,unsigned card,unsigned port);
   void setAudioPassthroughLevelData(int id,unsigned card,unsigned input,
 				    unsigned output,int level);
+  void updateAudioPortsData(int id);
   void setClockSourceData(int id,unsigned card,int input);
   void setOutputStatusFlagData(int id,unsigned card,unsigned port,
 			       unsigned stream,bool state);
