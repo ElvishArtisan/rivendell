@@ -31,14 +31,14 @@ moc_%.cpp:	%.h
 instdir = @LOCAL_PREFIX@/lib
 
 # I18N Stuff
-install-exec-local:	
+install-exec-local:
 	mkdir -p $(DESTDIR)$(prefix)/share/rivendell
 	cp librd_*.qm $(DESTDIR)$(prefix)/share/rivendell
 
 uninstall-local:
 	rm -f $(DESTDIR)$(prefix)/share/rivendell/librd_*.qm
 
-all:	
+all:
 	lupdate-qt4 lib.pro
 	lrelease-qt4 lib.pro
 
@@ -58,6 +58,12 @@ dist_librd_la_SOURCES = dbversion.h\
                         export_spincount.cpp\
                         export_technical.cpp\
                         export_textlog.cpp\
+												dbusfield.cpp dbusfield.h\
+												dbuslink_adaptor.cpp dbuslink_adaptor.h\
+												dbuslink.cpp dbuslink.h\
+												dbusmethod.cpp dbusmethod.h\
+												dbusmodule.h\
+												dbusmoduleglobal.h\
                         rdadd_cart.cpp rdadd_cart.h\
                         rdadd_log.cpp rdadd_log.h\
                         rdairplay_conf.cpp rdairplay_conf.h\
@@ -255,6 +261,8 @@ dist_librd_la_SOURCES = dbversion.h\
 
 
 nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
+													moc_dbuslink_adaptor.cpp\
+													moc_dbuslink.cpp\
                           moc_rdadd_log.cpp\
                           moc_rdapplication.cpp\
                           moc_rdaudioconvert.cpp\

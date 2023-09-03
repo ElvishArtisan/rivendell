@@ -1,0 +1,2001 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node>
+  <interface name="local.qdbuscpp2xml.DbusLink">
+    <method name="version">
+      <arg type="i" direction="out"/>
+    </method>
+    <method name="listField">
+      <arg type="s" direction="out"/>
+    </method>
+    <method name="listMethod">
+      <arg type="s" direction="out"/>
+    </method>
+    <method name="hasField">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+    </method>
+    <method name="hasMethod">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+    </method>
+    <method name="getFieldInt">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+    </method>
+    <method name="getFieldDouble">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+    </method>
+    <method name="getFieldString">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+    </method>
+    <method name="getFieldTime">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+    </method>
+    <method name="getFieldDate">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+    </method>
+    <method name="getFieldBoolean">
+      <arg type="b" direction="out"/>
+      <arg name="nam" type="s" direction="in"/>
+    </method>
+    <method name="getFieldLabel">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+    </method>
+    <method name="callMethod">
+      <arg name="name" type="s" direction="in"/>
+    </method>
+    <method name="callMethod_Int_Int">
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethod_Int_Double">
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethod_Int_Boolean">
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethod_Int_Date">
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethod_Int_String">
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethod_Int_Time">
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethod_Double_Int">
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethod_Double_Double">
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethod_Double_Boolean">
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethod_Double_Date">
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethod_Double_String">
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethod_Double_Time">
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethod_Boolean_Int">
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethod_Boolean_Double">
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethod_Boolean_Boolean">
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethod_Boolean_Date">
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethod_Boolean_String">
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethod_Boolean_Time">
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethod_Date_Int">
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethod_Date_Double">
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethod_Date_Boolean">
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethod_Date_Date">
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethod_Date_String">
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethod_Date_Time">
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethod_String_Int">
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethod_String_Double">
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethod_String_Boolean">
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethod_String_Date">
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethod_String_String">
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethod_String_Time">
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethod_Time_Int">
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethod_Time_Double">
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethod_Time_Boolean">
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethod_Time_Date">
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethod_Time_String">
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethod_Time_Time">
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethodInt">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+    </method>
+    <method name="callMethodInt_Int_Int">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethodInt_Int_Double">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethodInt_Int_Boolean">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethodInt_Int_Date">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethodInt_Int_String">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethodInt_Int_Time">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethodInt_Int">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+    </method>
+    <method name="callMethodInt_Double_Int">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethodInt_Double_Double">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethodInt_Double_Boolean">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethodInt_Double_Date">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethodInt_Double_String">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethodInt_Double_Time">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethodInt_Double">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+    </method>
+    <method name="callMethodInt_Boolean_Int">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethodInt_Boolean_Double">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethodInt_Boolean_Boolean">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethodInt_Boolean_Date">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethodInt_Boolean_String">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethodInt_Boolean_Time">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethodInt_Boolean">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+    </method>
+    <method name="callMethodInt_Date_Int">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethodInt_Date_Double">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethodInt_Date_Boolean">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethodInt_Date_Date">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethodInt_Date_String">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethodInt_Date_Time">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethodInt_Date">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+    </method>
+    <method name="callMethodInt_String_Int">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethodInt_String_Double">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethodInt_String_Boolean">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethodInt_String_Date">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethodInt_String_String">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethodInt_String_Time">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethodInt_String">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+    </method>
+    <method name="callMethodInt_Time_Int">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethodInt_Time_Double">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethodInt_Time_Boolean">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethodInt_Time_Date">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethodInt_Time_String">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethodInt_Time_Time">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethodInt_Time">
+      <arg type="i" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+    </method>
+    <method name="callMethodDouble">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+    </method>
+    <method name="callMethodDouble_Int_Int">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethodDouble_Int_Double">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethodDouble_Int_Boolean">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethodDouble_Int_Date">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethodDouble_Int_String">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethodDouble_Int_Time">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethodDouble_Int">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+    </method>
+    <method name="callMethodDouble_Double_Int">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethodDouble_Double_Double">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethodDouble_Double_Boolean">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethodDouble_Double_Date">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethodDouble_Double_String">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethodDouble_Double_Time">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethodDouble_Double">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+    </method>
+    <method name="callMethodDouble_Boolean_Int">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethodDouble_Boolean_Double">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethodDouble_Boolean_Boolean">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethodDouble_Boolean_Date">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethodDouble_Boolean_String">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethodDouble_Boolean_Time">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethodDouble_Boolean">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+    </method>
+    <method name="callMethodDouble_Date_Int">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethodDouble_Date_Double">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethodDouble_Date_Boolean">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethodDouble_Date_Date">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethodDouble_Date_String">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethodDouble_Date_Time">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethodDouble_Date">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+    </method>
+    <method name="callMethodDouble_String_Int">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethodDouble_String_Double">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethodDouble_String_Boolean">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethodDouble_String_Date">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethodDouble_String_String">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethodDouble_String_Time">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethodDouble_String">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+    </method>
+    <method name="callMethodDouble_Time_Int">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethodDouble_Time_Double">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethodDouble_Time_Boolean">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethodDouble_Time_Date">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethodDouble_Time_String">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethodDouble_Time_Time">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethodDouble_Time">
+      <arg type="d" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+    </method>
+    <method name="callMethodBoolean">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+    </method>
+    <method name="callMethodBoolean_Int_Int">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethodBoolean_Int_Double">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethodBoolean_Int_Boolean">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethodBoolean_Int_Date">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethodBoolean_Int_String">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethodBoolean_Int_Time">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethodBoolean_Int">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+    </method>
+    <method name="callMethodBoolean_Double_Int">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethodBoolean_Double_Double">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethodBoolean_Double_Boolean">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethodBoolean_Double_Date">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethodBoolean_Double_String">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethodBoolean_Double_Time">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethodBoolean_Double">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+    </method>
+    <method name="callMethodBoolean_Boolean_Int">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethodBoolean_Boolean_Double">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethodBoolean_Boolean_Boolean">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethodBoolean_Boolean_Date">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethodBoolean_Boolean_String">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethodBoolean_Boolean_Time">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethodBoolean_Boolean">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+    </method>
+    <method name="callMethodBoolean_Date_Int">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethodBoolean_Date_Double">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethodBoolean_Date_Boolean">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethodBoolean_Date_Date">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethodBoolean_Date_String">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethodBoolean_Date_Time">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethodBoolean_Date">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+    </method>
+    <method name="callMethodBoolean_String_Int">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethodBoolean_String_Double">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethodBoolean_String_Boolean">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethodBoolean_String_Date">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethodBoolean_String_String">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethodBoolean_String_Time">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethodBoolean_String">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+    </method>
+    <method name="callMethodBoolean_Time_Int">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethodBoolean_Time_Double">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethodBoolean_Time_Boolean">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethodBoolean_Time_Date">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethodBoolean_Time_String">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethodBoolean_Time_Time">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethodBoolean_Time">
+      <arg type="b" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+    </method>
+    <method name="callMethodDate">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+    </method>
+    <method name="callMethodDate_Int_Int">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethodDate_Int_Double">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethodDate_Int_Boolean">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethodDate_Int_Date">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethodDate_Int_String">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethodDate_Int_Time">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethodDate_Int">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+    </method>
+    <method name="callMethodDate_Double_Int">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethodDate_Double_Double">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethodDate_Double_Boolean">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethodDate_Double_Date">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethodDate_Double_String">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethodDate_Double_Time">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethodDate_Double">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+    </method>
+    <method name="callMethodDate_Boolean_Int">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethodDate_Boolean_Double">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethodDate_Boolean_Boolean">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethodDate_Boolean_Date">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethodDate_Boolean_String">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethodDate_Boolean_Time">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethodDate_Boolean">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+    </method>
+    <method name="callMethodDate_Date_Int">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethodDate_Date_Double">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethodDate_Date_Boolean">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethodDate_Date_Date">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethodDate_Date_String">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethodDate_Date_Time">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethodDate_Date">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+    </method>
+    <method name="callMethodDate_String_Int">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethodDate_String_Double">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethodDate_String_Boolean">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethodDate_String_Date">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethodDate_String_String">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethodDate_String_Time">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethodDate_String">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+    </method>
+    <method name="callMethodDate_Time_Int">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethodDate_Time_Double">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethodDate_Time_Boolean">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethodDate_Time_Date">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethodDate_Time_String">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethodDate_Time_Time">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethodDate_Time">
+      <arg type="(iii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QDate"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+    </method>
+    <method name="callMethodString">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+    </method>
+    <method name="callMethodString_Int_Int">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethodString_Int_Double">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethodString_Int_Boolean">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethodString_Int_Date">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethodString_Int_String">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethodString_Int_Time">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethodString_Int">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+    </method>
+    <method name="callMethodString_Double_Int">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethodString_Double_Double">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethodString_Double_Boolean">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethodString_Double_Date">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethodString_Double_String">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethodString_Double_Time">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethodString_Double">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+    </method>
+    <method name="callMethodString_Boolean_Int">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethodString_Boolean_Double">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethodString_Boolean_Boolean">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethodString_Boolean_Date">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethodString_Boolean_String">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethodString_Boolean_Time">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethodString_Boolean">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+    </method>
+    <method name="callMethodString_Date_Int">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethodString_Date_Double">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethodString_Date_Boolean">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethodString_Date_Date">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethodString_Date_String">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethodString_Date_Time">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethodString_Date">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+    </method>
+    <method name="callMethodString_String_Int">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethodString_String_Double">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethodString_String_Boolean">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethodString_String_Date">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethodString_String_String">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethodString_String_Time">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethodString_String">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+    </method>
+    <method name="callMethodString_Time_Int">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethodString_Time_Double">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethodString_Time_Boolean">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethodString_Time_Date">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethodString_Time_String">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethodString_Time_Time">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethodString_Time">
+      <arg type="s" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+    </method>
+    <method name="callMethodTime">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+    </method>
+    <method name="callMethodTime_Int_Int">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethodTime_Int_Double">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethodTime_Int_Boolean">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethodTime_Int_Date">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethodTime_Int_String">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethodTime_Int_Time">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethodTime_Int">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="i" direction="in"/>
+    </method>
+    <method name="callMethodTime_Double_Int">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethodTime_Double_Double">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethodTime_Double_Boolean">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethodTime_Double_Date">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethodTime_Double_String">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethodTime_Double_Time">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethodTime_Double">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="d" direction="in"/>
+    </method>
+    <method name="callMethodTime_Boolean_Int">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethodTime_Boolean_Double">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethodTime_Boolean_Boolean">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethodTime_Boolean_Date">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethodTime_Boolean_String">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethodTime_Boolean_Time">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethodTime_Boolean">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="b" direction="in"/>
+    </method>
+    <method name="callMethodTime_Date_Int">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethodTime_Date_Double">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethodTime_Date_Boolean">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethodTime_Date_Date">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethodTime_Date_String">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethodTime_Date_Time">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethodTime_Date">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QDate"/>
+    </method>
+    <method name="callMethodTime_String_Int">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethodTime_String_Double">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethodTime_String_Boolean">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethodTime_String_Date">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethodTime_String_String">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethodTime_String_Time">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethodTime_String">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="s" direction="in"/>
+    </method>
+    <method name="callMethodTime_Time_Int">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="i" direction="in"/>
+    </method>
+    <method name="callMethodTime_Time_Double">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="d" direction="in"/>
+    </method>
+    <method name="callMethodTime_Time_Boolean">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="b" direction="in"/>
+    </method>
+    <method name="callMethodTime_Time_Date">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="(iii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QDate"/>
+    </method>
+    <method name="callMethodTime_Time_String">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="s" direction="in"/>
+    </method>
+    <method name="callMethodTime_Time_Time">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+      <arg name="b" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QTime"/>
+    </method>
+    <method name="callMethodTime_Time">
+      <arg type="(iiii)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QTime"/>
+      <arg name="name" type="s" direction="in"/>
+      <arg name="a" type="(iiii)" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QTime"/>
+    </method>
+  </interface>
+</node>
