@@ -23,35 +23,21 @@
 
 #include <stdint.h>
 
-#include <qlist.h>
-#include <qmap.h>
-#include <qobject.h>
-#include <qsignalmapper.h>
-#include <qtcpserver.h>
-#include <qtcpsocket.h>
+#include <QList>
+#include <QMap>
+#include <QObject>
+#include <QSignalMapper>
+#include <QUdpSocket>
 
 #include <rdconfig.h>
 
-class CaeServerConnection
-{
- public:
-  CaeServerConnection(QTcpSocket *sock);
-  ~CaeServerConnection();
-  QTcpSocket *socket;
-  bool authenticated;
-  QString accum;
-  uint16_t meter_port;
-  bool meters_enabled[RD_MAX_CARDS];
-};
-
-
-
+#include "session.h"
 
 class CaeServer : public QObject
 {
   Q_OBJECT;
  public:
-  CaeServer(RDConfig *config,QObject *parent=0);
+  CaeServer(QObject *parent=0);
   QList<int> connectionIds() const;
   QHostAddress peerAddress(int id) const;
   uint16_t peerPort(int id) const;
@@ -61,10 +47,42 @@ class CaeServer : public QObject
   void setMetersEnabled(int id,unsigned card,bool state);
   bool listen(const QHostAddress &addr,uint16_t port);
   void sendCommand(const QString &cmd);
-  void sendCommand(int id,const QString &cmd);
+  void sendCommand(const SessionId &dest,const QString &cmd);
 
  signals:
   void connectionDropped(int id);
+
+  //
+  // New Signals
+  //
+  void startPlaybackReq(const SessionId &sid,const QString &cutname,
+			unsigned cardnum,unsigned portnum,
+			int start_pos,int end_pos,int speed);
+  void playPositionReq(const SessionId &sid,int position);
+  void playPauseReq(const SessionId &sid);
+  void playResumeReq(const SessionId &sid);
+  void playStopReq(const SessionId &sid);
+  void playSetOutputVolumeReq(const SessionId &sid,int level);
+  void playFadeOutputVolumeReq(const SessionId &sid,int level,int length);
+  void recordCueReq(const SessionId &sid,const QString &cutname,
+		    unsigned cardnum,unsigned portnum,
+		    int coding,int channels,int bitrate);
+  void recordStartReq(const SessionId &sid,int length,int threshold);
+  void recordCueAndStartReq(const SessionId &sid,const QString &cutname,
+			    unsigned cardnum,unsigned portnum,
+			    int coding,int channels,int bitrate,
+			    int length,int threshold);
+  void recordStopReq(const SessionId &sid);
+  void getInputStatusReq(const SessionId &origin,
+			 unsigned card,unsigned port);
+  void setAudioPassthroughLevelReq(const QHostAddress &src_addr,
+				   unsigned card,unsigned input,
+				   unsigned output,int level);
+  void updateAudioPortsReq();
+
+  //
+  // Old Signals
+  //
   void loadPlaybackReq(int id,unsigned card,const QString &name);
   void unloadPlaybackReq(int id,unsigned handle);
   void playPositionReq(int id,unsigned handle,unsigned pos);
@@ -85,28 +103,23 @@ class CaeServer : public QObject
 			  int level);
   void fadeOutputVolumeReq(int id,unsigned card,unsigned stream,unsigned port,
 			   int level,unsigned length);
-  void getInputStatusReq(int id,unsigned card,unsigned port);
-  void setAudioPassthroughLevelReq(int id,unsigned card,unsigned input,
-				   unsigned output,int level);
-  void updateAudioPortsReq(int id);
   void setOutputStatusFlagReq(int id,unsigned card,unsigned port,
 			      unsigned stream,bool state);
   void openRtpCaptureChannelReq(int id,unsigned card,unsigned port,uint16_t udp_port,
 				unsigned samprate,unsigned chans);
-  void meterEnableReq(int id,uint16_t udp_port,const QList<unsigned> &cards);
+  void meterEnableReq(const QHostAddress &addr,uint16_t udp_port,
+		      const QList<unsigned> &cards);
 
  private slots:
   void newConnectionData();
-  void readyReadData(int id);
+  void readyReadData();
   void connectionClosedData(int id);
 
  private:
-  bool ProcessCommand(int id,const QString &cmd);
-  QMap<int,CaeServerConnection *> cae_connections;
-  QTcpServer *cae_server;
+  bool ProcessCommand(const QHostAddress &src_addr,uint16_t src_port,
+		      const QString &cmd);
   QSignalMapper *cae_ready_read_mapper;
-  QSignalMapper *cae_connection_closed_mapper;
-  RDConfig *cae_config;
+  QUdpSocket *d_server_socket;
 };
 
 

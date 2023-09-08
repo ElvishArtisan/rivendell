@@ -659,7 +659,7 @@ void RecordCut::playData()
     rda->cae()->positionPlay(rec_play_handle,start);
     rda->cae()->setPlayPortActive(rec_card_no[1],rec_port_no[1],rec_stream_no[1]);
     rda->cae()->setOutputVolume(rec_card_no[1],rec_stream_no[1],rec_port_no[1],
-           0+rec_cut->playGain());
+	    0+rec_cut->playGain());
     rda->cae()->play(rec_play_handle,end-start,RD_TIMESCALE_DIVISOR,false);
   }
   if(is_ready&&(!is_recording)) {

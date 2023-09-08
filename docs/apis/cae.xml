@@ -158,8 +158,6 @@
 	  PY
 	  <replaceable>pid</replaceable>
 	  <replaceable>serial</replaceable>
-	  <replaceable>pid</replaceable>
-	  <replaceable>serial</replaceable>
 	  <replaceable>cut-name</replaceable>
 	  <replaceable>card-num</replaceable>
 	  <replaceable>port-num</replaceable>
@@ -649,6 +647,7 @@
 	  <replaceable>port-num</replaceable>
 	  <replaceable>coding</replaceable>
 	  <replaceable>channels</replaceable>
+	  <replaceable>bit-rate</replaceable>
 	</userinput>
       </para>
       <variablelist>
@@ -722,16 +721,6 @@
 	  <listitem>
 	    <para>
 	      1 = Mono, 2 = Stereo
-	    </para>
-	  </listitem>
-	</varlistentry>
-	<varlistentry>
-	  <term>
-	    <replaceable>samp-rate</replaceable>
-	  </term>
-	  <listitem>
-	    <para>
-	      Sample Rate in samples/sec.  32000, 44100 or 48000 supported.
 	    </para>
 	  </listitem>
 	</varlistentry>
@@ -831,6 +820,7 @@
 	  <replaceable>port-num</replaceable>
 	  <replaceable>coding</replaceable>
 	  <replaceable>channels</replaceable>
+	  <replaceable>bit-rate</replaceable>
 	  <replaceable>length</replaceable>
 	  <replaceable>threshold</replaceable>
 	</userinput>
@@ -905,16 +895,6 @@
 	  <listitem>
 	    <para>
 	      1 = Mono, 2 = Stereo
-	    </para>
-	  </listitem>
-	</varlistentry>
-	<varlistentry>
-	  <term>
-	    <replaceable>samp-rate</replaceable>
-	  </term>
-	  <listitem>
-	    <para>
-	      Sample Rate in samples/sec.  32000, 44100 or 48000 supported.
 	    </para>
 	  </listitem>
 	</varlistentry>
@@ -1079,8 +1059,6 @@
       <para>
 	<userinput>
 	  IS
-	  <replaceable>pid</replaceable>
-	  <replaceable>serial</replaceable>
 	  <replaceable>card-num</replaceable>
 	  <replaceable>port-num</replaceable>
 	</userinput>
@@ -1118,8 +1096,6 @@
       <para>
 	<userinput>
 	  AL
-	  <replaceable>pid</replaceable>
-	  <replaceable>serial</replaceable>
 	  <replaceable>card-num</replaceable>
 	  <replaceable>input-num</replaceable>
 	  <replaceable>output-num</replaceable>
@@ -1352,10 +1328,13 @@
       card(s).
     </para>
     <para>
-      <userinput>ME
-      <replaceable>udp-port</replaceable>
-      <replaceable>card0</replaceable>
-      <replaceable>..</replaceable>!</userinput>
+      <userinput>
+	ME
+	<replaceable>udp-port</replaceable>
+	[<replaceable>card0</replaceable>]
+	<replaceable>..</replaceable>
+	[<replaceable>cardN</replaceable>]
+      </userinput>
     </para>
     <variablelist>
       <varlistentry>

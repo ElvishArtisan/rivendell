@@ -24403,3 +24403,21 @@
 	* Removed the 'RDCae::setOutputMode()' method.
 	* Removed the 'RDCae::setInputVOXLevel()' method.
 	* Removed the 'RDCae::setInputType()' method.
+2023-09-09 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the communications layer to use UDP command messaging.
+	* Disabled the 'Meter Enable' ['ME'] CAE command.
+	* Implemented the 'Start Playback' ['PY'] CAE command.
+	* Implemented the modified 'Play Position' ['PP'] CAE command.
+	* Implemented the modified 'Stop Playback' ['SP'] CAE command.
+	* Stubbed out the new 'Pause Playback' ['PE'] CAE command.
+	* Stubbed out the new 'Resume Playback' ['PR'] CAE command.
+	* Implemented the modified 'Set Output Volume' ['OV'] CAE command.
+	* Implemented the modified 'Fade Output Volume' ['FV'] CAE command.
+	* Stubbed out the new 'Cue Recording' ['LR'] CAE command.
+	* Stubbed out the new 'Start Recording' ['RD'] CAE command.
+	* Stubbed out the new 'Cue and Start Recording' ['RC'] CAE command.
+	* Stubbed out the modified 'Stop Recording' ['SR'] CAE command.
+	* Implemented the modified 'Get Input Status' ['IS'] CAE command.
+	* Implemented the modified 'Set Audio Passthrough Level' ['AL'] CAE
+	command.
+	* Implemented the new 'Update Audio Ports' ['AP'] CAE command.

@@ -2,7 +2,7 @@
 //
 // The Core Audio Engine component of Rivendell
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -41,6 +41,8 @@
 #include <mad.h>
 #endif  // HAVE_MAD
 
+#include <QMap>
+
 #include <rd.h>
 #include <rdconfig.h>
 #include <rdstation.h>
@@ -70,6 +72,18 @@ class MainObject : public QObject
   MainObject(QObject *parent=0);
 
  private slots:
+  //
+  // New Slots
+  //
+  void startPlaybackData(const SessionId &sid,const QString &cutname,
+			 unsigned cardnum,unsigned portnum,
+			 int start_pos,int end_pos,int speed);
+  void playPositionData(const SessionId &sid,int position);
+  void stopPlaybackData(const SessionId &sid);
+
+  //
+  // Old Slots
+  //
   void loadPlaybackData(int id,unsigned card,const QString &name);
   void unloadPlaybackData(int id,unsigned handle);
   void playPositionData(int id,unsigned handle,unsigned pos);
@@ -97,17 +111,20 @@ class MainObject : public QObject
   void setOutputModeData(int id,unsigned card,unsigned stream,unsigned mode);
   void setInputVoxLevelData(int id,unsigned card,unsigned stream,int level);
   void setInputTypeData(int id,unsigned card,unsigned port,unsigned type);
-  void getInputStatusData(int id,unsigned card,unsigned port);
-  void setAudioPassthroughLevelData(int id,unsigned card,unsigned input,
+  void getInputStatusData(const SessionId &origin,
+			  unsigned card,unsigned port);
+  void setAudioPassthroughLevelData(const QHostAddress &src_addr,
+				    unsigned card,unsigned input,
 				    unsigned output,int level);
-  void updateAudioPortsData(int id);
+  void updateAudioPortsData();
   void setClockSourceData(int id,unsigned card,int input);
   void setOutputStatusFlagData(int id,unsigned card,unsigned port,
 			       unsigned stream,bool state);
   void openRtpCaptureChannelData(int id,unsigned card,unsigned port,
 				 uint16_t udp_port,unsigned samprate,
 				 unsigned chans);
-  void meterEnableData(int id,uint16_t udp_port,const QList<unsigned> &cards);
+  void meterEnableData(const QHostAddress &addr,uint16_t udp_port,
+		       const QList<unsigned> &cards);
   void statePlayUpdate(int card,int stream,int state);
   void stateRecordUpdate(int card,int stream,int state);
   void updateMeters();
@@ -153,6 +170,8 @@ class MainObject : public QObject
     int owner;
   } play_handle[256];
   int next_play_handle;
+
+  QMap<SessionId,Session *> cae_sessions;
 
  private:
   bool CheckLame();
