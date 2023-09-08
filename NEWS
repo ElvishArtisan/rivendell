@@ -1,6 +1,19 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
+v4.1.0int0 -- 8 September 2023
+
+Changes:
+   Bugfixes. See the 'ChangeLog' for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 371, and will
+   automatically upgrade any earlier versions. To see the current schema
+   version prior to upgrade, do 'sudo rddbmgr'.
+
+   Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
+   to allow any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
 v4.1.0 -- 9 August 2023
 
 Changes:
