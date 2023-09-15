@@ -142,6 +142,54 @@
   </sect2>
 </sect1>
 
+<sect1 xml:id="sect.connection_management">
+  <title>Connection Management</title>
+  <para>
+    <sect2 xml:id="sect.connection_management.commands">
+      <title>Commands</title>
+      <sect3 xml:id="sect.connection_management.commands.set_timeout">
+	<title>Set Timeout</title>
+	<para>
+	  Set the timeout interval for the connection.
+	</para>
+	<para>
+	  <userinput>
+	    TO
+	    <replaceable>interval</replaceable>
+	  </userinput>
+	</para>
+	<variablelist>
+	  <varlistentry>
+	    <term><replaceable>interval</replaceable></term>
+	    <listitem>
+	      <para>
+		When set to a non-zero value, the client must send a
+		<link linkend="sect.connection_management.commands.touch">
+		  Touch message
+		</link>
+		at an interval of least that many milliseconds, otherwise
+		the engine will clear the connection, releasing all associated
+		resources.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	</variablelist>
+      </sect3>
+      <sect3 xml:id="sect.connection_management.commands.touch">
+	<title>Touch</title>
+	<para>
+	  Keep connection alive.
+	</para>
+	<para>
+	  <userinput>
+	    TH
+	  </userinput>
+	</para>
+      </sect3>
+    </sect2>
+  </para>
+</sect1>
+
 <sect1 xml:id="sect.playback_operations">
   <title>Playback Operations</title>
   <sect2 xml:id="sect.playback_operations.commands">
@@ -156,7 +204,6 @@
       <para>
 	<userinput>
 	  PY
-	  <replaceable>pid</replaceable>
 	  <replaceable>serial</replaceable>
 	  <replaceable>cut-name</replaceable>
 	  <replaceable>card-num</replaceable>
@@ -168,22 +215,13 @@
       </para>
       <variablelist>
 	<varlistentry>
-	  <term><replaceable>pid</replaceable></term>
-	  <listitem>
-	    <para>
-	      An integer value, giving the process ID of the process
-	      originating the command.
-	    </para>
-	  </listitem>
-	</varlistentry>
-	<varlistentry>
 	  <term><replaceable>serial</replaceable></term>
 	  <listitem>
 	    <para>
 	      An integer value, giving the serial number of the command.
 	      This can be any 32 bit positive integer value, but
 	      <emphasis>must</emphasis> be unique within the scope of the
-	      process originating the command!
+	      connection sending the command!
 	    </para>
 	  </listitem>
 	</varlistentry>
@@ -249,24 +287,11 @@
       <para>
 	<userinput>
 	  PP
-	  <replaceable>pid</replaceable>
 	  <replaceable>serial</replaceable>
 	  <replaceable>position</replaceable>
 	</userinput>
       </para>
       <variablelist>
-	<varlistentry>
-	  <term><replaceable>pid</replaceable></term>
-	  <listitem>
-	    <para>
-	      Integer value. Should be the same value as that used in the prior 
-	      <link linkend="sect.playback_operations.commands.start_playback">
-		<command>Start Playback</command>
-	      </link>
-	      operation.
-	    </para>
-	  </listitem>
-	</varlistentry>
 	<varlistentry>
 	  <term><replaceable>serial</replaceable></term>
 	  <listitem>
@@ -302,23 +327,10 @@
       <para>
 	<userinput>
 	  PE
-	  <replaceable>pid</replaceable>
 	  <replaceable>serial</replaceable>
 	</userinput>
       </para>
       <variablelist>
-	<varlistentry>
-	  <term><replaceable>pid</replaceable></term>
-	  <listitem>
-	    <para>
-	      Integer value. Should be the same value as that used in the prior 
-	      <link linkend="sect.playback_operations.commands.start_playback">
-		<command>Start Playback</command>
-	      </link>
-	      operation.
-	    </para>
-	  </listitem>
-	</varlistentry>
 	<varlistentry>
 	  <term><replaceable>serial</replaceable></term>
 	  <listitem>
@@ -343,23 +355,10 @@
       <para>
 	<userinput>
 	  PR
-	  <replaceable>pid</replaceable>
 	  <replaceable>serial</replaceable>
 	</userinput>
       </para>
       <variablelist>
-	<varlistentry>
-	  <term><replaceable>pid</replaceable></term>
-	  <listitem>
-	    <para>
-	      Integer value. Should be the same value as that used in the prior 
-	      <link linkend="sect.playback_operations.commands.start_playback">
-		<command>Start Playback</command>
-	      </link>
-	      operation.
-	    </para>
-	  </listitem>
-	</varlistentry>
 	<varlistentry>
 	  <term><replaceable>serial</replaceable></term>
 	  <listitem>
@@ -384,23 +383,10 @@
       <para>
 	<userinput>
 	  SP
-	  <replaceable>pid</replaceable>
 	  <replaceable>serial</replaceable>
 	</userinput>
       </para>
       <variablelist>
-	<varlistentry>
-	  <term><replaceable>pid</replaceable></term>
-	  <listitem>
-	    <para>
-	      Integer value. Should be the same value as that used in the prior 
-	      <link linkend="sect.playback_operations.commands.start_playback">
-		<command>Start Playback</command>
-	      </link>
-	      operation.
-	    </para>
-	  </listitem>
-	</varlistentry>
 	<varlistentry>
 	  <term><replaceable>serial</replaceable></term>
 	  <listitem>
@@ -424,24 +410,11 @@
       <para>
 	<userinput>
 	  OV
-	  <replaceable>pid</replaceable>
 	  <replaceable>serial</replaceable>
 	  <replaceable>level</replaceable>
 	</userinput>
       </para>
       <variablelist>
-	<varlistentry>
-	  <term><replaceable>pid</replaceable></term>
-	  <listitem>
-	    <para>
-	      Integer value. Should be the same value as that used in the prior 
-	      <link linkend="sect.playback_operations.commands.start_playback">
-		<command>Start Playback</command>
-	      </link>
-	      operation.
-	    </para>
-	  </listitem>
-	</varlistentry>
 	<varlistentry>
 	  <term><replaceable>serial</replaceable></term>
 	  <listitem>
@@ -475,25 +448,12 @@
       <para>
 	<userinput>
 	  FV
-	  <replaceable>pid</replaceable>
 	  <replaceable>serial</replaceable>
 	  <replaceable>level</replaceable>
 	  <replaceable>length</replaceable>
 	</userinput>
       </para>
       <variablelist>
-	<varlistentry>
-	  <term><replaceable>pid</replaceable></term>
-	  <listitem>
-	    <para>
-	      Integer value. Should be the same value as that used in the prior 
-	      <link linkend="sect.playback_operations.commands.start_playback">
-		<command>Start Playback</command>
-	      </link>
-	      operation.
-	    </para>
-	  </listitem>
-	</varlistentry>
 	<varlistentry>
 	  <term><replaceable>serial</replaceable></term>
 	  <listitem>
@@ -540,23 +500,10 @@
       <para>
 	<userinput>
 	  SP
-	  <replaceable>pid</replaceable>
 	  <replaceable>serial</replaceable>
 	</userinput>
       </para>
       <variablelist>
-	<varlistentry>
-	  <term><replaceable>pid</replaceable></term>
-	  <listitem>
-	    <para>
-	      Integer value. The same value as that used in the prior 
-	      <link linkend="sect.playback_operations.commands.start_playback">
-		<command>Start Playback</command>
-	      </link>
-	      operation.
-	    </para>
-	  </listitem>
-	</varlistentry>
 	<varlistentry>
 	  <term><replaceable>serial</replaceable></term>
 	  <listitem>
@@ -580,24 +527,11 @@
       <para>
 	<userinput>
 	  PP
-	  <replaceable>pid</replaceable>
 	  <replaceable>serial</replaceable>
 	  <replaceable>position</replaceable>
 	</userinput>
       </para>
       <variablelist>
-	<varlistentry>
-	  <term><replaceable>pid</replaceable></term>
-	  <listitem>
-	    <para>
-	      Integer value. The same value as that used in the prior 
-	      <link linkend="sect.playback_operations.commands.start_playback">
-		<command>Start Playback</command>
-	      </link>
-	      operation.
-	    </para>
-	  </listitem>
-	</varlistentry>
 	<varlistentry>
 	  <term><replaceable>serial</replaceable></term>
 	  <listitem>
@@ -640,7 +574,6 @@
       <para>
 	<userinput>
 	  LR
-	  <replaceable>pid</replaceable>
 	  <replaceable>serial</replaceable>
 	  <replaceable>cut-name</replaceable>
 	  <replaceable>card-num</replaceable>
@@ -652,22 +585,13 @@
       </para>
       <variablelist>
 	<varlistentry>
-	  <term><replaceable>pid</replaceable></term>
-	  <listitem>
-	    <para>
-	      An integer value, giving the process ID of the process
-	      originating the command.
-	    </para>
-	  </listitem>
-	</varlistentry>
-	<varlistentry>
 	  <term><replaceable>serial</replaceable></term>
 	  <listitem>
 	    <para>
 	      An integer value, giving the serial number of the command.
 	      This can be any 32 bit positive integer value, but
 	      <emphasis>must</emphasis> be unique within the scope of the
-	      process originating the command!
+	      connection sending the command!
 	    </para>
 	  </listitem>
 	</varlistentry>
@@ -749,25 +673,12 @@
       <para>
 	<userinput>
 	  RD
-	  <replaceable>pid</replaceable>
 	  <replaceable>serial</replaceable>
 	  <replaceable>length</replaceable>
 	  <replaceable>threshold</replaceable>
 	</userinput>
       </para>
       <variablelist>
-	<varlistentry>
-	  <term><replaceable>pid</replaceable></term>
-	  <listitem>
-	    <para>
-	      Integer value. The same value as that used in the prior 
-	      <link linkend="sect.record_operations.commands.cue_recording">
-		<command>Cue Recording</command>
-	      </link>
-	      operation.
-	    </para>
-	  </listitem>
-	</varlistentry>
 	<varlistentry>
 	  <term><replaceable>serial</replaceable></term>
 	  <listitem>
@@ -813,7 +724,6 @@
       <para>
 	<userinput>
 	  RC
-	  <replaceable>pid</replaceable>
 	  <replaceable>serial</replaceable>
 	  <replaceable>cut-name</replaceable>
 	  <replaceable>card-num</replaceable>
@@ -827,22 +737,13 @@
       </para>
       <variablelist>
 	<varlistentry>
-	  <term><replaceable>pid</replaceable></term>
-	  <listitem>
-	    <para>
-	      An integer value, giving the process ID of the process
-	      originating the command.
-	    </para>
-	  </listitem>
-	</varlistentry>
-	<varlistentry>
 	  <term><replaceable>serial</replaceable></term>
 	  <listitem>
 	    <para>
 	      An integer value, giving the serial number of the command.
 	      This can be any 32 bit positive integer value, but
 	      <emphasis>must</emphasis> be unique within the scope of the
-	      process originating the command!
+	      connection sending the command!
 	    </para>
 	  </listitem>
 	</varlistentry>
@@ -941,27 +842,10 @@
       <para>
 	<userinput>
 	  SR
-	  <replaceable>pid</replaceable>
 	  <replaceable>serial</replaceable>
 	</userinput>
       </para>
       <variablelist>
-	<varlistentry>
-	  <term><replaceable>pid</replaceable></term>
-	  <listitem>
-	    <para>
-	      Integer value. The same value as that used in the prior 
-	      <link linkend="sect.record_operations.commands.cue_recording">
-		<command>Cue Recording</command>
-	      </link>
-	      or
-	      <link linkend="sect.record_operations.commands.cue_and_start_recording">
-		<command>Cue and Start Recording</command>
-	      </link>
-	      operation.
-	    </para>
-	  </listitem>
-	</varlistentry>
 	<varlistentry>
 	  <term><replaceable>serial</replaceable></term>
 	  <listitem>
@@ -994,28 +878,11 @@
       <para>
 	<computeroutput>
 	  RS
-	  <replaceable>pid</replaceable>
 	  <replaceable>serial</replaceable>
 	  <replaceable>state</replaceable>
 	</computeroutput>
       </para>
       <variablelist>
-	<varlistentry>
-	  <term><replaceable>pid</replaceable></term>
-	  <listitem>
-	    <para>
-	      Integer value. The same value as that used in the prior 
-	      <link linkend="sect.record_operations.commands.cue_recording">
-		<command>Cue Recording</command>
-	      </link>
-	      or
-	      <link linkend="sect.record_operations.commands.cue_and_start_recording">
-		<command>Cue and Start Recording</command>
-	      </link>
-	      operation.
-	    </para>
-	  </listitem>
-	</varlistentry>
 	<varlistentry>
 	  <term><replaceable>serial</replaceable></term>
 	  <listitem>

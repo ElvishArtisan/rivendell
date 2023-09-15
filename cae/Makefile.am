@@ -1,4 +1,4 @@
-## automake.am
+## Makefile.am
 ##
 ## Core Audio Engine Makefile.am for Rivendell
 ##
@@ -31,6 +31,7 @@ sbin_PROGRAMS = caed
 
 dist_caed_SOURCES = cae.cpp cae.h\
                     cae_server.cpp cae_server.h\
+                    connection.cpp connection.h\
                     driver.cpp driver.h\
                     driver_alsa.cpp driver_alsa.h\
                     driver_hpi.cpp driver_hpi.h\
@@ -39,6 +40,7 @@ dist_caed_SOURCES = cae.cpp cae.h\
 
 nodist_caed_SOURCES = moc_cae.cpp\
                       moc_cae_server.cpp\
+                      moc_connection.cpp\
                       moc_driver.cpp\
                       moc_driver_alsa.cpp\
                       moc_driver_hpi.cpp\

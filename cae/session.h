@@ -28,21 +28,20 @@
 class SessionId
 {
  public:
-  SessionId(const QHostAddress &addr,uint16_t port,int pid=0,int serial=0);
+  SessionId(const QHostAddress &src_addr,uint16_t src_port,int serial=0);
   SessionId();
   QHostAddress address() const;
   uint16_t port() const;
-  int processId() const;
-  void setProcessId(int pid);
   int serialNumber() const;
   void setSerialNumber(int serial);
   QString dump() const;
+  bool belongsTo(const SessionId &other) const;
+  bool operator!=(const SessionId &other) const;
   bool operator<(const SessionId &other) const;
 
  private:
   QHostAddress d_address;
   uint16_t d_port;
-  int d_process_id;
   int d_serial_number;
 };
 
@@ -52,7 +51,7 @@ class SessionId
 class Session
 {
  public:
-  Session(const QHostAddress &addr,uint16_t port,int pid,int serial);
+  Session(const QHostAddress &addr,uint16_t port,int serial=0);
   Session(const SessionId &sid);
   SessionId sessionId() const;
   int cardNumber() const;

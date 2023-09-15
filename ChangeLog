@@ -24421,3 +24421,6 @@
 	* Implemented the modified 'Set Audio Passthrough Level' ['AL'] CAE
 	command.
 	* Implemented the new 'Update Audio Ports' ['AP'] CAE command.
+2023-09-15 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Set Timeout' ['TO'] CAE command.
+	* Added a 'Touch' ['TH'] CAE command.

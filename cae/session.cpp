@@ -20,19 +20,16 @@
 
 #include "session.h"
 
-SessionId::SessionId(const QHostAddress &addr,uint16_t port,int pid,int serial)
+SessionId::SessionId(const QHostAddress &src_addr,uint16_t src_port,int serial)
 {
-  d_address=addr;
-  d_port=port;
-  d_process_id=pid;
+  d_address=src_addr;
+  d_port=src_port;
   d_serial_number=serial;
 }
 
 
 SessionId::SessionId()
 {
-  d_port=0;
-  d_process_id=0;
   d_serial_number=0;
 }
 
@@ -46,18 +43,6 @@ QHostAddress SessionId::address() const
 uint16_t SessionId::port() const
 {
   return d_port;
-}
-
-
-int SessionId::processId() const
-{
-  return d_process_id;
-}
-
-
-void SessionId::setProcessId(int pid)
-{
-  d_process_id=pid;
 }
 
 
@@ -75,21 +60,31 @@ void SessionId::setSerialNumber(int serial)
 
 QString SessionId::dump() const
 {
-  return address().toString()+
-    QString::asprintf(":%d:%d:%d",0xFFFF&port(),processId(),serialNumber());
+  return QString::asprintf("%s:%d:%d",d_address.toString().toUtf8().constData(),
+			   0xFFFF&d_port,d_serial_number);
+}
+
+
+bool SessionId::belongsTo(const SessionId &other) const
+{
+  return ((other.d_address==d_address)&&(other.d_port==d_port));
+}
+
+
+bool SessionId::operator!=(const SessionId &other) const
+{
+  return (other.d_address!=d_address)||(other.d_port!=d_port)||
+    (other.d_serial_number!=d_serial_number);
 }
 
 
 bool SessionId::operator<(const SessionId &other) const
 {
-  if(other.d_address!=d_address) {
+  if(other.d_address.toIPv4Address()!=d_address.toIPv4Address()) {
     return other.d_address.toIPv4Address()<d_address.toIPv4Address();
   }
   if(other.d_port!=d_port) {
     return other.d_port<d_port;
-  }
-  if(other.d_process_id!=d_process_id) {
-    return other.d_process_id<d_process_id;
   }
   return other.d_serial_number<d_serial_number;
 }
@@ -97,9 +92,9 @@ bool SessionId::operator<(const SessionId &other) const
 
 
 
-Session::Session(const QHostAddress &addr,uint16_t port,int pid,int serial)
+Session::Session(const QHostAddress &addr,uint16_t port,int serial)
 {
-  d_session_id=SessionId(addr,port,pid,serial);
+  d_session_id=SessionId(addr,port,serial);
 
   d_card_number=-1;
   d_port_number=-1;
@@ -128,6 +123,24 @@ Session::Session(const SessionId &sid)
   d_meters_enabled=false;
 }
 
+/*
+Session::Session(const Connection &conn)
+{
+  d_session_id=SessionId(conn);
+
+  d_session_id=sid;
+
+  d_card_number=-1;
+  d_port_number=-1;
+  d_stream_number=-1;
+  d_start_position=-1;
+  d_end_position=-1;
+  d_speed=100000;
+
+  d_meter_port=0;
+  d_meters_enabled=false;
+}
+*/
 
 SessionId Session::sessionId() const
 {

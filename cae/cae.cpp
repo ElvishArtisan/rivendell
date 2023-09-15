@@ -145,12 +145,14 @@ MainObject::MainObject(QObject *parent)
   // Server Front End
   //
   cae_server=new CaeServer(this);
-  if(!cae_server->listen(QHostAddress::Any,CAED_TCP_PORT)) {
+  if(!cae_server->bind(QHostAddress::Any,CAED_TCP_PORT)) {
     rda->syslog(LOG_ERR,"caed: failed to bind port %d",CAED_TCP_PORT);
     exit(1);
   }
-  connect(cae_server,SIGNAL(connectionDropped(int)),
-	  this,SLOT(connectionDroppedData(int)));
+  //  connect(cae_server,SIGNAL(connectionDropped(int)),
+  //	  this,SLOT(connectionDroppedData(int)));
+  connect(cae_server,SIGNAL(connectionClosed(const SessionId &)),
+	  this,SLOT(connectionClosedData(const SessionId &)));
   connect(cae_server,SIGNAL(playPositionReq(const SessionId &,int)),
 	  this,SLOT(playPositionData(const SessionId &,int)));
   connect(cae_server,SIGNAL(startPlaybackReq(const SessionId &,const QString &,
@@ -159,7 +161,6 @@ MainObject::MainObject(QObject *parent)
 				      unsigned,unsigned,int,int,int)));
   connect(cae_server,SIGNAL(playStopReq(const SessionId &)),
 	  this,SLOT(stopPlaybackData(const SessionId &)));
-  /*
   connect(cae_server,SIGNAL(loadPlaybackReq(int,unsigned,const QString &)),
 	  this,SLOT(loadPlaybackData(int,unsigned,const QString &)));
   connect(cae_server,SIGNAL(unloadPlaybackReq(int,unsigned)),
@@ -198,6 +199,7 @@ MainObject::MainObject(QObject *parent)
 						unsigned,int,unsigned)),
 	  this,SLOT(fadeOutputVolumeData(int,unsigned,unsigned,
 					 unsigned,int,unsigned)));
+  /*
   connect(cae_server,SIGNAL(setInputLevelReq(int,unsigned,unsigned,int)),
 	  this,SLOT(setInputLevelData(int,unsigned,unsigned,int)));
   connect(cae_server,SIGNAL(setOutputLevelReq(int,unsigned,unsigned,int)),
@@ -236,11 +238,11 @@ MainObject::MainObject(QObject *parent)
 	  this,
 	  SLOT(openRtpCaptureChannelData(int,unsigned,unsigned,uint16_t,
 					unsigned,unsigned)));
+  */
   connect(cae_server,SIGNAL(meterEnableReq(const QHostAddress &,uint16_t,
 					   const QList<unsigned> &)),
 	  this,SLOT(meterEnableData(const QHostAddress &,uint16_t,
 				    const QList<unsigned> &)));
-  */
   signal(SIGHUP,SigHandler);
   signal(SIGINT,SigHandler);
   signal(SIGTERM,SigHandler);
@@ -412,7 +414,7 @@ void MainObject::startPlaybackData(const SessionId &sid,const QString &cutname,
   sess->setStartPosition(start_pos);
   sess->setEndPosition(end_pos);
   sess->setSpeed(speed);
-  cae_sessions[sid]=sess;
+  cae_play_sessions[sid]=sess;
 
   rda->syslog(LOG_DEBUG,"playback started - session: %s  card: %d  port: %d  stream: %d  filename: %s",
 	      sid.dump().toUtf8().constData(),cardnum,portnum,streamnum,
@@ -428,7 +430,7 @@ void MainObject::playPositionData(const SessionId &sid,int position)
   //
   // Find the session
   //
-  if((sess=cae_sessions.value(sid))==NULL) {
+  if((sess=cae_play_sessions.value(sid))==NULL) {
     rda->syslog(LOG_WARNING,
 		"attempting to position non-existent session - session: %s",
 		sid.dump().toUtf8().constData());
@@ -449,8 +451,7 @@ void MainObject::playPositionData(const SessionId &sid,int position)
 		sid.dump().toUtf8().constData(),position);
     return;
   }
-  cae_server->sendCommand(sid,QString::asprintf("PP %d %d %d",
-						sid.processId(),
+  cae_server->sendCommand(sid,QString::asprintf("PP %d %d",
 						sid.serialNumber(),
 						position));
   rda->syslog(LOG_DEBUG,"play position succeeded - session: %s  position: %d",
@@ -460,45 +461,23 @@ void MainObject::playPositionData(const SessionId &sid,int position)
 
 void MainObject::stopPlaybackData(const SessionId &sid)
 {
+  //
+  // Maintainer's Note:
+  // *Do not* call this from an iterator! Use StopPlayout() instead.
+  //
   Session *sess=NULL;
-  Driver *dvr=NULL;
 
   //
   // Find the session
   //
-  if((sess=cae_sessions.value(sid))==NULL) {
+  if((sess=cae_play_sessions.value(sid))==NULL) {
     rda->syslog(LOG_WARNING,
 		"attempting to stop playing non-existent session - session: %s",
 		sid.dump().toUtf8().constData());
     return;
   }
 
-  //
-  // Find the card
-  //
-  if((dvr=GetDriver(sess->cardNumber()))==NULL) {
-    rda->syslog(LOG_WARNING,"no such card - session: %s  card: %d",
-		sid.dump().toUtf8().constData(),sess->cardNumber());
-    return;
-  }
-
-  //
-  // Stop Transport
-  //
-  if(!dvr->stopPlayback(sess->cardNumber(),sess->streamNumber())) {
-    rda->syslog(LOG_WARNING,
-		"stop playback failed - session: %s",
-		sid.dump().toUtf8().constData());
-  }
-
-  //
-  // Unload
-  //
-  if(!dvr->unloadPlayback(sess->cardNumber(),sess->streamNumber())) {
-    rda->syslog(LOG_WARNING,
-		"unload playback failed - session: %s",
-		sid.dump().toUtf8().constData());
-  }
+  StopPlayout(sess);
 
   //
   // Delete session
@@ -506,7 +485,7 @@ void MainObject::stopPlaybackData(const SessionId &sid)
   QString msg=QString::asprintf("stopped playback - session: %s",
 				sid.dump().toUtf8().constData());
   delete sess;
-  cae_sessions.remove(sid);
+  cae_play_sessions.remove(sid);
   rda->syslog(LOG_DEBUG,"%s",msg.toUtf8().constData());
 }
 
@@ -1263,18 +1242,13 @@ void MainObject::openRtpCaptureChannelData(int id,unsigned card,unsigned port,
 {
 }
 
-
+/*
 void MainObject::meterEnableData(const QHostAddress &addr,uint16_t udp_port,
 				 const QList<unsigned> &cards)
 {
-  /*
   QString cmd=QString::asprintf("ME %u",0xFFFF&udp_port);
   for(int i=0;i<cards.size();i++) {
     cmd+=QString::asprintf(" %u",cards.at(i));
-  }
-  if((udp_port<0)||(udp_port>0xFFFF)) {
-    cae_server->sendCommand(id,cmd+" -!");
-    return;
   }
   cae_server->setMeterPort(id,udp_port);
   for(int i=0;i<cards.size();i++) {
@@ -1285,31 +1259,55 @@ void MainObject::meterEnableData(const QHostAddress &addr,uint16_t udp_port,
     cae_server->setMetersEnabled(id,cards.at(i),true);
   }
 
-  cae_server->sendCommand(id,cmd+" +!");
+  //  cae_server->sendCommand(id,cmd+" +!");
   SendMeterOutputStatusUpdate();
-  */
 }
-
-
+*/
+/*
 void MainObject::connectionDroppedData(int id)
 {
   KillSocket(id);
+}
+*/
+
+
+void MainObject::connectionClosedData(const SessionId &sid)
+{
+  rda->syslog(LOG_DEBUG,"cleaning up sessions from %s",
+	      sid.dump().toUtf8().constData());
+
+  //
+  // Clean up active play sessions
+  //
+  QMutableMapIterator<SessionId,Session *> it(cae_play_sessions);
+  while(it.hasNext()) {
+    it.next();
+    if(it.key().belongsTo(sid)) {
+      StopPlayout(it.value());
+      delete it.value();
+      it.remove();
+    }
+  }
+
+  //
+  // Clean up active record sessions
+  //
+  // FIXME: Implement this!
 }
 
 
 void MainObject::statePlayUpdate(int card,int stream,int state)
 {
   if(state==0) {  // Stopped
-    for(QMap<SessionId,Session *>::iterator it=cae_sessions.begin();
-	it!=cae_sessions.end();it++) {
+    for(QMap<SessionId,Session *>::iterator it=cae_play_sessions.begin();
+	it!=cae_play_sessions.end();it++) {
       if((it.value()->cardNumber()==card)&&
 	 (it.value()->streamNumber()==stream)) {
 	cae_server->
-	  sendCommand(it.key(),QString::asprintf("SP %d %d",
-						 it.key().processId(),
+	  sendCommand(it.key(),QString::asprintf("SP %d",
 						 it.key().serialNumber()));
 	delete it.value();
-	cae_sessions.remove(it.key());
+	cae_play_sessions.remove(it.key());
 	return;
       }
     }
@@ -1431,6 +1429,40 @@ void MainObject::updateMeters()
 }
 
 
+void MainObject::StopPlayout(Session *sess)
+{
+  Driver *dvr=NULL;
+
+  //
+  // Find the card
+  //
+  if((dvr=GetDriver(sess->cardNumber()))==NULL) {
+    rda->syslog(LOG_WARNING,"no such card - session: %s  card: %d",
+		sess->sessionId().dump().toUtf8().constData(),
+		sess->cardNumber());
+    return;
+  }
+
+  //
+  // Stop Transport
+  //
+  if(!dvr->stopPlayback(sess->cardNumber(),sess->streamNumber())) {
+    rda->syslog(LOG_WARNING,
+		"stop playback failed - session: %s",
+		sess->sessionId().dump().toUtf8().constData());
+  }
+
+  //
+  // Unload
+  //
+  if(!dvr->unloadPlayback(sess->cardNumber(),sess->streamNumber())) {
+    rda->syslog(LOG_WARNING,
+		"unload playback failed - session: %s",
+		sess->sessionId().dump().toUtf8().constData());
+  }
+}
+
+
 void MainObject::InitProvisioning() const
 {
   QString sql;
@@ -1513,7 +1545,7 @@ void MainObject::InitMixers()
   }
 }
 
-
+/*
 void MainObject::KillSocket(int ch)
 {
   for(int i=0;i<RD_MAX_CARDS;i++) {
@@ -1556,7 +1588,7 @@ void MainObject::KillSocket(int ch)
     }
   }
 }
-
+*/
 
 pid_t MainObject::GetPid(QString pidfile)
 {
@@ -1832,15 +1864,15 @@ void MainObject::FreeMadDecoder(int card,int stream)
 void MainObject::SendMeterLevelUpdate(const QString &type,int cardnum,
 				      int portnum,short levels[])
 {
-  QList<int> ids=cae_server->connectionIds();
-
-  for(int l=0;l<ids.size();l++) {
-    if((cae_server->meterPort(ids.at(l))>0)&&
-       cae_server->metersEnabled(ids.at(l),cardnum)) {
+  for(QMap<SessionId,Session *>::const_iterator it=cae_play_sessions.begin();
+      it!=cae_play_sessions.end();it++) {
+    if((it.value()->cardNumber()==cardnum)&&(it.value()->meterPort()>0)&&
+       (it.value()->metersEnabled())) {
       SendMeterUpdate(QString::asprintf("ML %s %d %d %d %d",
 					type.toUtf8().constData(),
 					cardnum,portnum,levels[0],levels[1]),
-		      ids.at(l));
+		      it.value());
+
     }
   }
 }
@@ -1849,13 +1881,13 @@ void MainObject::SendMeterLevelUpdate(const QString &type,int cardnum,
 void MainObject::SendStreamMeterLevelUpdate(int cardnum,int streamnum,
 					    short levels[])
 {
-  QList<int> ids=cae_server->connectionIds();
-
-  for(int l=0;l<ids.size();l++) {
-    if((cae_server->meterPort(ids.at(l))>0)&&
-       cae_server->metersEnabled(ids.at(l),cardnum)) {
+  for(QMap<SessionId,Session *>::const_iterator it=cae_play_sessions.begin();
+      it!=cae_play_sessions.end();it++) {
+    if((it.value()->cardNumber()==cardnum)&&(it.value()->meterPort()>0)&&
+       (it.value()->metersEnabled())) {
       SendMeterUpdate(QString::asprintf("MO %d %d %d %d",
-		  cardnum,streamnum,levels[0],levels[1]),ids.at(l));
+					cardnum,streamnum,levels[0],levels[1]),
+		      it.value());
     }
   }
 }
@@ -1863,14 +1895,13 @@ void MainObject::SendStreamMeterLevelUpdate(int cardnum,int streamnum,
 
 void MainObject::SendMeterPositionUpdate(int cardnum,unsigned pos[])
 {
-  QList<int> ids=cae_server->connectionIds();
-
   for(unsigned k=0;k<RD_MAX_STREAMS;k++) {
-    for(int l=0;l<ids.size();l++) {
-      if((cae_server->meterPort(ids.at(l))>0)&&
-	 cae_server->metersEnabled(ids.at(l),cardnum)) {
+    for(QMap<SessionId,Session *>::const_iterator it=cae_play_sessions.begin();
+	it!=cae_play_sessions.end();it++) {
+      if((it.value()->cardNumber()==cardnum)&&(it.value()->meterPort()>0)&&
+	 (it.value()->metersEnabled())) {
 	SendMeterUpdate(QString::asprintf("MP %d %d %d",cardnum,k,pos[k]),
-			ids.at(l));
+			it.value());
       }
     }
   }
@@ -1879,17 +1910,17 @@ void MainObject::SendMeterPositionUpdate(int cardnum,unsigned pos[])
 
 void MainObject::SendMeterOutputStatusUpdate()
 {
-  QList<int> ids=cae_server->connectionIds();
-
-  for(unsigned i=0;i<RD_MAX_CARDS;i++) {
+  for(int i=0;i<RD_MAX_CARDS;i++) {
     if(GetDriver(i)!=NULL) {
       for(unsigned j=0;j<RD_MAX_PORTS;j++) {
 	for(unsigned k=0;k<RD_MAX_STREAMS;k++) {
-	  for(int l=0;l<ids.size();l++) {
-	    if((cae_server->meterPort(ids.at(l))>0)&&
-	       cae_server->metersEnabled(ids.at(l),i)) {
+	  for(QMap<SessionId,Session *>::const_iterator it=cae_play_sessions.begin();
+	      it!=cae_play_sessions.end();it++) {
+	    if((it.value()->cardNumber()==i)&&
+	       (it.value()->meterPort()>0)&&(it.value()->metersEnabled())) {
 	      SendMeterUpdate(QString::asprintf("MS %d %d %d %d",i,j,k,
-				      output_status_flag[i][j][k]),ids.at(l));
+						output_status_flag[i][j][k]),
+			      it.value());
 	    }
 	  }
 	}
@@ -1901,21 +1932,22 @@ void MainObject::SendMeterOutputStatusUpdate()
 
 void MainObject::SendMeterOutputStatusUpdate(int card,int port,int stream)
 {
-  QList<int> ids=cae_server->connectionIds();
-
-  for(int l=0;l<ids.size();l++) {
-    if((cae_server->meterPort(ids.at(l))>0)&&
-       cae_server->metersEnabled(ids.at(l),card)) {
+  for(QMap<SessionId,Session *>::const_iterator it=cae_play_sessions.begin();
+      it!=cae_play_sessions.end();it++) {
+    if((it.value()->streamNumber()==stream)&&(it.value()->meterPort()>0)&&
+       (it.value()->metersEnabled())) {
       SendMeterUpdate(QString::asprintf("MS %d %d %d %d",card,port,stream,
-			    output_status_flag[card][port][stream]),ids.at(l));
+					output_status_flag[card][port][stream]),
+		      it.value());
     }
   }
 }
 
-void MainObject::SendMeterUpdate(const QString &msg,int conn_id)
+
+void MainObject::SendMeterUpdate(const QString &msg,Session *sess)
 {
-  meter_socket->writeDatagram(msg.toUtf8(),cae_server->peerAddress(conn_id),
-			      cae_server->meterPort(conn_id));
+  meter_socket->writeDatagram(msg.toUtf8(),sess->sessionId().address(),
+  			      sess->meterPort());
 }
 
 

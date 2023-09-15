@@ -47,8 +47,8 @@
 #include <rdconfig.h>
 #include <rdstation.h>
 
-#include "driver.h"
 #include "cae_server.h"
+#include "driver.h"
 
 #ifndef HAVE_SRC_CONV
 void src_int_to_float_array (const int *in, float *out, int len);
@@ -123,17 +123,20 @@ class MainObject : public QObject
   void openRtpCaptureChannelData(int id,unsigned card,unsigned port,
 				 uint16_t udp_port,unsigned samprate,
 				 unsigned chans);
-  void meterEnableData(const QHostAddress &addr,uint16_t udp_port,
-		       const QList<unsigned> &cards);
+  //  void meterEnableData(const QHostAddress &addr,uint16_t udp_port,
+  //		       const QList<unsigned> &cards);
   void statePlayUpdate(int card,int stream,int state);
   void stateRecordUpdate(int card,int stream,int state);
   void updateMeters();
-  void connectionDroppedData(int id);
+  //  void connectionDroppedData(int id);
+  void connectionClosedData(const SessionId &sid);
   
  private:
+  void StopPlayout(Session *sess);
+
   void InitProvisioning() const;
   void InitMixers();
-  void KillSocket(int);
+  //  void KillSocket(int);
   bool CheckDaemon(QString);
   pid_t GetPid(QString pidfile);
   int GetNextHandle();
@@ -146,7 +149,8 @@ class MainObject : public QObject
   void SendMeterPositionUpdate(int cardnum,unsigned pos[]);
   void SendMeterOutputStatusUpdate();
   void SendMeterOutputStatusUpdate(int card,int port,int stream);
-  void SendMeterUpdate(const QString &msg,int conn_id);
+  //  void SendMeterUpdate(const QString &msg,int conn_id);
+  void SendMeterUpdate(const QString &msg,Session *sess);
   Driver *GetDriver(unsigned card) const;
   void MakeDriver(unsigned *next_card,RDStation::AudioDriver type);
   QList<Driver *> d_drivers;
@@ -171,7 +175,7 @@ class MainObject : public QObject
   } play_handle[256];
   int next_play_handle;
 
-  QMap<SessionId,Session *> cae_sessions;
+  QMap<SessionId,Session *> cae_play_sessions;
 
  private:
   bool CheckLame();

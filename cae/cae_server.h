@@ -31,6 +31,7 @@
 
 #include <rdconfig.h>
 
+#include "connection.h"
 #include "session.h"
 
 class CaeServer : public QObject
@@ -38,23 +39,19 @@ class CaeServer : public QObject
   Q_OBJECT;
  public:
   CaeServer(QObject *parent=0);
-  QList<int> connectionIds() const;
-  QHostAddress peerAddress(int id) const;
-  uint16_t peerPort(int id) const;
-  uint16_t meterPort(int id) const;
-  void setMeterPort(int id,uint16_t port);
   bool metersEnabled(int id,unsigned card) const;
   void setMetersEnabled(int id,unsigned card,bool state);
-  bool listen(const QHostAddress &addr,uint16_t port);
+  bool bind(const QHostAddress &addr,uint16_t port);
   void sendCommand(const QString &cmd);
   void sendCommand(const SessionId &dest,const QString &cmd);
 
  signals:
-  void connectionDropped(int id);
+  //  void connectionDropped(int id);
 
   //
   // New Signals
   //
+  void connectionClosed(const SessionId &sid);
   void startPlaybackReq(const SessionId &sid,const QString &cutname,
 			unsigned cardnum,unsigned portnum,
 			int start_pos,int end_pos,int speed);
@@ -111,13 +108,14 @@ class CaeServer : public QObject
 		      const QList<unsigned> &cards);
 
  private slots:
-  void newConnectionData();
   void readyReadData();
-  void connectionClosedData(int id);
+  void connectionExpiredData(const SessionId &sid);
+  //  void connectionClosedData(int id);
 
  private:
   bool ProcessCommand(const QHostAddress &src_addr,uint16_t src_port,
 		      const QString &cmd);
+  QMap<SessionId,Connection *> cae_connections;
   QSignalMapper *cae_ready_read_mapper;
   QUdpSocket *d_server_socket;
 };

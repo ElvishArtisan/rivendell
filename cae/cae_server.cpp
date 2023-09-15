@@ -42,60 +42,7 @@ CaeServer::CaeServer(QObject *parent)
 }
 
 
-QList<int> CaeServer::connectionIds() const
-{
-  QList<int> ret;
-  /*
-  for(QMap<int,CaeServerConnection *>::const_iterator it=
-	cae_connections.begin();it!=cae_connections.end();it++) {
-    ret.push_back(it.key());
-  }
-  */
-  return ret;
-}
-
-
-QHostAddress CaeServer::peerAddress(int id) const
-{
-  //  return cae_connections[id]->socket->peerAddress();
-  return QHostAddress();
-}
-
-
-uint16_t CaeServer::peerPort(int id) const
-{
-  //  return cae_connections[id]->socket->peerPort();
-  return 0;
-}
-
-
-uint16_t CaeServer::meterPort(int id) const
-{
-  //  return cae_connections[id]->meter_port;
-  return 0;
-}
-
-
-void CaeServer::setMeterPort(int id,uint16_t port)
-{
-  //  cae_connections[id]->meter_port=port;
-}
-
-
-bool CaeServer::metersEnabled(int id,unsigned card) const
-{
-  //  return cae_connections[id]->meters_enabled[card];
-  return false;
-}
-
-
-void CaeServer::setMetersEnabled(int id,unsigned card,bool state)
-{
-  //  cae_connections[id]->meters_enabled[card]=state;
-}
-
-
-bool CaeServer::listen(const QHostAddress &addr,uint16_t port)
+bool CaeServer::bind(const QHostAddress &addr,uint16_t port)
 {
   return d_server_socket->bind(port);
 }
@@ -124,26 +71,6 @@ void CaeServer::sendCommand(const SessionId &dest,const QString &cmd)
 }
 
 
-void CaeServer::newConnectionData()
-{/*
-  QTcpSocket *sock=cae_server->nextPendingConnection();
-
-  cae_connection_closed_mapper->setMapping(sock,sock->socketDescriptor());
-  connect(sock,SIGNAL(disconnected()),cae_connection_closed_mapper,SLOT(map()));
-
-  cae_ready_read_mapper->setMapping(sock,sock->socketDescriptor());
-  connect(sock,SIGNAL(readyRead()),cae_ready_read_mapper,SLOT(map()));
-
-  cae_connections[sock->socketDescriptor()]=new CaeServerConnection(sock);
-
-  RDApplication::syslog(cae_config,LOG_DEBUG,
-			"added connection %d [%s:%u]",sock->socketDescriptor(),
-			sock->peerAddress().toString().toUtf8().constData(),
-			0xFFFF&sock->peerPort());
- */
-}
-
-
 void CaeServer::readyReadData()
 {
   QNetworkDatagram dgram=d_server_socket->receiveDatagram(1500);
@@ -152,9 +79,20 @@ void CaeServer::readyReadData()
 }
 
 
+void CaeServer::connectionExpiredData(const SessionId &sid)
+{
+  Connection *conn=cae_connections.value(sid);
+
+  if(conn!=NULL) {
+    conn->deleteLater();
+    cae_connections.remove(sid);
+    emit connectionClosed(sid);
+  }
+}
+
+/*
 void CaeServer::connectionClosedData(int id)
 {
-  /*
   QString logmsg=
     QString::asprintf("removed connection %d [%s:%u]",
 		      id,
@@ -175,9 +113,8 @@ void CaeServer::connectionClosedData(int id)
   cae_connections.remove(id);
 
   RDApplication::syslog(cae_config,priority,"%s",logmsg.toUtf8().constData());
-  */
 }
-
+*/
 
 bool CaeServer::ProcessCommand(const QHostAddress &src_addr,uint16_t src_port,
 			       const QString &cmd)
@@ -185,7 +122,6 @@ bool CaeServer::ProcessCommand(const QHostAddress &src_addr,uint16_t src_port,
   bool was_processed=false;
   bool ok=false;
   QStringList f0=cmd.split(" ",QString::SkipEmptyParts);
-  pid_t pid;
   unsigned serial;
   QString cutname;
   unsigned cardnum;
@@ -200,34 +136,61 @@ bool CaeServer::ProcessCommand(const QHostAddress &src_addr,uint16_t src_port,
   int coding;
   int channels;
   int bitrate;
+  int interval;
   SessionId origin(src_addr,src_port);
+
+  //
+  // Connection Management
+  //
+  if((f0.at(0)=="TO")&&(f0.size()==2)) {  // Set Timeout
+    interval=f0.at(1).toInt(&ok);
+    if(ok&&(interval>=0)) {
+      Connection *conn=cae_connections.value(origin);
+      if(conn==NULL) {
+	conn=new Connection(origin,this);
+	connect(conn,SIGNAL(connectionExpired(const SessionId &)),
+		this,SLOT(connectionExpiredData(const SessionId &)));
+	cae_connections[origin]=conn;
+      }
+      conn->setTimeout(interval);
+      was_processed=true;
+    }
+  }
+
+  if((f0.at(0)=="TH")&&(f0.size()==1)) {  // Touch
+    Connection *conn=cae_connections.value(origin);
+    if(conn==NULL) {
+      rda->syslog(LOG_WARNING,"%s attempted to touch non-existent connection",
+		  origin.dump().toUtf8().constData());
+    }
+    else {
+      conn->touch();
+    }
+    was_processed=true;
+  }
 
   //
   // Playback Operations
   //
-  if((f0.at(0)=="PY")&&(f0.size()==9)) {  // Start Playback
-    pid=f0.at(1).toUInt(&ok);
-    if(ok&&(pid>0)) {
-      origin.setProcessId(pid);
-      serial=f0.at(2).toUInt(&ok);
-      if(ok) {
-	origin.setSerialNumber(serial);
-	cutname=f0.at(3);
-	if(cutname.length()==10) {
-	  cardnum=f0.at(4).toUInt(&ok);
-	  if(ok&&(cardnum<RD_MAX_CARDS)) {
-	    portnum=f0.at(5).toInt(&ok);
-	    if(ok&&(portnum<RD_MAX_PORTS)) {
-	      start_pos=f0.at(6).toInt(&ok);
-	      if(ok&&(start_pos>=0)) {
-		end_pos=f0.at(7).toInt(&ok);
-		if(ok&&(end_pos>=0)&&(end_pos>=start_pos)) {
-		  speed=f0.at(8).toInt(&ok);
-		  if(ok&&(speed>0)) {
-		    emit startPlaybackReq(origin,cutname,cardnum,portnum,
-					  start_pos,end_pos,speed);
-		    was_processed=true;
-		  }
+  if((f0.at(0)=="PY")&&(f0.size()==8)) {  // Start Playback
+    serial=f0.at(1).toUInt(&ok);
+    if(ok) {
+      origin.setSerialNumber(serial);
+      cutname=f0.at(2);
+      if(cutname.length()==10) {
+	cardnum=f0.at(3).toUInt(&ok);
+	if(ok&&(cardnum<RD_MAX_CARDS)) {
+	  portnum=f0.at(4).toInt(&ok);
+	  if(ok&&(portnum<RD_MAX_PORTS)) {
+	    start_pos=f0.at(5).toInt(&ok);
+	    if(ok&&(start_pos>=0)) {
+	      end_pos=f0.at(6).toInt(&ok);
+	      if(ok&&(end_pos>=0)&&(end_pos>=start_pos)) {
+		speed=f0.at(7).toInt(&ok);
+		if(ok&&(speed>0)) {
+		  emit startPlaybackReq(origin,cutname,cardnum,portnum,
+					start_pos,end_pos,speed);
+		  was_processed=true;
 		}
 	      }
 	    }
@@ -237,91 +200,67 @@ bool CaeServer::ProcessCommand(const QHostAddress &src_addr,uint16_t src_port,
     }
   }
 
-  if((f0.at(0)=="PP")&&(f0.size()==4)) {  // Play Position
-    pid=f0.at(1).toUInt(&ok);
-    if(ok&&(pid>0)) {
-      origin.setProcessId(pid);
-      serial=f0.at(2).toUInt(&ok);
+  if((f0.at(0)=="PP")&&(f0.size()==3)) {  // Play Position
+    serial=f0.at(1).toUInt(&ok);
+    if(ok) {
+      origin.setSerialNumber(serial);
+      position=f0.at(2).toInt(&ok);
+      if(ok&&(position>=0)) {
+	emit playPositionReq(origin,position);
+	was_processed=true;
+      }
+    }
+  }
+
+  if((f0.at(0)=="PE")&&(f0.size()==2)) {  // Pause Playback
+    serial=f0.at(1).toUInt(&ok);
+    if(ok) {
+      origin.setSerialNumber(serial);
+      emit playPauseReq(origin);
+      was_processed=true;
+    }
+  }
+
+  if((f0.at(0)=="PR")&&(f0.size()==2)) {  // Resume Playback
+    serial=f0.at(1).toUInt(&ok);
+    if(ok) {
+      origin.setSerialNumber(serial);
+      emit playResumeReq(origin);
+      was_processed=true;
+    }
+  }
+
+  if((f0.at(0)=="SP")&&(f0.size()==2)) {  // Stop Playback
+    serial=f0.at(1).toUInt(&ok);
+    if(ok) {
+      origin.setSerialNumber(serial);
+      emit playStopReq(origin);
+      was_processed=true;
+    }
+  }
+
+  if((f0.at(0)=="OV")&&(f0.size()==3)) {  // Set Output Volume
+    serial=f0.at(1).toUInt(&ok);
+    if(ok) {
+      origin.setSerialNumber(serial);
+      level=f0.at(2).toInt(&ok);
       if(ok) {
-	origin.setSerialNumber(serial);
-	position=f0.at(3).toInt(&ok);
-	if(ok&&(position>=0)) {
-	  emit playPositionReq(origin,position);
+	emit playSetOutputVolumeReq(origin,level);
+	was_processed=true;
+      }
+    }
+  }
+
+  if((f0.at(0)=="FV")&&(f0.size()==4)) {  // Fade Output Volume
+    serial=f0.at(1).toUInt(&ok);
+    if(ok) {
+      origin.setSerialNumber(serial);
+      level=f0.at(2).toInt(&ok);
+      if(ok) {
+	length=f0.at(3).toInt(&ok);
+	if(ok&&length>=0) {
+	  emit playFadeOutputVolumeReq(origin,level,length);
 	  was_processed=true;
-	}
-      }
-    }
-  }
-
-  if((f0.at(0)=="PE")&&(f0.size()==3)) {  // Pause Playback
-    pid=f0.at(1).toUInt(&ok);
-    if(ok&&(pid>0)) {
-      origin.setProcessId(pid);
-      serial=f0.at(2).toUInt(&ok);
-      if(ok) {
-	origin.setSerialNumber(serial);
-	emit playPauseReq(origin);
-	was_processed=true;
-      }
-    }
-  }
-
-  if((f0.at(0)=="PR")&&(f0.size()==3)) {  // Resume Playback
-    pid=f0.at(1).toUInt(&ok);
-    if(ok&&(pid>0)) {
-      origin.setProcessId(pid);
-      serial=f0.at(2).toUInt(&ok);
-      if(ok) {
-	origin.setSerialNumber(serial);
-	emit playResumeReq(origin);
-	was_processed=true;
-      }
-    }
-  }
-
-  if((f0.at(0)=="SP")&&(f0.size()==3)) {  // Stop Playback
-    pid=f0.at(1).toUInt(&ok);
-    if(ok&&(pid>0)) {
-      origin.setProcessId(pid);
-      serial=f0.at(2).toUInt(&ok);
-      if(ok) {
-	origin.setSerialNumber(serial);
-	emit playStopReq(origin);
-	was_processed=true;
-      }
-    }
-  }
-
-  if((f0.at(0)=="OV")&&(f0.size()==4)) {  // Set Output Volume
-    pid=f0.at(1).toUInt(&ok);
-    if(ok&&(pid>0)) {
-      origin.setProcessId(pid);
-      serial=f0.at(2).toUInt(&ok);
-      if(ok) {
-	origin.setSerialNumber(serial);
-	level=f0.at(3).toInt(&ok);
-	if(ok) {
-	  emit playSetOutputVolumeReq(origin,level);
-	  was_processed=true;
-	}
-      }
-    }
-  }
-
-  if((f0.at(0)=="FV")&&(f0.size()==5)) {  // Fade Output Volume
-    pid=f0.at(1).toUInt(&ok);
-    if(ok&&(pid>0)) {
-      origin.setProcessId(pid);
-      serial=f0.at(2).toUInt(&ok);
-      if(ok) {
-	origin.setSerialNumber(serial);
-	level=f0.at(3).toInt(&ok);
-	if(ok) {
-	  length=f0.at(4).toInt(&ok);
-	  if(ok&&length>=0) {
-	    emit playFadeOutputVolumeReq(origin,level,length);
-	    was_processed=true;
-	  }
 	}
       }
     }
@@ -330,29 +269,25 @@ bool CaeServer::ProcessCommand(const QHostAddress &src_addr,uint16_t src_port,
   //
   // Record Operations
   //
-  if((f0.at(0)=="LR")&&(f0.size()==10)) {  // Cue Recording
-    pid=f0.at(1).toUInt(&ok);
-    if(ok&&(pid>0)) {
-      origin.setProcessId(pid);
-      serial=f0.at(2).toUInt(&ok);
-      if(ok) {
-	origin.setSerialNumber(serial);
-	cutname=f0.at(3);
-	if(cutname.length()==10) {
-	  cardnum=f0.at(4).toUInt(&ok);
-	  if(ok&&(cardnum<RD_MAX_CARDS)) {
-	    portnum=f0.at(5).toInt(&ok);
-	    if(ok&&(portnum<RD_MAX_PORTS)) {
-	      coding=f0.at(6).toInt(&ok);
-	      if(ok&&(coding>=0)&&(coding<=4)) {
-		channels=f0.at(7).toInt(&ok);
-		if(ok&&(channels>0)) {
-		  bitrate=f0.at(8).toInt(&ok);
-		  if(ok&&(bitrate>=0)) {
-		    emit recordCueReq(origin,cutname,cardnum,portnum,
-				      coding,channels,bitrate);
-		    was_processed=true;
-		  }
+  if((f0.at(0)=="LR")&&(f0.size()==8)) {  // Cue Recording
+    serial=f0.at(1).toUInt(&ok);
+    if(ok) {
+      origin.setSerialNumber(serial);
+      cutname=f0.at(2);
+      if(cutname.length()==10) {
+	cardnum=f0.at(3).toUInt(&ok);
+	if(ok&&(cardnum<RD_MAX_CARDS)) {
+	  portnum=f0.at(4).toInt(&ok);
+	  if(ok&&(portnum<RD_MAX_PORTS)) {
+	    coding=f0.at(5).toInt(&ok);
+	    if(ok&&(coding>=0)&&(coding<=4)) {
+	      channels=f0.at(6).toInt(&ok);
+	      if(ok&&(channels>0)) {
+		bitrate=f0.at(7).toInt(&ok);
+		if(ok&&(bitrate>=0)) {
+		  emit recordCueReq(origin,cutname,cardnum,portnum,
+				    coding,channels,bitrate);
+		  was_processed=true;
 		}
 	      }
 	    }
@@ -362,54 +297,46 @@ bool CaeServer::ProcessCommand(const QHostAddress &src_addr,uint16_t src_port,
     }
   }
 
-  if((f0.at(0)=="RD")&&(f0.size()==5)) {  // Start Recording
-    pid=f0.at(1).toUInt(&ok);
-    if(ok&&(pid>0)) {
-      origin.setProcessId(pid);
-      serial=f0.at(2).toUInt(&ok);
-      if(ok) {
-	origin.setSerialNumber(serial);
-	length=f0.at(3).toInt(&ok);
-	if(ok&&(length>=0)) {
-	  threshold=f0.at(4).toInt(&ok);
-	  if(ok&&(threshold<=0)) {
-	    emit recordStartReq(origin,length,threshold);
-	    was_processed=true;
-	  }
+  if((f0.at(0)=="RD")&&(f0.size()==4)) {  // Start Recording
+    serial=f0.at(1).toUInt(&ok);
+    if(ok) {
+      origin.setSerialNumber(serial);
+      length=f0.at(2).toInt(&ok);
+      if(ok&&(length>=0)) {
+	threshold=f0.at(3).toInt(&ok);
+	if(ok&&(threshold<=0)) {
+	  emit recordStartReq(origin,length,threshold);
+	  was_processed=true;
 	}
       }
     }
   }
 
-  if((f0.at(0)=="RC")&&(f0.size()==11)) {  // Cue and Start Recording
-    pid=f0.at(1).toUInt(&ok);
-    if(ok&&(pid>0)) {
-      origin.setProcessId(pid);
-      serial=f0.at(2).toUInt(&ok);
-      if(ok) {
-	origin.setSerialNumber(serial);
-	cutname=f0.at(3);
-	if(cutname.length()==10) {
-	  cardnum=f0.at(4).toUInt(&ok);
-	  if(ok&&(cardnum<RD_MAX_CARDS)) {
-	    portnum=f0.at(5).toInt(&ok);
-	    if(ok&&(portnum<RD_MAX_PORTS)) {
-	      coding=f0.at(6).toInt(&ok);
-	      if(ok&&(coding>=0)&&(coding<=4)) {
-		channels=f0.at(7).toInt(&ok);
-		if(ok&&(channels>0)) {
-		  bitrate=f0.at(8).toInt(&ok);
-		  if(ok&&(bitrate>=0)) {
-		    length=f0.at(9).toInt(&ok);
-		    if(ok&&(length>=0)) {
-		      threshold=f0.at(10).toInt(&ok);
-		      if(ok&&(threshold<=0)) {
-			emit recordCueAndStartReq(origin,cutname,
-						  cardnum,portnum,
-						  coding,channels,bitrate,
-						  length,threshold);
-			was_processed=true;
-		      }
+  if((f0.at(0)=="RC")&&(f0.size()==10)) {  // Cue and Start Recording
+    serial=f0.at(1).toUInt(&ok);
+    if(ok) {
+      origin.setSerialNumber(serial);
+      cutname=f0.at(2);
+      if(cutname.length()==10) {
+	cardnum=f0.at(3).toUInt(&ok);
+	if(ok&&(cardnum<RD_MAX_CARDS)) {
+	  portnum=f0.at(4).toInt(&ok);
+	  if(ok&&(portnum<RD_MAX_PORTS)) {
+	    coding=f0.at(5).toInt(&ok);
+	    if(ok&&(coding>=0)&&(coding<=4)) {
+	      channels=f0.at(6).toInt(&ok);
+	      if(ok&&(channels>0)) {
+		bitrate=f0.at(7).toInt(&ok);
+		if(ok&&(bitrate>=0)) {
+		  length=f0.at(8).toInt(&ok);
+		  if(ok&&(length>=0)) {
+		    threshold=f0.at(9).toInt(&ok);
+		    if(ok&&(threshold<=0)) {
+		      emit recordCueAndStartReq(origin,cutname,
+						cardnum,portnum,
+						coding,channels,bitrate,
+						length,threshold);
+		      was_processed=true;
 		    }
 		  }
 		}
@@ -421,16 +348,12 @@ bool CaeServer::ProcessCommand(const QHostAddress &src_addr,uint16_t src_port,
     }
   }
 
-  if((f0.at(0)=="SR")&&(f0.size()==3)) {  // Stop Recording
-    pid=f0.at(1).toUInt(&ok);
-    if(ok&&(pid>0)) {
-      origin.setProcessId(pid);
-      serial=f0.at(2).toUInt(&ok);
-      if(ok) {
-	origin.setSerialNumber(serial);
-	emit recordStopReq(origin);
-	was_processed=true;
-      }
+  if((f0.at(0)=="SR")&&(f0.size()==2)) {  // Stop Recording
+    serial=f0.at(1).toUInt(&ok);
+    if(ok) {
+      origin.setSerialNumber(serial);
+      emit recordStopReq(origin);
+      was_processed=true;
     }
   }
 
@@ -483,10 +406,6 @@ bool CaeServer::ProcessCommand(const QHostAddress &src_addr,uint16_t src_port,
   //
   // Meter Commands
   //
-  /*
-   * This needs to die!
-   * Replace with multicast meter system.
-   *
   if(f0.at(0)=="ME") {  // Meter Enable
     if(f0.size()>2) {  // So we don't warn if no cards are specified
       uint16_t udp_port=0xFFFF&f0.at(1).toUInt(&ok);
@@ -500,7 +419,6 @@ bool CaeServer::ProcessCommand(const QHostAddress &src_addr,uint16_t src_port,
     }
     was_processed=true;
   }
-  */
 
   if(!was_processed) {
     rda->syslog(LOG_WARNING,
