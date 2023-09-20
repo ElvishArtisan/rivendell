@@ -42,6 +42,17 @@ CaeServer::CaeServer(QObject *parent)
 }
 
 
+uint16_t CaeServer::meterPort(const SessionId &sid) const
+{
+  Connection *conn=NULL;
+
+  if((conn=cae_connections.value(sid.normalized()))==NULL) {
+    return 0;
+  }
+  return conn->meterPort();
+}
+
+
 bool CaeServer::bind(const QHostAddress &addr,uint16_t port)
 {
   return d_server_socket->bind(port);
@@ -145,6 +156,8 @@ bool CaeServer::ProcessCommand(const QHostAddress &src_addr,uint16_t src_port,
   if((f0.at(0)=="TO")&&(f0.size()==2)) {  // Set Timeout
     interval=f0.at(1).toInt(&ok);
     if(ok&&(interval>=0)) {
+      Connection *conn=GetConnection(origin);
+      /*
       Connection *conn=cae_connections.value(origin);
       if(conn==NULL) {
 	conn=new Connection(origin,this);
@@ -152,6 +165,7 @@ bool CaeServer::ProcessCommand(const QHostAddress &src_addr,uint16_t src_port,
 		this,SLOT(connectionExpiredData(const SessionId &)));
 	cae_connections[origin]=conn;
       }
+      */
       conn->setTimeout(interval);
       was_processed=true;
     }
@@ -414,6 +428,8 @@ bool CaeServer::ProcessCommand(const QHostAddress &src_addr,uint16_t src_port,
 	for(int i=2;i<f0.size();i++) {
 	  cards.push_back(f0.at(i).toUInt());
 	}
+	Connection *conn=GetConnection(origin);
+	conn->setMeterPort(udp_port);
 	emit meterEnableReq(src_addr,udp_port,cards);
       }
     }
@@ -693,4 +709,18 @@ bool CaeServer::ProcessCommand(const QHostAddress &src_addr,uint16_t src_port,
   }
   */
   return false;
+}
+
+
+Connection *CaeServer::GetConnection(const SessionId &sid)
+{
+  Connection *conn=cae_connections.value(sid);
+  if(conn==NULL) {
+    conn=new Connection(sid,this);
+    printf("Added connection %s\n",conn->sessionId().dump().toUtf8().constData());
+    connect(conn,SIGNAL(connectionExpired(const SessionId &)),
+	    this,SLOT(connectionExpiredData(const SessionId &)));
+    cae_connections[sid]=conn;
+  }
+  return conn;
 }

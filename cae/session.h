@@ -36,6 +36,7 @@ class SessionId
   void setSerialNumber(int serial);
   QString dump() const;
   bool belongsTo(const SessionId &other) const;
+  SessionId normalized() const;
   bool operator!=(const SessionId &other) const;
   bool operator<(const SessionId &other) const;
 
@@ -60,16 +61,16 @@ class Session
   void setPortNumber(int portnum);
   int streamNumber() const;
   void setStreamNumber(int streamnum);
-  uint16_t meterPort() const;
-  void setMeterPort(uint16_t port);
+  //  uint16_t meterPort() const;
+  //  void setMeterPort(uint16_t port);
   int startPosition() const;
   void setStartPosition(int pos);
   int endPosition() const;
   void setEndPosition(int pos);
   int speed() const;
   void setSpeed(int speed);
-  bool metersEnabled();
-  void setMetersEnabled(bool state);
+  //  bool metersEnabled();
+  //  void setMetersEnabled(bool state);
 
  private:
   SessionId d_session_id;
@@ -79,8 +80,8 @@ class Session
   int d_start_position;
   int d_end_position;
   int d_speed;
-  uint16_t d_meter_port;
-  bool d_meters_enabled;
+  //  uint16_t d_meter_port;
+  //  bool d_meters_enabled;
 };
 
 

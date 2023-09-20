@@ -123,8 +123,8 @@ class MainObject : public QObject
   void openRtpCaptureChannelData(int id,unsigned card,unsigned port,
 				 uint16_t udp_port,unsigned samprate,
 				 unsigned chans);
-  //  void meterEnableData(const QHostAddress &addr,uint16_t udp_port,
-  //		       const QList<unsigned> &cards);
+  void meterEnableData(const QHostAddress &addr,uint16_t udp_port,
+  		       const QList<unsigned> &cards);
   void statePlayUpdate(int card,int stream,int state);
   void stateRecordUpdate(int card,int stream,int state);
   void updateMeters();
@@ -149,8 +149,7 @@ class MainObject : public QObject
   void SendMeterPositionUpdate(int cardnum,unsigned pos[]);
   void SendMeterOutputStatusUpdate();
   void SendMeterOutputStatusUpdate(int card,int port,int stream);
-  //  void SendMeterUpdate(const QString &msg,int conn_id);
-  void SendMeterUpdate(const QString &msg,Session *sess);
+  void SendMeterUpdate(const QString &msg,const SessionId &sid);
   Driver *GetDriver(unsigned card) const;
   void MakeDriver(unsigned *next_card,RDStation::AudioDriver type);
   QList<Driver *> d_drivers;

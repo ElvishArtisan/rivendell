@@ -39,8 +39,9 @@ class CaeServer : public QObject
   Q_OBJECT;
  public:
   CaeServer(QObject *parent=0);
-  bool metersEnabled(int id,unsigned card) const;
-  void setMetersEnabled(int id,unsigned card,bool state);
+  //  bool metersEnabled(int id,unsigned card) const;
+  //  void setMetersEnabled(int id,unsigned card,bool state);
+  uint16_t meterPort(const SessionId &sid) const;
   bool bind(const QHostAddress &addr,uint16_t port);
   void sendCommand(const QString &cmd);
   void sendCommand(const SessionId &dest,const QString &cmd);
@@ -115,6 +116,7 @@ class CaeServer : public QObject
  private:
   bool ProcessCommand(const QHostAddress &src_addr,uint16_t src_port,
 		      const QString &cmd);
+  Connection *GetConnection(const SessionId &sid);
   QMap<SessionId,Connection *> cae_connections;
   QSignalMapper *cae_ready_read_mapper;
   QUdpSocket *d_server_socket;

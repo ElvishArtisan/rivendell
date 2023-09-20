@@ -24424,3 +24424,8 @@
 2023-09-15 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'Set Timeout' ['TO'] CAE command.
 	* Added a 'Touch' ['TH'] CAE command.
+2023-09-20 Fred Gleason <fredg@paravelsystems.com>
+	* Removed definition of CAED_TCP_PORT from 'lib/rd.h'.
+	* Added definition of RD_CAED_PORT to 'lib/rd.h'.
+	* Added definition of RD_CAED_TIMEOUT_INTERVAL to 'lib/rd.h'.
+	* Fixed a bug in caed(8) that broke metering CAE commands.

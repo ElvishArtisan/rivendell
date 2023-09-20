@@ -145,8 +145,8 @@ MainObject::MainObject(QObject *parent)
   // Server Front End
   //
   cae_server=new CaeServer(this);
-  if(!cae_server->bind(QHostAddress::Any,CAED_TCP_PORT)) {
-    rda->syslog(LOG_ERR,"caed: failed to bind port %d",CAED_TCP_PORT);
+  if(!cae_server->bind(QHostAddress::Any,RD_CAED_PORT)) {
+    rda->syslog(LOG_ERR,"caed: failed to bind port %d",RD_CAED_PORT);
     exit(1);
   }
   //  connect(cae_server,SIGNAL(connectionDropped(int)),
@@ -1242,10 +1242,11 @@ void MainObject::openRtpCaptureChannelData(int id,unsigned card,unsigned port,
 {
 }
 
-/*
+
 void MainObject::meterEnableData(const QHostAddress &addr,uint16_t udp_port,
 				 const QList<unsigned> &cards)
 {
+  /*
   QString cmd=QString::asprintf("ME %u",0xFFFF&udp_port);
   for(int i=0;i<cards.size();i++) {
     cmd+=QString::asprintf(" %u",cards.at(i));
@@ -1260,9 +1261,10 @@ void MainObject::meterEnableData(const QHostAddress &addr,uint16_t udp_port,
   }
 
   //  cae_server->sendCommand(id,cmd+" +!");
+  */
   SendMeterOutputStatusUpdate();
 }
-*/
+
 /*
 void MainObject::connectionDroppedData(int id)
 {
@@ -1866,13 +1868,12 @@ void MainObject::SendMeterLevelUpdate(const QString &type,int cardnum,
 {
   for(QMap<SessionId,Session *>::const_iterator it=cae_play_sessions.begin();
       it!=cae_play_sessions.end();it++) {
-    if((it.value()->cardNumber()==cardnum)&&(it.value()->meterPort()>0)&&
-       (it.value()->metersEnabled())) {
+    if((it.value()->cardNumber()==cardnum)&&
+       (cae_server->meterPort(it.key())>0)) {
       SendMeterUpdate(QString::asprintf("ML %s %d %d %d %d",
 					type.toUtf8().constData(),
 					cardnum,portnum,levels[0],levels[1]),
-		      it.value());
-
+		      it.key());
     }
   }
 }
@@ -1883,11 +1884,11 @@ void MainObject::SendStreamMeterLevelUpdate(int cardnum,int streamnum,
 {
   for(QMap<SessionId,Session *>::const_iterator it=cae_play_sessions.begin();
       it!=cae_play_sessions.end();it++) {
-    if((it.value()->cardNumber()==cardnum)&&(it.value()->meterPort()>0)&&
-       (it.value()->metersEnabled())) {
+    if((it.value()->cardNumber()==cardnum)&&
+       (cae_server->meterPort(it.key())>0)) {
       SendMeterUpdate(QString::asprintf("MO %d %d %d %d",
 					cardnum,streamnum,levels[0],levels[1]),
-		      it.value());
+		      it.key());
     }
   }
 }
@@ -1898,10 +1899,10 @@ void MainObject::SendMeterPositionUpdate(int cardnum,unsigned pos[])
   for(unsigned k=0;k<RD_MAX_STREAMS;k++) {
     for(QMap<SessionId,Session *>::const_iterator it=cae_play_sessions.begin();
 	it!=cae_play_sessions.end();it++) {
-      if((it.value()->cardNumber()==cardnum)&&(it.value()->meterPort()>0)&&
-	 (it.value()->metersEnabled())) {
+      if((it.value()->cardNumber()==cardnum)&&
+	 (cae_server->meterPort(it.key())>0)) {
 	SendMeterUpdate(QString::asprintf("MP %d %d %d",cardnum,k,pos[k]),
-			it.value());
+			it.key());
       }
     }
   }
@@ -1917,10 +1918,10 @@ void MainObject::SendMeterOutputStatusUpdate()
 	  for(QMap<SessionId,Session *>::const_iterator it=cae_play_sessions.begin();
 	      it!=cae_play_sessions.end();it++) {
 	    if((it.value()->cardNumber()==i)&&
-	       (it.value()->meterPort()>0)&&(it.value()->metersEnabled())) {
+	       (cae_server->meterPort(it.key())>0)) {
 	      SendMeterUpdate(QString::asprintf("MS %d %d %d %d",i,j,k,
 						output_status_flag[i][j][k]),
-			      it.value());
+			      it.key());
 	    }
 	  }
 	}
@@ -1934,20 +1935,23 @@ void MainObject::SendMeterOutputStatusUpdate(int card,int port,int stream)
 {
   for(QMap<SessionId,Session *>::const_iterator it=cae_play_sessions.begin();
       it!=cae_play_sessions.end();it++) {
-    if((it.value()->streamNumber()==stream)&&(it.value()->meterPort()>0)&&
-       (it.value()->metersEnabled())) {
+    if((it.value()->streamNumber()==stream)&&
+       (cae_server->meterPort(it.key())>0)) {
       SendMeterUpdate(QString::asprintf("MS %d %d %d %d",card,port,stream,
 					output_status_flag[card][port][stream]),
-		      it.value());
+		      it.key());
     }
   }
 }
 
 
-void MainObject::SendMeterUpdate(const QString &msg,Session *sess)
+void MainObject::SendMeterUpdate(const QString &msg,const SessionId &sid)
 {
-  meter_socket->writeDatagram(msg.toUtf8(),sess->sessionId().address(),
-  			      sess->meterPort());
+  printf("SendMeterUpdate(\"%s\",%s:%u)\n",msg.toUtf8().constData(),
+	 sid.address().toString().toUtf8().constData(),
+	 0xffff&cae_server->meterPort(sid));
+  meter_socket->
+    writeDatagram(msg.toUtf8(),sid.address(),cae_server->meterPort(sid));
 }
 
 

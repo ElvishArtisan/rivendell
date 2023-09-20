@@ -71,6 +71,12 @@ bool SessionId::belongsTo(const SessionId &other) const
 }
 
 
+SessionId SessionId::normalized() const
+{
+  return SessionId(d_address,d_port);
+}
+
+
 bool SessionId::operator!=(const SessionId &other) const
 {
   return (other.d_address!=d_address)||(other.d_port!=d_port)||
@@ -103,8 +109,8 @@ Session::Session(const QHostAddress &addr,uint16_t port,int serial)
   d_end_position=-1;
   d_speed=100000;
 
-  d_meter_port=0;
-  d_meters_enabled=false;
+  //  d_meter_port=0;
+  //  d_meters_enabled=false;
 }
 
 
@@ -119,8 +125,8 @@ Session::Session(const SessionId &sid)
   d_end_position=-1;
   d_speed=100000;
 
-  d_meter_port=0;
-  d_meters_enabled=false;
+  //  d_meter_port=0;
+  //  d_meters_enabled=false;
 }
 
 /*
@@ -219,7 +225,7 @@ void Session::setSpeed(int speed)
   d_speed=speed;
 }
 
-
+/*
 uint16_t Session::meterPort() const
 {
   return d_meter_port;
@@ -242,3 +248,4 @@ void Session::setMetersEnabled(bool state)
 {
   d_meters_enabled=state;
 }
+*/

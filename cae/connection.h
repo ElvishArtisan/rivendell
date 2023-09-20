@@ -36,6 +36,8 @@ class Connection : public QObject
   Connection(const SessionId &sid,QObject *parent);
   ~Connection();
   SessionId sessionId() const;
+  uint16_t meterPort() const;
+  void setMeterPort(uint16_t udp_port);
   QString dump() const;
   bool operator!=(const Connection &other) const;
   bool operator<(const Connection &other) const;
@@ -52,6 +54,7 @@ class Connection : public QObject
 
  private:
   SessionId d_session_id;
+  uint16_t d_meter_port;
   QTimer *d_timer;
   int d_interval;
 };
