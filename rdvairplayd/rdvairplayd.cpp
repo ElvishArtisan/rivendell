@@ -88,7 +88,7 @@ MainObject::MainObject(QObject *parent)
   //
   // CAE Connection
   //
-  rda->cae()->connectHost();
+  rda->cae()->connectToHost();
 
   //
   // Set Audio Assignments

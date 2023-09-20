@@ -62,8 +62,10 @@ class RecordCut : public RDDialog
    void recordedData(int,int);
    void recordStoppedData(int,int);
    void recordUnloadedData(int,int,unsigned);
-   void playedData(int);
-   void playStoppedData(int);
+   void playStartedData(int serial);
+   void playStoppedData(int serial);
+   //   void playedData(int);
+   //   void playStoppedData(int);
    void closeData();
    void initData(bool);
    void recTimerData();
@@ -145,7 +147,8 @@ class RecordCut : public RDDialog
    int rec_card_no[2];
    int rec_stream_no[2];
    int rec_port_no[2];
-   int rec_play_handle;
+   //   int rec_play_handle;
+   int rec_play_serial;
    RDCae::AudioCoding rec_format;
    unsigned rec_channels;
    unsigned rec_samprate;

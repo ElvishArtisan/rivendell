@@ -28,18 +28,19 @@ RDMarkerPlayer::RDMarkerPlayer(int card,int port,QWidget *parent)
   d_cards.push_back(card);
   d_port=port;
   d_cae_stream=-1;
-  d_cae_handle=-1;
+  d_cae_serial=-1;
   d_is_playing=false;
   d_looping=false;
+  d_cursor_position=0;
 
   //
   // CAE
   //
   rda->cae()->enableMetering(&d_cards);
-  connect(rda->cae(),SIGNAL(playing(int)),this,SLOT(caePlayedData(int)));
-  connect(rda->cae(),SIGNAL(playStopped(int)),this,SLOT(caePausedData(int)));
-  connect(rda->cae(),SIGNAL(playPositionChanged(int,unsigned)),
-	  this,SLOT(caePositionData(int,unsigned)));
+  connect(rda->cae(),SIGNAL(playbackStopped(int)),
+	  this,SLOT(playbackStoppedData(int)));
+  //  connect(rda->cae(),SIGNAL(playPositionChanged(int,unsigned)),
+  //	  this,SLOT(caePositionData(int,unsigned)));
 
   //
   // Marker Readouts
@@ -100,6 +101,20 @@ RDMarkerPlayer::RDMarkerPlayer(int card,int port,QWidget *parent)
   d_position_edit->setAlignment(Qt::AlignCenter);
   d_position_edit->
     setStyleSheet("background-color: "+palette().color(QPalette::Base).name());
+
+  //
+  // Position Timer
+  //
+  d_position_timer=new QTimer(this);
+  d_position_timer->setSingleShot(false);
+  connect(d_position_timer,SIGNAL(timeout()),this,SLOT(positionTimeoutData()));
+
+  //
+  // Stop Timer
+  //
+  d_stop_timer=new QTimer(this);
+  d_stop_timer->setSingleShot(true);
+  connect(d_stop_timer,SIGNAL(timeout()),this,SLOT(buttonStopData()));
 
   //
   // Goto Buttons
@@ -230,13 +245,8 @@ QSizePolicy RDMarkerPlayer::sizePolicy() const
 bool RDMarkerPlayer::setCut(unsigned cartnum,int cutnum)
 {
   clearCut();
-
-  if(!rda->cae()->loadPlay(d_cards.first(),RDCut::cutName(cartnum,cutnum),
-			   &d_cae_stream,&d_cae_handle)) {
-    return false;
-  }
-  rda->cae()->positionPlay(d_cae_handle,0);
-  rda->cae()->setOutputPort(d_cards.first(),d_cae_stream,d_port);
+  d_cart_number=cartnum;
+  d_cut_number=cutnum;
 
   QString sql=QString("select ")+
     "`START_POINT`,"+        // 00  
@@ -247,10 +257,11 @@ bool RDMarkerPlayer::setCut(unsigned cartnum,int cutnum)
     "`SEGUE_END_POINT`,"+    // 05
     "`HOOK_START_POINT`,"+   // 06
     "`HOOK_END_POINT`,"+     // 07
-    "`FADEDOWN_POINT`,"+       // 08
-    "`FADEUP_POINT`,"+     // 09
+    "`FADEDOWN_POINT`,"+     // 08
+    "`FADEUP_POINT`,"+       // 09
     "`SEGUE_GAIN`,"+         // 10
-    "`PLAY_GAIN` "+          // 11
+    "`PLAY_GAIN`,"+          // 11
+    "`LENGTH` "+             // 12
     "from `CUTS` where "+
     "`CUT_NAME`='"+RDEscapeString(RDCut::cutName(cartnum,cutnum))+"'";
   RDSqlQuery *q=new RDSqlQuery(sql);
@@ -265,6 +276,7 @@ bool RDMarkerPlayer::setCut(unsigned cartnum,int cutnum)
       d_fadedown_readout->setValue(role,q->value(i).toInt());
       setPointerValue(role,q->value(i).toInt());
       setSelectedMarkers(RDMarkerHandle::LastRole,RDMarkerHandle::LastRole);
+      d_cut_length=q->value(12).toInt();
     }
     d_no_segue_fade_check->setChecked(q->value(10).toInt()==0);
     d_play_gain_spin->setValue(q->value(11).toInt()/100);
@@ -277,18 +289,18 @@ bool RDMarkerPlayer::setCut(unsigned cartnum,int cutnum)
 
 void RDMarkerPlayer::clearCut()
 {
-  if(d_cae_handle>=0) {
-    rda->cae()->stopPlay(d_cae_handle);
-    rda->cae()->unloadPlay(d_cae_handle);
+  if(d_cae_serial>=0) {
+    rda->cae()->stopPlayback(d_cae_serial);
     d_cae_stream=-1;
-    d_cae_handle=-1;
+    d_cut_length=0;
     d_is_playing=false;
+    d_position_timer->stop();
   }
   for(int i=0;i<RDMarkerHandle::LastRole;i++) {
     d_pointers[i]=-1;
   }
   d_looping=false;
-  d_stopping=false;
+  //  d_stopping=false;
 }
 
 
@@ -300,7 +312,10 @@ int RDMarkerPlayer::cursorPosition() const
 
 void RDMarkerPlayer::setCursorPosition(int msec)
 {
-  rda->cae()->positionPlay(d_cae_handle,msec);
+  rda->cae()->positionPlay(d_cae_serial,msec);
+  d_cursor_position=msec;
+  positionTimeoutData();
+  d_stop_timer->stop();
 }
 
 
@@ -370,42 +385,39 @@ void RDMarkerPlayer::buttonPlayData()
 {
   d_active_play_button=d_play_button;
 
-  if(d_cae_handle>=0) {
+  if(d_cae_serial>=0) {
     if(d_is_playing) {
-      rda->cae()->stopPlay(d_cae_handle);
+      rda->cae()->stopPlayback(d_cae_serial);
     }
   }
   d_loop_start_msec=d_cursor_position;
   d_loop_start_length=0;
-  rda->cae()->play(d_cae_handle,d_loop_start_length,100000,false);
+  d_cae_serial=rda->cae()->
+    startPlayback(RDCut::cutName(d_cart_number,d_cut_number),
+		  d_cards.first(),d_port,
+		  d_cursor_position,d_cut_length,RD_TIMESCALE_DIVISOR);
+  Play();
   rda->cae()->setPlayPortActive(d_cards.first(),d_port,d_cae_stream);
   // FIXME: Implement variable gain here!
-  rda->cae()->setOutputVolume(d_cards.first(),d_cae_stream,d_port,0);
-  //    rda->cae()->
-  //      setOutputVolume(d_cards.first(),d_cae_stream,d_port,0+edit_gain_control->value());
-  d_meter_timer->start(RD_METER_UPDATE_INTERVAL);
 }
 
 
 void RDMarkerPlayer::buttonPlayFromData()
 {
   d_active_play_button=d_play_from_button;
-  if(d_cae_handle>=0) {
-    if(d_is_playing) {
-      rda->cae()->stopPlay(d_cae_handle);
-    }
-  }
+  Stop();
   if(d_selected_markers[RDMarkerHandle::Start]!=RDMarkerHandle::LastRole) {
     d_loop_start_msec=d_pointers[d_selected_markers[0]];
-    rda->cae()->positionPlay(d_cae_handle,d_loop_start_msec);
     d_loop_start_length=0;
-    rda->cae()->play(d_cae_handle,d_loop_start_length,100000,false);
+    d_cursor_position=d_loop_start_msec;
+    d_cae_serial=rda->cae()->
+      startPlayback(RDCut::cutName(d_cart_number,d_cut_number),
+		    d_cards.first(),d_port,
+		    d_loop_start_msec,d_cut_length,
+		    RD_TIMESCALE_DIVISOR);
+    Play();
     rda->cae()->setPlayPortActive(d_cards.first(),d_port,d_cae_stream);
     // FIXME: Implement variable gain here!
-    rda->cae()->setOutputVolume(d_cards.first(),d_cae_stream,d_port,0);
-    //    rda->cae()->
-    //      setOutputVolume(d_cards.first(),d_cae_stream,d_port,0+edit_gain_control->value());
-    d_meter_timer->start(RD_METER_UPDATE_INTERVAL);
   }
 }
 
@@ -413,11 +425,7 @@ void RDMarkerPlayer::buttonPlayFromData()
 void RDMarkerPlayer::buttonPlayToData()
 {
   d_active_play_button=d_play_to_button;
-  if(d_cae_handle>=0) {
-    if(d_is_playing) {
-      rda->cae()->stopPlay(d_cae_handle);
-    }
-  }
+  Stop();
   if(d_selected_markers[RDMarkerHandle::End]!=RDMarkerHandle::LastRole) {
     d_loop_start_msec=d_pointers[d_selected_markers[1]]-2000;
     d_loop_start_length=2000;
@@ -425,26 +433,23 @@ void RDMarkerPlayer::buttonPlayToData()
       d_loop_start_msec=0;
       d_loop_start_length=d_pointers[d_selected_markers[1]];
     }
-    rda->cae()->positionPlay(d_cae_handle,d_loop_start_msec);
-    rda->cae()->play(d_cae_handle,d_loop_start_length,100000,false);
+    d_cursor_position=d_loop_start_msec;
+    d_cae_serial=rda->cae()->
+      startPlayback(RDCut::cutName(d_cart_number,d_cut_number),
+		    d_cards.first(),d_port,
+		    d_loop_start_msec,d_loop_start_msec+d_loop_start_length,
+		    RD_TIMESCALE_DIVISOR);
+    d_stop_timer->start(d_loop_start_length);
+    Play();
     rda->cae()->setPlayPortActive(d_cards.first(),d_port,d_cae_stream);
     // FIXME: Implement variable gain here!
-    rda->cae()->setOutputVolume(d_cards.first(),d_cae_stream,d_port,0);
-    //    rda->cae()->
-    //      setOutputVolume(d_cards.first(),d_cae_stream,d_port,0+edit_gain_control->value());
-    d_meter_timer->start(RD_METER_UPDATE_INTERVAL);
   }
 }
 
 
 void RDMarkerPlayer::buttonStopData()
 {
-  if(d_cae_handle>=0) {
-    if(d_is_playing) {
-      d_stopping=true;
-      rda->cae()->stopPlay(d_cae_handle);
-    }
-  }
+  Stop();
 }
 
 
@@ -531,29 +536,41 @@ void RDMarkerPlayer::meterData()
   d_meter->setRightPeakBar(lvls[1]);
 }
 
-
-void RDMarkerPlayer::caePlayedData(int handle)
+/*
+void RDMarkerPlayer::caePlayedData(int serial)
 {
-  if(handle==d_cae_handle) {
+  printf("d_cae_serial2: %d  serial: %d\n",d_cae_serial,serial);
+  printf("HERE10\n");
+  if(serial==d_cae_serial) {
+  printf("HERE11\n");
     if(!d_is_playing) {
+  printf("HERE12\n");
       d_active_play_button->setState(RDTransportButton::On);
       d_stop_button->setState(RDTransportButton::Off);
       d_is_playing=true;
+      if(!d_position_timer->isActive()) {
+  printf("HERE13\n");
+	d_position_timer->start(RDMARKERPLAYER_POSITION_INTERVAL);
+      }
     }
   }
 }
+*/
 
-
-void RDMarkerPlayer::caePausedData(int handle)
+void RDMarkerPlayer::playbackStoppedData(int serial)
 {
-  if(handle==d_cae_handle) {
+  if(serial==d_cae_serial) {
     if(d_is_playing) {
-      if(d_looping&&(!d_stopping)) {
-	rda->cae()->positionPlay(d_cae_handle,d_loop_start_msec);
-	rda->cae()->play(d_cae_handle,d_loop_start_length,100000,false);
+      if(d_looping) {
+	rda->cae()->startPlayback(RDCut::cutName(d_cart_number,d_cut_number),
+				  d_cards.first(),d_port,
+				  d_loop_start_msec,
+				  d_loop_start_msec+d_loop_start_length,
+				  RD_TIMESCALE_DIVISOR);
+	Play();
+	rda->cae()->setPlayPortActive(d_cards.first(),d_port,d_cae_stream);
       }
       else {
-	d_stopping=false;
 	if(d_meter_timer->isActive()) {
 	  d_meter_timer->stop();
 	  d_meter->setLeftPeakBar(-10000);
@@ -564,19 +581,22 @@ void RDMarkerPlayer::caePausedData(int handle)
 	d_play_to_button->setState(RDTransportButton::Off);
 	d_stop_button->setState(RDTransportButton::On);
 	d_is_playing=false;
+	d_position_timer->stop();
       }
     }
   }
 }
 
 
-void RDMarkerPlayer::caePositionData(int handle,unsigned msec)
+void RDMarkerPlayer::caePositionData(int serial,unsigned msec)
 {
-  if(handle==d_cae_handle) {
+  /*
+  if(serial==d_cae_serial) {
     d_position_edit->setText(RDGetTimeLength(msec-d_pointers[RDMarkerHandle::CutStart],true,true));
     d_cursor_position=msec;
     emit cursorPositionChanged(msec);
   }
+  */
 }
 
 
@@ -584,6 +604,49 @@ void RDMarkerPlayer::trimThresholdChanged(int dbfs)
 {
   d_trim_start_button->setDisabled(dbfs==0);
   d_trim_end_button->setDisabled(dbfs==0);
+}
+
+
+void RDMarkerPlayer::positionTimeoutData()
+{
+  d_cursor_position+=RDMARKERPLAYER_POSITION_INTERVAL;
+  d_position_edit->setText(RDGetTimeLength(d_cursor_position-d_pointers[RDMarkerHandle::CutStart],true,true));
+  emit cursorPositionChanged(d_cursor_position);
+  printf("d_cursor_position: %d\n",d_cursor_position);
+}
+
+
+void RDMarkerPlayer::Play()
+{
+  if(!d_is_playing) {
+    d_active_play_button->setState(RDTransportButton::On);
+    d_stop_button->setState(RDTransportButton::Off);
+    d_is_playing=true;
+    if(!d_position_timer->isActive()) {
+      d_position_timer->start(RDMARKERPLAYER_POSITION_INTERVAL);
+    }
+  }
+  d_meter_timer->start(RD_METER_UPDATE_INTERVAL);
+}
+
+
+void RDMarkerPlayer::Stop()
+{
+  if(d_cae_serial>=0) {
+    if(d_is_playing) {
+      rda->cae()->stopPlayback(d_cae_serial);
+      d_stop_timer->stop();
+      d_position_timer->stop();
+      d_cae_serial=-1;
+      d_is_playing=false;
+      d_play_button->setState(RDTransportButton::Off);
+      d_play_from_button->setState(RDTransportButton::Off);
+      d_play_to_button->setState(RDTransportButton::Off);
+      d_stop_button->setState(RDTransportButton::On);
+      d_meter->setLeftPeakBar(RD_MUTE_DEPTH);
+      d_meter->setRightPeakBar(RD_MUTE_DEPTH);
+    }
+  }
 }
 
 

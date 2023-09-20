@@ -63,7 +63,6 @@ class MainWidget : public MainWindow
 
  private slots:
   void selectedGroupChangedData(const QString &grpname);
-  void caeConnectedData(bool state);
   void userData();
   void addData();
   void editData();

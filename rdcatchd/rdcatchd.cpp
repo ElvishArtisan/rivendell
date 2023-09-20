@@ -225,7 +225,8 @@ MainObject::MainObject(QObject *parent)
 	  this,SLOT(playStoppedData(int)));
   connect(rda->cae(),SIGNAL(playUnloaded(int)),
 	  this,SLOT(playUnloadedData(int)));
-  rda->cae()->connectHost();
+  rda->syslog(LOG_DEBUG,"starting CAE connection");
+  rda->cae()->connectToHost();
 
   //
   // Sound Initialization
@@ -394,7 +395,7 @@ void MainObject::catchEventReceivedData(RDCatchEvent *evt)
     if((evt->deckChannel()>128)&&(evt->deckChannel()<(MAX_DECKS+129))) {
       switch(catch_playout_deck_status[evt->deckChannel()-129]) {
       case RDDeck::Recording:
-	rda->cae()->stopPlay(catch_playout_handle[evt->deckChannel()-129]);
+	//	rda->cae()->stopPlay(catch_playout_handle[evt->deckChannel()-129]);
 	break;
 
       default:
@@ -985,7 +986,7 @@ void MainObject::playStoppedData(int handle)
 	   catch_playout_card[deck-129],
 	   catch_playout_stream[deck-129]);
   }
-  rda->cae()->unloadPlay(handle);
+  //  rda->cae()->unloadPlay(handle);
 }
 
 
@@ -1304,6 +1305,7 @@ bool MainObject::StartRecording(int event)
 
 void MainObject::StartPlayout(int event)
 {
+  /*
   unsigned deck=catch_events[event].channel();
   if((catch_playout_card[deck-129]<0)) {
     rda->syslog(LOG_WARNING,	"invalid audio device for deck: %d, event: %d",
@@ -1359,6 +1361,7 @@ void MainObject::StartPlayout(int event)
   //
   catch_playout_name[deck-129]=catch_events[event].cutName();
   catch_playout_event_id[deck-129]=event;
+  */
 }
 
 
@@ -1775,7 +1778,7 @@ void MainObject::LoadDeckList()
 	catch_playout_deck_status[i]=RDDeck::Recording;
       }
       else {
-	rda->cae()->stopPlay(catch_playout_handle[i]);
+	//	rda->cae()->stopPlay(catch_playout_handle[i]);
 	catch_playout_deck_status[i]=RDDeck::Offline;
       }
     }

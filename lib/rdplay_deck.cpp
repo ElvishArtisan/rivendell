@@ -86,8 +86,8 @@ RDPlayDeck::RDPlayDeck(RDCae *cae,int id,QObject *parent)
 RDPlayDeck::~RDPlayDeck()
 {
   if(play_state!=RDPlayDeck::Stopped) {
-    play_cae->stopPlay(play_handle);
-    play_cae->unloadPlay(play_handle);
+    play_cae->stopPlayback(play_handle);
+    //    play_cae->unloadPlay(play_handle);
   }
 }
 
@@ -236,12 +236,14 @@ bool RDPlayDeck::setCart(RDLogLine *logline,bool rotate)
   }
   play_duck_gain[0]=logline->duckUpGain();
   play_duck_gain[1]=logline->duckDownGain();
+  /*
   if(play_state!=RDPlayDeck::Paused) {
     if(!play_cae->loadPlay(play_card,play_cut->cutName(),
 			   &play_stream,&play_handle)) {
       return false;
     }
   }
+  */
   play_state=RDPlayDeck::Stopped;
   return true;
 }
@@ -349,7 +351,7 @@ void RDPlayDeck::clear()
 	break;
 
       case RDPlayDeck::Paused:
-	play_cae->unloadPlay(play_handle);
+	//	play_cae->unloadPlay(play_handle);
 	emit stateChanged(play_id,RDPlayDeck::Stopped);
 	break;
 
@@ -366,10 +368,10 @@ void RDPlayDeck::reset()
   switch(play_state) {
       case RDPlayDeck::Playing:
       case RDPlayDeck::Stopping:
-	play_cae->stopPlay(play_handle);
+	play_cae->stopPlayback(play_handle);
 
       case RDPlayDeck::Paused:
-	play_cae->unloadPlay(play_handle);
+	//	play_cae->unloadPlay(play_handle);
 	break;
 
       default:
@@ -509,11 +511,13 @@ void RDPlayDeck::play(unsigned pos,int segue_start,int segue_end,
 			       fadeup);
     }
   }
+  /*
   play_cae->
     play(play_handle,
 	 (int)(100000.0*(double)(play_audio_point[1]-play_audio_point[0]-pos)/
 	 (double)play_timescale_speed),
 	 play_timescale_speed,false);
+  */
   play_start_time=QTime::currentTime();
   StartTimers(pos);
   play_state=RDPlayDeck::Playing;
@@ -531,7 +535,7 @@ void RDPlayDeck::pause()
 {
   pause_called=true;
   play_state=RDPlayDeck::Paused;
-  play_cae->stopPlay(play_handle);
+  //  play_cae->stopPlay(play_handle);
 }
 
 
@@ -546,7 +550,7 @@ void RDPlayDeck::stop()
   else {
     stop_called=true;
     play_state=RDPlayDeck::Stopping;
-    play_cae->stopPlay(play_handle);
+    //    play_cae->stopPlay(play_handle);
   }
 }
 
@@ -646,7 +650,7 @@ void RDPlayDeck::playStoppedData(int handle)
     emit stateChanged(play_id,RDPlayDeck::Paused);
   }
   else {
-    play_cae->unloadPlay(play_handle);
+    //    play_cae->unloadPlay(play_handle);
 
     play_handle=-1;
     play_state=RDPlayDeck::Stopped;

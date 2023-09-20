@@ -123,7 +123,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   connect(rda->cae(),SIGNAL(isConnected(bool)),
 	  this,SLOT(caeConnectedData(bool)));
-  rda->cae()->connectHost();
+  rda->cae()->connectToHost();
 }
 
 

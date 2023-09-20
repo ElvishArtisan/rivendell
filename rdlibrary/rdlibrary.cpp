@@ -130,9 +130,13 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // CAE Connection
   //
-  connect(rda->cae(),SIGNAL(isConnected(bool)),
-	  this,SLOT(caeConnectedData(bool)));
-  rda->cae()->connectHost();
+  //  connect(rda->cae(),SIGNAL(isConnected(bool)),
+  //	  this,SLOT(caeConnectedData(bool)));
+  rda->cae()->connectToHost();
+  QList<int> cards;
+  cards.push_back(rda->libraryConf()->inputCard());
+  cards.push_back(rda->libraryConf()->outputCard());
+  rda->cae()->enableMetering(&cards);
 
   //
   // Filter
@@ -285,7 +289,7 @@ void MainWidget::selectedGroupChangedData(const QString &grpname)
   lib_default_group=grpname;
 }
 
-
+/*
 void MainWidget::caeConnectedData(bool state)
 {
   if(state) {
@@ -295,7 +299,7 @@ void MainWidget::caeConnectedData(bool state)
     rda->cae()->enableMetering(&cards);
   }
 }
-
+*/
 
 void MainWidget::userData()
 {

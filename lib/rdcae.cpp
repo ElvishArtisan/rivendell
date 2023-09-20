@@ -41,14 +41,25 @@
 RDCae::RDCae(RDStation *station,RDConfig *config,QObject *parent)
   : QObject(parent)
 {
-  int flags=-1;
+  //  int flags=-1;
 
   cae_station=station;
   cae_config=config;
   cae_connected=false;
+  cae_next_serial_number=1;
   argnum=0;
   argptr=0;
 
+  //
+  // Control Connection
+  //
+  cae_socket=new QUdpSocket(this);
+  connect(cae_socket,SIGNAL(readyRead()),this,SLOT(readyReadData()));
+  cae_keepalive_timer=new QTimer(this);
+  cae_keepalive_timer->setSingleShot(false);
+  connect(cae_keepalive_timer,SIGNAL(timeout()),this,SLOT(keepaliveData()));
+
+  /*
   //
   // TCP Connection
   //
@@ -63,6 +74,7 @@ RDCae::RDCae(RDStation *station,RDConfig *config,QObject *parent)
 		  strerror(errno));
     }
   }
+  */
 
   //
   // Meter Connection
@@ -111,10 +123,23 @@ RDCae::RDCae(RDStation *station,RDConfig *config,QObject *parent)
 
 
 RDCae::~RDCae() {
-  close(cae_socket);
+  delete cae_socket;
+  //  close(cae_socket);
 }
 
 
+void RDCae::connectToHost(int timeout_msecs)
+{
+  if(timeout_msecs<0) {
+    timeout_msecs=RD_CAED_TIMEOUT_INTERVAL;
+  }
+  if(timeout_msecs>0) {
+    SendCommand(QString::asprintf("TO %d",timeout_msecs));
+    cae_keepalive_timer->start(timeout_msecs/3);
+  }
+}
+
+/*
 void RDCae::connectHost()
 {
   int count=10;
@@ -142,6 +167,7 @@ void RDCae::connectHost()
     }
   }
 }
+*/
 
 
 void RDCae::enableMetering(QList<int> *cards)
@@ -164,6 +190,46 @@ void RDCae::enableMetering(QList<int> *cards)
 }
 
 
+int RDCae::startPlayback(const QString &cutname,int cardnum,int portnum,
+			 int start_pos,int end_pos,int speed)
+{
+  int serial=cae_next_serial_number++;
+
+  SendCommand(QString::asprintf("PY %d %s %d %d %d %d %d",
+				serial,cutname.toUtf8().constData(),
+				cardnum,portnum,start_pos,end_pos,100000));
+  emit playStarted(serial);
+
+  return serial;
+}
+
+
+void RDCae::positionPlay(int serial,int pos)
+{
+  SendCommand(QString::asprintf("PP %d %d",serial,pos));
+  emit playPositioned(serial,pos);
+}
+
+
+void RDCae::pausePlayback(int serial)
+{
+  SendCommand(QString::asprintf("PE %d",serial));
+}
+
+
+void RDCae::resumePlayback(int serial)
+{
+  SendCommand(QString::asprintf("PR %d",serial));
+}
+
+
+void RDCae::stopPlayback(int serial)
+{
+  SendCommand(QString::asprintf("SP %d",serial));
+  emit playbackStopped(serial);
+}
+
+/*
 bool RDCae::loadPlay(int card,QString name,int *stream,int *handle)
 {
 #ifdef DEBUG_LATENCY
@@ -248,7 +314,7 @@ void RDCae::stopPlay(int handle)
 #endif  // DEBUG_LATENCY
   SendCommand(QString::asprintf("SP %d!",handle));
 }
-
+*/
 
 void RDCae::loadRecord(int card,int stream,QString name,
 		       AudioCoding coding,int chan,int samp_rate,
@@ -353,7 +419,7 @@ unsigned RDCae::playPosition(int handle)
 
 void RDCae::requestTimescale(int card)
 {
-  SendCommand(QString::asprintf("TS %d!",card));
+  //  SendCommand(QString::asprintf("TS %d!",card));
 }
 
 
@@ -374,6 +440,17 @@ void RDCae::setPlayPortActive(int card,int port,int stream)
 }
 
 
+void RDCae::readyReadData()
+{
+  char data[1501];
+  int n;
+
+  while((n=cae_socket->readDatagram(data,1500))>0) {
+    ProcessCommand(QString::fromUtf8(QByteArray(data,n)));
+  }
+}
+
+/*
 void RDCae::readyData()
 {
   readyData(0,0,"");
@@ -412,15 +489,15 @@ void RDCae::readyData(int *stream,int *handle,QString name)
 	args[argnum++][argptr]=0;
 	if(stream==NULL) {
 	  cmd.load(args,argnum,argptr);
-	  /*
+	  //
 	  // ************************************
-	  printf("DISPATCHING: ");
-	  for(int z=0;z<cmd.argNum();z++) {
-	    printf(" %s",cmd.arg(z));
-	  }
+	  // printf("DISPATCHING: ");
+	  //for(int z=0;z<cmd.argNum();z++) {
+	  //  printf(" %s",cmd.arg(z));
+	  // }
 	  printf("\n");
 	  // ************************************
-	  */
+	  //
 	  DispatchCommand(&cmd);
 	}
 	else {
@@ -455,7 +532,7 @@ void RDCae::readyData(int *stream,int *handle,QString name)
     }
   }
 }
-
+*/
 
 void RDCae::clockData()
 {
@@ -473,6 +550,19 @@ void RDCae::clockData()
 }
 
 
+void RDCae::keepaliveData()
+{
+  SendCommand("TH");
+}
+
+
+void RDCae::SendCommand(const QString &cmd)
+{
+  cae_socket->writeDatagram(cmd.toUtf8(),
+		   rda->station()->caeAddress(rda->config()),RD_CAED_PORT);
+}
+
+/*
 void RDCae::SendCommand(QString cmd)
 {
   int len=cmd.toUtf8().length();
@@ -482,8 +572,23 @@ void RDCae::SendCommand(QString cmd)
 		len-n,cmd.toUtf8().constData());
   }
 }
+*/
 
+void RDCae::ProcessCommand(const QString &cmd)
+{
+  QStringList f0=cmd.split(" ",QString::SkipEmptyParts);
+  bool ok=false;
+  int serial;
 
+  if((f0.at(0)=="SP")&&(f0.size()==2)) {   // Playback Stopped
+    serial=f0.at(1).toInt(&ok);
+    if(ok&&(serial>0)) {
+      emit playbackStopped(serial);
+    }
+  }
+}
+
+/*
 void RDCae::DispatchCommand(RDCmdCache *cmd)
 {
   int pos;
@@ -621,7 +726,7 @@ void RDCae::DispatchCommand(RDCmdCache *cmd)
     }
   }
 }
-
+*/
 
 int RDCae::CardNumber(const char *arg)
 {

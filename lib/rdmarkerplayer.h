@@ -34,6 +34,7 @@
 #include <rdwidget.h>
 
 #define RDMARKERPLAYER_READOUT_QUAN 7
+#define RDMARKERPLAYER_POSITION_INTERVAL 100
 
 class RDMarkerPlayer : public RDWidget
 {
@@ -80,16 +81,18 @@ class RDMarkerPlayer : public RDWidget
   void buttonTrimEndData();
   void readoutClickedData(int role);
   void meterData();
-  void caePlayedData(int handle);
-  void caePausedData(int handle);
+  void playbackStoppedData(int serial);
   void caePositionData(int handle,unsigned pos);
   void trimThresholdChanged(int dbfs);
+  void positionTimeoutData();
 
  protected:
   void resizeEvent(QResizeEvent *);
   void paintEvent(QPaintEvent *e);
 
  private:
+  void Play();
+  void Stop();
   QLabel *d_readout_labels[RDMARKERPLAYER_READOUT_QUAN];
   QSignalMapper *d_readout_mapper;
   RDMarkerReadout *d_cut_readout;
@@ -123,15 +126,22 @@ class RDMarkerPlayer : public RDWidget
   QList<int> d_cards;
   int d_port;
   int d_cae_stream;
-  int d_cae_handle;
+  //  int d_cae_handle;
+  int d_cae_serial;
+  unsigned d_cart_number;
+  int d_cut_number;
+
   bool d_is_playing;
   RDMarkerHandle::PointerRole d_selected_markers[2];
   int d_pointers[RDMarkerHandle::LastRole];
   bool d_looping;
-  bool d_stopping;
   int d_loop_start_msec;
   int d_loop_start_length;
   int d_cursor_position;
+  int d_cut_length;
+
+  QTimer *d_position_timer;
+  QTimer *d_stop_timer;
 };
 
 

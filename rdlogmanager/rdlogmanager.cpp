@@ -65,7 +65,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // CAE Connection
   //
-  rda->cae()->connectHost();
+  rda->cae()->connectToHost();
 
   //
   // RIPC Connection

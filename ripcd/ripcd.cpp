@@ -131,7 +131,7 @@ MainObject::MainObject(QObject *parent)
   //
   // CAE Connection
   //
-  rda->cae()->connectHost();
+  rda->cae()->connectToHost(0);  // Assume no persistent operations!
 
   if(qApp->arguments().size()!=1) {
     debug=true;

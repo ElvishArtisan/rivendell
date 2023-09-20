@@ -238,7 +238,7 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   //
   connect(rda->cae(),SIGNAL(isConnected(bool)),
 	  this,SLOT(caeConnectedData(bool)));
-  rda->cae()->connectHost();
+  rda->cae()->connectToHost();
 
   //
   // Set Audio Assignments

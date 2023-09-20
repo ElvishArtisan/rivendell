@@ -145,8 +145,8 @@ void RDSimplePlayer::play(int start_pos)
     delete cart;
   }
   if(!play_cut.isEmpty()) {
-    play_cae->
-      loadPlay(play_card,play_cut,&play_stream,&handle);
+    //    play_cae->
+    //      loadPlay(play_card,play_cut,&play_stream,&handle);
 
     if(play_stream<0) {
       return;
@@ -167,9 +167,11 @@ void RDSimplePlayer::play(int start_pos)
       }
       play_cae->setOutputVolume(play_card,play_stream,play_port,0+play_cut_gain);
       play_cae->positionPlay(play_handles.back(),q->value(0).toUInt()+start_pos);
+      /*
       play_cae->play(play_handles.back(),
                      q->value(1).toUInt()-(q->value(0).toUInt()+start_pos),
                      RD_TIMESCALE_DIVISOR,false);
+      */
       play_cae->setPlayPortActive(play_card,play_port,play_stream);
     }
     delete q;
@@ -182,7 +184,7 @@ void RDSimplePlayer::stop()
   if(!play_is_playing) {
     return;
   }
-  play_cae->stopPlay(play_handles.back());
+  //  play_cae->stopPlay(play_handles.back());
 }
 
 
@@ -210,7 +212,7 @@ void RDSimplePlayer::playStoppedData(int handle)
   if(handle!=play_handles.front()) {
     return;
   }
-  play_cae->unloadPlay(play_handles.front());
+  //  play_cae->unloadPlay(play_handles.front());
   play_event_player->exec(play_end_cart);
   play_start_button->off();
   play_stop_button->on();

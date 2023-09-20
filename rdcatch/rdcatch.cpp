@@ -149,7 +149,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   connect(rda->cae(),SIGNAL(playing(int)),this,SLOT(playedData(int)));
   connect(rda->cae(),SIGNAL(playStopped(int)),
 	  this,SLOT(playStoppedData(int)));
-  rda->cae()->connectHost();
+  rda->cae()->connectToHost();
 
   //
   // Deck Monitors
@@ -697,6 +697,7 @@ void MainWidget::reportsButtonData()
 
 void MainWidget::headButtonData()
 {
+  /*
   QModelIndexList rows=catch_recordings_view->selectionModel()->selectedRows();
 
   if(rows.size()!=1) {
@@ -723,11 +724,13 @@ void MainWidget::headButtonData()
     head_playing=true;
     delete cut;
   }
+  */
 }
 
 
 void MainWidget::tailButtonData()
 {
+  /*
   QModelIndexList rows=catch_recordings_view->selectionModel()->selectedRows();
 
   if(rows.size()!=1) {
@@ -758,15 +761,18 @@ void MainWidget::tailButtonData()
     tail_playing=true;
     delete cut;
   }
+  */
 }
 
 
 void MainWidget::stopButtonData()
 {
+  /*
   if(head_playing||tail_playing) {  // Stop Play
     rda->cae()->stopPlay(catch_play_handle);
     rda->cae()->unloadPlay(catch_play_handle);
   }
+  */
 }
 
 
@@ -804,7 +810,7 @@ void MainWidget::playStoppedData(int handle)
   catch_head_button->off();
   catch_tail_button->off();
   catch_stop_button->on();
-  rda->cae()->unloadPlay(catch_play_handle);
+  //  rda->cae()->unloadPlay(catch_play_handle);
 }
 
 
