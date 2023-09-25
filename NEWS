@@ -1,7 +1,7 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v4.1.0fix0 -- 25 September 2023
+v4.1.0fix1 -- 25 September 2023
 
 Changes:
    Fixed a bug in rdairplay(1) and rdpanel(1) that could cause unexpected
