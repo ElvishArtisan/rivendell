@@ -918,7 +918,9 @@ void RDSoundPanel::UpdateButtonViewport()
   for(int i=0;i<panel_button_rows;i++) {
     for(int j=0;j<panel_button_columns;j++) {
       RDPanelButton *button=panel->panelButton(i,j);
-      button->setVisible(viewport.contains(button->geometry()));
+      if(panel!=NULL) {
+	button->setVisible(viewport.contains(button->geometry()));
+      }
     }
   }
 }
