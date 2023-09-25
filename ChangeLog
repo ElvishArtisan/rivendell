@@ -24342,3 +24342,5 @@
 2023-09-25 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdairplay(1) and rdpanel(1) that could cause a
 	segfault when switching user context.
+2023-09-25 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.1.0fix0.
