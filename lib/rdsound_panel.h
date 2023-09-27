@@ -2,7 +2,7 @@
 //
 // The sound panel widget
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,10 +21,10 @@
 #ifndef RDSOUND_PANEL_H
 #define RDSOUND_PANEL_H
 
-#include <vector>
-
 #include <QDateTime>
 #include <QLabel>
+#include <QList>
+#include <QMap>
 #include <QSignalMapper>
 
 #include <rdbutton_dialog.h>
@@ -108,7 +108,8 @@ class RDSoundPanel : public RDWidget
   void resetClickedData();
   void allClickedData();
   void setupClickedData();
-  void buttonMapperData(int id);
+  void buttonMapperData(int grid_pos);
+  //  void buttonMapperData(QWidget *w);
   void stateChangedData(int id,RDPlayDeck::State state);
   void hookEndData(int id);
   void timescalingSupportedData(int card,bool state);
@@ -133,10 +134,12 @@ class RDSoundPanel : public RDWidget
                int mport=-1,bool pause_when_finished=false,int fade_out=0);
   void StopButton(int id);
   void StopButton(RDPlayDeck *deck);
-  void LoadPanels();
-  void LoadPanel(RDAirPlayConf::PanelType type,int panel);
+  //  void LoadPanels();
+  //  void LoadPanel(RDAirPlayConf::PanelType type,int panel);
+  void UpdatePanels(const QString &username);
+  void ShowPanel(RDAirPlayConf::PanelType type,int offset);
   void SaveButton(RDAirPlayConf::PanelType type,int panel,int row,int col);
-  int PanelOffset(RDAirPlayConf::PanelType type,int panel);
+  //  int PanelOffset(RDAirPlayConf::PanelType type,int panel);
   int GetFreeButtonDeck();
   int GetFreeOutput();
   void LogPlayEvent(unsigned cartnum,int cutnum);
@@ -150,7 +153,9 @@ class RDSoundPanel : public RDWidget
   void ClearReset();
   QString PanelTag(int index);
   QString PanelOwner(RDAirPlayConf::PanelType type);
-  std::vector<RDButtonPanel *> panel_buttons;
+  RDButtonPanel *GetCurrentPanel() const;
+  RDPanelButton *GetVisibleButton(int row,int col) const;
+  QMap<QString,QList<RDButtonPanel *> > panel_panels;
   RDComboBox *panel_selector_box;
   QComboBox *panel_playmode_box;
   RDPushButton *panel_setup_button;

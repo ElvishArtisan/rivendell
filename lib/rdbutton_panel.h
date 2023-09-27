@@ -2,7 +2,7 @@
 //
 // The sound panel widget for RDAirPlay
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,13 +23,13 @@
 
 #include <QDateTime>
 #include <QLabel>
-#include <QWidget>
 
 #include <rdairplay_conf.h>
 #include <rdstation.h>
 #include <rduser.h>
 #include <rdpanel_button.h>
 #include <rdbutton_dialog.h>
+#include <rdwidget.h>
 
 //
 // Widget Settings
@@ -40,11 +40,10 @@
 #define PANEL_BUTTON_SIZE_Y 80
 
 
-class RDButtonPanel
+class RDButtonPanel : public RDWidget
 {
  public:
-  RDButtonPanel(RDAirPlayConf::PanelType type,int panel,int cols,int rows,
-		RDStation *station,bool flash,QWidget *parent);
+  RDButtonPanel(RDAirPlayConf::PanelType type,QWidget *parent);
   ~RDButtonPanel();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -58,9 +57,6 @@ class RDButtonPanel
 
  private:
   RDPanelButton *panel_button[PANEL_MAX_BUTTON_ROWS][PANEL_MAX_BUTTON_COLUMNS];
-  RDStation *panel_station;
-  int panel_button_columns;
-  int panel_button_rows;
 };
 
-#endif
+#endif  // RDPANEL_BUTTON_H

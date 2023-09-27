@@ -33,6 +33,8 @@ class RDPanelButton : public RDPushButton
   RDPanelButton(int row,int col,RDStation *station,bool flash,
 		QWidget *parent=0);
   void clear();
+  int row() const;
+  int column() const;
   QString text() const;
   void setText(const QString &text);
   QString outputText() const;

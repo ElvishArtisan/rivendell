@@ -23,18 +23,16 @@
 #include <rdbutton_panel.h>
 #include <rdbutton_dialog.h>
 
-RDButtonPanel::RDButtonPanel(RDAirPlayConf::PanelType type,int panel,int cols,
-			     int rows,RDStation *station,bool flash,
-			     QWidget *parent)
+RDButtonPanel::RDButtonPanel(RDAirPlayConf::PanelType type,QWidget *parent)
+  : RDWidget(parent)
 {
-  panel_button_columns=cols;
-  panel_button_rows=rows;
-  panel_station=station;
-  for(int i=0;i<panel_button_rows;i++) {
-    for(int j=0;j<panel_button_columns;j++) {
+  for(int i=0;i<PANEL_MAX_BUTTON_ROWS;i++) {
+    for(int j=0;j<PANEL_MAX_BUTTON_COLUMNS;j++) {
       panel_button[i][j]=
-	new RDPanelButton(i,j,panel_station,flash,parent);
-      if(station->enableDragdrop()&&(!station->enforcePanelSetup())) {
+	new RDPanelButton(i,j,rda->station(),rda->panelConf()->flashPanel(),
+			  parent);
+      if(rda->station()->enableDragdrop()&&
+	 (!rda->station()->enforcePanelSetup())) {
 	panel_button[i][j]->setAcceptDrops(true);
       }
       panel_button[i][j]->setGeometry((15+PANEL_BUTTON_SIZE_X)*j,
@@ -56,8 +54,8 @@ RDButtonPanel::RDButtonPanel(RDAirPlayConf::PanelType type,int panel,int cols,
 
 RDButtonPanel::~RDButtonPanel()
 {
-  for(int i=0;i<panel_button_rows;i++) {
-    for(int j=0;j<panel_button_columns;j++) {
+  for(int i=0;i<PANEL_MAX_BUTTON_ROWS;i++) {
+    for(int j=0;j<PANEL_MAX_BUTTON_COLUMNS;j++) {
       delete panel_button[i][j];
     }
   }
@@ -86,8 +84,8 @@ void RDButtonPanel::setActionMode(RDAirPlayConf::ActionMode mode)
 {
   switch(mode) {
       case RDAirPlayConf::CopyFrom:
-	for(int i=0;i<panel_button_rows;i++) {
-	  for(int j=0;j<panel_button_columns;j++) {
+	for(int i=0;i<PANEL_MAX_BUTTON_ROWS;i++) {
+	  for(int j=0;j<PANEL_MAX_BUTTON_COLUMNS;j++) {
 	    if(panel_button[i][j]->cart()!=0) {
 	      panel_button[i][j]->setColor(BUTTON_FROM_BACKGROUND_COLOR);
 	    }
@@ -96,8 +94,8 @@ void RDButtonPanel::setActionMode(RDAirPlayConf::ActionMode mode)
 	break;
 
       case RDAirPlayConf::CopyTo:
-	      for(int i=0;i<panel_button_rows;i++) {
-	        for(int j=0;j<panel_button_columns;j++) {
+	      for(int i=0;i<PANEL_MAX_BUTTON_ROWS;i++) {
+	        for(int j=0;j<PANEL_MAX_BUTTON_COLUMNS;j++) {
 	      if(panel_button[i][j]->playDeck()!=NULL) {
                 if(panel_button[i][j]->playDeck()->state()==RDPlayDeck::Paused) {
 		  panel_button[i][j]->setColor(RDPANEL_PAUSED_BACKGROUND_COLOR);
@@ -114,8 +112,8 @@ void RDButtonPanel::setActionMode(RDAirPlayConf::ActionMode mode)
 	break;
 
       case RDAirPlayConf::AddTo:
-	      for(int i=0;i<panel_button_rows;i++) {
-		for(int j=0;j<panel_button_columns;j++) {
+	      for(int i=0;i<PANEL_MAX_BUTTON_ROWS;i++) {
+		for(int j=0;j<PANEL_MAX_BUTTON_COLUMNS;j++) {
              if(panel_button[i][j]->playDeck()==NULL) {
                panel_button[i][j]->setColor(BUTTON_TO_BACKGROUND_COLOR);
              }
@@ -124,8 +122,8 @@ void RDButtonPanel::setActionMode(RDAirPlayConf::ActionMode mode)
 	break;
 
       case RDAirPlayConf::DeleteFrom:
-	      for(int i=0;i<panel_button_rows;i++) {
-	     for(int j=0;j<panel_button_columns;j++) {
+	      for(int i=0;i<PANEL_MAX_BUTTON_ROWS;i++) {
+	     for(int j=0;j<PANEL_MAX_BUTTON_COLUMNS;j++) {
              if(panel_button[i][j]->playDeck()==NULL) {
                panel_button[i][j]->setColor(BUTTON_FROM_BACKGROUND_COLOR);
              }
@@ -134,8 +132,8 @@ void RDButtonPanel::setActionMode(RDAirPlayConf::ActionMode mode)
 	break;
 
       default:
-	for(int i=0;i<panel_button_rows;i++) {
-	for(int j=0;j<panel_button_columns;j++) {
+	for(int i=0;i<PANEL_MAX_BUTTON_ROWS;i++) {
+	for(int j=0;j<PANEL_MAX_BUTTON_COLUMNS;j++) {
 //	    if(panel_button[i][j]->cart()!=0) {
 	      if(panel_button[i][j]->playDeck()!=NULL) {
                 if(panel_button[i][j]->playDeck()->state()==RDPlayDeck::Paused) {
@@ -163,8 +161,8 @@ void RDButtonPanel::setActionMode(RDAirPlayConf::ActionMode mode)
 
 void RDButtonPanel::setAllowDrags(bool state)
 {
-  for(int i=0;i<panel_button_rows;i++) {
-    for(int j=0;j<panel_button_columns;j++) {
+  for(int i=0;i<PANEL_MAX_BUTTON_ROWS;i++) {
+    for(int j=0;j<PANEL_MAX_BUTTON_COLUMNS;j++) {
       panel_button[i][j]->setAllowDrags(state);
     }
   }
@@ -173,8 +171,8 @@ void RDButtonPanel::setAllowDrags(bool state)
 
 void RDButtonPanel::setAcceptDrops(bool state)
 {
-  for(int i=0;i<panel_button_rows;i++) {
-    for(int j=0;j<panel_button_columns;j++) {
+  for(int i=0;i<PANEL_MAX_BUTTON_ROWS;i++) {
+    for(int j=0;j<PANEL_MAX_BUTTON_COLUMNS;j++) {
       panel_button[i][j]->setAcceptDrops(state);
     }
   }
@@ -183,8 +181,8 @@ void RDButtonPanel::setAcceptDrops(bool state)
 
 void RDButtonPanel::hide()
 {
-  for(int i=0;i<panel_button_rows;i++) {
-    for(int j=0;j<panel_button_columns;j++) {
+  for(int i=0;i<PANEL_MAX_BUTTON_ROWS;i++) {
+    for(int j=0;j<PANEL_MAX_BUTTON_COLUMNS;j++) {
       panel_button[i][j]->hide();
     }
   }
@@ -193,8 +191,8 @@ void RDButtonPanel::hide()
 
 void RDButtonPanel::show()
 {
-  for(int i=0;i<panel_button_rows;i++) {
-    for(int j=0;j<panel_button_columns;j++) {
+  for(int i=0;i<PANEL_MAX_BUTTON_ROWS;i++) {
+    for(int j=0;j<PANEL_MAX_BUTTON_COLUMNS;j++) {
       panel_button[i][j]->show();
     }
   }
@@ -203,8 +201,8 @@ void RDButtonPanel::show()
 
 void RDButtonPanel::clear()
 {
-  for(int i=0;i<panel_button_rows;i++) {
-    for(int j=0;j<panel_button_columns;j++) {
+  for(int i=0;i<PANEL_MAX_BUTTON_ROWS;i++) {
+    for(int j=0;j<PANEL_MAX_BUTTON_COLUMNS;j++) {
       panel_button[i][j]->clear();
     }
   }

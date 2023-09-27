@@ -70,6 +70,18 @@ void RDPanelButton::clear()
 }
 
 
+int RDPanelButton::row() const
+{
+  return button_row;
+}
+
+
+int RDPanelButton::column() const
+{
+  return button_col;
+}
+
+
 QString RDPanelButton::text() const
 {
   return button_text;
