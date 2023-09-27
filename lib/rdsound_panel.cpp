@@ -704,9 +704,10 @@ void RDSoundPanel::setupClickedData()
     panel_playmode_box->setDisabled(true);
   }
   if(rda->station()->enableDragdrop()&&(rda->station()->enforcePanelSetup())) {
-    for(int i=0;i<panel_panels.size();i++) {
-      if(panel_panels.value(username).at(i)!=NULL) {
-	panel_panels.value(username).at(i)->setAcceptDrops(panel_setup_mode);
+    for(QMap<QString,QList<RDButtonPanel *> >::const_iterator it=
+	  panel_panels.begin();it!=panel_panels.end();it++) {
+      for(int i=0;i<it.value().size();i++) {
+	it.value().at(i)->setAcceptDrops(panel_setup_mode);
       }
     }
   }
@@ -716,8 +717,6 @@ void RDSoundPanel::setupClickedData()
 
 void RDSoundPanel::buttonMapperData(int grid_pos)
 {
-  printf("buttonMapperData(%d)\n",grid_pos);
-
   RDPanelButton *button=GetCurrentPanel()->
     panelButton(grid_pos/PANEL_MAX_BUTTON_COLUMNS,
 		grid_pos%PANEL_MAX_BUTTON_COLUMNS);

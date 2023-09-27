@@ -24391,3 +24391,5 @@
 2023-09-27 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'RDSoundPanel' where clicking a non-configured
 	button in Setup mode would fail to open the 'Edit Button' dialog.
+2023-09-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed bugs in 'RDSoundPanel' affecting drag-and-drop operation.

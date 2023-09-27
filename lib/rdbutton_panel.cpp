@@ -31,9 +31,11 @@ RDButtonPanel::RDButtonPanel(RDAirPlayConf::PanelType type,QWidget *parent)
       panel_button[i][j]=
 	new RDPanelButton(i,j,rda->station(),rda->panelConf()->flashPanel(),
 			  parent);
-      if(rda->station()->enableDragdrop()&&
-	 (!rda->station()->enforcePanelSetup())) {
-	panel_button[i][j]->setAcceptDrops(true);
+      if(rda->station()->enableDragdrop()) {
+	panel_button[i][j]->setAllowDrags(true);
+	if(!rda->station()->enforcePanelSetup()) {
+	  panel_button[i][j]->setAcceptDrops(true);
+	}
       }
       panel_button[i][j]->setGeometry((15+PANEL_BUTTON_SIZE_X)*j,
 				      (15+PANEL_BUTTON_SIZE_Y)*i,
