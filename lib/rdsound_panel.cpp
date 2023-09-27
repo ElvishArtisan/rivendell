@@ -1527,7 +1527,6 @@ void RDSoundPanel::SaveButton(RDAirPlayConf::PanelType type,
   QString sql1;
   RDSqlQuery *q;
   QString owner;
-  int offset=0;
   QString username;
   if(type==RDAirPlayConf::UserPanel) {
     username=rda->user()->name();
@@ -1536,14 +1535,15 @@ void RDSoundPanel::SaveButton(RDAirPlayConf::PanelType type,
   switch(type) {
   case RDAirPlayConf::UserPanel:
     owner=rda->user()->name();
-    offset=panel_station_panels+panel;
     break;
 
   case RDAirPlayConf::StationPanel:
     owner=rda->station()->name();
-    offset=panel;
     break;
   }
+
+  RDPanelButton *button=
+    panel_panels.value(username).at(panel)->panelButton(row,col);
 
   //
   // Determine if the button exists
@@ -1561,14 +1561,9 @@ void RDSoundPanel::SaveButton(RDAirPlayConf::PanelType type,
     //
     delete q;
     sql1=QString("update ")+panel_tablename+" set "+
-      "`LABEL`='"+RDEscapeString(panel_panels.value(username).at(offset)->
-				 panelButton(row,col)->text())+"',"+
-      QString::asprintf("`CART`=%d,",
-			panel_panels.value(username).
-			//			at(PanelOffset(panel_type,panel_number))->
-			at(panel_number)->panelButton(row,col)->cart())+
-      "`DEFAULT_COLOR`='"+panel_panels.value(username).at(offset)->
-      panelButton(row,col)->defaultColor().name()+"' where "+
+      "`LABEL`='"+RDEscapeString(button->text())+"',"+
+      QString::asprintf("`CART`=%d,",button->cart())+
+      "`DEFAULT_COLOR`='"+button->defaultColor().name()+"' where "+
       QString::asprintf("(`TYPE`=%d)&&",type)+
       "(`OWNER`='"+RDEscapeString(owner)+"')&&"+
       QString::asprintf("(`PANEL_NO`=%d)&&",panel)+
@@ -1599,14 +1594,9 @@ void RDSoundPanel::SaveButton(RDAirPlayConf::PanelType type,
       QString::asprintf("values (%d,",type)+
       "'"+RDEscapeString(owner)+"',"+
       QString::asprintf("%d,%d,%d,",panel,row,col)+
-      "'"+RDEscapeString(panel_panels.value(username).at(offset)->
-			 panelButton(row,col)->text())+"',"+
-      QString::asprintf("%d,",
-			panel_panels.value(username).
-			//			at(PanelOffset(panel_type,panel_number))->
-			at(panel_number)->panelButton(row,col)->cart())+
-      "'"+RDEscapeString(panel_panels.value(username).at(offset)->
-			 panelButton(row,col)->defaultColor().name())+"')";
+      "'"+RDEscapeString(button->text())+"',"+
+      QString::asprintf("%d,",button->cart())+
+      "'"+RDEscapeString(button->defaultColor().name())+"')";
     RDSqlQuery::apply(sql1);
   }
 }

@@ -24396,3 +24396,6 @@
 2023-09-27 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'RDPanelButton' that caused the background
 	color to fail to be reset when clearing the button.
+2023-09-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'RDSoundPanel' that threw a segfault when adding
+	a new button to a User panel.
