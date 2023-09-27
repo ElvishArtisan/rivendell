@@ -24393,3 +24393,6 @@
 	button in Setup mode would fail to open the 'Edit Button' dialog.
 2023-09-27 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed bugs in 'RDSoundPanel' affecting drag-and-drop operation.
+2023-09-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'RDPanelButton' that caused the background
+	color to fail to be reset when clearing the button.

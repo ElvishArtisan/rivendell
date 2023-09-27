@@ -127,9 +127,6 @@ QColor RDPanelButton::defaultColor() const
 
 void RDPanelButton::setDefaultColor(QColor color)
 {
-  if(color==button_default_color) {
-    return;
-  }
   button_default_color=color;
   if(playDeck()==NULL) {
     setColor(color);
@@ -151,9 +148,6 @@ void RDPanelButton::setStartSource(RDLogLine::StartSource src)
 
 void RDPanelButton::setColor(QColor color)
 {
-  if(color==button_color) {
-    return;
-  }
   button_color=color;
   if(button_flash) {
     if(color==palette().color(QPalette::Background)) {
