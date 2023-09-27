@@ -24388,3 +24388,6 @@
 2023-09-27 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the 'RDSoundPanel', 'RDPanelButton' and 'RDButtonPanel'
 	classes to avoid races when changing the current Rivendell user.
+2023-09-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'RDSoundPanel' where clicking a non-configured
+	button in Setup mode would fail to open the 'Edit Button' dialog.

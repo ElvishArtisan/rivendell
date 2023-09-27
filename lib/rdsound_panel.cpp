@@ -716,6 +716,8 @@ void RDSoundPanel::setupClickedData()
 
 void RDSoundPanel::buttonMapperData(int grid_pos)
 {
+  printf("buttonMapperData(%d)\n",grid_pos);
+
   RDPanelButton *button=GetCurrentPanel()->
     panelButton(grid_pos/PANEL_MAX_BUTTON_COLUMNS,
 		grid_pos%PANEL_MAX_BUTTON_COLUMNS);
@@ -1420,7 +1422,15 @@ void RDSoundPanel::UpdatePanels(const QString &username)
       list=panel_panels.value(username);
     }
     for(int i=panel_panels.value(username).size();i<size;i++) {
-      list.push_back(new RDButtonPanel(type,this));
+      RDButtonPanel *panel=new RDButtonPanel(type,this);
+      for(int j=0;j<PANEL_MAX_BUTTON_COLUMNS;j++) {
+	for(int k=0;k<PANEL_MAX_BUTTON_ROWS;k++) {
+	  RDPanelButton *button=panel->panelButton(k,j);
+	  connect(button,SIGNAL(clicked()),panel_mapper,SLOT(map()));
+	  panel_mapper->setMapping(button,k*PANEL_MAX_BUTTON_COLUMNS+j);
+	}
+      }
+      list.push_back(panel);
     }
     panel_panels[username]=list;
   }
@@ -1477,9 +1487,6 @@ void RDSoundPanel::UpdatePanels(const QString &username)
 	button->setColor(QColor(q->value(5).toString()));
 	button->setDefaultColor(QColor(q->value(5).toString()));
       }
-      connect(button,SIGNAL(clicked()),panel_mapper,SLOT(map()));
-      panel_mapper->setMapping(button,
-	     q->value(1).toInt()*PANEL_MAX_BUTTON_COLUMNS+q->value(2).toInt());
     }
   }
   delete q;
