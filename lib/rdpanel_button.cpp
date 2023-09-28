@@ -323,6 +323,45 @@ int RDPanelButton::duckVolume() const
 }
 
 
+bool RDPanelButton::isEmpty() const
+{
+  return button_cart==0;
+}
+
+
+QString RDPanelButton::json(int padding,bool final)
+{
+  QString ret;
+
+  ret+=RDJsonPadding(padding)+"\"button\": {\r\n";
+  ret+=RDJsonField("column",button_col,4+padding);
+  ret+=RDJsonField("row",button_row,4+padding);
+  if(isEmpty()) {
+    ret+=RDJsonNullField("cart",4+padding);
+    ret+=RDJsonNullField("defaultColor",4+padding);
+    ret+=RDJsonNullField("length",4+padding);
+    ret+=RDJsonNullField("hookLength",4+padding);
+    ret+=RDJsonNullField("label",4+padding,true);
+  }
+  else {
+    ret+=RDJsonField("cart",button_cart,4+padding);
+    ret+=RDJsonField("defaultColor",button_default_color.name(),4+padding);
+    ret+=RDJsonField("length",RDGetTimeLength(button_length[0],true,false),
+		     4+padding);
+    ret+=RDJsonField("hookLength",RDGetTimeLength(button_length[1],true,false),
+		     4+padding);
+    ret+=RDJsonField("label",button_text,4+padding,true);
+  }
+  ret+=RDJsonPadding(padding)+"}";
+  if(!final) {
+    ret+=",";
+  }
+  ret+="\r\n";
+
+  return ret;
+}
+
+
 void RDPanelButton::tickClock()
 {
   int msecs;

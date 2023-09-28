@@ -29,6 +29,7 @@
 #include <rduser.h>
 #include <rdpanel_button.h>
 #include <rdbutton_dialog.h>
+#include <rdweb.h>
 #include <rdwidget.h>
 
 //
@@ -43,10 +44,13 @@
 class RDButtonPanel : public RDWidget
 {
  public:
-  RDButtonPanel(RDAirPlayConf::PanelType type,QWidget *parent);
+  RDButtonPanel(RDAirPlayConf::PanelType type,int number,QWidget *parent);
   ~RDButtonPanel();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
+  int number() const;
+  QString title() const;
+  void setTitle(const QString &str);
   RDPanelButton *panelButton(int row,int col) const;
   void setActionMode(RDAirPlayConf::ActionMode mode);
   void setAllowDrags(bool state);
@@ -54,8 +58,11 @@ class RDButtonPanel : public RDWidget
   void hide();
   void show();
   void clear();
+  QString json(int padding=0,bool final=false) const;
 
  private:
+  int panel_number;
+  QString panel_title;
   RDPanelButton *panel_button[PANEL_MAX_BUTTON_ROWS][PANEL_MAX_BUTTON_COLUMNS];
 };
 

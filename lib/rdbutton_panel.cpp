@@ -23,9 +23,12 @@
 #include <rdbutton_panel.h>
 #include <rdbutton_dialog.h>
 
-RDButtonPanel::RDButtonPanel(RDAirPlayConf::PanelType type,QWidget *parent)
+RDButtonPanel::RDButtonPanel(RDAirPlayConf::PanelType type,int number,
+			     QWidget *parent)
   : RDWidget(parent)
 {
+  panel_number=number;
+
   for(int i=0;i<PANEL_MAX_BUTTON_ROWS;i++) {
     for(int j=0;j<PANEL_MAX_BUTTON_COLUMNS;j++) {
       panel_button[i][j]=
@@ -73,6 +76,24 @@ QSize RDButtonPanel::sizeHint() const
 QSizePolicy RDButtonPanel::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+}
+
+
+int RDButtonPanel::number() const
+{
+  return panel_number;
+}
+
+
+QString RDButtonPanel::title() const
+{
+  return panel_title;
+}
+
+
+void RDButtonPanel::setTitle(const QString &str)
+{
+  panel_title=str;
 }
 
 
@@ -208,4 +229,42 @@ void RDButtonPanel::clear()
       panel_button[i][j]->clear();
     }
   }
+}
+
+
+QString RDButtonPanel::json(int padding,bool final) const
+{
+  QString ret;
+
+  //
+  // Get Button Count
+  //
+  int count=0;
+  for(int i=0;i<PANEL_MAX_BUTTON_ROWS;i++) {
+    for(int j=0;j<PANEL_MAX_BUTTON_COLUMNS;j++) {
+      if(!panel_button[i][j]->isEmpty()) {
+	count++;
+      }
+    }
+  }
+
+  ret+=RDJsonPadding(padding)+"\"panel\": {\r\n";
+  ret+=RDJsonField("number",panel_number,4+padding);
+  ret+=RDJsonField("title",panel_title,4+padding,count==0);
+
+  for(int i=0;i<PANEL_MAX_BUTTON_ROWS;i++) {
+    for(int j=0;j<PANEL_MAX_BUTTON_COLUMNS;j++) {
+      if(!panel_button[i][j]->isEmpty()) {
+	count--;
+	ret+=panel_button[i][j]->json(4+padding,count==0);
+      }
+    }
+  }
+  ret+=RDJsonPadding(padding)+"}";
+  if(!final) {
+    ret+=",";
+  }
+  ret+="\r\n";
+
+  return ret;
 }

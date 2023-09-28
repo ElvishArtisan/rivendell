@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry id="stdin" xmlns="http://docbook.org/ns/docbook" version="5.0">
+  <!--
+      Header
+  -->
+  <refmeta>
+    <refentrytitle>rdpanel</refentrytitle>
+    <manvolnum>1</manvolnum>
+    <refmiscinfo class='source'>September 2023</refmiscinfo>
+    <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>rdpanel</refname>
+    <refpurpose>
+      Module for stand-alone sound panel
+    </refpurpose>
+  </refnamediv>
+  <info>
+    <author>
+      <personname>
+	<firstname>Fred</firstname>
+	<surname>Gleason</surname>
+	<email>fredg@paravelsystems.com</email>
+      </personname>
+      <contrib>Application Author</contrib>
+    </author>
+  </info>
+
+  <!--
+      Body
+  -->
+  <refsynopsisdiv id='synopsis'>
+    <cmdsynopsis>
+      <command>rdpanel</command>
+      <arg choice='opt'><replaceable>OPTIONS</replaceable></arg>
+      <sbr/>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <refsect1 id='description'>
+    <title>Description</title>
+    <para>
+      The <command>rdpanel</command><manvolnum>1</manvolnum> modules provides
+      a single, stand-alone &quot;cart wall&quot; application that allows
+      users to play carts by means of a single button press.
+    </para>
+  </refsect1>
+
+  <refsect1 id='options'>
+    <title>Options</title>
+  <variablelist remap='TP'>
+    <varlistentry>
+      <term>
+	<option>--dump-panel-updates</option>
+      </term>
+      <listitem>
+	<para>
+	  When this option is given,
+	  <command>rdpanel</command><manvolnum>1</manvolnum> will print
+	  a dump of the currently loaded sound panel configuration to
+	  standard output each time the Rivendell user logged into the system
+	  is changed.
+	</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+</refsect1>
+
+</refentry>
+

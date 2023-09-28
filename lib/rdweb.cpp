@@ -206,6 +206,39 @@ QString RDJsonPadding(int padding)
 }
 
 
+QString RDJsonEscape(const QString &str)
+{
+  QString ret;
+
+  for(int i=0;i<str.length();i++) {
+    QChar c=str.at(i);
+    switch(c.category()) {
+    case QChar::Other_Control:
+      ret+=QString::asprintf("\\u%04X",c.unicode());
+      break;
+
+    default:
+      switch(c.unicode()) {
+      case 0x22:   // Quote
+	ret+="\\\"";
+	break;
+
+      case 0x5C:   // Backslash
+	ret+="\\\\";
+	break;
+
+      default:
+	ret+=c;
+	break;
+      }
+      break;
+    }
+  }
+
+  return ret;
+}
+
+
 QString RDJsonNullField(const QString &name,int padding,bool final)
 {
   QString comma=",";
@@ -269,6 +302,8 @@ QString RDJsonField(const QString &name,const QString &value,int padding,
     comma="";
   }
 
+  ret=RDJsonEscape(value);
+  /*
   for(int i=0;i<value.length();i++) {
     QChar c=value.at(i);
     switch(c.category()) {
@@ -293,6 +328,7 @@ QString RDJsonField(const QString &name,const QString &value,int padding,
       break;
     }
   }
+  */
 
   return RDJsonPadding(padding)+"\""+name+"\": \""+ret+"\""+comma+"\r\n";
 }

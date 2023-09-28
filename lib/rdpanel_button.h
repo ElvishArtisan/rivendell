@@ -21,8 +21,9 @@
 #ifndef RDPANEL_BUTTON_H
 #define RDPANEL_BUTTON_H
 
-#include <rdpushbutton.h>
 #include <rdplay_deck.h>
+#include <rdpushbutton.h>
+#include <rdweb.h>
 
 #define RDPANEL_BUTTON_MARGIN 5
 
@@ -70,6 +71,8 @@ class RDPanelButton : public RDPushButton
   void setDuckVolume(int lvel);
   void setAllowDrags(bool state);
   void resetCounter();
+  bool isEmpty() const;
+  QString json(int padding=0,bool final=false);
 
  signals:
   void cartDropped(int row,int col,unsigned cartnum,const QColor &color,

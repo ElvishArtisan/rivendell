@@ -28,6 +28,7 @@
 #include "rdlog_line.h"
 #include "rdmacro.h"
 #include "rdsound_panel.h"
+#include "rdweb.h"
 
 RDSoundPanel::RDSoundPanel(int station_panels,int user_panels,bool flash,
 			   const QString &caption,const QString &label_template,
@@ -35,6 +36,7 @@ RDSoundPanel::RDSoundPanel(int station_panels,int user_panels,bool flash,
 			   RDCartDialog *cart_dialog,QWidget *parent)
   : RDWidget(parent)
 {
+  panel_dump_panel_updates=false;
   panel_playmode_box=NULL;
   panel_button_columns=PANEL_MAX_BUTTON_COLUMNS;
   panel_button_rows=PANEL_MAX_BUTTON_ROWS;
@@ -232,6 +234,18 @@ QSize RDSoundPanel::sizeHint() const
 QSizePolicy RDSoundPanel::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+}
+
+
+bool RDSoundPanel::dumpPanelUpdates() const
+{
+  return panel_dump_panel_updates;
+}
+
+
+void RDSoundPanel::setDumpPanelUpdates(bool state)
+{
+  panel_dump_panel_updates=state;
 }
 
 
@@ -476,6 +490,45 @@ RDAirPlayConf::PanelType RDSoundPanel::currentType() const
 }
 
 
+QString RDSoundPanel::json(const QString &owner,int padding,bool final) const
+{
+  QString ret;
+  QList<RDButtonPanel *> panels=panel_panels.value(owner);
+
+  ret+=RDJsonPadding(padding)+"\"array\": {\r\n";
+  ret+=RDJsonField("owner",owner,4+padding);
+
+  for(int i=0;i<(panels.size()-1);i++) {
+    ret+=panels.at(i)->json(4+padding);
+  }
+  if(panels.size()>0) {
+    ret+=panels.last()->json(4+padding,true);
+  }
+
+  ret+=RDJsonPadding(padding)+"}";
+  if(!final) {
+    ret+=",";
+  }
+  ret+="\r\n";
+
+  return ret;
+}
+
+
+QString RDSoundPanel::json(int padding) const
+{
+  QString ret;
+
+  int count=0;
+  for(QMap<QString,QList<RDButtonPanel *> >::const_iterator it=panel_panels.
+	begin();it!=panel_panels.end();it++) {
+    ret+=json(it.key(),4,++count==panel_panels.size());
+  }
+
+  return ret;
+}
+
+
 void RDSoundPanel::setButton(RDAirPlayConf::PanelType type,int panel,
 			     int row,int col,unsigned cartnum,
 			     const QString &title)
@@ -558,6 +611,9 @@ void RDSoundPanel::changeUser()
 {
   panel_config_panels=rda->user()->configPanels();
   UpdatePanels(rda->user()->name());
+  if(panel_dump_panel_updates) {
+    printf("{\r\n%s}\r\n",json(4).toUtf8().constData());
+  }
 
   //
   // Remove Old Panel Names
@@ -1421,7 +1477,7 @@ void RDSoundPanel::UpdatePanels(const QString &username)
       list=panel_panels.value(username);
     }
     for(int i=panel_panels.value(username).size();i<size;i++) {
-      RDButtonPanel *panel=new RDButtonPanel(type,this);
+      RDButtonPanel *panel=new RDButtonPanel(type,i,this);
       for(int j=0;j<PANEL_MAX_BUTTON_COLUMNS;j++) {
 	for(int k=0;k<PANEL_MAX_BUTTON_ROWS;k++) {
 	  RDPanelButton *button=panel->panelButton(k,j);

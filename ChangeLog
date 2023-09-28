@@ -24399,3 +24399,8 @@
 2023-09-27 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'RDSoundPanel' that threw a segfault when adding
 	a new button to a User panel.
+2023-09-28 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'RDJsonEscape(const QString &str)' function in
+	'lib/rdweb.cpp' and 'lib/rdweb.h'.
+	* Added a '--dump-panel-updates' switch to rdpanel(1).
+	* Added a rdpanel(1) man page.

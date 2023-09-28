@@ -54,6 +54,7 @@ extern QString RDXmlField(const QString &tag);
 extern QString RDXmlEscape(const QString &str);
 extern QString RDXmlUnescape(const QString &str);
 extern QString RDJsonPadding(int padding);
+extern QString RDJsonEscape(const QString &str);
 extern QString RDJsonNullField(const QString &name,int padding=0,
 			       bool final=false);
 extern QString RDJsonField(const QString &name,bool value,int padding=0,

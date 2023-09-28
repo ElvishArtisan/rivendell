@@ -55,6 +55,8 @@ class RDSoundPanel : public RDWidget
   ~RDSoundPanel();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
+  bool dumpPanelUpdates() const;
+  void setDumpPanelUpdates(bool state);
   int card(int outnum) const;
   void setCard(int outnum,int card);
   int port(int outnum) const;
@@ -84,6 +86,8 @@ class RDSoundPanel : public RDWidget
   void setPauseEnabled(bool state);
   int currentNumber() const;
   RDAirPlayConf::PanelType currentType() const;
+  QString json(const QString &owner,int padding=0,bool final=false) const;
+  QString json(int padding=0) const;
 
  public slots:
   void setButton(RDAirPlayConf::PanelType type,int panel,int row,int col,
@@ -197,6 +201,7 @@ class RDSoundPanel : public RDWidget
   bool panel_onair_flag;
   QTimer *panel_scan_timer;
   QString panel_caption;
+  bool panel_dump_panel_updates;
 };
 
 #endif  // RDSOUND_PANEL_H

@@ -81,6 +81,9 @@ all-local:	rdadmin.1\
                 rdmetadata.1\
                 rdmetadata.html\
                 rdmetadata.pdf\
+                rdpanel.1\
+                rdpanel.html\
+                rdpanel.pdf\
                 rdrender.1\
                 rdrender.html\
                 rdrender.pdf\
@@ -112,6 +115,7 @@ man_MANS = rdadmin.1\
            rdlogmanager.1\
            rdmarkerset.8\
            rdmetadata.1\
+           rdpanel.1\
            rdrender.1\
            rmlsend.1\
            rdservice.8\
@@ -168,6 +172,10 @@ EXTRA_DIST = exitcodes.xml\
              rdmetadata.html\
              rdmetadata.pdf\
              rdmetadata.xml\
+             rdpanel.1\
+             rdpanel.html\
+             rdpanel.pdf\
+             rdpanel.xml\
              rdrender.1\
              rdrender.html\
              rdrender.pdf\

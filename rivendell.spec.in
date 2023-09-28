@@ -468,6 +468,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/rdimport.1.gz
 %{_mandir}/man1/rdlogmanager.1.gz
 %{_mandir}/man1/rdmetadata.1.gz
+%{_mandir}/man1/rdpanel.1.gz
 %{_mandir}/man1/rdrender.1.gz
 %{_mandir}/man1/rmlsend.1.gz
 %{_mandir}/man1/rdsinglestart.1.gz

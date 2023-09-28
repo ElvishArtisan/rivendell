@@ -42,7 +42,7 @@ RDCartDialog *panel_cart_dialog;
 MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   : RDMainWindow("rdpanel",c)
 {
-  //  QPixmap panel_skin_pixmap;
+  bool dump_panel_updates=false;
   QString err_msg;
 
   //
@@ -64,11 +64,15 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   // Read Command Options
   //
   for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+    if(rda->cmdSwitch()->key(i)=="--dump-panel-updates") {
+      dump_panel_updates=true;
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
     if(!rda->cmdSwitch()->processed(i)) {
       QMessageBox::critical(this,"RDPanel - "+tr("Error"),
 			    tr("Unknown command option")+": "+
 			    rda->cmdSwitch()->key(i));
-      exit(2);
+      exit(RDCoreApplication::ExitInvalidOption);
     }
   }
 
@@ -129,6 +133,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
 		       "RDPanel",
 		       rda->panelConf()->buttonLabelTemplate(),true,
 		       panel_player,panel_cart_dialog,this);
+    panel_panel->setDumpPanelUpdates(dump_panel_updates);
     panel_panel->setPauseEnabled(rda->panelConf()->panelPauseEnabled());
     panel_panel->setCard(0,rda->panelConf()->card(RDAirPlayConf::SoundPanel1Channel));
     panel_panel->setPort(0,rda->panelConf()->port(RDAirPlayConf::SoundPanel1Channel));
