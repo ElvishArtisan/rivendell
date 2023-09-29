@@ -57,7 +57,7 @@
 	<para>
 	  When this option is given,
 	  <command>rdpanel</command><manvolnum>1</manvolnum> will print
-	  a dump of the currently loaded sound panel configuration to
+	  a dump of the currently loaded sound panel array to
 	  standard output each time the Rivendell user logged into the system
 	  is changed.
 	</para>
