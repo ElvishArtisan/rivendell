@@ -24404,3 +24404,5 @@
 	'lib/rdweb.cpp' and 'lib/rdweb.h'.
 	* Added a '--dump-panel-updates' switch to rdpanel(1).
 	* Added a rdpanel(1) man page.
+2023-09-29 Fred Gleason <fredg@paravelsystems.com>
+	* Added a '--dump-panel-updates' switch to rdairplay(1).

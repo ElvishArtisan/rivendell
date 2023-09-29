@@ -28,10 +28,8 @@ class SoundPanel : public RDWidget
 {
   Q_OBJECT
  public:
-  SoundPanel(int station_panels,int user_panels,bool flash,
-	     const QString &caption,const QString &label_template,
-	     bool extended,RDEventPlayer *player,RDCartDialog *cart_dialog,
-	     QWidget *parent=0);
+  SoundPanel(RDEventPlayer *player,RDCartDialog *cart_dialog,
+	     bool dump_panel_updates,QWidget *parent);
   ~SoundPanel();
   RDSoundPanel *soundPanelWidget() const;
   

@@ -6,7 +6,7 @@
   <refmeta>
     <refentrytitle>rdairplay</refentrytitle>
     <manvolnum>1</manvolnum>
-    <refmiscinfo class='source'>July 2019</refmiscinfo>
+    <refmiscinfo class='source'>September 2023</refmiscinfo>
     <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
   </refmeta>
   <refnamediv>
@@ -32,25 +32,66 @@
   <refsynopsisdiv id='synopsis'>
     <cmdsynopsis>
       <command>rdairplay</command>
-      <arg choice='opt'><replaceable>log-spec</replaceable>=<arg choice='opt'>:<replaceable>next-line</replaceable><arg choice='opt'>+</arg></arg></arg>
-      <sbr/>
+      <arg choice='opt'><replaceable>OPTIONS</replaceable></arg>
     </cmdsynopsis>
   </refsynopsisdiv>
 
   <refsect1 id='description'><title>Description</title>
   <para>
-    Where <replaceable>log-spec</replaceable> refers to one of the three
-    log machines (<userinput>--log1</userinput>, <userinput>--log2</userinput>
-    or <userinput>--log3</userinput>, referring to the
-    <computeroutput>Main Log</computeroutput>,
-    <computeroutput>Aux 1 Log</computeroutput>,
-    <computeroutput>Aux 2 Log</computeroutput> log machines, respectively)
-    and <replaceable>nextline</replaceable>
-    to the line number to do a 'make next' to after the log is loaded
-    (default = <userinput>0</userinput>). If the
-    <userinput>+</userinput> is appended, then the log is started after the
-    'make next'.
+    The <command>rdairplay</command><manvolnum>1</manvolnum> module is the
+    primary interface for executing logs other audio content. This man page
+    documents its command-line arguments. For overview of the UI and other
+    elements, see the <emphasis>Running Logs with RDAirPlay</emphasis> 
+    chapter in the 
+    <emphasis>Rivendell Operations and Administration Guide</emphasis>.
   </para>
+  </refsect1>
+
+  <refsect1 id='options'><title>Options</title>
+  <variablelist>
+    <varlistentry>
+      <term>
+	<replaceable>log-spec</replaceable>=<replaceable>log-name</replaceable>[:<replaceable>next-line</replaceable>[+]]
+      </term>
+      <listitem>
+	<para>
+	  After startup, load the <replaceable>log-name</replaceable> log into
+	  the log machine specified by <replaceable>log-spec</replaceable>.
+	  If a <replaceable>next-line</replaceable> value has been specified,
+	  then do a <userinput>make next</userinput> to that line. If a
+	  <userinput>+</userinput> has been appended to the line number,
+	  then start the log.
+	</para>
+	<para>
+	  <replaceable>log-spec</replaceable>
+	  must be <userinput>--log1</userinput>,
+	  <userinput>--log2</userinput>
+	  or <userinput>--log3</userinput>, referring to the
+	  <computeroutput>Main Log</computeroutput>,
+	  <computeroutput>Aux 1 Log</computeroutput> or
+	  <computeroutput>Aux 2 Log</computeroutput> log machines
+	  respectively. It is possible to use multiple
+	  <replaceable>log-spec</replaceable> clauses. If multiple clauses
+	  referring to the same log machine are given, then the last one
+	  specified will be used.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<option>--dump-panel-updates</option>
+      </term>
+      <listitem>
+	<para>
+	  When this option is given,
+	  <command>rdairplay</command><manvolnum>1</manvolnum> will print
+	  a dump of the currently loaded sound panel array to
+	  standard output each time the Rivendell user logged into the system
+	  is changed.
+	</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
   </refsect1>
 
   <refsect1 id='examples'><title>Examples</title>

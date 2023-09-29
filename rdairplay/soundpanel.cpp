@@ -23,14 +23,19 @@
 #include "colors.h"
 #include "soundpanel.h"
 
-SoundPanel::SoundPanel(int station_panels,int user_panels,bool flash,
-		       const QString &caption,const QString &label_template,
-		       bool extended,RDEventPlayer *player,
-		       RDCartDialog *cart_dialog,QWidget *parent)
+SoundPanel::SoundPanel(RDEventPlayer *player,RDCartDialog *cart_dialog,
+		       bool dump_panel_updates,QWidget *parent)
   : RDWidget(parent)
 {
-  d_panel=new RDSoundPanel(station_panels,user_panels,flash,caption,
-			   label_template,extended,player,cart_dialog,this);
+  d_panel=
+    new RDSoundPanel(rda->airplayConf()->panels(RDAirPlayConf::StationPanel),
+		     rda->airplayConf()->panels(RDAirPlayConf::UserPanel),
+		     rda->airplayConf()->flashPanel(),
+		     "RDAirPlay",
+		     rda->airplayConf()->buttonLabelTemplate(),
+		     false,
+		     player,cart_dialog,this);
+  d_panel->setDumpPanelUpdates(dump_panel_updates);
 }
 
 

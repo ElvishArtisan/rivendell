@@ -54,6 +54,7 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   QString stop_rmls[3];
   QPixmap bgmap;
   QString err_msg;
+  bool dump_panel_updates=false;
 
   air_panel=NULL;
   air_tracker=NULL;
@@ -89,6 +90,10 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
     air_start_line[i]=0;
     air_start_start[i]=false;
     for(unsigned j=0;j<rda->cmdSwitch()->keys();j++) {
+      if(rda->cmdSwitch()->key(j)=="--dump-panel-updates") {
+	dump_panel_updates=true;
+	rda->cmdSwitch()->setProcessed(j,true);
+      }
       if(rda->cmdSwitch()->key(j)==QString::asprintf("--log%u",i+1)) {
 	air_start_logname[i]=rda->cmdSwitch()->value(j);
 	for(int k=0;k<rda->cmdSwitch()->value(j).length();k++) {
@@ -412,12 +417,7 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
       rda->airplayConf()->panels(RDAirPlayConf::UserPanel)){
     int card=-1;
     air_panel=
-      new SoundPanel(rda->airplayConf()->panels(RDAirPlayConf::StationPanel),
-		     rda->airplayConf()->panels(RDAirPlayConf::UserPanel),
-		     rda->airplayConf()->flashPanel(),
-		     "RDAirPlay",
-		     rda->airplayConf()->buttonLabelTemplate(),false,
-		     air_event_player,air_cart_dialog,this);
+      new SoundPanel(air_event_player,air_cart_dialog,dump_panel_updates,this);
     air_panel->soundPanelWidget()->
       setPauseEnabled(rda->airplayConf()->panelPauseEnabled());
     air_panel->soundPanelWidget()->setCard(0,rda->airplayConf()->
