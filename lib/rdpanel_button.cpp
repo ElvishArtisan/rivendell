@@ -1,6 +1,6 @@
 // rdpanel_button.cpp
 //
-// The SoundPanel Button for RDAirPlay.
+// Component class for sound panel widgets.
 //
 //   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -313,19 +313,25 @@ void RDPanelButton::setAllowDrags(bool state)
 
 void RDPanelButton::setDuckVolume(int level)
 {
-	button_duck_volume=level;
+  button_duck_volume=level;
 }
 
 
 int RDPanelButton::duckVolume() const
 {
-	return button_duck_volume;
+  return button_duck_volume;
 }
 
 
 bool RDPanelButton::isEmpty() const
 {
   return button_cart==0;
+}
+
+
+bool RDPanelButton::isActive() const
+{
+  return button_play_deck!=NULL;
 }
 
 
@@ -360,6 +366,16 @@ QString RDPanelButton::json(int padding,bool final)
 
   return ret;
 }
+
+
+
+
+void RDPanelButton::setVisible(bool state)
+{
+  RDPushButton::setVisible(state);
+}
+
+
 
 
 void RDPanelButton::tickClock()
@@ -470,26 +486,26 @@ void RDPanelButton::dropEvent(QDropEvent *e)
 void RDPanelButton::WriteKeycap(int msecs)
 {
   QString text=button_text;
-  QPixmap *pix=new QPixmap(size().width()-2,size().height()-2);
+  QPixmap *pix=new QPixmap(PANEL_BUTTON_SIZE_X-2,PANEL_BUTTON_SIZE_Y-2);
   QPainter *p=new QPainter(pix);
   if(button_state) {
     if(button_flash) {
       if(button_flash_state) {
-	p->fillRect(0,0,size().width()-2,size().height()-2,button_color);
+	p->fillRect(0,0,pix->width(),pix->height(),button_color);
 	p->setPen(RDGetTextColor(button_color));
       }
       else {
-	p->fillRect(0,0,size().width()-2,size().height()-2,button_default_color);
+	p->fillRect(0,0,pix->width(),pix->height(),button_default_color);
 	p->setPen(RDGetTextColor(button_default_color));
       }
     }
     else {
-      p->fillRect(0,0,size().width()-2,size().height()-2,button_color);
+      p->fillRect(0,0,pix->width(),pix->height(),button_color);
       p->setPen(RDGetTextColor(button_color));
     }
   }
   else {
-    p->fillRect(0,0,size().width()-2,size().height()-2,button_color);
+    p->fillRect(0,0,pix->width(),pix->height(),button_color);
     p->setPen(RDGetTextColor(button_color));
   }
 
@@ -498,12 +514,13 @@ void RDPanelButton::WriteKeycap(int msecs)
   //
   QFontMetrics m(buttonFont());
   p->setFont(buttonFont());
+  
   p->drawText(RDPANEL_BUTTON_MARGIN,m.lineSpacing(),
-	      GetNextLine(&text,m,size().width()-2-3*RDPANEL_BUTTON_MARGIN));
+	      GetNextLine(&text,m,pix->width()-2-3*RDPANEL_BUTTON_MARGIN));
   p->drawText(RDPANEL_BUTTON_MARGIN,2*m.lineSpacing(),
-	      GetNextLine(&text,m,size().width()-2-3*RDPANEL_BUTTON_MARGIN));
+	      GetNextLine(&text,m,pix->width()-2-3*RDPANEL_BUTTON_MARGIN));
   p->drawText(RDPANEL_BUTTON_MARGIN,3*m.lineSpacing(),
-	      GetNextLine(&text,m,size().width()-2-3*RDPANEL_BUTTON_MARGIN));
+	      GetNextLine(&text,m,pix->width()-2-3*RDPANEL_BUTTON_MARGIN));
 
   //
   // Time Field & Output Text
@@ -512,31 +529,31 @@ void RDPanelButton::WriteKeycap(int msecs)
     if(msecs<0) {
       p->setFont(smallTimerFont());
       if(button_pause_when_finished) {
-        p->drawText(RDPANEL_BUTTON_MARGIN,size().height()-2-RDPANEL_BUTTON_MARGIN,"Finished");
+        p->drawText(RDPANEL_BUTTON_MARGIN,pix->height()-2-RDPANEL_BUTTON_MARGIN,"Finished");
         }
       else {
 	if(button_active_length>=0) {
 	  QString lenstr=RDGetTimeLength(button_active_length+1000,true,false);
-	  p->drawText(size().width()-p->fontMetrics().width(lenstr)-
+	  p->drawText(pix->width()-p->fontMetrics().width(lenstr)-
 		      RDPANEL_BUTTON_MARGIN-2,
-		      size().height()-2-RDPANEL_BUTTON_MARGIN,
+		      pix->height()-2-RDPANEL_BUTTON_MARGIN,
 		      lenstr);
 	}
 	else {
-	  p->drawText(RDPANEL_BUTTON_MARGIN,size().height()-2-
+	  p->drawText(RDPANEL_BUTTON_MARGIN,pix->height()-2-
 		      RDPANEL_BUTTON_MARGIN,tr("No Audio"));
 	}
       }
     }
     else {
       QString lenstr=RDGetTimeLength(1000+msecs,true,false);
-      p->drawText(size().width()-p->fontMetrics().width(lenstr)-
+      p->drawText(pix->width()-p->fontMetrics().width(lenstr)-
 		  RDPANEL_BUTTON_MARGIN-2,
-		  size().height()-2-RDPANEL_BUTTON_MARGIN,
+		  pix->height()-2-RDPANEL_BUTTON_MARGIN,
 		  lenstr);
       p->setFont(bigLabelFont());
-      p->drawText((size().width()-p->fontMetrics().width(button_output_text))/2,
-		  74*size().height()/100,
+      p->drawText((pix->width()-p->fontMetrics().width(button_output_text))/2,
+		  74*pix->height()/100,
       		  button_output_text);
     }
   }

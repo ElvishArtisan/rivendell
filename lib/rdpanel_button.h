@@ -1,8 +1,8 @@
 // rdpanel_button.h
 //
-// The SoundPanel Button for RDAirPlay.
+// Component class for sound panel widgets.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,14 +25,18 @@
 #include <rdpushbutton.h>
 #include <rdweb.h>
 
+//
+// Widget Settings
+//
+#define PANEL_BUTTON_SIZE_X 88
+#define PANEL_BUTTON_SIZE_Y 80
 #define RDPANEL_BUTTON_MARGIN 5
 
 class RDPanelButton : public RDPushButton
 {
  Q_OBJECT
  public:
-  RDPanelButton(int row,int col,RDStation *station,bool flash,
-		QWidget *parent=0);
+  RDPanelButton(int row,int col,RDStation *station,bool flash,QWidget *parent);
   void clear();
   int row() const;
   int column() const;
@@ -72,7 +76,9 @@ class RDPanelButton : public RDPushButton
   void setAllowDrags(bool state);
   void resetCounter();
   bool isEmpty() const;
+  bool isActive() const;
   QString json(int padding=0,bool final=false);
+  void setVisible(bool state);
 
  signals:
   void cartDropped(int row,int col,unsigned cartnum,const QColor &color,
@@ -128,4 +134,6 @@ class RDPanelButton : public RDPushButton
   int button_move_count;
   bool button_allow_drags;
 };
+
+
 #endif  // RDPANEL_BUTTON_H

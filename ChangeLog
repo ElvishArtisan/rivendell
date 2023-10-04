@@ -24408,3 +24408,6 @@
 	* Added a '--dump-panel-updates' switch to rdairplay(1).
 2023-09-29 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a typo in the rdpanel(1) man page.
+2023-10-04 Fred Gleason <fredg@paravelsystems.com>
+	* Got SoundPanel panel selection working for both Host and Station
+	panels.

@@ -310,6 +310,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdbusybar.cpp\
                           moc_rdbusydialog.cpp\
                           moc_rdbutton_dialog.cpp\
+                          moc_rdbutton_panel.cpp\
                           moc_rdcae.cpp\
                           moc_rdcardselector.cpp\
                           moc_rdcart_dialog.cpp\

@@ -36,6 +36,8 @@ RDSoundPanel::RDSoundPanel(int station_panels,int user_panels,bool flash,
 			   RDCartDialog *cart_dialog,QWidget *parent)
   : RDWidget(parent)
 {
+  panel_started=false;
+  panel_current_panel=NULL;
   panel_dump_panel_updates=false;
   panel_playmode_box=NULL;
   panel_button_columns=PANEL_MAX_BUTTON_COLUMNS;
@@ -82,9 +84,6 @@ RDSoundPanel::RDSoundPanel(int station_panels,int user_panels,bool flash,
   //
   // Load Buttons
   //
-  panel_mapper=new QSignalMapper(this);
-  connect(panel_mapper,SIGNAL(mapped(int)),this,SLOT(buttonMapperData(int)));
-
   UpdatePanels("");  // Load Host (Station) Panels
 
   //
@@ -98,22 +97,6 @@ RDSoundPanel::RDSoundPanel(int station_panels,int user_panels,bool flash,
   connect(panel_selector_box,SIGNAL(setupClicked()),
 	  this,SLOT(panelSetupData()));
 
-  if(panel_station_panels>0) {
-    panel_number=0;
-    panel_type=RDAirPlayConf::StationPanel;
-    panel_panels.value("").at(0)->show();
-  }
-  else {
-    if(panel_user_panels>0) {
-      panel_number=0;
-      panel_type=RDAirPlayConf::UserPanel;
-      panel_panels.value(rda->user()->name()).at(0)->show();
-    }
-    else {
-      setDisabled(true);
-    }
-  }
-  
   //
   // Play Mode Box
   //
@@ -178,7 +161,6 @@ RDSoundPanel::RDSoundPanel(int station_panels,int user_panels,bool flash,
   //
   // Load Panel Names
   //
-
   QString sql;
   sql=QString("select ")+
     "`PANEL_NO`,"+
@@ -206,21 +188,18 @@ RDSoundPanel::RDSoundPanel(int station_panels,int user_panels,bool flash,
 						     i+1,i+1));
   }
   panel_selector_box->setFocus();
-
-  panel_scan_timer=new QTimer(this);
-  connect(panel_scan_timer,SIGNAL(timeout()),this,SLOT(scanPanelData()));
-  panel_scan_timer->start(PANEL_SCAN_INTERVAL);
+  setDisabled((panel_station_panels==0)&&(panel_user_panels==0));
 }
 
 
 RDSoundPanel::~RDSoundPanel()
 {
-  for(QMap<QString,QList<RDButtonPanel *> >::const_iterator it=panel_panels.begin();it!=panel_panels.end();it++) {
+  for(QMap<QString,QList<RDButtonPanel *> >::const_iterator it=panel_arrays.begin();it!=panel_arrays.end();it++) {
     for(int i=0;i<it.value().size();i++) {
       delete it.value().at(i);
     }
   }
-  panel_panels.clear();
+  panel_arrays.clear();
 }
 
 
@@ -355,7 +334,7 @@ void RDSoundPanel::setText(RDAirPlayConf::PanelType type,int panel,int row,
     username=rda->user()->name();
   }
   RDPanelButton *button=
-    panel_panels.value(username).at(panel)->panelButton(row,col);
+    panel_arrays.value(username).at(panel)->panelButton(row,col);
   button->setText(str);
   SaveButton(type,panel,row,col);
 }
@@ -369,7 +348,7 @@ void RDSoundPanel::setColor(RDAirPlayConf::PanelType type,int panel,int row,
     username=rda->user()->name();
   }
   RDPanelButton *button=
-    panel_panels.value(username).at(panel)->panelButton(row,col);
+    panel_arrays.value(username).at(panel)->panelButton(row,col);
   button->setDefaultColor(color);
   SaveButton(type,panel,row,col);
 }
@@ -389,16 +368,16 @@ void RDSoundPanel::duckVolume(RDAirPlayConf::PanelType type,int panel,int row,
     for(int i=0;i<panel_button_columns;i++) {
 	    for(int j=0;j<panel_button_rows;j++) {
       RDPlayDeck *deck=
-        panel_panels.value(username).at(panel)->panelButton(j,i)->playDeck();
+        panel_arrays.value(username).at(panel)->panelButton(j,i)->playDeck();
       if((row==j || row==-1) && (col==i || col==-1)) {
 	if(mport==-1) {
-	  panel_panels.value(username).at(panel)->
+	  panel_arrays.value(username).at(panel)->
 	    panelButton(j,i)->setDuckVolume(level);
 	}    
         if(deck!=NULL) {
           if(edit_mport==-1 || 
              edit_mport==
-	     panel_panels.value(username).at(panel)->
+	     panel_arrays.value(username).at(panel)->
 	     panelButton(j,i)->outputText().toInt()) {
 	    deck->duckVolume(level,fade);
           }
@@ -444,7 +423,7 @@ void RDSoundPanel::setActionMode(RDAirPlayConf::ActionMode mode)
   if(mode!=panel_action_mode) {
     panel_action_mode=mode;
     panel_setup_button->setEnabled(panel_action_mode==RDAirPlayConf::Normal);
-    for(QMap<QString,QList<RDButtonPanel *> >::const_iterator it=panel_panels.begin();it!=panel_panels.end();it++) {
+    for(QMap<QString,QList<RDButtonPanel *> >::const_iterator it=panel_arrays.begin();it!=panel_arrays.end();it++) {
       for(int i=0;i<it.value().size();i++) {
 	if(i<panel_station_panels &&
 	   (!panel_config_panels) &&   
@@ -493,7 +472,7 @@ RDAirPlayConf::PanelType RDSoundPanel::currentType() const
 QString RDSoundPanel::json(const QString &owner,int padding,bool final) const
 {
   QString ret;
-  QList<RDButtonPanel *> panels=panel_panels.value(owner);
+  QList<RDButtonPanel *> panels=panel_arrays.value(owner);
 
   ret+=RDJsonPadding(padding)+"\"array\": {\r\n";
   ret+=RDJsonField("owner",owner,4+padding);
@@ -520,9 +499,9 @@ QString RDSoundPanel::json(int padding) const
   QString ret;
 
   int count=0;
-  for(QMap<QString,QList<RDButtonPanel *> >::const_iterator it=panel_panels.
-	begin();it!=panel_panels.end();it++) {
-    ret+=json(it.key(),4,++count==panel_panels.size());
+  for(QMap<QString,QList<RDButtonPanel *> >::const_iterator it=panel_arrays.
+	begin();it!=panel_arrays.end();it++) {
+    ret+=json(it.key(),4,++count==panel_arrays.size());
   }
 
   return ret;
@@ -540,8 +519,8 @@ void RDSoundPanel::setButton(RDAirPlayConf::PanelType type,int panel,
     username=rda->user()->name();
   }
   RDPanelButton *button=
-    panel_panels.value(username).at(panel)->panelButton(row,col);
-  if(button->playDeck()!=NULL) {
+    panel_arrays.value(username).at(panel)->panelButton(row,col);
+  if(button->isActive()) {
     return;
   }
   button->clear();
@@ -643,14 +622,17 @@ void RDSoundPanel::changeUser()
       q->next();
     }
     else {
-      panel_selector_box->insertItem(QString::asprintf("[U:%d] Panel U:%d",
-						       i+1,i+1));
+      panel_selector_box->
+	insertItem(QString::asprintf("[U:%d] Panel U:%d",i+1,i+1));
     }
   }
   delete q;
   panel_selector_box->setCurrentIndex(current_item);
 
-  UpdateButtonViewport();
+  if(!panel_started) {
+    panelActivatedData(panel_selector_box->currentIndex());
+    panel_started=true;
+  }
 }
 
 
@@ -691,11 +673,11 @@ void RDSoundPanel::panelDown()
 
 void RDSoundPanel::panelActivatedData(int n)
 {
+  printf("panelActivatedData(%d)\n",n);
   QString username;
   if(panel_type==RDAirPlayConf::UserPanel) {
     username=rda->user()->name();
   }
-  panel_panels.value(username).at(panel_number)->hide();
   if(n<panel_station_panels) {
     panel_type=RDAirPlayConf::StationPanel;
     panel_number=n;
@@ -706,9 +688,8 @@ void RDSoundPanel::panelActivatedData(int n)
     panel_number=n-panel_station_panels;
     username=rda->user()->name();
   }
-  panel_panels.value(username).at(panel_number)->show();
 
-  UpdateButtonViewport();
+  ShowPanel(panel_type,panel_number);
 }
 
 
@@ -761,7 +742,7 @@ void RDSoundPanel::setupClickedData()
   }
   if(rda->station()->enableDragdrop()&&(rda->station()->enforcePanelSetup())) {
     for(QMap<QString,QList<RDButtonPanel *> >::const_iterator it=
-	  panel_panels.begin();it!=panel_panels.end();it++) {
+	  panel_arrays.begin();it!=panel_arrays.end();it++) {
       for(int i=0;i<it.value().size();i++) {
 	it.value().at(i)->setAcceptDrops(panel_setup_mode);
       }
@@ -771,11 +752,15 @@ void RDSoundPanel::setupClickedData()
 }
 
 
-void RDSoundPanel::buttonMapperData(int grid_pos)
+void RDSoundPanel::buttonClickedData(int pnum,int col,int row)
 {
-  RDPanelButton *button=GetCurrentPanel()->
-    panelButton(grid_pos/PANEL_MAX_BUTTON_COLUMNS,
-		grid_pos%PANEL_MAX_BUTTON_COLUMNS);
+  //  printf("buttonMapperData(pnum: %d,col: %d  row: %d)\n",pnum,col,row);
+
+  if(panel_current_panel==NULL) {
+    printf("NO CURRENT PANEL!\n");
+    return;
+  }
+  RDPanelButton *button=panel_current_panel->panelButton(row,col);
   unsigned cartnum;
 
   switch(panel_action_mode) {
@@ -788,7 +773,7 @@ void RDSoundPanel::buttonMapperData(int grid_pos)
   case RDAirPlayConf::CopyTo:
     if(button->playDeck()==NULL
        && ((panel_type==RDAirPlayConf::UserPanel) || 
-	   panel_config_panels)) { 
+    	   panel_config_panels)) { 
       emit selectClicked(0,button->row(),button->column());
     }
     break;
@@ -951,21 +936,16 @@ void RDSoundPanel::onairFlagChangedData(bool state)
 }
 
 
-void RDSoundPanel::scanPanelData()
-{
-  if(panel_action_mode==RDAirPlayConf::Normal) {
-    ShowPanel(panel_type,panel_number);
-  }
-}
-
-
 void RDSoundPanel::resizeEvent(QResizeEvent *e)
 {
   //  int w=size().width();
   int h=size().height();
   
-  UpdateButtonViewport();
-  
+  for(QMap<QString,QList<RDButtonPanel *> >::const_iterator it=panel_arrays.begin();it!=panel_arrays.end();it++) {
+    for(int i=0;i<it.value().size();i++) {
+      it.value().at(i)->setGeometry(0,0,size().width()-5,size().height()-60);
+    }
+  }
   panel_selector_box->setGeometry(0,h-50,2*PANEL_BUTTON_SIZE_X+10,50);
   panel_playmode_box->setGeometry(2*PANEL_BUTTON_SIZE_X+15,h-50,
 				  PANEL_BUTTON_SIZE_X+10,50);
@@ -992,23 +972,6 @@ void RDSoundPanel::wheelEvent(QWheelEvent *e)
 }
 
 
-void RDSoundPanel::UpdateButtonViewport()
-{
-  QString username;
-  if(panel_type==RDAirPlayConf::UserPanel) {
-    username=rda->user()->name();
-  }
-  QRect viewport(0,0,size().width()-5,size().height()-60);
-  RDButtonPanel *panel=panel_panels.value(username).at(panel_number);
-  for(int i=0;i<panel_button_rows;i++) {
-    for(int j=0;j<panel_button_columns;j++) {
-      RDPanelButton *button=panel->panelButton(i,j);
-      button->setVisible(viewport.contains(button->geometry()));
-    }
-  }
-}
-
-
 void RDSoundPanel::PlayButton(RDAirPlayConf::PanelType type,int panel,
 		int row,int col,RDLogLine::StartSource src,bool hookmode,
 		int mport,bool pause_when_finished)
@@ -1022,8 +985,8 @@ void RDSoundPanel::PlayButton(RDAirPlayConf::PanelType type,int panel,
   
   for(int i=0;i<panel_button_columns;i++) {
     for(int j=0;j<panel_button_rows;j++) {
-      if(panel_panels.value(username).at(panel)->panelButton(j,i)->cart()>0 && 
-         panel_panels.value(username).at(panel)->
+      if(panel_arrays.value(username).at(panel)->panelButton(j,i)->cart()>0 && 
+         panel_arrays.value(username).at(panel)->
 	 panelButton(j,i)->state()==false) {
         if(edit_col==-1 || col==i) {
 	  edit_col=i;
@@ -1039,7 +1002,7 @@ void RDSoundPanel::PlayButton(RDAirPlayConf::PanelType type,int panel,
   }
   
   RDPanelButton *button=
-    panel_panels.value(username).at(panel)->panelButton(edit_row,edit_col);
+    panel_arrays.value(username).at(panel)->panelButton(edit_row,edit_col);
   RDPlayDeck *deck=button->playDeck();
   if(deck!=NULL) {
     deck->play(deck->currentPosition());
@@ -1210,14 +1173,14 @@ void RDSoundPanel::PauseButton(RDAirPlayConf::PanelType type,int panel,
   for(int i=0;i<panel_button_columns;i++) {
     for(int j=0;j<panel_button_rows;j++) {
       RDPlayDeck *deck=
-        panel_panels.value(username).at(panel)->panelButton(j,i)->playDeck();
+        panel_arrays.value(username).at(panel)->panelButton(j,i)->playDeck();
       if(deck!=NULL && (row==j || row==-1) && (col==i || col==-1)) {
         if(mport==-1 || 
-           mport==panel_panels.value(username).at(panel)->
+           mport==panel_arrays.value(username).at(panel)->
 	   panelButton(j,i)->outputText().toInt()) {
           deck->pause();
 	  
-          panel_panels.value(username).at(panel)->
+          panel_arrays.value(username).at(panel)->
 	    panelButton(j,i)->setStartTime(QTime());
 	}
       }
@@ -1240,19 +1203,19 @@ void RDSoundPanel::StopButton(RDAirPlayConf::PanelType type,int panel,
     }
     for(int i=0;i<panel_button_columns;i++) {
 	    for(int j=0;j<panel_button_rows;j++) {
-      RDPlayDeck *deck=panel_panels.value(username).at(panel)->
+      RDPlayDeck *deck=panel_arrays.value(username).at(panel)->
 	panelButton(j,i)->playDeck();
       if((row==j || row==-1) && (col==i || col==-1)) {
         if(deck!=NULL) {
           if(edit_mport==-1 || 
-             edit_mport==panel_panels.value(username).
+             edit_mport==panel_arrays.value(username).
 	     at(panel)->panelButton(j,i)->outputText().toInt()) {
             if(panel_pause_enabled) {
-              panel_panels.value(username).at(panel)->
+              panel_arrays.value(username).at(panel)->
 		panelButton(j,i)->setPauseWhenFinished(pause_when_finished);
               }
             else {
-              panel_panels.value(username).at(panel)->
+              panel_arrays.value(username).at(panel)->
 		panelButton(j,i)->setPauseWhenFinished(false);
               }
             switch(deck->state()) {
@@ -1272,11 +1235,11 @@ void RDSoundPanel::StopButton(RDAirPlayConf::PanelType type,int panel,
         }
       else {
         if(!pause_when_finished && panel_pause_enabled) {
-          panel_panels.value(username).at(panel)->
+          panel_arrays.value(username).at(panel)->
 	    panelButton(j,i)->setState(false); 
-          panel_panels.value(username).at(panel)->
+          panel_arrays.value(username).at(panel)->
 	    panelButton(j,i)->setPauseWhenFinished(false); 
-          panel_panels.value(username).at(panel)->panelButton(j,i)->reset(); 
+          panel_arrays.value(username).at(panel)->panelButton(j,i)->reset(); 
           }
         }
       }
@@ -1314,182 +1277,43 @@ void RDSoundPanel::StopButton(RDPlayDeck *deck)
   }    
 }
 
-/*
-void RDSoundPanel::LoadPanels()
-{
-  for(unsigned i=0;i<panel_panels.size();i++) {
-    delete panel_panels[i];
-  }
-  panel_panels.clear();
-
-  //
-  // Load Buttons
-  //
-  for(int i=0;i<panel_station_panels;i++) {
-    panel_panels.push_back(new RDButtonPanel(panel_type,i,panel_button_columns,
-					      panel_button_rows,
-					      rda->station(),panel_flash,this));
-    for(int j=0;j<panel_button_rows;j++) {
-      for(int k=0;k<panel_button_columns;k++) {
-	connect(panel_panels.back()->panelButton(j,k),SIGNAL(clicked()),
-		panel_mapper,SLOT(map()));
-	panel_mapper->setMapping(panel_panels.back()->panelButton(j,k),
-				 j*panel_button_columns+k);
-      }
-    }
-    LoadPanel(RDAirPlayConf::StationPanel,i);
-    panel_panels.back()->setAllowDrags(rda->station()->enableDragdrop());
-  }
-  for(int i=0;i<panel_user_panels;i++) {
-    panel_panels.push_back(new RDButtonPanel(panel_type,i,panel_button_columns,
-					      panel_button_rows,
-					      rda->station(),panel_flash,this));
-    for(int j=0;j<panel_button_rows;j++) {
-      for(int k=0;k<panel_button_columns;k++) {
-	connect(panel_panels.back()->panelButton(j,k),SIGNAL(clicked()),
-		panel_mapper,SLOT(map()));
-	panel_mapper->setMapping(panel_panels.back()->panelButton(j,k),
-				 j*panel_button_columns+k);
-      }
-    }
-    panel_panels.back()->setAllowDrags(rda->station()->enableDragdrop());
-    LoadPanel(RDAirPlayConf::UserPanel,i);
-  }
-}
-
-
-void RDSoundPanel::LoadPanel(RDAirPlayConf::PanelType type,int panel)
-{
-  QString owner;
-  int offset=0;
-
-  switch(type) {
-  case RDAirPlayConf::UserPanel:
-    owner=rda->user()->name();
-    offset=panel_station_panels+panel;
-    break;
-
-  case RDAirPlayConf::StationPanel:
-    owner=rda->station()->name();
-    offset=panel;
-    break;
-  }
-
-  QString sql=QString("select ")+
-    panel_tablename+".`ROW_NO`,"+         // 00
-    panel_tablename+".`COLUMN_NO`,"+      // 01
-    panel_tablename+".`LABEL`,"+          // 02
-    panel_tablename+".`CART`,"+           // 03
-    panel_tablename+".`DEFAULT_COLOR`,"+  // 04
-    "`CART`.`FORCED_LENGTH`,"+            // 05
-    "`CART`.`AVERAGE_HOOK_LENGTH`,"+      // 06
-    "`CART`.`TYPE` "+                     // 07
-    "from "+panel_tablename+" "+          // 08
-    "left join `CART` on "+panel_tablename+".`CART`=`CART`.`NUMBER` "+
-    "where "+panel_tablename+QString::asprintf(".`TYPE`=%d && ",type)+
-    panel_tablename+".`OWNER`='"+RDEscapeString(owner)+"' && "+
-    panel_tablename+QString::asprintf(".`PANEL_NO`=%d ",panel)+
-    "order by "+panel_tablename+".`COLUMN_NO`,"+panel_tablename+".`ROW_NO`";
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  while(q->next()) {
-    if(panel_panels[offset]->panelButton(q->value(0).toInt(),
-	      q->value(1).toInt())->playDeck()==NULL) {
-      panel_panels[offset]->
-	panelButton(q->value(0).toInt(),q->value(1).toInt())->
-	setText(q->value(2).toString());
-      panel_panels[offset]->
-	panelButton(q->value(0).toInt(),q->value(1).toInt())->
-	setCart(q->value(3).toInt());
-      panel_panels[offset]->
-	panelButton(q->value(0).toInt(),q->value(1).toInt())->
-	setLength(false,q->value(5).toInt());
-      panel_panels[offset]->
-	panelButton(q->value(0).toInt(),q->value(1).toInt())->
-	setLength(true,q->value(6).toInt());
-      if((panel_playmode_box!=NULL)&&(panel_playmode_box->currentIndex()==1)&&
-	 (q->value(6).toUInt()>0)) {
-	panel_panels[offset]->
-	  panelButton(q->value(0).toInt(),q->value(1).toInt())->
-	  setActiveLength(q->value(6).toInt());
-      }
-      else {
-	if(q->value(7).toInt()==RDCart::Macro) {
-	  panel_panels[offset]->
-	    panelButton(q->value(0).toInt(),q->value(1).toInt())->
-	    setActiveLength(q->value(5).toInt());
-	}
-	else {
-	  if(q->value(5).toInt()>0) {
-	    panel_panels[offset]->
-	      panelButton(q->value(0).toInt(),q->value(1).toInt())->
-	      setActiveLength(q->value(5).toInt());
-	  }
-	  else {
-	    panel_panels[offset]->
-	      panelButton(q->value(0).toInt(),q->value(1).toInt())->
-	      setActiveLength(-1);
-	  }
-	}
-      }
-      if(q->value(4).toString().isEmpty()) {
-	panel_panels[offset]->
-	  panelButton(q->value(0).toInt(),q->value(1).toInt())->
-	  setColor(palette().color(QPalette::Background));
-	panel_panels[offset]->
-	  panelButton(q->value(0).toInt(),q->value(1).toInt())->
-	  setDefaultColor(palette().color(QPalette::Background));
-      }
-      else {
-	panel_panels[offset]->
-	  panelButton(q->value(0).toInt(),q->value(1).toInt())->
-	  setColor(QColor(q->value(4).toString()));
-	panel_panels[offset]->
-	  panelButton(q->value(0).toInt(),q->value(1).toInt())->
-	  setDefaultColor(QColor(q->value(4).toString()));
-      }
-    }
-  }
-  delete q;
-
-  UpdateButtonViewport();
-}
-*/
-
 
 void RDSoundPanel::UpdatePanels(const QString &username)
 {
   QString owner=username;
   RDAirPlayConf::PanelType type=RDAirPlayConf::UserPanel;
-  int size=panel_user_panels;
+  int max_panels=panel_user_panels;
 
   if(username.isEmpty()) {
     owner=rda->station()->name();
     type=RDAirPlayConf::StationPanel;
-    size=panel_station_panels;
+    max_panels=panel_station_panels;
   }
 
   //
-  // Create the panel
+  // Load the array if it isn't already loaded
   //
-  if(size>0) {
+  if(max_panels>0) {
     QList<RDButtonPanel *> list;
-    if(panel_panels.value(username).size()>0) {
-      list=panel_panels.value(username);
+    if(panel_arrays.value(username).size()>0) {
+      list=panel_arrays.value(username);
     }
-    for(int i=panel_panels.value(username).size();i<size;i++) {
+    for(int i=panel_arrays.value(username).size();i<max_panels;i++) {
       RDButtonPanel *panel=new RDButtonPanel(type,i,this);
-      for(int j=0;j<PANEL_MAX_BUTTON_COLUMNS;j++) {
-	for(int k=0;k<PANEL_MAX_BUTTON_ROWS;k++) {
-	  RDPanelButton *button=panel->panelButton(k,j);
-	  connect(button,SIGNAL(clicked()),panel_mapper,SLOT(map()));
-	  panel_mapper->setMapping(button,k*PANEL_MAX_BUTTON_COLUMNS+j);
-	}
-      }
+      printf("new panel  type: %d  number: %d  ptr: %p\n",
+	     type,i,panel);
+      
+      connect(panel,SIGNAL(buttonClicked(int,int,int)),
+	      this,SLOT(buttonClickedData(int,int,int)));
+      panel->hide();
       list.push_back(panel);
     }
-    panel_panels[username]=list;
+    panel_arrays[username]=list;
   }
 
+  //
+  // Update button attributes
+  //
   QString sql=QString("select ")+
     panel_tablename+".`PANEL_NO`,"+       // 00
     panel_tablename+".`ROW_NO`,"+         // 01
@@ -1503,16 +1327,17 @@ void RDSoundPanel::UpdatePanels(const QString &username)
     "from "+panel_tablename+" "+          // 09
     "left join `CART` on "+panel_tablename+".`CART`=`CART`.`NUMBER` "+
     "where "+panel_tablename+QString::asprintf(".`TYPE`=%d && ",type)+
-    panel_tablename+".`OWNER`='"+RDEscapeString(owner)+"' "+
+    panel_tablename+".`OWNER`='"+RDEscapeString(owner)+"' && "+
+    panel_tablename+QString::asprintf(".`PANEL_NO`<%d ",max_panels)+
     "order by "+
     panel_tablename+".`PANEL_NO`,"+
     panel_tablename+".`COLUMN_NO`,"+
     panel_tablename+".`ROW_NO`";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
-    RDPanelButton *button=panel_panels.value(username).at(q->value(0).toInt())->
+    RDPanelButton *button=panel_arrays.value(username).at(q->value(0).toInt())->
       panelButton(q->value(1).toInt(),q->value(2).toInt());
-    if(button->playDeck()==NULL) {
+    if(!button->isActive()) {
       button->setText(q->value(3).toString());
       button->setCart(q->value(4).toInt());
       button->setLength(false,q->value(6).toInt());
@@ -1554,25 +1379,14 @@ void RDSoundPanel::ShowPanel(RDAirPlayConf::PanelType type,int offset)
   if(type==RDAirPlayConf::UserPanel) {
     username=rda->user()->name();
   }
-  for(QMap<QString,QList<RDButtonPanel *> >::const_iterator it=
-	panel_panels.begin();it!=panel_panels.end();it++) {
-    if(it.key()==username) {
-      for(int i=0;i<it.value().size();i++) {
-	if(offset==i) {
-	  it.value().at(i)->show();
-	}
-	else {
-	  it.value().at(i)->hide();
-	}
-      }
+  printf("username: %s\n",username.toUtf8().constData());
+  if(panel_arrays.value(username).size()>offset) {
+    if(panel_current_panel!=NULL) {
+      panel_current_panel->hide();
     }
-    else {
-      for(int i=0;i<it.value().size();i++) {
-	it.value().at(i)->hide();
-      }
-    }
+    panel_arrays.value(username).at(offset)->show();
+    panel_current_panel=panel_arrays.value(username).at(offset);
   }
-  UpdateButtonViewport();
 }
 
 
@@ -1599,7 +1413,7 @@ void RDSoundPanel::SaveButton(RDAirPlayConf::PanelType type,
   }
 
   RDPanelButton *button=
-    panel_panels.value(username).at(panel)->panelButton(row,col);
+    panel_arrays.value(username).at(panel)->panelButton(row,col);
 
   //
   // Determine if the button exists
@@ -1934,17 +1748,6 @@ QString RDSoundPanel::PanelOwner(RDAirPlayConf::PanelType type)
     return rda->user()->name();
   }
   return QString();
-}
-
-
-RDButtonPanel *RDSoundPanel::GetCurrentPanel() const
-{
-  QString username;
-
-  if(panel_type==RDAirPlayConf::UserPanel) {
-    username=rda->user()->name();
-  }
-  return panel_panels.value(username).at(panel_number);
 }
 
 

@@ -112,23 +112,20 @@ class RDSoundPanel : public RDWidget
   void resetClickedData();
   void allClickedData();
   void setupClickedData();
-  void buttonMapperData(int grid_pos);
-  //  void buttonMapperData(QWidget *w);
+  void buttonClickedData(int pnum,int col,int row);
   void stateChangedData(int id,RDPlayDeck::State state);
   void hookEndData(int id);
   void timescalingSupportedData(int card,bool state);
   void panelSetupData();
   void onairFlagChangedData(bool state);
-  void scanPanelData();
 
  protected:
   void resizeEvent(QResizeEvent *e);
   void wheelEvent(QWheelEvent *e);
 
  private:
-  void UpdateButtonViewport();
   void PlayButton(RDAirPlayConf::PanelType type,int panel,int row,int col,
-		RDLogLine::StartSource src,bool hookmode,int mport=-1,
+		  RDLogLine::StartSource src,bool hookmode,int mport=-1,
                   bool pause_when_finished=false);
   bool PlayAudio(RDPanelButton *button,RDCart *cart,bool hookmode,int mport=-1);
   void PlayMacro(RDPanelButton *button,RDCart *cart);
@@ -138,12 +135,9 @@ class RDSoundPanel : public RDWidget
                int mport=-1,bool pause_when_finished=false,int fade_out=0);
   void StopButton(int id);
   void StopButton(RDPlayDeck *deck);
-  //  void LoadPanels();
-  //  void LoadPanel(RDAirPlayConf::PanelType type,int panel);
   void UpdatePanels(const QString &username);
   void ShowPanel(RDAirPlayConf::PanelType type,int offset);
   void SaveButton(RDAirPlayConf::PanelType type,int panel,int row,int col);
-  //  int PanelOffset(RDAirPlayConf::PanelType type,int panel);
   int GetFreeButtonDeck();
   int GetFreeOutput();
   void LogPlayEvent(unsigned cartnum,int cutnum);
@@ -157,9 +151,9 @@ class RDSoundPanel : public RDWidget
   void ClearReset();
   QString PanelTag(int index);
   QString PanelOwner(RDAirPlayConf::PanelType type);
-  RDButtonPanel *GetCurrentPanel() const;
   RDPanelButton *GetVisibleButton(int row,int col) const;
-  QMap<QString,QList<RDButtonPanel *> > panel_panels;
+  QMap<QString,QList<RDButtonPanel *> > panel_arrays;
+  RDButtonPanel *panel_current_panel;
   RDComboBox *panel_selector_box;
   QComboBox *panel_playmode_box;
   RDPushButton *panel_setup_button;
@@ -167,7 +161,6 @@ class RDSoundPanel : public RDWidget
   RDPushButton *panel_all_button;
   RDAirPlayConf::PanelType panel_type;
   RDButtonDialog *panel_button_dialog;
-  QSignalMapper *panel_mapper;
   QString panel_tablename;
   QString panel_name_tablename;
   int panel_number;
@@ -199,9 +192,9 @@ class RDSoundPanel : public RDWidget
   int panel_button_rows;
   RDCartDialog *panel_cart_dialog;
   bool panel_onair_flag;
-  QTimer *panel_scan_timer;
   QString panel_caption;
   bool panel_dump_panel_updates;
+  bool panel_started;
 };
 
 #endif  // RDSOUND_PANEL_H

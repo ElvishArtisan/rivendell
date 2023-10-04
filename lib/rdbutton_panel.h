@@ -1,6 +1,6 @@
 // rdbutton_panel.h
 //
-// The sound panel widget for RDAirPlay
+// Component class for sound panel widgets
 //
 //   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -23,6 +23,7 @@
 
 #include <QDateTime>
 #include <QLabel>
+#include <QSignalMapper>
 
 #include <rdairplay_conf.h>
 #include <rdstation.h>
@@ -37,12 +38,10 @@
 //
 #define PANEL_MAX_BUTTON_COLUMNS 40
 #define PANEL_MAX_BUTTON_ROWS 23
-#define PANEL_BUTTON_SIZE_X 88
-#define PANEL_BUTTON_SIZE_Y 80
-
 
 class RDButtonPanel : public RDWidget
 {
+  Q_OBJECT;
  public:
   RDButtonPanel(RDAirPlayConf::PanelType type,int number,QWidget *parent);
   ~RDButtonPanel();
@@ -55,15 +54,26 @@ class RDButtonPanel : public RDWidget
   void setActionMode(RDAirPlayConf::ActionMode mode);
   void setAllowDrags(bool state);
   void setAcceptDrops(bool state);
-  void hide();
-  void show();
   void clear();
   QString json(int padding=0,bool final=false) const;
+
+ public slots:
+  void setVisible(bool state);
+
+ signals:
+  void buttonClicked(int pnum,int col,int row);
+
+ private slots:
+  void buttonClickedData(int id);
+
+ protected:
+  void resizeEvent(QResizeEvent *e);
 
  private:
   int panel_number;
   QString panel_title;
+  QSignalMapper *panel_button_mapper;
   RDPanelButton *panel_button[PANEL_MAX_BUTTON_ROWS][PANEL_MAX_BUTTON_COLUMNS];
 };
 
-#endif  // RDPANEL_BUTTON_H
+#endif  // RDBUTTON_PANEL_H

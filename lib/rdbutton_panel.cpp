@@ -1,8 +1,8 @@
 // rdbutton_panel.cpp
 //
-// The sound panel widget for RDAirPlay
+// Component class for sound panel widgets
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,10 +18,10 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qcolor.h>
+#include <QColor>
 
-#include <rdbutton_panel.h>
-#include <rdbutton_dialog.h>
+#include "rdbutton_dialog.h"
+#include "rdbutton_panel.h"
 
 RDButtonPanel::RDButtonPanel(RDAirPlayConf::PanelType type,int number,
 			     QWidget *parent)
@@ -29,21 +29,25 @@ RDButtonPanel::RDButtonPanel(RDAirPlayConf::PanelType type,int number,
 {
   panel_number=number;
 
+  panel_button_mapper=new QSignalMapper(this);
+  connect(panel_button_mapper,SIGNAL(mapped(int)),
+	  this,SLOT(buttonClickedData(int)));
+
   for(int i=0;i<PANEL_MAX_BUTTON_ROWS;i++) {
     for(int j=0;j<PANEL_MAX_BUTTON_COLUMNS;j++) {
-      panel_button[i][j]=
-	new RDPanelButton(i,j,rda->station(),rda->panelConf()->flashPanel(),
-			  parent);
+      panel_button[i][j]=new RDPanelButton(i,j,rda->station(),
+					   rda->panelConf()->flashPanel(),this);
+      int id=(number*PANEL_MAX_BUTTON_COLUMNS*PANEL_MAX_BUTTON_ROWS)+
+	(i*PANEL_MAX_BUTTON_COLUMNS)+j;
+      connect(panel_button[i][j],SIGNAL(clicked()),
+	      panel_button_mapper,SLOT(map()));
+      panel_button_mapper->setMapping(panel_button[i][j],id);
       if(rda->station()->enableDragdrop()) {
 	panel_button[i][j]->setAllowDrags(true);
 	if(!rda->station()->enforcePanelSetup()) {
 	  panel_button[i][j]->setAcceptDrops(true);
 	}
       }
-      panel_button[i][j]->setGeometry((15+PANEL_BUTTON_SIZE_X)*j,
-				      (15+PANEL_BUTTON_SIZE_Y)*i,
-				      PANEL_BUTTON_SIZE_X,
-				      PANEL_BUTTON_SIZE_Y);
       panel_button[i][j]->hide();
       parent->connect(parent,SIGNAL(buttonFlash(bool)),
 		      panel_button[i][j],SLOT(flashButton(bool)));
@@ -64,6 +68,7 @@ RDButtonPanel::~RDButtonPanel()
       delete panel_button[i][j];
     }
   }
+  delete panel_button_mapper;
 }
 
 
@@ -202,26 +207,6 @@ void RDButtonPanel::setAcceptDrops(bool state)
 }
 
 
-void RDButtonPanel::hide()
-{
-  for(int i=0;i<PANEL_MAX_BUTTON_ROWS;i++) {
-    for(int j=0;j<PANEL_MAX_BUTTON_COLUMNS;j++) {
-      panel_button[i][j]->hide();
-    }
-  }
-}
-
-
-void RDButtonPanel::show()
-{
-  for(int i=0;i<PANEL_MAX_BUTTON_ROWS;i++) {
-    for(int j=0;j<PANEL_MAX_BUTTON_COLUMNS;j++) {
-      panel_button[i][j]->show();
-    }
-  }
-}
-
-
 void RDButtonPanel::clear()
 {
   for(int i=0;i<PANEL_MAX_BUTTON_ROWS;i++) {
@@ -267,4 +252,45 @@ QString RDButtonPanel::json(int padding,bool final) const
   ret+="\r\n";
 
   return ret;
+}
+
+
+void RDButtonPanel::setVisible(bool state)
+{
+  printf("Calling RDButtonPanel::setVisible(%d) @ %p\n",state,this);
+  RDWidget::setVisible(state);
+  for(int i=0;i<PANEL_MAX_BUTTON_ROWS;i++) {
+    for(int j=0;j<PANEL_MAX_BUTTON_COLUMNS;j++) {
+      panel_button[i][j]->setVisible(state);
+    }
+  }
+}
+
+
+void RDButtonPanel::buttonClickedData(int id)
+{
+  int pnum=id/(PANEL_MAX_BUTTON_COLUMNS*PANEL_MAX_BUTTON_ROWS);
+  int pos=id%(PANEL_MAX_BUTTON_COLUMNS*PANEL_MAX_BUTTON_ROWS);
+  printf("emitting buttonClicked(%d,%d,%d)\n",
+	 pnum,pos%PANEL_MAX_BUTTON_COLUMNS,pos/PANEL_MAX_BUTTON_COLUMNS);
+  emit buttonClicked(pnum,pos%PANEL_MAX_BUTTON_COLUMNS,pos/PANEL_MAX_BUTTON_COLUMNS);
+}
+
+
+void RDButtonPanel::resizeEvent(QResizeEvent *e)
+{
+  for(int i=0;i<PANEL_MAX_BUTTON_ROWS;i++) {
+    for(int j=0;j<PANEL_MAX_BUTTON_COLUMNS;j++) {
+      panel_button[i][j]->setGeometry((15+PANEL_BUTTON_SIZE_X)*j,
+				      (15+PANEL_BUTTON_SIZE_Y)*i,
+				      PANEL_BUTTON_SIZE_X,
+				      PANEL_BUTTON_SIZE_Y);
+    }
+  }
+  for(int i=0;i<PANEL_MAX_BUTTON_ROWS;i++) {
+    for(int j=0;j<PANEL_MAX_BUTTON_COLUMNS;j++) {
+      RDPanelButton *button=panel_button[i][j];
+      button->setVisible(geometry().contains(button->geometry()));
+    }
+  }
 }
