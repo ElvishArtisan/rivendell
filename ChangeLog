@@ -24411,3 +24411,6 @@
 2023-10-04 Fred Gleason <fredg@paravelsystems.com>
 	* Got SoundPanel panel selection working for both Host and Station
 	panels.
+2023-10-05 Fred Gleason <fredg@paravelsystems.com>
+	* Clarified the entries for the 'Pause Panel' ['PU'] and
+	'Stop Panel' ['PT'] RMLs in the Operations Guide.

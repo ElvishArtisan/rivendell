@@ -1523,6 +1523,14 @@
       If specified, start the playout on panel port
       <replaceable>mport</replaceable>.
     </para>
+    <note>
+      In order for paused buttons to work, the
+      <computeroutput>Enable Button Pausing</computeroutput> checkbox must be
+      ticked on the 
+      <link linkend="sect.rdadmin.manage_hosts.configuring_rdairplay">
+	<computeroutput>Configure RDAirPlay</computeroutput> dialog
+      </link> in <command>rdadmin</command><manvolnum>1</manvolnum>.
+    </note>
   </sect2>
 
   <sect2 xml:id="sect.rml.play_panel__pp_">
@@ -2244,10 +2252,20 @@
       If <replaceable>col</replaceable> and/or <replaceable>row</replaceable>
       is <userinput>0</userinput>: stop all playing buttons in
       <replaceable>col</replaceable> or <replaceable>row</replaceable>. 
-      If specified, start the playout on panel port
-      <replaceable>mport</replaceable>. The stopped panel will stay active when
-      finished, if the 5th argument is <userinput>1</userinput>. 
+      If specified, stop the playout on panel port
+      <replaceable>mport</replaceable>, applying a fade of duration
+      <replaceable>fade</replaceable> milliseconds. If the 5th argument is
+      <userinput>1</userinput>, the button will enter the paused state after
+      the fade completes. 
     </para>
+    <note>
+      In order for paused buttons to work, the
+      <computeroutput>Enable Button Pausing</computeroutput> checkbox must be
+      ticked on the 
+      <link linkend="sect.rdadmin.manage_hosts.configuring_rdairplay">
+	<computeroutput>Configure RDAirPlay</computeroutput> dialog
+      </link> in <command>rdadmin</command><manvolnum>1</manvolnum>.
+    </note>
   </sect2>
 
   <sect2 xml:id="sect.rml.stop_record_deck__rr_">
