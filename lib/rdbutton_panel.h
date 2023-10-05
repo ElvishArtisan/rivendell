@@ -70,6 +70,7 @@ class RDButtonPanel : public RDWidget
   void resizeEvent(QResizeEvent *e);
 
  private:
+  void UpdateViewport();
   int panel_number;
   QString panel_title;
   QSignalMapper *panel_button_mapper;

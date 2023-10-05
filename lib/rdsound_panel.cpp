@@ -673,7 +673,6 @@ void RDSoundPanel::panelDown()
 
 void RDSoundPanel::panelActivatedData(int n)
 {
-  printf("panelActivatedData(%d)\n",n);
   QString username;
   if(panel_type==RDAirPlayConf::UserPanel) {
     username=rda->user()->name();
@@ -754,8 +753,6 @@ void RDSoundPanel::setupClickedData()
 
 void RDSoundPanel::buttonClickedData(int pnum,int col,int row)
 {
-  //  printf("buttonMapperData(pnum: %d,col: %d  row: %d)\n",pnum,col,row);
-
   if(panel_current_panel==NULL) {
     printf("NO CURRENT PANEL!\n");
     return;
@@ -1300,9 +1297,7 @@ void RDSoundPanel::UpdatePanels(const QString &username)
     }
     for(int i=panel_arrays.value(username).size();i<max_panels;i++) {
       RDButtonPanel *panel=new RDButtonPanel(type,i,this);
-      printf("new panel  type: %d  number: %d  ptr: %p\n",
-	     type,i,panel);
-      
+      panel->setGeometry(0,0,size().width()-5,size().height()-60);
       connect(panel,SIGNAL(buttonClicked(int,int,int)),
 	      this,SLOT(buttonClickedData(int,int,int)));
       panel->hide();
@@ -1379,7 +1374,6 @@ void RDSoundPanel::ShowPanel(RDAirPlayConf::PanelType type,int offset)
   if(type==RDAirPlayConf::UserPanel) {
     username=rda->user()->name();
   }
-  printf("username: %s\n",username.toUtf8().constData());
   if(panel_arrays.value(username).size()>offset) {
     if(panel_current_panel!=NULL) {
       panel_current_panel->hide();

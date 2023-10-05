@@ -257,12 +257,14 @@ QString RDButtonPanel::json(int padding,bool final) const
 
 void RDButtonPanel::setVisible(bool state)
 {
-  printf("Calling RDButtonPanel::setVisible(%d) @ %p\n",state,this);
   RDWidget::setVisible(state);
   for(int i=0;i<PANEL_MAX_BUTTON_ROWS;i++) {
     for(int j=0;j<PANEL_MAX_BUTTON_COLUMNS;j++) {
       panel_button[i][j]->setVisible(state);
     }
+  }
+  if(state) {
+    UpdateViewport();
   }
 }
 
@@ -271,9 +273,9 @@ void RDButtonPanel::buttonClickedData(int id)
 {
   int pnum=id/(PANEL_MAX_BUTTON_COLUMNS*PANEL_MAX_BUTTON_ROWS);
   int pos=id%(PANEL_MAX_BUTTON_COLUMNS*PANEL_MAX_BUTTON_ROWS);
-  printf("emitting buttonClicked(%d,%d,%d)\n",
-	 pnum,pos%PANEL_MAX_BUTTON_COLUMNS,pos/PANEL_MAX_BUTTON_COLUMNS);
-  emit buttonClicked(pnum,pos%PANEL_MAX_BUTTON_COLUMNS,pos/PANEL_MAX_BUTTON_COLUMNS);
+
+  emit buttonClicked(pnum,pos%PANEL_MAX_BUTTON_COLUMNS,
+		     pos/PANEL_MAX_BUTTON_COLUMNS);
 }
 
 
@@ -287,6 +289,12 @@ void RDButtonPanel::resizeEvent(QResizeEvent *e)
 				      PANEL_BUTTON_SIZE_Y);
     }
   }
+  UpdateViewport();
+}
+
+
+void RDButtonPanel::UpdateViewport()
+{
   for(int i=0;i<PANEL_MAX_BUTTON_ROWS;i++) {
     for(int j=0;j<PANEL_MAX_BUTTON_COLUMNS;j++) {
       RDPanelButton *button=panel_button[i][j];
