@@ -24419,3 +24419,6 @@
 	extraneous buttons to appear when resizing the sound panel.
 2023-10-06 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'SoundPanel Buttons' notification.
+2023-10-06 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'RDSoundPanel' that caused the output
+	indicator on the buttons to fail to be cleared after events stopped.

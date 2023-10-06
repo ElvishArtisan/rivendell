@@ -1847,11 +1847,14 @@ void RDSoundPanel::ApplyButtonFields(RDPanelButton *button,RDSqlQuery *q)
 
 void RDSoundPanel::UpdateButton(RDPanelButton *button)
 {
+  rda->
+    syslog(LOG_DEBUG,"updating SoundPanel button - db_id: %d",button->dbId());
   QString sql=ButtonSqlFields()+"where "+
     panel_tablename+QString::asprintf(".`ID`=%d",button->dbId());
 
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
+    button->setOutputText("");
     ApplyButtonFields(button,q);
   }
   delete q;
