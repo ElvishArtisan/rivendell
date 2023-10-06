@@ -795,6 +795,9 @@ void RDSoundPanel::buttonClickedData(int pnum,int col,int row)
 	
   default:
     if(panel_setup_mode) {
+      if(button->isActive()) {
+	return;
+      }
       if((panel_type==RDAirPlayConf::StationPanel)&&
 	 (!panel_config_panels)) {
 	ClearReset();
@@ -954,12 +957,12 @@ void RDSoundPanel::notificationReceivedData(RDNotification *notify)
     q=new RDSqlQuery(sql);
     if(q->first()) {
       RDAirPlayConf::PanelType ptype=
-	(RDAirPlayConf::PanelType)q->value(10).toInt();
-      if((q->value(1).toString()==rda->station()->name())&&
+	(RDAirPlayConf::PanelType)q->value(2).toInt();
+      if((q->value(2).toString()==rda->station()->name())&&
 	 (ptype==RDAirPlayConf::StationPanel)) {
-	if(panel_arrays.value("").size()>q->value(2).toInt()) {
-	  if((button=panel_arrays.value("").at(q->value(2).toInt())->
-	      panelButton(q->value(3).toInt(),q->value(4).toInt()))!=NULL) {
+	if(panel_arrays.value("").size()>q->value(3).toInt()) {
+	  if((button=panel_arrays.value("").at(q->value(3).toInt())->
+	      panelButton(q->value(4).toInt(),q->value(5).toInt()))!=NULL) {
 	    if(!button->isActive()) {
 	      ApplyButtonFields(button,q);
 	    }
@@ -967,11 +970,11 @@ void RDSoundPanel::notificationReceivedData(RDNotification *notify)
 	}
       }
       if((ptype==RDAirPlayConf::UserPanel)&&
-	 (panel_arrays.contains(q->value(1).toString()))) {
-	if(panel_arrays.value(q->value(1).toString()).size()>
-	   q->value(2).toInt()) {
-	  if((button=panel_arrays.value(q->value(1).toString()).
-	      at(q->value(2).toInt())->panelButton(q->value(3).toInt(),q->value(4).toInt()))!=NULL) {
+	 (panel_arrays.contains(q->value(2).toString()))) {
+	if(panel_arrays.value(q->value(2).toString()).size()>
+	   q->value(3).toInt()) {
+	  if((button=panel_arrays.value(q->value(2).toString()).
+	      at(q->value(3).toInt())->panelButton(q->value(4).toInt(),q->value(5).toInt()))!=NULL) {
 	    if(!button->isActive()) {
 	      ApplyButtonFields(button,q);
 	    }
@@ -1377,8 +1380,8 @@ void RDSoundPanel::UpdatePanels(const QString &username)
     panel_tablename+".`ROW_NO`";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
-    RDPanelButton *button=panel_arrays.value(username).at(q->value(2).toInt())->
-      panelButton(q->value(3).toInt(),q->value(4).toInt());
+    RDPanelButton *button=panel_arrays.value(username).at(q->value(3).toInt())->
+      panelButton(q->value(4).toInt(),q->value(5).toInt());
     if(!button->isActive()) {
       ApplyButtonFields(button,q);
     }
@@ -1793,16 +1796,17 @@ QString RDSoundPanel::ButtonSqlFields() const
 {
   QString sql=QString("select ")+
     panel_tablename+".`ID`,"+             // 00
-    panel_tablename+".`OWNER`,"+          // 01
-    panel_tablename+".`PANEL_NO`,"+       // 02
-    panel_tablename+".`ROW_NO`,"+         // 03
-    panel_tablename+".`COLUMN_NO`,"+      // 04
-    panel_tablename+".`LABEL`,"+          // 05
-    panel_tablename+".`CART`,"+           // 06
-    panel_tablename+".`DEFAULT_COLOR`,"+  // 07
-    "`CART`.`FORCED_LENGTH`,"+            // 08
-    "`CART`.`AVERAGE_HOOK_LENGTH`,"+      // 09
-    "`CART`.`TYPE` "+                     // 10
+    panel_tablename+".`TYPE`,"+           // 01
+    panel_tablename+".`OWNER`,"+          // 02
+    panel_tablename+".`PANEL_NO`,"+       // 03
+    panel_tablename+".`ROW_NO`,"+         // 04
+    panel_tablename+".`COLUMN_NO`,"+      // 05
+    panel_tablename+".`LABEL`,"+          // 06
+    panel_tablename+".`CART`,"+           // 07
+    panel_tablename+".`DEFAULT_COLOR`,"+  // 08
+    "`CART`.`FORCED_LENGTH`,"+            // 09
+    "`CART`.`AVERAGE_HOOK_LENGTH`,"+      // 10
+    "`CART`.`TYPE` "+                     // 11
     "from "+panel_tablename+" "+
     "left join `CART` on "+panel_tablename+".`CART`=`CART`.`NUMBER` ";
 
@@ -1813,34 +1817,34 @@ QString RDSoundPanel::ButtonSqlFields() const
 void RDSoundPanel::ApplyButtonFields(RDPanelButton *button,RDSqlQuery *q)
 {
   button->setDbId(q->value(0).toInt());
-  button->setText(q->value(5).toString());
-  button->setCart(q->value(6).toInt());
-  button->setLength(false,q->value(8).toInt());
-  button->setLength(true,q->value(9).toInt());
+  button->setText(q->value(6).toString());
+  button->setCart(q->value(7).toInt());
+  button->setLength(false,q->value(9).toInt());
+  button->setLength(true,q->value(10).toInt());
   if((panel_playmode_box!=NULL)&&(panel_playmode_box->currentIndex()==1)&&
-     (q->value(9).toUInt()>0)) {
-    button->setActiveLength(q->value(9).toInt());
+     (q->value(10).toUInt()>0)) {
+    button->setActiveLength(q->value(10).toInt());
   }
   else {
-    if(q->value(10).toInt()==RDCart::Macro) {
-      button->setActiveLength(q->value(7).toInt());
+    if(q->value(11).toInt()==RDCart::Macro) {
+      button->setActiveLength(q->value(8).toInt());
     }
     else {
-      if(q->value(8).toInt()>0) {
-	button->setActiveLength(q->value(8).toInt());
+      if(q->value(9).toInt()>0) {
+	button->setActiveLength(q->value(9).toInt());
       }
       else {
 	button->setActiveLength(-1);
       }
     }
   }
-  if(q->value(7).toString().isEmpty()) {
+  if(q->value(8).toString().isEmpty()) {
     button->setColor(palette().color(QPalette::Background));
     button->setDefaultColor(palette().color(QPalette::Background));
   }
   else {
-    button->setColor(QColor(q->value(7).toString()));
-    button->setDefaultColor(QColor(q->value(7).toString()));
+    button->setColor(QColor(q->value(8).toString()));
+    button->setDefaultColor(QColor(q->value(8).toString()));
   }
 }
 

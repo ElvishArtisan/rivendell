@@ -24422,3 +24422,6 @@
 2023-10-06 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in 'RDSoundPanel' that caused the output
 	indicator on the buttons to fail to be cleared after events stopped.
+2023-10-06 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'RDSoundPanel' that caused updates to
+	station buttons to fail to be applied.
