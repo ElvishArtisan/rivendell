@@ -118,6 +118,7 @@ class RDSoundPanel : public RDWidget
   void timescalingSupportedData(int card,bool state);
   void panelSetupData();
   void onairFlagChangedData(bool state);
+  void notificationReceivedData(RDNotification *notify);
 
  protected:
   void resizeEvent(QResizeEvent *e);
@@ -152,6 +153,9 @@ class RDSoundPanel : public RDWidget
   QString PanelTag(int index);
   QString PanelOwner(RDAirPlayConf::PanelType type);
   RDPanelButton *GetVisibleButton(int row,int col) const;
+  QString ButtonSqlFields() const;
+  void ApplyButtonFields(RDPanelButton *button,RDSqlQuery *q);
+  void UpdateButton(RDPanelButton *button);
   QMap<QString,QList<RDButtonPanel *> > panel_arrays;
   RDButtonPanel *panel_current_panel;
   RDComboBox *panel_selector_box;

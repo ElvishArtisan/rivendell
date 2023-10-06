@@ -28,7 +28,8 @@ class RDNotification
 {
  public:
   enum Type {NullType=0,CartType=1,LogType=2,PypadType=3,DropboxType=4,
-	     CatchEventType=5,FeedItemType=6,FeedType=7,LastType=8};
+	     CatchEventType=5,FeedItemType=6,FeedType=7,
+	     PanelButtonType=8,ExtendedPanelButtonType=9,LastType=10};
   enum Action {NoAction=0,AddAction=1,DeleteAction=2,ModifyAction=3,
 	       LastAction=4};
   RDNotification(Type type,Action action,const QVariant &id);

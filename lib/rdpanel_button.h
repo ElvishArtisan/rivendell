@@ -40,6 +40,8 @@ class RDPanelButton : public RDPushButton
   void clear();
   int row() const;
   int column() const;
+  int dbId() const;
+  void setDbId(int id);
   QString text() const;
   void setText(const QString &text);
   QString outputText() const;
@@ -131,6 +133,7 @@ class RDPanelButton : public RDPushButton
   RDLogLine::StartSource button_start_source;
   int button_row;
   int button_col;
+  int button_db_id;
   int button_move_count;
   bool button_allow_drags;
 };

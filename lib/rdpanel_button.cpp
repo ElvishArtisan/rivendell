@@ -30,6 +30,7 @@ RDPanelButton::RDPanelButton(int row,int col,RDStation *station,bool flash,
 			     QWidget *parent)
   : RDPushButton(parent)
 {
+  button_db_id=-1;
   button_row=row;
   button_col=col;
   button_station=station;
@@ -51,6 +52,7 @@ void RDPanelButton::clear()
   button_color=Qt::lightGray;
   button_default_color=Qt::lightGray;
   setCart(0);
+  button_db_id=-1;
   button_deck=-1;
   button_output=-1;
   button_play_deck=NULL;
@@ -78,6 +80,18 @@ int RDPanelButton::row() const
 int RDPanelButton::column() const
 {
   return button_col;
+}
+
+
+int RDPanelButton::dbId() const
+{
+  return button_db_id;
+}
+
+
+void RDPanelButton::setDbId(int id)
+{
+  button_db_id=id;
 }
 
 

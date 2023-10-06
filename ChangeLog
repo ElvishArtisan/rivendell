@@ -24417,3 +24417,5 @@
 2023-10-05 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdairplay(1) and rdpanel(1) that caused
 	extraneous buttons to appear when resizing the sound panel.
+2023-10-06 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'SoundPanel Buttons' notification.

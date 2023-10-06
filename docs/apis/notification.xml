@@ -369,6 +369,73 @@
       </tgroup>
     </table>
   </sect2>
+
+  <sect2 xml:id="sect.notifications.object_types.panel_buttons">
+    <title>SoundPanel Buttons [<command>rdairplay</command><manvolnum>1</manvolnum>]</title>
+    <table xml:id="table.notifications.types.panel_buttons" frame="all" pgwide="0">
+      <title>SoundPanel Button Fields</title>
+      <tgroup cols="2" align="left" colsep="1" rowsep="1">
+	<colspec colname="Field" colwidth="2.0*"/>
+	<colspec colname="Value" colwidth="2.0*"/>
+	<tbody>
+	  <row>
+	    <entry>Field</entry>
+	    <entry>Value</entry>
+	  </row>
+	  <row>
+	    <entry>Database Field</entry>
+	  <entry>PANELS.ID</entry>
+	  </row>
+	  <row>
+	    <entry>Type</entry>
+	    <entry>PANEL_BUTTON</entry>
+	  </row>
+	  <row>
+	    <entry>Id Data Type</entry>
+	  <entry>Integer</entry>
+	  </row>
+	  <row>
+	    <entry>RDNotification::Type Value</entry>
+	    <entry>RDNotification::PanelButtonType [8]</entry>
+	  </row>
+	</tbody>
+      </tgroup>
+    </table>
+  </sect2>
+
+  <sect2 xml:id="sect.notifications.object_types.extended_panel_buttons">
+    <title>Extended SoundPanel Buttons [<command>rdpanel</command><manvolnum>1</manvolnum>]</title>
+    <table xml:id="table.notifications.types.extended_panel_buttons" frame="all" pgwide="0">
+      <title>SoundPanel Button Fields</title>
+      <tgroup cols="2" align="left" colsep="1" rowsep="1">
+	<colspec colname="Field" colwidth="2.0*"/>
+	<colspec colname="Value" colwidth="2.0*"/>
+	<tbody>
+	  <row>
+	    <entry>Field</entry>
+	    <entry>Value</entry>
+	  </row>
+	  <row>
+	    <entry>Database Field</entry>
+	  <entry>EXTENDED_PANELS.ID</entry>
+	  </row>
+	  <row>
+	    <entry>Type</entry>
+	    <entry>EXTENDED_PANEL_BUTTON</entry>
+	  </row>
+	  <row>
+	    <entry>Id Data Type</entry>
+	  <entry>Integer</entry>
+	  </row>
+	  <row>
+	    <entry>RDNotification::Type Value</entry>
+	    <entry>RDNotification::ExtendedPanelButtonType [9]</entry>
+	  </row>
+	</tbody>
+      </tgroup>
+    </table>
+  </sect2>
+
 </sect1>
 
 <sect1 xml:id="sect.rdcatch_messages">

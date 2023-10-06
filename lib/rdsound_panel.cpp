@@ -157,6 +157,8 @@ RDSoundPanel::RDSoundPanel(int station_panels,int user_panels,bool flash,
   //
   connect(rda->ripc(),SIGNAL(onairFlagChanged(bool)),
 	  this,SLOT(onairFlagChangedData(bool)));
+  connect(rda->ripc(),SIGNAL(notificationReceived(RDNotification *)),
+	  this,SLOT(notificationReceivedData(RDNotification *)));
 
   //
   // Load Panel Names
@@ -933,6 +935,60 @@ void RDSoundPanel::onairFlagChangedData(bool state)
 }
 
 
+void RDSoundPanel::notificationReceivedData(RDNotification *notify)
+{
+  printf("notificationReceivedData()\n");
+
+  RDPanelButton *button=NULL;
+  QString sql;
+  RDSqlQuery *q=NULL;
+
+  if(((notify->type()==RDNotification::PanelButtonType)&&
+      (panel_tablename=="`PANELS`"))||
+     ((notify->type()==RDNotification::ExtendedPanelButtonType)&&
+      (panel_tablename=="`EXTENDED_PANELS`"))) {
+    sql=ButtonSqlFields()+
+      " where "+
+      panel_tablename+QString::asprintf(".`ID`=%d",notify->id().toInt());
+    printf("SQL: %s\n",sql.toUtf8().constData());
+    q=new RDSqlQuery(sql);
+    if(q->first()) {
+      RDAirPlayConf::PanelType ptype=
+	(RDAirPlayConf::PanelType)q->value(10).toInt();
+      if((q->value(1).toString()==rda->station()->name())&&
+	 (ptype==RDAirPlayConf::StationPanel)) {
+	if(panel_arrays.value("").size()>q->value(2).toInt()) {
+	  if((button=panel_arrays.value("").at(q->value(2).toInt())->
+	      panelButton(q->value(3).toInt(),q->value(4).toInt()))!=NULL) {
+	    if(!button->isActive()) {
+	      ApplyButtonFields(button,q);
+	    }
+	  }
+	}
+      }
+      if((ptype==RDAirPlayConf::UserPanel)&&
+	 (panel_arrays.contains(q->value(1).toString()))) {
+	if(panel_arrays.value(q->value(1).toString()).size()>
+	   q->value(2).toInt()) {
+	  if((button=panel_arrays.value(q->value(1).toString()).
+	      at(q->value(2).toInt())->panelButton(q->value(3).toInt(),q->value(4).toInt()))!=NULL) {
+	    if(!button->isActive()) {
+	      ApplyButtonFields(button,q);
+	    }
+	  }
+	}
+      }
+    }
+    else {
+      rda->syslog(LOG_WARNING,
+		  "received update for non-existent panel button [id: %d]",
+		  notify->id().toInt());
+    }
+    delete q;
+  }
+}
+
+
 void RDSoundPanel::resizeEvent(QResizeEvent *e)
 {
   //  int w=size().width();
@@ -1277,6 +1333,8 @@ void RDSoundPanel::StopButton(RDPlayDeck *deck)
 
 void RDSoundPanel::UpdatePanels(const QString &username)
 {
+  printf("UpdatePanel(\"%s\")\n",username.toUtf8().constData());
+
   QString owner=username;
   RDAirPlayConf::PanelType type=RDAirPlayConf::UserPanel;
   int max_panels=panel_user_panels;
@@ -1309,18 +1367,7 @@ void RDSoundPanel::UpdatePanels(const QString &username)
   //
   // Update button attributes
   //
-  QString sql=QString("select ")+
-    panel_tablename+".`PANEL_NO`,"+       // 00
-    panel_tablename+".`ROW_NO`,"+         // 01
-    panel_tablename+".`COLUMN_NO`,"+      // 02
-    panel_tablename+".`LABEL`,"+          // 03
-    panel_tablename+".`CART`,"+           // 04
-    panel_tablename+".`DEFAULT_COLOR`,"+  // 05
-    "`CART`.`FORCED_LENGTH`,"+            // 06
-    "`CART`.`AVERAGE_HOOK_LENGTH`,"+      // 07
-    "`CART`.`TYPE` "+                     // 08
-    "from "+panel_tablename+" "+          // 09
-    "left join `CART` on "+panel_tablename+".`CART`=`CART`.`NUMBER` "+
+  QString sql=ButtonSqlFields()+
     "where "+panel_tablename+QString::asprintf(".`TYPE`=%d && ",type)+
     panel_tablename+".`OWNER`='"+RDEscapeString(owner)+"' && "+
     panel_tablename+QString::asprintf(".`PANEL_NO`<%d ",max_panels)+
@@ -1330,38 +1377,10 @@ void RDSoundPanel::UpdatePanels(const QString &username)
     panel_tablename+".`ROW_NO`";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
-    RDPanelButton *button=panel_arrays.value(username).at(q->value(0).toInt())->
-      panelButton(q->value(1).toInt(),q->value(2).toInt());
+    RDPanelButton *button=panel_arrays.value(username).at(q->value(2).toInt())->
+      panelButton(q->value(3).toInt(),q->value(4).toInt());
     if(!button->isActive()) {
-      button->setText(q->value(3).toString());
-      button->setCart(q->value(4).toInt());
-      button->setLength(false,q->value(6).toInt());
-      button->setLength(true,q->value(7).toInt());
-      if((panel_playmode_box!=NULL)&&(panel_playmode_box->currentIndex()==1)&&
-	 (q->value(7).toUInt()>0)) {
-	button->setActiveLength(q->value(7).toInt());
-      }
-      else {
-	if(q->value(8).toInt()==RDCart::Macro) {
-	  button->setActiveLength(q->value(6).toInt());
-	}
-	else {
-	  if(q->value(6).toInt()>0) {
-	    button->setActiveLength(q->value(6).toInt());
-	  }
-	  else {
-	    button->setActiveLength(-1);
-	  }
-	}
-      }
-      if(q->value(5).toString().isEmpty()) {
-	button->setColor(palette().color(QPalette::Background));
-	button->setDefaultColor(palette().color(QPalette::Background));
-      }
-      else {
-	button->setColor(QColor(q->value(5).toString()));
-	button->setDefaultColor(QColor(q->value(5).toString()));
-      }
+      ApplyButtonFields(button,q);
     }
   }
   delete q;
@@ -1385,13 +1404,15 @@ void RDSoundPanel::ShowPanel(RDAirPlayConf::PanelType type,int offset)
 
 
 void RDSoundPanel::SaveButton(RDAirPlayConf::PanelType type,
-			    int panel,int row,int col)
+			      int panel,int row,int col)
 {
   QString sql;
   QString sql1;
   RDSqlQuery *q;
   QString owner;
   QString username;
+  RDNotification *notify=NULL;
+
   if(type==RDAirPlayConf::UserPanel) {
     username=rda->user()->name();
   }
@@ -1412,37 +1433,37 @@ void RDSoundPanel::SaveButton(RDAirPlayConf::PanelType type,
   //
   // Determine if the button exists
   //
-  sql=QString("select `LABEL` from ")+panel_tablename+" where "+
+  sql=QString("select ")+
+    "`ID` "+  // 00
+    "from "+panel_tablename+" where "+
     QString::asprintf("`TYPE`=%d && ",type)+
     "`OWNER`='"+RDEscapeString(owner)+"' && "+
     QString::asprintf("`PANEL_NO`=%d && ",panel)+
     QString::asprintf("`ROW_NO`=%d && ",row)+
     QString::asprintf("`COLUMN_NO`=%d",col);
   q=new RDSqlQuery(sql);
-  if(q->size()>0) {
+  if(q->first()) {
     //
     // If so, update the record
     //
-    delete q;
     sql1=QString("update ")+panel_tablename+" set "+
       "`LABEL`='"+RDEscapeString(button->text())+"',"+
       QString::asprintf("`CART`=%d,",button->cart())+
       "`DEFAULT_COLOR`='"+button->defaultColor().name()+"' where "+
-      QString::asprintf("(`TYPE`=%d)&&",type)+
-      "(`OWNER`='"+RDEscapeString(owner)+"')&&"+
-      QString::asprintf("(`PANEL_NO`=%d)&&",panel)+
-      QString::asprintf("(`ROW_NO`=%d)&&",row)+
-      QString::asprintf("(`COLUMN_NO`=%d)",col);
-    q=new RDSqlQuery(sql1);
-    if(q->isActive()) {
-      delete q;
-      return;
+      QString::asprintf("`ID`=%d",q->value(0).toInt());
+    RDSqlQuery::apply(sql1);
+    if(panel_tablename=="`PANELS`") {
+      notify=new RDNotification(RDNotification::PanelButtonType,
+				RDNotification::ModifyAction,
+				q->value(0).toInt());
     }
-    delete q;
+    else {
+      notify=new RDNotification(RDNotification::ExtendedPanelButtonType,
+				RDNotification::ModifyAction,
+				q->value(0).toInt());
+    }
   }
   else {
-    delete q;
-    
     //
     // Otherwise, insert a new one
     //
@@ -1461,8 +1482,22 @@ void RDSoundPanel::SaveButton(RDAirPlayConf::PanelType type,
       "'"+RDEscapeString(button->text())+"',"+
       QString::asprintf("%d,",button->cart())+
       "'"+RDEscapeString(button->defaultColor().name())+"')";
-    RDSqlQuery::apply(sql1);
+    int new_id=RDSqlQuery::run(sql1).toInt();
+
+    if(panel_tablename=="`PANELS`") {
+      notify=new RDNotification(RDNotification::PanelButtonType,
+				RDNotification::AddAction,
+				new_id);
+    }
+    else {
+      notify=new RDNotification(RDNotification::ExtendedPanelButtonType,
+				RDNotification::AddAction,
+				new_id);
+    }
   }
+  rda->ripc()->sendNotification(*notify);
+  delete notify;
+  delete q;
 }
 
 
@@ -1673,31 +1708,34 @@ void RDSoundPanel::Paused(int id)
 
 void RDSoundPanel::Stopped(int id)
 {
-  if(panel_active_buttons[id]==NULL) {
+  RDPanelButton *button=panel_active_buttons[id];
+
+  if(button==NULL) {
     LogLine(QString::asprintf("Invalid ID=%d in RDSoundPanel::Stopped()",
 			      id));
     return;
   }
-  LogTraffic(panel_active_buttons[id]);
+  LogTraffic(button);
   ClearChannel(id);
-  if(panel_active_buttons[id]->pauseWhenFinished()) {
-    panel_active_buttons[id]->setState(true);
-    panel_active_buttons[id]->setColor(RDPANEL_PAUSED_BACKGROUND_COLOR);
-    panel_active_buttons[id]->resetCounter();
+  if(button->pauseWhenFinished()) {
+    button->setState(true);
+    button->setColor(RDPANEL_PAUSED_BACKGROUND_COLOR);
+    button->resetCounter();
     }
   else {
-    panel_active_buttons[id]->setState(false);
-    panel_active_buttons[id]->setHookMode(panel_playmode_box->currentIndex()==1);
+    button->setState(false);
+    button->setHookMode(panel_playmode_box->currentIndex()==1);
   }
-  disconnect(this,SIGNAL(tick()),panel_active_buttons[id],SLOT(tickClock()));
-  panel_active_buttons[id]->playDeck()->disconnect();
-  delete panel_active_buttons[id]->playDeck();
-  panel_active_buttons[id]->setPlayDeck(NULL);
-  if(!panel_active_buttons[id]->pauseWhenFinished()) {
-    panel_active_buttons[id]->reset();
+  disconnect(this,SIGNAL(tick()),button,SLOT(tickClock()));
+  button->playDeck()->disconnect();
+  delete button->playDeck();
+  button->setPlayDeck(NULL);
+  if(!button->pauseWhenFinished()) {
+    button->reset();
     }
-  panel_active_buttons[id]->setDuckVolume(0);
+  button->setDuckVolume(0);
   panel_active_buttons[id]=NULL;
+  UpdateButton(button);
   LogLine(QString::asprintf("Playout stopped: id=%d",id));
 }
 
@@ -1748,4 +1786,73 @@ QString RDSoundPanel::PanelOwner(RDAirPlayConf::PanelType type)
 RDPanelButton *RDSoundPanel::GetVisibleButton(int row,int col) const
 {
   return NULL;
+}
+
+
+QString RDSoundPanel::ButtonSqlFields() const
+{
+  QString sql=QString("select ")+
+    panel_tablename+".`ID`,"+             // 00
+    panel_tablename+".`OWNER`,"+          // 01
+    panel_tablename+".`PANEL_NO`,"+       // 02
+    panel_tablename+".`ROW_NO`,"+         // 03
+    panel_tablename+".`COLUMN_NO`,"+      // 04
+    panel_tablename+".`LABEL`,"+          // 05
+    panel_tablename+".`CART`,"+           // 06
+    panel_tablename+".`DEFAULT_COLOR`,"+  // 07
+    "`CART`.`FORCED_LENGTH`,"+            // 08
+    "`CART`.`AVERAGE_HOOK_LENGTH`,"+      // 09
+    "`CART`.`TYPE` "+                     // 10
+    "from "+panel_tablename+" "+
+    "left join `CART` on "+panel_tablename+".`CART`=`CART`.`NUMBER` ";
+
+  return sql;
+}
+
+
+void RDSoundPanel::ApplyButtonFields(RDPanelButton *button,RDSqlQuery *q)
+{
+  button->setDbId(q->value(0).toInt());
+  button->setText(q->value(5).toString());
+  button->setCart(q->value(6).toInt());
+  button->setLength(false,q->value(8).toInt());
+  button->setLength(true,q->value(9).toInt());
+  if((panel_playmode_box!=NULL)&&(panel_playmode_box->currentIndex()==1)&&
+     (q->value(9).toUInt()>0)) {
+    button->setActiveLength(q->value(9).toInt());
+  }
+  else {
+    if(q->value(10).toInt()==RDCart::Macro) {
+      button->setActiveLength(q->value(7).toInt());
+    }
+    else {
+      if(q->value(8).toInt()>0) {
+	button->setActiveLength(q->value(8).toInt());
+      }
+      else {
+	button->setActiveLength(-1);
+      }
+    }
+  }
+  if(q->value(7).toString().isEmpty()) {
+    button->setColor(palette().color(QPalette::Background));
+    button->setDefaultColor(palette().color(QPalette::Background));
+  }
+  else {
+    button->setColor(QColor(q->value(7).toString()));
+    button->setDefaultColor(QColor(q->value(7).toString()));
+  }
+}
+
+
+void RDSoundPanel::UpdateButton(RDPanelButton *button)
+{
+  QString sql=ButtonSqlFields()+"where "+
+    panel_tablename+QString::asprintf(".`ID`=%d",button->dbId());
+
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    ApplyButtonFields(button,q);
+  }
+  delete q;
 }

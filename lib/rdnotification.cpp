@@ -81,6 +81,8 @@ bool RDNotification::isValid() const
 
 bool RDNotification::read(const QString &str)
 {
+  printf("RDNotification::read(%s)\n",str.toUtf8().constData());
+
   notify_type=RDNotification::NullType;
   notify_action=RDNotification::NoAction;
   notify_id=QVariant();
@@ -121,6 +123,11 @@ bool RDNotification::read(const QString &str)
 
 	case RDNotification::FeedType:
 	  notify_id=QVariant(args[3]);
+	  break;
+
+	case RDNotification::PanelButtonType:
+	case RDNotification::ExtendedPanelButtonType:
+	  notify_id=QVariant(args[3].toInt());
 	  break;
 
 	case RDNotification::NullType:
@@ -180,6 +187,11 @@ QString RDNotification::write() const
 
   case RDNotification::FeedType: 
     ret+=notify_id.toString();
+    break;
+
+  case RDNotification::PanelButtonType:
+  case RDNotification::ExtendedPanelButtonType:
+    ret+=QString::asprintf("%d",notify_id.toInt());
     break;
 
   case RDNotification::NullType:
@@ -249,6 +261,14 @@ QString RDNotification::typeString(RDNotification::Type type)
 
   case RDNotification::FeedType:
     ret="FEED";
+    break;
+
+  case RDNotification::PanelButtonType:
+    ret="PANEL_BUTTON";
+    break;
+
+  case RDNotification::ExtendedPanelButtonType:
+    ret="EXTENDED_PANEL_BUTTON";
     break;
 
   case RDNotification::NullType:
