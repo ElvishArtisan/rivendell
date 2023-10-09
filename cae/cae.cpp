@@ -1300,11 +1300,14 @@ void MainObject::connectionClosedData(const SessionId &sid)
 
 void MainObject::statePlayUpdate(int card,int stream,int state)
 {
+  Driver *dvr=GetDriver(card);
+
   if(state==0) {  // Stopped
     for(QMap<SessionId,Session *>::iterator it=cae_play_sessions.begin();
 	it!=cae_play_sessions.end();it++) {
       if((it.value()->cardNumber()==card)&&
 	 (it.value()->streamNumber()==stream)) {
+	dvr->unloadPlayback(card,stream);
 	cae_server->
 	  sendCommand(it.key(),QString::asprintf("SP %d",
 						 it.key().serialNumber()));

@@ -2,7 +2,7 @@
 //
 // Record a Rivendell cut.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -64,10 +64,7 @@ class RecordCut : public RDDialog
    void recordUnloadedData(int,int,unsigned);
    void playStartedData(int serial);
    void playStoppedData(int serial);
-   //   void playedData(int);
-   //   void playStoppedData(int);
    void closeData();
-   void initData(bool);
    void recTimerData();
    void aesAlarmData(int,int,bool);
    void meterData();
@@ -108,12 +105,8 @@ class RecordCut : public RDDialog
    QLabel *cut_startdatetime_label;
    QGroupBox *cut_startdatetime_groupbox;
    RDDateTimeEdit *cut_startdatetime_edit;
-   //   RDDateEdit *cut_startdate_edit;
-   //   RDTimeEdit *cut_starttime_edit;
    QLabel *cut_enddatetime_label;
    RDDateTimeEdit *cut_enddatetime_edit;
-   //   RDDateEdit *cut_enddate_edit;
-   //   RDTimeEdit *cut_endtime_edit;
    QGroupBox *cut_daypart_groupbox;
    QButtonGroup *cut_daypart_group;
    QRadioButton *cut_startdaypart_enable_button;
@@ -147,7 +140,6 @@ class RecordCut : public RDDialog
    int rec_card_no[2];
    int rec_stream_no[2];
    int rec_port_no[2];
-   //   int rec_play_handle;
    int rec_play_serial;
    RDCae::AudioCoding rec_format;
    unsigned rec_channels;
@@ -163,5 +155,4 @@ class RecordCut : public RDDialog
 };
 
 
-#endif
-
+#endif  // RECORD_CUT_H

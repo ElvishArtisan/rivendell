@@ -24434,3 +24434,8 @@
 2023-10-09 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdlibrary(1) that broke the audio audition
 	button on the main window.
+2023-10-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed regressions in rdlibrary(1)'s 'Cut Info/Record' and 'Edit
+	Audio' dialogs that broke audio stoppage and looping.
+	* Fixed a regression in caed(1) that caused play-out streams to
+	be leaked when a play-out hit EOF.

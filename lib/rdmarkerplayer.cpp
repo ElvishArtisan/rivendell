@@ -39,8 +39,6 @@ RDMarkerPlayer::RDMarkerPlayer(int card,int port,QWidget *parent)
   rda->cae()->enableMetering(&d_cards);
   connect(rda->cae(),SIGNAL(playbackStopped(int)),
 	  this,SLOT(playbackStoppedData(int)));
-  //  connect(rda->cae(),SIGNAL(playPositionChanged(int,unsigned)),
-  //	  this,SLOT(caePositionData(int,unsigned)));
 
   //
   // Marker Readouts
@@ -536,67 +534,28 @@ void RDMarkerPlayer::meterData()
   d_meter->setRightPeakBar(lvls[1]);
 }
 
-/*
-void RDMarkerPlayer::caePlayedData(int serial)
-{
-  printf("d_cae_serial2: %d  serial: %d\n",d_cae_serial,serial);
-  printf("HERE10\n");
-  if(serial==d_cae_serial) {
-  printf("HERE11\n");
-    if(!d_is_playing) {
-  printf("HERE12\n");
-      d_active_play_button->setState(RDTransportButton::On);
-      d_stop_button->setState(RDTransportButton::Off);
-      d_is_playing=true;
-      if(!d_position_timer->isActive()) {
-  printf("HERE13\n");
-	d_position_timer->start(RDMARKERPLAYER_POSITION_INTERVAL);
-      }
-    }
-  }
-}
-*/
 
 void RDMarkerPlayer::playbackStoppedData(int serial)
 {
   if(serial==d_cae_serial) {
     if(d_is_playing) {
-      if(d_looping) {
-	rda->cae()->startPlayback(RDCut::cutName(d_cart_number,d_cut_number),
-				  d_cards.first(),d_port,
-				  d_loop_start_msec,
-				  d_loop_start_msec+d_loop_start_length,
-				  RD_TIMESCALE_DIVISOR);
-	Play();
-	rda->cae()->setPlayPortActive(d_cards.first(),d_port,d_cae_stream);
+      if(d_meter_timer->isActive()) {
+	d_meter_timer->stop();
+	d_meter->setLeftPeakBar(-10000);
+	d_meter->setRightPeakBar(-10000);
       }
-      else {
-	if(d_meter_timer->isActive()) {
-	  d_meter_timer->stop();
-	  d_meter->setLeftPeakBar(-10000);
-	  d_meter->setRightPeakBar(-10000);
-	}
-	d_play_from_button->setState(RDTransportButton::Off);
-	d_play_button->setState(RDTransportButton::Off);
-	d_play_to_button->setState(RDTransportButton::Off);
-	d_stop_button->setState(RDTransportButton::On);
-	d_is_playing=false;
-	d_position_timer->stop();
+      d_play_from_button->setState(RDTransportButton::Off);
+      d_play_button->setState(RDTransportButton::Off);
+      d_play_to_button->setState(RDTransportButton::Off);
+      d_stop_button->setState(RDTransportButton::On);
+      d_is_playing=false;
+      d_position_timer->stop();
+      
+      if(d_looping) {
+        buttonPlayFromData();
       }
     }
   }
-}
-
-
-void RDMarkerPlayer::caePositionData(int serial,unsigned msec)
-{
-  /*
-  if(serial==d_cae_serial) {
-    d_position_edit->setText(RDGetTimeLength(msec-d_pointers[RDMarkerHandle::CutStart],true,true));
-    d_cursor_position=msec;
-    emit cursorPositionChanged(msec);
-  }
-  */
 }
 
 
@@ -612,7 +571,6 @@ void RDMarkerPlayer::positionTimeoutData()
   d_cursor_position+=RDMARKERPLAYER_POSITION_INTERVAL;
   d_position_edit->setText(RDGetTimeLength(d_cursor_position-d_pointers[RDMarkerHandle::CutStart],true,true));
   emit cursorPositionChanged(d_cursor_position);
-  printf("d_cursor_position: %d\n",d_cursor_position);
 }
 
 
