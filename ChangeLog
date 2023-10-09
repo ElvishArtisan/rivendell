@@ -24425,3 +24425,6 @@
 2023-10-06 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in 'RDSoundPanel' that caused updates to
 	station buttons to fail to be applied.
+2023-10-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'RDSoundPanel' that kept the current panel view
+	from being updated when the logged-in user changed.

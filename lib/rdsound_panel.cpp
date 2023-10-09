@@ -53,7 +53,6 @@ RDSoundPanel::RDSoundPanel(int station_panels,int user_panels,bool flash,
     panel_name_tablename="`PANEL_NAMES`";
   }
   panel_label_template=label_template;
-
   panel_type=RDAirPlayConf::StationPanel;
   panel_number=0;
   panel_setup_mode=false;
@@ -630,11 +629,7 @@ void RDSoundPanel::changeUser()
   }
   delete q;
   panel_selector_box->setCurrentIndex(current_item);
-
-  if(!panel_started) {
-    panelActivatedData(panel_selector_box->currentIndex());
-    panel_started=true;
-  }
+  panelActivatedData(panel_selector_box->currentIndex());
 }
 
 
@@ -953,7 +948,6 @@ void RDSoundPanel::notificationReceivedData(RDNotification *notify)
     sql=ButtonSqlFields()+
       " where "+
       panel_tablename+QString::asprintf(".`ID`=%d",notify->id().toInt());
-    printf("SQL: %s\n",sql.toUtf8().constData());
     q=new RDSqlQuery(sql);
     if(q->first()) {
       RDAirPlayConf::PanelType ptype=
@@ -1336,8 +1330,6 @@ void RDSoundPanel::StopButton(RDPlayDeck *deck)
 
 void RDSoundPanel::UpdatePanels(const QString &username)
 {
-  printf("UpdatePanel(\"%s\")\n",username.toUtf8().constData());
-
   QString owner=username;
   RDAirPlayConf::PanelType type=RDAirPlayConf::UserPanel;
   int max_panels=panel_user_panels;
