@@ -631,6 +631,9 @@ void MainWidget::selectionChangedData(const QItemSelection &,
     lib_player->stopButton()->setEnabled(carts.size()==1);
     lib_player->setCart(lib_cart_model->cartNumber(carts.first()));
     SetPlayer(lib_cart_model->cartType(carts.first()));
+    if(lib_player->isPlaying()) {
+      lib_player->play();
+    }
   }
   else {
     lib_edit_button->setEnabled(false);
@@ -640,6 +643,9 @@ void MainWidget::selectionChangedData(const QItemSelection &,
     if(cuts.size()>=1) {
       lib_player->setCart(lib_cart_model->cartNumber(cuts.first()));
       lib_player->setCut(lib_cart_model->cutName(cuts.first()));
+      if(lib_player->isPlaying()) {
+	lib_player->play();
+      }
     }
     SetPlayer(lib_cart_model->cartType(cuts.first()));
   }

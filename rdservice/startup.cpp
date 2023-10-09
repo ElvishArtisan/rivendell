@@ -66,6 +66,13 @@ bool MainObject::Startup(QString *err_msg)
   }
 
   //
+  // *** BAND-AID * BAND_AID * YEECH! ***
+  // This Makes It Work, but I think we're going to need to implement
+  // socket activation on all of these services.
+  //
+  sleep(1);
+
+  //
   // ripcd(8)
   //
   svc_processes[RDSERVICE_RIPCD_ID]=new RDProcess(RDSERVICE_RIPCD_ID,this);

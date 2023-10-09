@@ -2,7 +2,7 @@
 //
 // A naively simple player for Rivendell Carts.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,7 +34,7 @@ RDSimplePlayer::RDSimplePlayer(RDCae *cae,RDRipc *ripc,int card,int port,
   play_port=port;
   play_start_cart=start_cart;
   play_end_cart=end_cart;
-  play_stream=-1;
+  play_serial=-1;
   play_cart=0;
   play_cut="";
   play_is_playing=false;
@@ -42,8 +42,8 @@ RDSimplePlayer::RDSimplePlayer(RDCae *cae,RDRipc *ripc,int card,int port,
   //
   // RDCae Connections
   //
-  connect(play_cae,SIGNAL(playing(int)),this,SLOT(playingData(int)));
-  connect(play_cae,SIGNAL(playStopped(int)),this,SLOT(playStoppedData(int)));
+  connect(play_cae,SIGNAL(playbackStopped(int)),
+	  this,SLOT(playStoppedData(int)));
 
   //
   // Event Player
@@ -127,8 +127,6 @@ void RDSimplePlayer::play()
 
 void RDSimplePlayer::play(int start_pos)
 {
-  int handle=0;
-  int play_cut_gain=0;
   QString sql;
   RDSqlQuery *q;
 
@@ -145,13 +143,6 @@ void RDSimplePlayer::play(int start_pos)
     delete cart;
   }
   if(!play_cut.isEmpty()) {
-    //    play_cae->
-    //      loadPlay(play_card,play_cut,&play_stream,&handle);
-
-    if(play_stream<0) {
-      return;
-    }
-
     sql=QString("select ")+
       "`START_POINT`,"+  // 00
       "`END_POINT`,"+    // 01
@@ -160,19 +151,33 @@ void RDSimplePlayer::play(int start_pos)
       "`CUT_NAME`='"+RDEscapeString(play_cut)+"'";
     q=new RDSqlQuery(sql);
     if(q->first()) {
-      play_cut_gain=q->value(2).toInt(); 
+      /*
       play_handles.push(handle);
       for(int i=0;i<RD_MAX_PORTS;i++) {
         play_cae->setOutputVolume(play_card,play_stream,i,RD_MUTE_DEPTH);
       }
       play_cae->setOutputVolume(play_card,play_stream,play_port,0+play_cut_gain);
       play_cae->positionPlay(play_handles.back(),q->value(0).toUInt()+start_pos);
-      /*
       play_cae->play(play_handles.back(),
                      q->value(1).toUInt()-(q->value(0).toUInt()+start_pos),
                      RD_TIMESCALE_DIVISOR,false);
       */
-      play_cae->setPlayPortActive(play_card,play_port,play_stream);
+      //
+      //  FIXME: implement cut gain!
+      //      play_cut_gain=q->value(2).toInt();
+      play_serial=
+	play_cae->startPlayback(play_cut,play_card,play_port,
+				q->value(0).toInt()+start_pos,
+				q->value(1).toInt(),
+				RD_TIMESCALE_DIVISOR);
+      //      play_cae->setPlayPortActive(play_card,play_port,play_stream);
+      if(play_serial>0) {
+	play_event_player->exec(play_start_cart);
+	play_start_button->on();
+	play_stop_button->off();
+	play_is_playing=true;
+	emit played();
+      }
     }
     delete q;
   }
@@ -184,39 +189,18 @@ void RDSimplePlayer::stop()
   if(!play_is_playing) {
     return;
   }
-  //  play_cae->stopPlay(play_handles.back());
-}
-
-
-void RDSimplePlayer::playingData(int handle)
-{
-  if(play_handles.empty()) {
-    return;
-  }
-  if(handle!=play_handles.back()) {
-    return;
-  }
-  play_event_player->exec(play_start_cart);
-  play_start_button->on();
-  play_stop_button->off();
-  play_is_playing=true;
-  emit played();
+  play_cae->stopPlayback(play_serial);
+  play_cut="";
+  play_is_playing=false;
 }
 
 
 void RDSimplePlayer::playStoppedData(int handle)
 {
-  if(play_handles.empty()) {
-    return;
-  }
-  if(handle!=play_handles.front()) {
-    return;
-  }
-  //  play_cae->unloadPlay(play_handles.front());
   play_event_player->exec(play_end_cart);
   play_start_button->off();
   play_stop_button->on();
-  play_handles.pop();
   play_is_playing=false;
+
   emit stopped();
 }
