@@ -24428,3 +24428,5 @@
 2023-10-08 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'RDSoundPanel' that kept the current panel view
 	from being updated when the logged-in user changed.
+2023-10-10 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.1.0int1.
