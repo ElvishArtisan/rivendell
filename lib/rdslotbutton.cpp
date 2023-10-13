@@ -2,7 +2,7 @@
 //
 //   Start/stop button for rdcartslots(1).
 //
-//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -34,9 +34,15 @@ RDSlotButton::RDSlotButton(int slotnum,QWidget *parent,RDConfig *c)
   d_ready_color=
     QPalette(QColor(BUTTON_STOPPED_BACKGROUND_COLOR),
 	     palette().color(QPalette::Background));
+  d_ready_color.setColor(QPalette::Disabled,QPalette::Button,
+			 palette().color(QPalette::Disabled,QPalette::Button));
+
   d_playing_color=
     QPalette(QColor(BUTTON_PLAY_BACKGROUND_COLOR),
 	     palette().color(QPalette::Background));
+  d_playing_color.setColor(QPalette::Disabled,QPalette::Button,
+			 palette().color(QPalette::Disabled,QPalette::Button));
+
   setFocusPolicy(Qt::NoFocus);
 }
 

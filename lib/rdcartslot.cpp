@@ -186,6 +186,7 @@ void RDCartSlot::updateOptions()
     break;
 
   case RDSlotOptions::BreakawayMode:
+    unload();
     SetInput(true);
     slot_start_button->setDisabled(true);
     slot_box->setService(slot_svcname);
