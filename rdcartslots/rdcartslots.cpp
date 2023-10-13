@@ -59,11 +59,9 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
 		applicationIcon(RDIconEngine::RdCartSlots,22));
 
   //
-  // CAE Connection
+  // Start Meters
   //
-  connect(rda->cae(),SIGNAL(isConnected(bool)),
-	  this,SLOT(caeConnectedData(bool)));
-  rda->cae()->connectToHost();
+  EnableMetering();
 
   //
   // RIPC Connection
@@ -137,22 +135,6 @@ QSize MainWidget::sizeHint() const
 }
 
 
-void MainWidget::caeConnectedData(bool state)
-{
-  QList<int> cards;
-
-  QString sql=QString("select `CARD` from `CARTSLOTS` where ")+
-    "`STATION_NAME`='"+RDEscapeString(rda->config()->stationName())+"'";
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  while(q->next()) {
-   cards.push_back(q->value(0).toInt());
-  }
-  delete q;
-
-  rda->cae()->enableMetering(&cards);
-}
-
-
 void MainWidget::rmlReceivedData(RDMacro *rml)
 {
   RunLocalMacros(rml);
@@ -195,6 +177,22 @@ void MainWidget::closeEvent(QCloseEvent *e)
   }
   saveSettings();
   exit(0);
+}
+
+
+void MainWidget::EnableMetering()
+{
+  QList<int> cards;
+
+  QString sql=QString("select `CARD` from `CARTSLOTS` where ")+
+    "`STATION_NAME`='"+RDEscapeString(rda->config()->stationName())+"'";
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  while(q->next()) {
+   cards.push_back(q->value(0).toInt());
+  }
+  delete q;
+
+  rda->cae()->enableMetering(&cards);
 }
 
 

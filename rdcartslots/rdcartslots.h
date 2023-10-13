@@ -2,7 +2,7 @@
 //
 // A Dedicated Cart Slot Utility for Rivendell.
 //
-//   (C) Copyright 2012-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -41,7 +41,6 @@ class MainWidget : public RDMainWindow
   QSizePolicy sizePolicy() const;
 
  private slots:
-  void caeConnectedData(bool state);
   void userData();
   void rmlReceivedData(RDMacro *rml);
 
@@ -50,6 +49,7 @@ class MainWidget : public RDMainWindow
   void closeEvent(QCloseEvent *e);
 
  private:
+  void EnableMetering();
   void RunLocalMacros(RDMacro *rml);
   void SetCaption();
   RDEventPlayer *panel_player;

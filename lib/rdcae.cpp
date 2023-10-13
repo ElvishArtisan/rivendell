@@ -186,7 +186,7 @@ void RDCae::enableMetering(QList<int> *cards)
       }
     }
   }
-  SendCommand(cmd+"!");
+  SendCommand(cmd);
 }
 
 
@@ -322,7 +322,7 @@ void RDCae::loadRecord(int card,int stream,QString name,
 {
   // printf("RDCae::loadRecord(%d,%d,%s,%d,%d,%d,%d)\n",
   //	 card,stream,(const char *)name,coding,chan,samp_rate,bit_rate);
-  SendCommand(QString::asprintf("LR %d %d %d %d %d %d %s!",
+  SendCommand(QString::asprintf("LR %d %d %d %d %d %d %s",
 				card,stream,(int)coding,chan,samp_rate,
 				bit_rate,name.toUtf8().constData()));
 }
@@ -331,46 +331,45 @@ void RDCae::loadRecord(int card,int stream,QString name,
 void RDCae::unloadRecord(int card,int stream)
 
 {
-  SendCommand(QString::asprintf("UR %d %d!",card,stream));
+  SendCommand(QString::asprintf("UR %d %d",card,stream));
 }
 
 
 void RDCae::record(int card,int stream,unsigned length,int threshold)
 {
-  SendCommand(QString::asprintf("RD %d %d %u %d!",
+  SendCommand(QString::asprintf("RD %d %d %u %d",
 				card,stream,length,threshold));
 }
 
 
 void RDCae::stopRecord(int card,int stream)
 {
-  SendCommand(QString::asprintf("SR %d %d!",card,stream));
+  SendCommand(QString::asprintf("SR %d %d",card,stream));
 }
 
 
 void RDCae::setOutputVolume(int card,int stream,int port,int level)
 {
-  SendCommand(QString::asprintf("OV %d %d %d %d!",card,stream,port,level));
+  SendCommand(QString::asprintf("OV %d %d %d %d",card,stream,port,level));
 }
 
 
 void RDCae::setOutputPort(int card,int stream,int port)
 {
-  SendCommand(QString::asprintf("OP %d %d %d 0!",card,stream,port));
+  SendCommand(QString::asprintf("OP %d %d %d 0",card,stream,port));
 }
 
 
 void RDCae::fadeOutputVolume(int card,int stream,int port,int level,int length)
 {
-  SendCommand(QString::asprintf("FV %d %d %d %d %d!",
+  SendCommand(QString::asprintf("FV %d %d %d %d %d",
 				card,stream,port,level,length));
 }
 
 
 void RDCae::setPassthroughVolume(int card,int in_port,int out_port,int level)
 {
-  SendCommand(QString().
-	      sprintf("AL %d %d %d %d!",card,in_port,out_port,level));
+  SendCommand(QString::asprintf("AL %d %d %d %d",card,in_port,out_port,level));
 }
 
 

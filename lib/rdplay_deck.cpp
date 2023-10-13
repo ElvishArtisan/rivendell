@@ -31,7 +31,7 @@ RDPlayDeck::RDPlayDeck(RDCae *cae,int id,QObject *parent)
   play_start_time=QTime();
   play_owner=-1;
   play_last_start_position=0;
-  play_handle=-1;
+  play_serial=-1;
   play_audio_length=0;
   play_channel=-1;
   play_hook_mode=false;
@@ -50,8 +50,9 @@ RDPlayDeck::RDPlayDeck(RDCae *cae,int id,QObject *parent)
   // CAE Connection
   //
   play_cae=cae;
-  connect(play_cae,SIGNAL(playing(int)),this,SLOT(playingData(int)));
-  connect(play_cae,SIGNAL(playStopped(int)),this,SLOT(playStoppedData(int)));
+  connect(play_cae,SIGNAL(playStarted(int)),this,SLOT(playStartedData(int)));
+  connect(play_cae,SIGNAL(playbackStopped(int)),
+	  this,SLOT(playbackStoppedData(int)));
   play_cart=NULL;
   play_cut=NULL;
   play_card=-1;
@@ -86,7 +87,7 @@ RDPlayDeck::RDPlayDeck(RDCae *cae,int id,QObject *parent)
 RDPlayDeck::~RDPlayDeck()
 {
   if(play_state!=RDPlayDeck::Stopped) {
-    play_cae->stopPlayback(play_handle);
+    play_cae->stopPlayback(play_serial);
     //    play_cae->unloadPlay(play_handle);
   }
 }
@@ -257,7 +258,7 @@ RDCut *RDPlayDeck::cut() const
 
 bool RDPlayDeck::playable() const
 {
-  if(play_handle<0) {
+  if(play_serial<0) {
     return false;
   }
   return true;
@@ -368,7 +369,7 @@ void RDPlayDeck::reset()
   switch(play_state) {
       case RDPlayDeck::Playing:
       case RDPlayDeck::Stopping:
-	play_cae->stopPlayback(play_handle);
+	play_cae->stopPlayback(play_serial);
 
       case RDPlayDeck::Paused:
 	//	play_cae->unloadPlay(play_handle);
@@ -451,10 +452,11 @@ void RDPlayDeck::play(unsigned pos,int segue_start,int segue_end,
     play_duck_up_point=0;
   else
     play_ducked=play_duck_gain[0];
-
-  if(play_handle<0) {
+  /*
+  if(play_serial<0) {
     return;
   }
+  */
   if(segue_start>=0) {
     play_point_value[RDPlayDeck::Segue][0]=segue_start;
   }
@@ -466,9 +468,9 @@ void RDPlayDeck::play(unsigned pos,int segue_start,int segue_end,
   play_last_start_position=play_start_position;
   stop_called=false;
   pause_called=false;
-  play_cae->positionPlay(play_handle,play_audio_point[0]+pos);
-  play_cae->setPlayPortActive(play_card,play_port,play_stream);
-  play_cae->setOutputVolume(play_card,play_stream,-1,RD_MUTE_DEPTH);
+  //  play_cae->positionPlay(play_serial,play_audio_point[0]+pos);
+  //  play_cae->setPlayPortActive(play_card,play_port,play_stream);
+  //  play_cae->setOutputVolume(play_card,play_stream,-1,RD_MUTE_DEPTH);
   if((play_fade_point[0]==-1)||(play_fade_point[0]==play_audio_point[0])||
      ((fadeup=play_fade_point[0]-play_audio_point[0]-pos)<=0)||
      (play_state==RDPlayDeck::Paused)) {
@@ -518,9 +520,17 @@ void RDPlayDeck::play(unsigned pos,int segue_start,int segue_end,
 	 (double)play_timescale_speed),
 	 play_timescale_speed,false);
   */
+  printf("startPlayback(\"%s\",%d,%d,%d,%d,%d)\n",
+	 play_cut->cutName().toUtf8().constData(),play_card,play_port,
+	 play_audio_point[0]+pos,
+	 play_audio_point[1],play_timescale_speed);
+  play_serial=play_cae->startPlayback(play_cut->cutName(),play_card,play_port,
+				      play_audio_point[0]+pos,
+				      play_audio_point[1],play_timescale_speed);
   play_start_time=QTime::currentTime();
   StartTimers(pos);
   play_state=RDPlayDeck::Playing;
+  playStartedData(play_serial);
 }
 
 
@@ -551,6 +561,7 @@ void RDPlayDeck::stop()
     stop_called=true;
     play_state=RDPlayDeck::Stopping;
     //    play_cae->stopPlay(play_handle);
+    play_cae->stopPlayback(play_serial);
   }
 }
 
@@ -627,9 +638,9 @@ void RDPlayDeck::duckVolume(int level,int fade)
 }
 
 
-void RDPlayDeck::playingData(int handle)
+void RDPlayDeck::playStartedData(int serial)
 {
-  if(handle!=play_handle) {
+  if(serial!=play_serial) {
     return;
   }
   play_position_timer->start(POSITION_INTERVAL);
@@ -637,9 +648,9 @@ void RDPlayDeck::playingData(int handle)
 }
 
 
-void RDPlayDeck::playStoppedData(int handle)
+void RDPlayDeck::playbackStoppedData(int serial)
 { 
-  if(handle!=play_handle) {
+  if(serial!=play_serial) {
     return;
   }
   play_position_timer->stop();
@@ -652,7 +663,7 @@ void RDPlayDeck::playStoppedData(int handle)
   else {
     //    play_cae->unloadPlay(play_handle);
 
-    play_handle=-1;
+    play_serial=-1;
     play_state=RDPlayDeck::Stopped;
     play_current_position=0;
     play_duck_down_state=false;

@@ -86,8 +86,8 @@ class RDPlayDeck : public QObject
   void talkEnd(int id);
 
  private slots:
-  void playingData(int handle);
-  void playStoppedData(int handle); 
+  void playStartedData(int serial);
+  void playbackStoppedData(int serial);
   void pointTimerData(int);
   void positionTimerData();
   void fadeTimerData();
@@ -127,7 +127,8 @@ class RDPlayDeck : public QObject
   int play_stream;
   int play_port;
   int play_channel;
-  int play_handle;
+  //  int play_handle;
+  int play_serial;
   unsigned play_forced_length;
   bool play_hook_mode;
   QTime play_start_time;
