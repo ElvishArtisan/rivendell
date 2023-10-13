@@ -38,6 +38,15 @@
 //
 // #define DEBUG_LATENCY
 
+__RDCaeMeterPoint::__RDCaeMeterPoint()
+{
+  levels[0]=RD_MUTE_DEPTH;
+  levels[1]=RD_MUTE_DEPTH;
+}
+
+
+
+
 RDCae::RDCae(RDStation *station,RDConfig *config,QObject *parent)
   : QObject(parent)
 {
@@ -101,7 +110,7 @@ RDCae::RDCae(RDStation *station,RDConfig *config,QObject *parent)
       for(unsigned k=0;k<2;k++) {
 	cae_input_levels[i][j][k]=-10000;
 	cae_output_levels[i][j][k]=-10000;
-	cae_stream_output_levels[i][j][k]=-10000;
+	//	cae_stream_output_levels[i][j][k]=-10000;
       }
       for(int k=0;k<RD_MAX_STREAMS;k++) {
 	cae_output_status_flags[i][j][k]=false;
@@ -195,6 +204,7 @@ int RDCae::startPlayback(const QString &cutname,int cardnum,int portnum,
 {
   int serial=cae_next_serial_number++;
 
+  cae_stream_output_levels[serial]=new __RDCaeMeterPoint();
   SendCommand(QString::asprintf("PY %d %s %d %d %d %d %d",
 				serial,cutname.toUtf8().constData(),
 				cardnum,portnum,start_pos,end_pos,100000));
@@ -226,6 +236,10 @@ void RDCae::resumePlayback(int serial)
 void RDCae::stopPlayback(int serial)
 {
   SendCommand(QString::asprintf("SP %d",serial));
+  if(cae_stream_output_levels.value(serial)!=NULL) {
+    delete cae_stream_output_levels.value(serial);
+    cae_stream_output_levels.remove(serial);
+  }
   emit playbackStopped(serial);
 }
 
@@ -395,11 +409,17 @@ void RDCae::outputMeterUpdate(int card,int port,short levels[2])
 }
 
 
-void RDCae::outputStreamMeterUpdate(int card,int stream,short levels[2])
+void RDCae::outputStreamMeterUpdate(int serial,short levels[2])
 {
+  __RDCaeMeterPoint *mp=NULL;
+
   UpdateMeters();
-  levels[0]=cae_stream_output_levels[card][stream][0];
-  levels[1]=cae_stream_output_levels[card][stream][1];
+  if((mp=cae_stream_output_levels.value(serial))!=NULL) {
+    levels[0]=mp->levels[0];
+    levels[1]=mp->levels[1];
+  }
+  //  levels[0]=cae_stream_output_levels[card][stream][0];
+  //  levels[1]=cae_stream_output_levels[card][stream][1];
 }
 
 
@@ -582,6 +602,10 @@ void RDCae::ProcessCommand(const QString &cmd)
   if((f0.at(0)=="SP")&&(f0.size()==2)) {   // Playback Stopped
     serial=f0.at(1).toInt(&ok);
     if(ok&&(serial>0)) {
+      if(cae_stream_output_levels.value(serial)!=NULL) {
+	delete cae_stream_output_levels.value(serial);
+	cae_stream_output_levels.remove(serial);
+      }
       emit playbackStopped(serial);
     }
   }
@@ -759,6 +783,7 @@ void RDCae::UpdateMeters()
   char msg[1501];
   int n;
   QStringList args;
+  __RDCaeMeterPoint *mp=NULL;
 
   while((n=cae_meter_socket->readDatagram(msg,1500))>0) {
     msg[n]=0;
@@ -778,11 +803,11 @@ void RDCae::UpdateMeters()
       }
     }
     if(args[0]=="MO") {
-      if(args.size()==5) {
-	cae_stream_output_levels[args[1].toInt()][args[2].toInt()][0]=
-	    args[3].toInt();
-	cae_stream_output_levels[args[1].toInt()][args[2].toInt()][1]=
-	    args[4].toInt();
+      if(args.size()==4) {
+	if((mp=cae_stream_output_levels.value(args[1].toInt()))!=NULL) {
+	  mp->levels[0]=args[2].toInt();
+	  mp->levels[1]=args[3].toInt();
+	}
       }
     }
     if(args[0]=="MP") {

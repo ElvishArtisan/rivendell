@@ -45,6 +45,7 @@ class RDPlayDeck : public QObject
   ~RDPlayDeck();
   int id() const;
   void setId(int id);
+  int serialNumber() const;
   int owner() const;
   void setOwner(int owner);
   RDCart *cart() const;

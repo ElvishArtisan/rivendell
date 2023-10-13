@@ -379,8 +379,7 @@ void RDCartSlot::updateMeters()
   switch(slot_deck->state()) {
   case RDPlayDeck::Playing:
   case RDPlayDeck::Stopping:
-    slot_cae->
-      outputStreamMeterUpdate(slot_deck->card(),slot_deck->stream(),lvls);
+    slot_cae->outputStreamMeterUpdate(slot_deck->serialNumber(),lvls);
     slot_box->updateMeters(lvls);
     break;
 

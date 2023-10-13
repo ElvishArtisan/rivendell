@@ -1888,9 +1888,11 @@ void MainObject::SendStreamMeterLevelUpdate(int cardnum,int streamnum,
   for(QMap<SessionId,Session *>::const_iterator it=cae_play_sessions.begin();
       it!=cae_play_sessions.end();it++) {
     if((it.value()->cardNumber()==cardnum)&&
+       (it.value()->streamNumber()==streamnum)&&
        (cae_server->meterPort(it.key())>0)) {
-      SendMeterUpdate(QString::asprintf("MO %d %d %d %d",
-					cardnum,streamnum,levels[0],levels[1]),
+      SendMeterUpdate(QString::asprintf("MO %d %d %d",
+					it.key().serialNumber(),
+					levels[0],levels[1]),
 		      it.key());
     }
   }

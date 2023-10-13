@@ -31,6 +31,16 @@
 #include <rdstation.h>
 #include <rdconfig.h>
 
+class __RDCaeMeterPoint
+{
+ public:
+  __RDCaeMeterPoint();
+  short levels[2];
+};
+
+
+
+
 class RDCae : public QObject
 {
  Q_OBJECT
@@ -69,7 +79,8 @@ class RDCae : public QObject
   bool inputStatus(int card,int port) const;
   void inputMeterUpdate(int card,int port,short levels[2]);
   void outputMeterUpdate(int card,int port,short levels[2]);
-  void outputStreamMeterUpdate(int card,int stream,short levels[2]);
+  //  void outputStreamMeterUpdate(int card,int stream,short levels[2]);
+  void outputStreamMeterUpdate(int serial,short levels[2]);
   unsigned playPosition(int handle);
   void requestTimescale(int card);
   bool playPortActive(int card,int port,int except_stream=-1);
@@ -124,7 +135,10 @@ class RDCae : public QObject
   int cae_meter_port_range;
   short cae_input_levels[RD_MAX_CARDS][RD_MAX_PORTS][2];
   short cae_output_levels[RD_MAX_CARDS][RD_MAX_PORTS][2];
-  short cae_stream_output_levels[RD_MAX_CARDS][RD_MAX_PORTS][2];
+
+  //  short cae_stream_output_levels[RD_MAX_CARDS][RD_MAX_PORTS][2];
+  QMap<int,__RDCaeMeterPoint *> cae_stream_output_levels;
+
   unsigned cae_output_positions[RD_MAX_CARDS][RD_MAX_STREAMS];
   bool cae_output_status_flags[RD_MAX_CARDS][RD_MAX_PORTS][RD_MAX_STREAMS];
   std::vector<RDCmdCache> delayed_cmds;

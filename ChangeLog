@@ -24445,3 +24445,8 @@
 	* Fixed a regression in rdcartslots(1) that displayed red or green
 	color around the edges of start buttons when the buttons were
 	disabled.
+2023-10-13 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the 'Output Stream Meter Levels' [MO'] CAE command to
+	use serial numbers rather than card/stream numbers.
+	* Fixed a regression in rdcartslots(1) that broke audio level
+	metering.

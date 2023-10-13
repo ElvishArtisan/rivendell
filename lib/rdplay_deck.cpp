@@ -105,6 +105,12 @@ void RDPlayDeck::setId(int id)
 }
 
 
+int RDPlayDeck::serialNumber() const
+{
+  return play_serial;
+}
+
+
 int RDPlayDeck::owner() const
 {
   return play_owner;
