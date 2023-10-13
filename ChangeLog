@@ -24441,7 +24441,7 @@
 	be leaked when a play-out hit EOF.
 2023-10-09 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed regressions in 'RDCae' that broke various mixer CAE commands.
-2023-10-09 Fred Gleason <fredg@paravelsystems.com>
+2023-10-13 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdcartslots(1) that displayed red or green
 	color around the edges of start buttons when the buttons were
 	disabled.
