@@ -24450,3 +24450,6 @@
 	use serial numbers rather than card/stream numbers.
 	* Fixed a regression in rdcartslots(1) that broke audio level
 	metering.
+2023-10-14 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdcatch(1) that broke audio audition
+	play-out.

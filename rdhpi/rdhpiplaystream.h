@@ -43,7 +43,7 @@
 #define FRAGMENT_TIME 50
 #define TIMESCALE_LOW_LIMIT 83300
 #define TIMESCALE_HIGH_LIMIT 125000
-//#define RPLAYSTREAM_SHOW_SLOTS yes
+#define RPLAYSTREAM_SHOW_SLOTS yes
 
 class RDHPIPlayStream : public QObject,public RDWaveFile
 {

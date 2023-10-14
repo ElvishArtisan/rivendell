@@ -58,8 +58,6 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   QString err_msg;
 
   catch_host_warnings=false;
-  catch_audition_stream=-1;
-
   catch_scroll=false;
 
   //
@@ -90,8 +88,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
   setWindowIcon(rda->iconEngine()->applicationIcon(RDIconEngine::RdCatch,22));
 
   //
@@ -110,7 +107,8 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
 			BUTTON_ACTIVE_BACKGROUND_COLOR);
   catch_scroll_color[0].setColor(QPalette::Inactive,QPalette::Background,
 			palette().color(QPalette::Background));
-  catch_scroll_color[1]=QPalette(palette().color(QPalette::Background),palette().color(QPalette::Background));
+  catch_scroll_color[1]=QPalette(palette().color(QPalette::Background),
+				 palette().color(QPalette::Background));
 
   str=QString("RDCatch")+" v"+VERSION+" - "+tr("Host")+":";
   setWindowTitle(str+" "+rda->config()->stationName());
@@ -145,11 +143,12 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // CAE Connection
   //
-  connect(rda->cae(),SIGNAL(isConnected(bool)),this,SLOT(initData(bool)));
-  connect(rda->cae(),SIGNAL(playing(int)),this,SLOT(playedData(int)));
-  connect(rda->cae(),SIGNAL(playStopped(int)),
+  connect(rda->cae(),SIGNAL(playbackStopped(int)),
 	  this,SLOT(playStoppedData(int)));
   rda->cae()->connectToHost();
+  QList<int> cards;
+  cards.push_back(rda->station()->cueCard());
+  rda->cae()->enableMetering(&cards);
 
   //
   // Deck Monitors
@@ -387,6 +386,13 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   catch_tail_button=new RDTransportButton(RDTransportButton::PlayTo,this);
   catch_tail_button->setDisabled(true);
   connect(catch_tail_button,SIGNAL(clicked()),this,SLOT(tailButtonData()));
+
+  //
+  // Stop Timer
+  //
+  catch_stop_timer=new QTimer(this);
+  catch_stop_timer->setSingleShot(true);
+  connect(catch_stop_timer,SIGNAL(timeout()),this,SLOT(stopButtonData()));
 
   //
   // Play Stop Button
@@ -697,120 +703,88 @@ void MainWidget::reportsButtonData()
 
 void MainWidget::headButtonData()
 {
-  /*
   QModelIndexList rows=catch_recordings_view->selectionModel()->selectedRows();
 
   if(rows.size()!=1) {
     return;
   }
   EnableScroll(false);
-  if((!head_playing)&&(!tail_playing)) {  // Start Head Play
-    RDCut *cut=new RDCut(catch_recordings_model->cutName(rows.first()));
-    rda->cae()->loadPlay(catch_audition_card,cut->cutName(),
-			&catch_audition_stream,&catch_play_handle);
-    if(catch_audition_stream<0) {
-      return;
-    }
-    rda->cae()->setOutputPort(catch_audition_card,catch_audition_stream,
-			      catch_audition_port);
-    rda->cae()->positionPlay(catch_play_handle,cut->startPoint());
-    rda->cae()->setPlayPortActive(catch_audition_card,catch_audition_port,
-				  catch_audition_stream);
-    rda->cae()->setOutputVolume(catch_audition_card,catch_audition_stream,
-				catch_audition_port,
-           0+cut->playGain());
-    rda->cae()->play(catch_play_handle,RDCATCH_AUDITION_LENGTH,
-		    RD_TIMESCALE_DIVISOR,false);
-    head_playing=true;
-    delete cut;
+  if(head_playing||tail_playing) {
+    stopButtonData();
   }
-  */
+  RDCut *cut=new RDCut(catch_recordings_model->cutName(rows.first()));
+  //    rda->cae()->setPlayPortActive(catch_audition_card,catch_audition_port,
+  //				  catch_audition_stream);
+  //    rda->cae()->setOutputVolume(catch_audition_card,catch_audition_stream,
+  //				catch_audition_port,
+  //           0+cut->playGain());
+  catch_play_serial=
+    rda->cae()->startPlayback(cut->cutName(),
+			      catch_audition_card,catch_audition_port,
+			      cut->startPoint(),
+			      cut->startPoint()+RDCATCH_AUDITION_LENGTH,
+			      RD_TIMESCALE_DIVISOR);
+  catch_stop_timer->start(RDCATCH_AUDITION_LENGTH);
+  head_playing=true;
+  delete cut;
+  
+  catch_head_button->on();
+  catch_stop_button->off();
 }
 
 
 void MainWidget::tailButtonData()
 {
-  /*
   QModelIndexList rows=catch_recordings_view->selectionModel()->selectedRows();
+  int start_pos=0;
 
   if(rows.size()!=1) {
     return;
   }
   EnableScroll(false);
-  if((!head_playing)&&(!tail_playing)) {  // Start Tail Play
-    RDCut *cut=new RDCut(catch_recordings_model->cutName(rows.first()));
-    rda->cae()->loadPlay(catch_audition_card,cut->cutName(),
-			&catch_audition_stream,&catch_play_handle);
-    if(catch_audition_stream<0) {
-      return;
-    }
-    rda->cae()->setOutputPort(catch_audition_card,catch_audition_stream,
-			      catch_audition_port);
-    if((cut->endPoint()-cut->startPoint()-RDCATCH_AUDITION_LENGTH)>0) {
-      rda->cae()->positionPlay(catch_play_handle,
-			      cut->endPoint()-RDCATCH_AUDITION_LENGTH);
-    }
-    else {
-      rda->cae()->positionPlay(catch_play_handle,cut->startPoint());
-    }
-    rda->cae()->setPlayPortActive(catch_audition_card,catch_audition_port,catch_audition_stream);
-    rda->cae()->setOutputVolume(catch_audition_card,catch_audition_stream,catch_audition_port,
-           0+cut->playGain());
-    rda->cae()->play(catch_play_handle,RDCATCH_AUDITION_LENGTH,
-		    RD_TIMESCALE_DIVISOR,false);
-    tail_playing=true;
-    delete cut;
+  if(head_playing||tail_playing) {
+    stopButtonData();
   }
-  */
+  RDCut *cut=new RDCut(catch_recordings_model->cutName(rows.first()));
+  if((cut->endPoint()-cut->startPoint()-RDCATCH_AUDITION_LENGTH)>0) {
+    start_pos=cut->endPoint()-RDCATCH_AUDITION_LENGTH;
+  }
+  else {
+    start_pos=cut->startPoint();
+  }
+  //    rda->cae()->setPlayPortActive(catch_audition_card,catch_audition_port,catch_audition_stream);
+  //    rda->cae()->setOutputVolume(catch_audition_card,catch_audition_stream,catch_audition_port,
+  //           0+cut->playGain());
+  catch_play_serial=
+    rda->cae()->startPlayback(cut->cutName(),
+			      catch_audition_card,catch_audition_port,
+			      start_pos,cut->endPoint(),
+			      RD_TIMESCALE_DIVISOR);
+  catch_stop_timer->start(RDCATCH_AUDITION_LENGTH);
+  tail_playing=true;
+  delete cut;
+  catch_tail_button->on();
+  catch_stop_button->off();
 }
 
 
 void MainWidget::stopButtonData()
 {
-  /*
-  if(head_playing||tail_playing) {  // Stop Play
-    rda->cae()->stopPlay(catch_play_handle);
-    rda->cae()->unloadPlay(catch_play_handle);
-  }
-  */
-}
-
-
-void MainWidget::initData(bool state)
-{
-  if(state) {
-    QList<int> cards;
-    cards.push_back(rda->station()->cueCard());
-    rda->cae()->enableMetering(&cards);
-  }
-  else {
-    QMessageBox::warning(this,tr("Can't Connect"),
-			 tr("Unable to connect to Core AudioEngine"));
-    exit(1);
+  if(head_playing||tail_playing) {
+    rda->cae()->stopPlayback(catch_play_serial);
+    catch_stop_timer->stop();
   }
 }
 
 
-void MainWidget::playedData(int handle)
-{
-  if(head_playing) {
-    catch_head_button->on();
-  }
-  if(tail_playing) {
-    catch_tail_button->on();
-  }
-  catch_stop_button->off();
-}
-
-
-void MainWidget::playStoppedData(int handle)
+void MainWidget::playStoppedData(int serial)
 {
   head_playing=false;
   tail_playing=false;
   catch_head_button->off();
   catch_tail_button->off();
   catch_stop_button->on();
-  //  rda->cae()->unloadPlay(catch_play_handle);
+  catch_stop_timer->stop();
 }
 
 
@@ -819,6 +793,7 @@ void MainWidget::selectionChangedData(const QItemSelection &before,
 {
   QModelIndexList rows=catch_recordings_view->selectionModel()->selectedRows();
 
+  stopButtonData();
   if(rows.size()!=1) {
     catch_head_button->setDisabled(true);
     catch_tail_button->setDisabled(true);

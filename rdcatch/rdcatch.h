@@ -2,7 +2,7 @@
 //
 // The Event Schedule Manager for Rivendell.
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,6 +25,7 @@
 #include <QComboBox>
 #include <QList>
 #include <QScrollArea>
+#include <QTimer>
 
 #include <rdcart_dialog.h>
 #include <rdcut_dialog.h>
@@ -68,9 +69,7 @@ class MainWidget : public RDMainWindow
   void headButtonData();
   void tailButtonData();
   void stopButtonData();
-  void initData(bool);
-  void playedData(int);
-  void playStoppedData(int);
+  void playStoppedData(int serial);
   void selectionChangedData(const QItemSelection &before,
 			    const QItemSelection &after);
   void doubleClickedData(const QModelIndex &index);
@@ -94,8 +93,7 @@ class MainWidget : public RDMainWindow
   QScrollArea *catch_monitor_area;
   VBox *catch_monitor_vbox;
   QSqlDatabase *catch_db;
-  int catch_audition_stream;
-  int catch_play_handle;
+  int catch_play_serial;
   CatchTableView *catch_recordings_view;
   RecordListModel *catch_recordings_model;
   RDTransportButton *catch_head_button;
@@ -109,6 +107,7 @@ class MainWidget : public RDMainWindow
   QPushButton *catch_reports_button;
   bool head_playing;
   bool tail_playing;
+  QTimer *catch_stop_timer;
   QString catch_filter;
   QString catch_group;
   QString catch_schedcode;

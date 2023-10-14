@@ -135,10 +135,7 @@ class RDCae : public QObject
   int cae_meter_port_range;
   short cae_input_levels[RD_MAX_CARDS][RD_MAX_PORTS][2];
   short cae_output_levels[RD_MAX_CARDS][RD_MAX_PORTS][2];
-
-  //  short cae_stream_output_levels[RD_MAX_CARDS][RD_MAX_PORTS][2];
   QMap<int,__RDCaeMeterPoint *> cae_stream_output_levels;
-
   unsigned cae_output_positions[RD_MAX_CARDS][RD_MAX_STREAMS];
   bool cae_output_status_flags[RD_MAX_CARDS][RD_MAX_PORTS][RD_MAX_STREAMS];
   std::vector<RDCmdCache> delayed_cmds;
