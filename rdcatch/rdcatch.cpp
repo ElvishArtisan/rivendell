@@ -721,9 +721,8 @@ void MainWidget::headButtonData()
   catch_play_serial=
     rda->cae()->startPlayback(cut->cutName(),
 			      catch_audition_card,catch_audition_port,
-			      cut->startPoint(),
-			      cut->startPoint()+RDCATCH_AUDITION_LENGTH,
-			      RD_TIMESCALE_DIVISOR,cut->playGain());
+			      cut->startPoint(),RD_TIMESCALE_DIVISOR,
+			      cut->playGain());
   catch_stop_timer->start(RDCATCH_AUDITION_LENGTH);
   head_playing=true;
   delete cut;
@@ -753,13 +752,10 @@ void MainWidget::tailButtonData()
     start_pos=cut->startPoint();
   }
   //    rda->cae()->setPlayPortActive(catch_audition_card,catch_audition_port,catch_audition_stream);
-  //    rda->cae()->setOutputVolume(catch_audition_card,catch_audition_stream,catch_audition_port,
-  //           0+cut->playGain());
   catch_play_serial=
     rda->cae()->startPlayback(cut->cutName(),
 			      catch_audition_card,catch_audition_port,
-			      start_pos,cut->endPoint(),
-			      RD_TIMESCALE_DIVISOR,cut->playGain());
+			      start_pos,RD_TIMESCALE_DIVISOR,cut->playGain());
   catch_stop_timer->start(RDCATCH_AUDITION_LENGTH);
   tail_playing=true;
   delete cut;

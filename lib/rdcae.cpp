@@ -200,15 +200,14 @@ void RDCae::enableMetering(QList<int> *cards)
 
 
 int RDCae::startPlayback(const QString &cutname,int cardnum,int portnum,
-			 int start_pos,int end_pos,int speed,int volume)
+			 int start_pos,int speed,int volume)
 {
   int serial=cae_next_serial_number++;
 
   cae_stream_output_levels[serial]=new __RDCaeMeterPoint();
-  SendCommand(QString::asprintf("PY %d %s %d %d %d %d %d %d",
+  SendCommand(QString::asprintf("PY %d %s %d %d %d %d %d",
 				serial,cutname.toUtf8().constData(),
-				cardnum,portnum,start_pos,end_pos,
-				speed,volume));
+				cardnum,portnum,start_pos,speed,volume));
   emit playStarted(serial);
 
   return serial;

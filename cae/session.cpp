@@ -18,6 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <rd.h>
+
 #include "session.h"
 
 SessionId::SessionId(const QHostAddress &src_addr,uint16_t src_port,int serial)
@@ -106,11 +108,7 @@ Session::Session(const QHostAddress &addr,uint16_t port,int serial)
   d_port_number=-1;
   d_stream_number=-1;
   d_start_position=-1;
-  d_end_position=-1;
-  d_speed=100000;
-
-  //  d_meter_port=0;
-  //  d_meters_enabled=false;
+  d_speed=RD_TIMESCALE_DIVISOR;
 }
 
 
@@ -122,31 +120,9 @@ Session::Session(const SessionId &sid)
   d_port_number=-1;
   d_stream_number=-1;
   d_start_position=-1;
-  d_end_position=-1;
-  d_speed=100000;
-
-  //  d_meter_port=0;
-  //  d_meters_enabled=false;
+  d_speed=RD_TIMESCALE_DIVISOR;
 }
 
-/*
-Session::Session(const Connection &conn)
-{
-  d_session_id=SessionId(conn);
-
-  d_session_id=sid;
-
-  d_card_number=-1;
-  d_port_number=-1;
-  d_stream_number=-1;
-  d_start_position=-1;
-  d_end_position=-1;
-  d_speed=100000;
-
-  d_meter_port=0;
-  d_meters_enabled=false;
-}
-*/
 
 SessionId Session::sessionId() const
 {
@@ -202,18 +178,6 @@ void Session::setStartPosition(int pos)
 }
 
 
-int Session::endPosition() const
-{
-  return d_end_position;
-}
-
-
-void Session::setEndPosition(int pos)
-{
-  d_end_position=pos;
-}
-
-
 int Session::speed() const
 {
   return d_speed;
@@ -224,28 +188,3 @@ void Session::setSpeed(int speed)
 {
   d_speed=speed;
 }
-
-/*
-uint16_t Session::meterPort() const
-{
-  return d_meter_port;
-}
-
-
-void Session::setMeterPort(uint16_t port)
-{
-  d_meter_port=port;
-}
-
-
-bool Session::metersEnabled()
-{
-  return d_meters_enabled;
-}
-
-
-void Session::setMetersEnabled(bool state)
-{
-  d_meters_enabled=state;
-}
-*/

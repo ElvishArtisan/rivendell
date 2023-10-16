@@ -138,7 +138,6 @@ bool CaeServer::ProcessCommand(const QHostAddress &src_addr,uint16_t src_port,
   unsigned cardnum;
   unsigned portnum;
   int start_pos;
-  int end_pos;
   int position;
   int speed;
   int level;
@@ -187,7 +186,7 @@ bool CaeServer::ProcessCommand(const QHostAddress &src_addr,uint16_t src_port,
   //
   // Playback Operations
   //
-  if((f0.at(0)=="PY")&&(f0.size()==9)) {  // Start Playback
+  if((f0.at(0)=="PY")&&(f0.size()==8)) {  // Start Playback
     serial=f0.at(1).toUInt(&ok);
     if(ok) {
       origin.setSerialNumber(serial);
@@ -199,16 +198,13 @@ bool CaeServer::ProcessCommand(const QHostAddress &src_addr,uint16_t src_port,
 	  if(ok&&(portnum<RD_MAX_PORTS)) {
 	    start_pos=f0.at(5).toInt(&ok);
 	    if(ok&&(start_pos>=0)) {
-	      end_pos=f0.at(6).toInt(&ok);
-	      if(ok&&(end_pos>=0)&&(end_pos>=start_pos)) {
-		speed=f0.at(7).toInt(&ok);
-		if(ok&&(speed>0)) {
-		  volume=f0.at(8).toInt(&ok);
-		  if(ok) {
-		    emit startPlaybackReq(origin,cutname,cardnum,portnum,
-					  start_pos,end_pos,speed,volume);
-		    was_processed=true;
-		  }
+	      speed=f0.at(6).toInt(&ok);
+	      if(ok&&(speed>0)) {
+		volume=f0.at(7).toInt(&ok);
+		if(ok) {
+		  emit startPlaybackReq(origin,cutname,cardnum,portnum,
+					start_pos,speed,volume);
+		  was_processed=true;
 		}
 	      }
 	    }

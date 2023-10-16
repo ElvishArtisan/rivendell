@@ -209,7 +209,6 @@
 	  <replaceable>card-num</replaceable>
 	  <replaceable>port-num</replaceable>
 	  <replaceable>start-pos</replaceable>
-	  <replaceable>end-pos</replaceable>
 	  <replaceable>speed</replaceable>
 	  <replaceable>volume</replaceable>
 	</userinput>
@@ -257,15 +256,6 @@
 	  <listitem>
 	    The start position, in milliseconds from absolute start of the
 	    audio PCM data.
-	  </listitem>
-	</varlistentry>
-	<varlistentry>
-	  <term>
-	    <replaceable>end-pos</replaceable>
-	  </term>
-	  <listitem>
-	    The position at which to end play-out, in milliseconds from
-	    absolute start of the audio PCM data.
 	  </listitem>
 	</varlistentry>
 	<varlistentry>

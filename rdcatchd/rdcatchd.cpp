@@ -1305,7 +1305,6 @@ void MainObject::StartPlayout(int event)
     return;
   }
   int start=q->value(0).toInt();
-  int end=q->value(1).toInt();
   delete q;
 
   //
@@ -1320,7 +1319,6 @@ void MainObject::StartPlayout(int event)
 			      catch_playout_card[deck-129],
 			      catch_playout_port[deck-129],
 			      start,
-			      end,    // FIXME: this parameter does nothing!
 			      RD_TIMESCALE_DIVISOR,
 			      catch_events[event].cutPlayGain());
   rda->cae()->setPlayPortActive(catch_playout_card[deck-129],

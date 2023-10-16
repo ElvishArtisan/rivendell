@@ -61,12 +61,10 @@ class Session
   void setPortNumber(int portnum);
   int streamNumber() const;
   void setStreamNumber(int streamnum);
-  //  uint16_t meterPort() const;
-  //  void setMeterPort(uint16_t port);
   int startPosition() const;
   void setStartPosition(int pos);
-  int endPosition() const;
-  void setEndPosition(int pos);
+  //  int endPosition() const;
+  //  void setEndPosition(int pos);
   int speed() const;
   void setSpeed(int speed);
   //  bool metersEnabled();
@@ -78,10 +76,8 @@ class Session
   int d_port_number;
   int d_stream_number;
   int d_start_position;
-  int d_end_position;
+  //  int d_end_position;
   int d_speed;
-  //  uint16_t d_meter_port;
-  //  bool d_meters_enabled;
 };
 
 

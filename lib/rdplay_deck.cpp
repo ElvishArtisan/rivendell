@@ -548,7 +548,7 @@ void RDPlayDeck::play(unsigned pos,int segue_start,int segue_end,
 	 play_audio_point[1],play_timescale_speed);
   play_serial=play_cae->startPlayback(play_cut->cutName(),play_card,play_port,
 				      play_audio_point[0]+pos,
-				      play_audio_point[1],play_timescale_speed,
+				      play_timescale_speed,
 				      start_volume);
   play_cae->fadeOutputVolume(play_serial,fade_volume,fade_length);
   play_start_time=QTime::currentTime();

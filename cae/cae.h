@@ -77,7 +77,7 @@ class MainObject : public QObject
   //
   void startPlaybackData(const SessionId &sid,const QString &cutname,
 			 unsigned cardnum,unsigned portnum,
-			 int start_pos,int end_pos,int speed,int volume);
+			 int start_pos,int speed,int volume);
   void playPositionData(const SessionId &sid,int position);
   void stopPlaybackData(const SessionId &sid);
 

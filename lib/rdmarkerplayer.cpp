@@ -392,9 +392,8 @@ void RDMarkerPlayer::buttonPlayData()
   d_loop_start_length=0;
   d_cae_serial=rda->cae()->
     startPlayback(RDCut::cutName(d_cart_number,d_cut_number),
-		  d_cards.first(),d_port,
-		  d_cursor_position,d_cut_length,RD_TIMESCALE_DIVISOR,
-		  100*d_play_gain_spin->value());
+		  d_cards.first(),d_port,d_cursor_position,
+		  RD_TIMESCALE_DIVISOR,100*d_play_gain_spin->value());
   Play();
   rda->cae()->setPlayPortActive(d_cards.first(),d_port,d_cae_stream);
   // FIXME: Implement variable gain here!
@@ -411,8 +410,7 @@ void RDMarkerPlayer::buttonPlayFromData()
     d_cursor_position=d_loop_start_msec;
     d_cae_serial=rda->cae()->
       startPlayback(RDCut::cutName(d_cart_number,d_cut_number),
-		    d_cards.first(),d_port,
-		    d_loop_start_msec,d_cut_length,
+		    d_cards.first(),d_port,d_loop_start_msec,
 		    RD_TIMESCALE_DIVISOR,100*d_play_gain_spin->value());
     Play();
     rda->cae()->setPlayPortActive(d_cards.first(),d_port,d_cae_stream);
@@ -434,8 +432,7 @@ void RDMarkerPlayer::buttonPlayToData()
     d_cursor_position=d_loop_start_msec;
     d_cae_serial=rda->cae()->
       startPlayback(RDCut::cutName(d_cart_number,d_cut_number),
-		    d_cards.first(),d_port,
-		    d_loop_start_msec,d_loop_start_msec+d_loop_start_length,
+		    d_cards.first(),d_port,d_loop_start_msec,
 		    RD_TIMESCALE_DIVISOR,100*d_play_gain_spin->value());
     d_stop_timer->start(d_loop_start_length);
     Play();

@@ -24458,3 +24458,6 @@
 	events.
 2023-10-16 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'volume' parameter to the 'Start Playback' CAE command.
+2023-10-16 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'end-pos' parameter from the 'Start Playback' CAE
+	command.

@@ -165,7 +165,6 @@ void RDSimplePlayer::play(int start_pos)
       play_serial=
 	play_cae->startPlayback(play_cut,play_card,play_port,
 				q->value(0).toInt()+start_pos,
-				q->value(1).toInt(),
 				RD_TIMESCALE_DIVISOR,q->value(2).toInt());
       //      play_cae->setPlayPortActive(play_card,play_port,play_stream);
       if(play_serial>0) {

@@ -648,13 +648,12 @@ void RecordCut::recordData()
 void RecordCut::playData()
 {
   int start=rec_cut->startPoint(true);
-  int end=rec_cut->endPoint(true);
 
   if((!is_recording)&&(!is_playing)&&(!is_ready)) {  // Start Play
     rec_play_serial=
       rda->cae()->startPlayback(rec_cut->cutName(),
 				rec_card_no[1],rec_port_no[1],
-				start,end,RD_TIMESCALE_DIVISOR,
+				start,RD_TIMESCALE_DIVISOR,
 				rec_cut->playGain());
     //    rda->cae()->setPlayPortActive(rec_card_no[1],rec_port_no[1],rec_stream_no[1]);
   }

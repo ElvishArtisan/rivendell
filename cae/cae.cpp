@@ -156,9 +156,9 @@ MainObject::MainObject(QObject *parent)
   connect(cae_server,SIGNAL(playPositionReq(const SessionId &,int)),
 	  this,SLOT(playPositionData(const SessionId &,int)));
   connect(cae_server,SIGNAL(startPlaybackReq(const SessionId &,const QString &,
-					   unsigned,unsigned,int,int,int,int)),
+					     unsigned,unsigned,int,int,int)),
 	  this,SLOT(startPlaybackData(const SessionId &,const QString &,
-				      unsigned,unsigned,int,int,int,int)));
+				      unsigned,unsigned,int,int,int)));
   connect(cae_server,SIGNAL(playStopReq(const SessionId &)),
 	  this,SLOT(stopPlaybackData(const SessionId &)));
   connect(cae_server,SIGNAL(loadPlaybackReq(int,unsigned,const QString &)),
@@ -353,8 +353,7 @@ MainObject::MainObject(QObject *parent)
 //
 void MainObject::startPlaybackData(const SessionId &sid,const QString &cutname,
 				   unsigned cardnum,unsigned portnum,
-				   int start_pos,int end_pos,int speed,
-				   int volume)
+				   int start_pos,int speed,int volume)
 {
   Driver *dvr=NULL;
 
@@ -397,7 +396,7 @@ void MainObject::startPlaybackData(const SessionId &sid,const QString &cutname,
   //
   // Start the transport
   //
-  if(!dvr->play(cardnum,streamnum,end_pos-start_pos,speed,false,false)) {
+  if(!dvr->play(cardnum,streamnum,0,speed,false,false)) {
     rda->syslog(LOG_WARNING,
 		"play start failed - session: %s  card: %d  stream: %d",
 		sid.dump().toUtf8().constData(),cardnum,streamnum);
@@ -413,7 +412,6 @@ void MainObject::startPlaybackData(const SessionId &sid,const QString &cutname,
   sess->setPortNumber(portnum);
   sess->setStreamNumber(streamnum);
   sess->setStartPosition(start_pos);
-  sess->setEndPosition(end_pos);
   sess->setSpeed(speed);
   cae_play_sessions[sid]=sess;
 

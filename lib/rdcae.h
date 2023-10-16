@@ -54,7 +54,7 @@ class RDCae : public QObject
   void connectToHost(int timeout_msecs=-1);
   void enableMetering(QList<int> *cards);
   int startPlayback(const QString &cutname,int cardnum,int portnum,
-		    int start_pos,int end_pos,int speed,int volume);
+		    int start_pos,int speed,int volume);
   void positionPlay(int serial,int pos);
   void pausePlayback(int serial);
   void resumePlayback(int serial);
