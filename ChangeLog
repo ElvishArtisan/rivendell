@@ -24456,3 +24456,5 @@
 2023-10-16 Fred Gleason <fredg@paravelsystems.com>
 	* Modified rdcatch(8) to use the new-style CAE commands for play-out
 	events.
+2023-10-16 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'volume' parameter to the 'Start Playback' CAE command.

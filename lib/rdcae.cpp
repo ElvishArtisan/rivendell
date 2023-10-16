@@ -200,14 +200,15 @@ void RDCae::enableMetering(QList<int> *cards)
 
 
 int RDCae::startPlayback(const QString &cutname,int cardnum,int portnum,
-			 int start_pos,int end_pos,int speed)
+			 int start_pos,int end_pos,int speed,int volume)
 {
   int serial=cae_next_serial_number++;
 
   cae_stream_output_levels[serial]=new __RDCaeMeterPoint();
-  SendCommand(QString::asprintf("PY %d %s %d %d %d %d %d",
+  SendCommand(QString::asprintf("PY %d %s %d %d %d %d %d %d",
 				serial,cutname.toUtf8().constData(),
-				cardnum,portnum,start_pos,end_pos,100000));
+				cardnum,portnum,start_pos,end_pos,
+				speed,volume));
   emit playStarted(serial);
 
   return serial;
@@ -361,10 +362,16 @@ void RDCae::stopRecord(int card,int stream)
   SendCommand(QString::asprintf("SR %d %d",card,stream));
 }
 
-
+/*
 void RDCae::setOutputVolume(int card,int stream,int port,int level)
 {
   SendCommand(QString::asprintf("OV %d %d %d %d",card,stream,port,level));
+}
+*/
+
+void RDCae::setOutputVolume(int serial,int level)
+{
+  SendCommand(QString::asprintf("OV %d %d",serial,level));
 }
 
 
@@ -373,11 +380,17 @@ void RDCae::setOutputPort(int card,int stream,int port)
   SendCommand(QString::asprintf("OP %d %d %d 0",card,stream,port));
 }
 
-
+/*
 void RDCae::fadeOutputVolume(int card,int stream,int port,int level,int length)
 {
   SendCommand(QString::asprintf("FV %d %d %d %d %d",
 				card,stream,port,level,length));
+}
+*/
+
+void RDCae::fadeOutputVolume(int serial,int level,int length)
+{
+  SendCommand(QString::asprintf("FV %d %d %d",serial,level,length));
 }
 
 

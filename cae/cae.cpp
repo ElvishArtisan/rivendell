@@ -156,9 +156,9 @@ MainObject::MainObject(QObject *parent)
   connect(cae_server,SIGNAL(playPositionReq(const SessionId &,int)),
 	  this,SLOT(playPositionData(const SessionId &,int)));
   connect(cae_server,SIGNAL(startPlaybackReq(const SessionId &,const QString &,
-					     unsigned,unsigned,int,int,int)),
+					   unsigned,unsigned,int,int,int,int)),
 	  this,SLOT(startPlaybackData(const SessionId &,const QString &,
-				      unsigned,unsigned,int,int,int)));
+				      unsigned,unsigned,int,int,int,int)));
   connect(cae_server,SIGNAL(playStopReq(const SessionId &)),
 	  this,SLOT(stopPlaybackData(const SessionId &)));
   connect(cae_server,SIGNAL(loadPlaybackReq(int,unsigned,const QString &)),
@@ -353,7 +353,8 @@ MainObject::MainObject(QObject *parent)
 //
 void MainObject::startPlaybackData(const SessionId &sid,const QString &cutname,
 				   unsigned cardnum,unsigned portnum,
-				   int start_pos,int end_pos,int speed)
+				   int start_pos,int end_pos,int speed,
+				   int volume)
 {
   Driver *dvr=NULL;
 
@@ -388,7 +389,7 @@ void MainObject::startPlaybackData(const SessionId &sid,const QString &cutname,
   //
   // Set Mixer
   //
-  if(!dvr->setOutputVolume(cardnum,streamnum,portnum,0)) {
+  if(!dvr->setOutputVolume(cardnum,streamnum,portnum,volume)) {
     rda->syslog(LOG_WARNING,"set output volume failed - session: %s  card: %d  port: %d  stream: %d  level: 0",
 		sid.dump().toUtf8().constData(),cardnum,portnum,streamnum);
   }

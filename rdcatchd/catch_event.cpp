@@ -90,6 +90,18 @@ void CatchEvent::setCutName(const QString &str)
 }
 
 
+int CatchEvent::cutPlayGain() const
+{
+  return catch_cut_play_gain;
+}
+
+
+void CatchEvent::setCutPlayGain(int gain)
+{
+  catch_cut_play_gain=gain;
+}
+
+
 QString CatchEvent::tempName() const
 {
   return catch_temp_name;
@@ -686,6 +698,7 @@ void CatchEvent::clear()
   catch_type=RDRecording::Recording;
   catch_channel=0;
   catch_cut_name="";
+  catch_cut_play_gain=0;
   catch_temp_name="";
   catch_delete_temp_file=false;
   for(int i=0;i<7;i++) {

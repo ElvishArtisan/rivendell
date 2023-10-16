@@ -654,7 +654,8 @@ void RecordCut::playData()
     rec_play_serial=
       rda->cae()->startPlayback(rec_cut->cutName(),
 				rec_card_no[1],rec_port_no[1],
-			       start,end,RD_TIMESCALE_DIVISOR);
+				start,end,RD_TIMESCALE_DIVISOR,
+				rec_cut->playGain());
     //    rda->cae()->setPlayPortActive(rec_card_no[1],rec_port_no[1],rec_stream_no[1]);
   }
   if(is_ready&&(!is_recording)) {

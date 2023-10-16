@@ -148,6 +148,7 @@ bool CaeServer::ProcessCommand(const QHostAddress &src_addr,uint16_t src_port,
   int channels;
   int bitrate;
   int interval;
+  int volume;
   SessionId origin(src_addr,src_port);
 
   //
@@ -186,7 +187,7 @@ bool CaeServer::ProcessCommand(const QHostAddress &src_addr,uint16_t src_port,
   //
   // Playback Operations
   //
-  if((f0.at(0)=="PY")&&(f0.size()==8)) {  // Start Playback
+  if((f0.at(0)=="PY")&&(f0.size()==9)) {  // Start Playback
     serial=f0.at(1).toUInt(&ok);
     if(ok) {
       origin.setSerialNumber(serial);
@@ -202,9 +203,12 @@ bool CaeServer::ProcessCommand(const QHostAddress &src_addr,uint16_t src_port,
 	      if(ok&&(end_pos>=0)&&(end_pos>=start_pos)) {
 		speed=f0.at(7).toInt(&ok);
 		if(ok&&(speed>0)) {
-		  emit startPlaybackReq(origin,cutname,cardnum,portnum,
-					start_pos,end_pos,speed);
-		  was_processed=true;
+		  volume=f0.at(8).toInt(&ok);
+		  if(ok) {
+		    emit startPlaybackReq(origin,cutname,cardnum,portnum,
+					  start_pos,end_pos,speed,volume);
+		    was_processed=true;
+		  }
 		}
 	      }
 	    }

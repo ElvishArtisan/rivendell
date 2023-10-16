@@ -162,14 +162,11 @@ void RDSimplePlayer::play(int start_pos)
                      q->value(1).toUInt()-(q->value(0).toUInt()+start_pos),
                      RD_TIMESCALE_DIVISOR,false);
       */
-      //
-      //  FIXME: implement cut gain!
-      //      play_cut_gain=q->value(2).toInt();
       play_serial=
 	play_cae->startPlayback(play_cut,play_card,play_port,
 				q->value(0).toInt()+start_pos,
 				q->value(1).toInt(),
-				RD_TIMESCALE_DIVISOR);
+				RD_TIMESCALE_DIVISOR,q->value(2).toInt());
       //      play_cae->setPlayPortActive(play_card,play_port,play_stream);
       if(play_serial>0) {
 	play_event_player->exec(play_start_cart);

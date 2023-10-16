@@ -55,7 +55,7 @@ class CaeServer : public QObject
   void connectionClosed(const SessionId &sid);
   void startPlaybackReq(const SessionId &sid,const QString &cutname,
 			unsigned cardnum,unsigned portnum,
-			int start_pos,int end_pos,int speed);
+			int start_pos,int end_pos,int speed,int volume);
   void playPositionReq(const SessionId &sid,int position);
   void playPauseReq(const SessionId &sid);
   void playResumeReq(const SessionId &sid);

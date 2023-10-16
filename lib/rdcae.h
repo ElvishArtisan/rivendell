@@ -54,7 +54,7 @@ class RDCae : public QObject
   void connectToHost(int timeout_msecs=-1);
   void enableMetering(QList<int> *cards);
   int startPlayback(const QString &cutname,int cardnum,int portnum,
-		    int start_pos,int end_pos,int speed);
+		    int start_pos,int end_pos,int speed,int volume);
   void positionPlay(int serial,int pos);
   void pausePlayback(int serial);
   void resumePlayback(int serial);
@@ -72,9 +72,11 @@ class RDCae : public QObject
   void unloadRecord(int card,int stream);
   void record(int card,int stream,unsigned length,int threshold);
   void stopRecord(int card,int stream);
-  void setOutputVolume(int card,int stream,int port,int level);
+  //  void setOutputVolume(int card,int stream,int port,int level);
+  void setOutputVolume(int serial,int level);
   void setOutputPort(int card,int stream,int port);
-  void fadeOutputVolume(int card,int stream,int port,int level,int length);
+  //  void fadeOutputVolume(int card,int stream,int port,int level,int length);
+  void fadeOutputVolume(int serial,int level,int length);
   void setPassthroughVolume(int card,int in_port,int out_port,int level);
   bool inputStatus(int card,int port) const;
   void inputMeterUpdate(int card,int port,short levels[2]);

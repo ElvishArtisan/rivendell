@@ -211,6 +211,7 @@
 	  <replaceable>start-pos</replaceable>
 	  <replaceable>end-pos</replaceable>
 	  <replaceable>speed</replaceable>
+	  <replaceable>volume</replaceable>
 	</userinput>
       </para>
       <variablelist>
@@ -274,6 +275,15 @@
 	  <listitem>
 	    The speed of the play-out, with <userinput>100000</userinput>
 	    indicating 100%.
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>
+	    <replaceable>volume</replaceable>
+	  </term>
+	  <listitem>
+	    The audio level of the play-out, relative to the reference
+	    level (-16 dBFS), in hundredths of a dB.
 	  </listitem>
 	</varlistentry>
       </variablelist>

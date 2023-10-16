@@ -723,7 +723,7 @@ void MainWidget::headButtonData()
 			      catch_audition_card,catch_audition_port,
 			      cut->startPoint(),
 			      cut->startPoint()+RDCATCH_AUDITION_LENGTH,
-			      RD_TIMESCALE_DIVISOR);
+			      RD_TIMESCALE_DIVISOR,cut->playGain());
   catch_stop_timer->start(RDCATCH_AUDITION_LENGTH);
   head_playing=true;
   delete cut;
@@ -759,7 +759,7 @@ void MainWidget::tailButtonData()
     rda->cae()->startPlayback(cut->cutName(),
 			      catch_audition_card,catch_audition_port,
 			      start_pos,cut->endPoint(),
-			      RD_TIMESCALE_DIVISOR);
+			      RD_TIMESCALE_DIVISOR,cut->playGain());
   catch_stop_timer->start(RDCATCH_AUDITION_LENGTH);
   tail_playing=true;
   delete cut;
