@@ -24453,6 +24453,6 @@
 2023-10-14 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdcatch(1) that broke audio audition
 	play-out.
-2023-10-14 Fred Gleason <fredg@paravelsystems.com>
+2023-10-16 Fred Gleason <fredg@paravelsystems.com>
 	* Modified rdcatch(8) to use the new-style CAE commands for play-out
 	events.
