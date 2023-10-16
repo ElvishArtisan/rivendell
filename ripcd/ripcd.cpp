@@ -633,7 +633,8 @@ bool MainObject::DispatchCommand(RipcdConnection *conn)
     if(f0.at(0)=="NOTIFY") {
       RDNotification *notify=new RDNotification();
       if(!notify->read(msg)) {
-	rda->syslog(LOG_INFO,"invalid notification processed");
+	rda->syslog(LOG_INFO,"invalid notification received: \"%s\"",
+		    msg.toUtf8().constData());
 	delete notify;
 	return true;
       }
@@ -651,7 +652,8 @@ bool MainObject::DispatchCommand(RipcdConnection *conn)
     if(f0.at(0)=="CATCH") {
       RDCatchEvent *evt=new RDCatchEvent();
       if(!evt->read(msg)) {
-	rda->syslog(LOG_INFO,"invalid catch event processed");
+	rda->syslog(LOG_INFO,"invalid catch event received: \"%s\"",
+		    msg.toUtf8().constData());
 	delete evt;
 	return true;
       }

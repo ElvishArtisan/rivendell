@@ -142,7 +142,7 @@ MainObject::MainObject(QObject *parent)
     catch_playout_status[i]=false;
     catch_playout_event_id[i]=-1;
     catch_playout_id[i]=0;
-    catch_playout_handle[i]=-1;
+    catch_playout_serials[i]=-1;
     catch_monitor_port[i]=-1;
     catch_monitor_state[i]=false;
     catch_record_pending_cartnum[i]=0;
@@ -207,8 +207,6 @@ MainObject::MainObject(QObject *parent)
   //
   // CAE Connection
   //
-  connect(rda->cae(),SIGNAL(isConnected(bool)),
-	  this,SLOT(caeConnectedData(bool)));
   connect(rda->cae(),SIGNAL(recordLoaded(int,int)),
 	  this,SLOT(recordLoadedData(int,int)));
   connect(rda->cae(),SIGNAL(recording(int,int)),
@@ -217,14 +215,8 @@ MainObject::MainObject(QObject *parent)
 	  this,SLOT(recordStoppedData(int,int)));
   connect(rda->cae(),SIGNAL(recordUnloaded(int,int,unsigned)),
 	  this,SLOT(recordUnloadedData(int,int,unsigned)));
-  connect(rda->cae(),SIGNAL(playLoaded(int)),
-	  this,SLOT(playLoadedData(int)));
-  connect(rda->cae(),SIGNAL(playing(int)),
-	  this,SLOT(playingData(int)));
-  connect(rda->cae(),SIGNAL(playStopped(int)),
-	  this,SLOT(playStoppedData(int)));
-  connect(rda->cae(),SIGNAL(playUnloaded(int)),
-	  this,SLOT(playUnloadedData(int)));
+  connect(rda->cae(),SIGNAL(playbackStopped(int)),
+	  this,SLOT(playbackStoppedData(int)));
   rda->syslog(LOG_DEBUG,"starting CAE connection");
   rda->cae()->connectToHost();
 
@@ -395,7 +387,8 @@ void MainObject::catchEventReceivedData(RDCatchEvent *evt)
     if((evt->deckChannel()>128)&&(evt->deckChannel()<(MAX_DECKS+129))) {
       switch(catch_playout_deck_status[evt->deckChannel()-129]) {
       case RDDeck::Recording:
-	//	rda->cae()->stopPlay(catch_playout_handle[evt->deckChannel()-129]);
+	rda->cae()->stopPlayback(catch_playout_serials[evt->deckChannel()-129]);
+	playbackStoppedData(catch_playout_serials[evt->deckChannel()-129]);
 	break;
 
       default:
@@ -942,9 +935,11 @@ void MainObject::recordUnloadedData(int card,int stream,unsigned msecs)
 }
 
 
-void MainObject::playLoadedData(int handle)
+void MainObject::playStartedData(int serial)
 {
-  int deck=GetPlayoutDeck(handle);
+  int deck=GetPlayoutDeck(serial);
+  int event=GetEvent(catch_playout_id[deck-129]);
+
   catch_playout_deck_status[deck-129]=RDDeck::Ready;
   SendEventResponse(deck,catch_playout_deck_status[deck-129],
 		    catch_playout_id[deck-129],"");
@@ -953,18 +948,12 @@ void MainObject::playLoadedData(int handle)
 	   catch_playout_card[deck-129],
 	   catch_playout_stream[deck-129]);
   }
-}
 
-
-void MainObject::playingData(int handle)
-{
-  int deck=GetPlayoutDeck(handle);
-  int event=GetEvent(catch_playout_id[deck-129]);
   catch_playout_deck_status[deck-129]=RDDeck::Recording;
   WriteExitCode(event,RDRecording::PlayActive);
   SendEventResponse(deck,catch_playout_deck_status[deck-129],
 		    catch_playout_id[deck-129],"");
-  catch_playout_status[GetPlayoutDeck(handle)]=true;
+  catch_playout_status[deck]=true;
   if(debug) {
     printf("Playing - Card: %d  Stream: %d\n",
 	   catch_playout_card[deck-129],
@@ -973,9 +962,10 @@ void MainObject::playingData(int handle)
 }
 
 
-void MainObject::playStoppedData(int handle)
+void MainObject::playbackStoppedData(int serial)
 {
-  int deck=GetPlayoutDeck(handle);
+  int deck=GetPlayoutDeck(serial);
+  int event=GetEvent(catch_playout_id[deck-129]);
 
   catch_playout_status[deck-129]=false;
   catch_playout_event_player[deck-129]->stop();
@@ -986,15 +976,6 @@ void MainObject::playStoppedData(int handle)
 	   catch_playout_card[deck-129],
 	   catch_playout_stream[deck-129]);
   }
-  //  rda->cae()->unloadPlay(handle);
-}
-
-
-void MainObject::playUnloadedData(int handle)
-{
-  int deck=GetPlayoutDeck(handle);
-  int event=GetEvent(catch_playout_id[deck-129]);
-
   rda->syslog(LOG_INFO,"play complete: cut %s",
 	      (const char *)catch_playout_name[deck-129].toUtf8());
   catch_playout_deck_status[deck-129]=RDDeck::Idle;
@@ -1065,7 +1046,6 @@ void MainObject::eventFinishedData(int id)
 	return;
       }
       catch_events[event].setStatus(RDDeck::Idle);
-      rda->syslog(LOG_NOTICE,"HERE1");
       SendEventResponse(0,RDDeck::Idle,catch_macro_event_id[id],"");
       if(catch_events[event].oneShot()) {
 	PurgeEvent(event);
@@ -1305,7 +1285,6 @@ bool MainObject::StartRecording(int event)
 
 void MainObject::StartPlayout(int event)
 {
-  /*
   unsigned deck=catch_events[event].channel();
   if((catch_playout_card[deck-129]<0)) {
     rda->syslog(LOG_WARNING,	"invalid audio device for deck: %d, event: %d",
@@ -1333,22 +1312,21 @@ void MainObject::StartPlayout(int event)
   // Start the playout
   //
   catch_playout_event_player[deck-129]->load(catch_events[event].cutName());
-  rda->cae()->loadPlay(catch_playout_card[deck-129],
-		      catch_events[event].cutName(),
-		      &catch_playout_stream[deck-129],
-		      &catch_playout_handle[deck-129]);
-  rda->cae()->setOutputPort(catch_playout_card[deck-129],
-			    catch_playout_stream[deck-129],
-			    catch_playout_port[deck-129]);
-  rda->cae()->positionPlay(catch_playout_handle[deck-129],start);
+  /*
   catch_playout_event_player[deck-129]->start(start);
-  rda->cae()->
-    play(catch_playout_handle[deck-129],end-start,RD_TIMESCALE_DIVISOR,0);
+  */
+  catch_playout_serials[deck-129]=
+    rda->cae()->startPlayback(catch_events[event].cutName(),
+			      catch_playout_card[deck-129],
+			      catch_playout_port[deck-129],
+			      start,
+			      end,    // FIXME: this parameter does nothing!
+			      RD_TIMESCALE_DIVISOR);
   rda->cae()->setPlayPortActive(catch_playout_card[deck-129],
 			       catch_playout_port[deck-129],
 			       catch_playout_stream[deck-129]);
   catch_events[event].setStatus(RDDeck::Recording);
-
+  playStartedData(catch_playout_serials[deck-129]);
   rda->syslog(LOG_INFO,
 	     "playout started: deck: %d, event %d  card %d, stream %d , cut=%s",
 	      deck,catch_events[event].id(),
@@ -1361,7 +1339,6 @@ void MainObject::StartPlayout(int event)
   //
   catch_playout_name[deck-129]=catch_events[event].cutName();
   catch_playout_event_id[deck-129]=event;
-  */
 }
 
 
@@ -1462,6 +1439,9 @@ bool MainObject::ExecuteMacroCart(RDCart *cart,int id,int event)
 void MainObject::SendEventResponse(int chan,RDDeck::Status status,int id,
 				   const QString &cutname)
 {
+  rda->syslog(LOG_NOTICE,"SendEventResponse(%d,%u,%d,\"%s\")",
+	      chan,status,id,cutname.toUtf8().constData());
+
   RDCatchEvent *evt=new RDCatchEvent();
 
   evt->setOperation(RDCatchEvent::DeckStatusResponseOp);
@@ -1800,10 +1780,10 @@ int MainObject::GetRecordDeck(int card,int stream)
 }
 
 
-int MainObject::GetPlayoutDeck(int handle)
+int MainObject::GetPlayoutDeck(int serial) const
 {
   for(int i=0;i<MAX_DECKS;i++) {
-    if(catch_playout_handle[i]==handle) {
+    if(catch_playout_serials[i]==serial) {
       return i+129;
     }
   }

@@ -2,7 +2,7 @@
 //
 // The Rivendell Netcatcher.
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -70,10 +70,12 @@ class MainObject : public QObject
   void recordingData(int card,int stream);
   void recordStoppedData(int card,int stream);
   void recordUnloadedData(int card,int stream,unsigned msecs);
-  void playLoadedData(int handle);
-  void playingData(int handle);
-  void playStoppedData(int handle);
-  void playUnloadedData(int handle);
+  //  void playLoadedData(int handle);
+  //  void playingData(int handle);
+  void playStartedData(int serial);
+  //  void playStoppedData(int handle);
+  void playbackStoppedData(int serial);
+  //  void playUnloadedData(int handle);
   void runCartData(int chan,int number,unsigned cartnum);
   void meterData();
   void eventFinishedData(int id);
@@ -86,7 +88,6 @@ class MainObject : public QObject
   //
   // batch.cpp
   //
-  //  void catchConnectedData(int serial,bool state);
   void userChangedData();
   void exitData();
 
@@ -123,7 +124,7 @@ class MainObject : public QObject
   void LoadEvent(RDSqlQuery *q,CatchEvent *e,bool add);
   void LoadDeckList();
   int GetRecordDeck(int card,int stream);
-  int GetPlayoutDeck(int handle);
+  int GetPlayoutDeck(int serial) const;
   int GetFreeEvent();
   bool AddEvent(int id);
   void RemoveEvent(int id);
@@ -177,7 +178,8 @@ class MainObject : public QObject
   int catch_playout_card[MAX_DECKS];
   int catch_playout_stream[MAX_DECKS];
   int catch_playout_port[MAX_DECKS];
-  int catch_playout_handle[MAX_DECKS];
+  //  int catch_playout_handle[MAX_DECKS];
+  int catch_playout_serials[MAX_DECKS];
   RDDeck::Status catch_playout_deck_status[MAX_DECKS];
   int catch_playout_event_id[MAX_DECKS];
   int catch_playout_id[MAX_DECKS];
