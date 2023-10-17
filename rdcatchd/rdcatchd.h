@@ -65,17 +65,12 @@ class MainObject : public QObject
   void startTimerData(int id);
   void offsetTimerData(int id);
   void engineData(int);
-  void caeConnectedData(bool state);
   void recordLoadedData(int card,int stream);
   void recordingData(int card,int stream);
   void recordStoppedData(int card,int stream);
   void recordUnloadedData(int card,int stream,unsigned msecs);
-  //  void playLoadedData(int handle);
-  //  void playingData(int handle);
   void playStartedData(int serial);
-  //  void playStoppedData(int handle);
   void playbackStoppedData(int serial);
-  //  void playUnloadedData(int handle);
   void runCartData(int chan,int number,unsigned cartnum);
   void meterData();
   void eventFinishedData(int id);
@@ -178,7 +173,6 @@ class MainObject : public QObject
   int catch_playout_card[MAX_DECKS];
   int catch_playout_stream[MAX_DECKS];
   int catch_playout_port[MAX_DECKS];
-  //  int catch_playout_handle[MAX_DECKS];
   int catch_playout_serials[MAX_DECKS];
   RDDeck::Status catch_playout_deck_status[MAX_DECKS];
   int catch_playout_event_id[MAX_DECKS];

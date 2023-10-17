@@ -24461,3 +24461,6 @@
 2023-10-16 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'end-pos' parameter from the 'Start Playback' CAE
 	command.
+2023-10-17 Fred Gleason <fredg@paravelsystems.com>
+	* Modified rdcatchd(8) to use the new-style CAE commands for play-out
+	events.

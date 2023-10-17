@@ -1419,7 +1419,7 @@ void MainObject::updateMeters()
 	}
 	if(dvr->getOutputMeters(i,j,levels)) {
 	  SendMeterLevelUpdate("O",i,j,levels);
-	}      
+	}
       }
       dvr->getOutputPosition(i,positions);
       SendMeterPositionUpdate(i,positions);

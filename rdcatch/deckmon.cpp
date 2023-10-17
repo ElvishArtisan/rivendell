@@ -142,8 +142,6 @@ void DeckMon::enableMonitorButton(bool state)
 
 void DeckMon::processCatchEvent(RDCatchEvent *evt)
 {
-  //  printf("processCatchEvent(): %s\n",evt->dump().toUtf8().constData());
-
   QList<RDCatchMeterLevel> meter_levels;
 
   if(evt->hostName()==mon_station) {

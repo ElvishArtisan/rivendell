@@ -219,6 +219,18 @@ MainObject::MainObject(QObject *parent)
 	  this,SLOT(playbackStoppedData(int)));
   rda->syslog(LOG_DEBUG,"starting CAE connection");
   rda->cae()->connectToHost();
+  QList<int> cards;
+  sql=QString("select `CARD_NUMBER` from `DECKS` where ")+
+    "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"' && "+
+    "`CARD_NUMBER`>=0";
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    if(!cards.contains(q->value(0).toInt())) {
+      cards.push_back(q->value(0).toInt());
+    }
+  }
+  delete q;
+  rda->cae()->enableMetering(&cards);
 
   //
   // Sound Initialization
@@ -800,29 +812,6 @@ void MainObject::engineData(int id)
 
   case RDRecording::LastType:
     break;
-  }
-}
-
-
-void MainObject::caeConnectedData(bool state)
-{
-  if(state) {
-    QList<int> cards;
-    QString sql=QString("select `CARD_NUMBER` from `DECKS` where ")+
-      "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"' && "+
-      "`CARD_NUMBER`>=0";
-    RDSqlQuery *q=new RDSqlQuery(sql);
-    while(q->next()) {
-      if(!cards.contains(q->value(0).toInt())) {
-	cards.push_back(q->value(0).toInt());
-      }
-    }
-    delete q;
-    rda->cae()->enableMetering(&cards);
-  }
-  if(!state) {
-    rda->syslog(LOG_ERR,"aborting - unable to connect to Core AudioEngine");
-    exit(1);
   }
 }
 
@@ -1550,7 +1539,6 @@ void MainObject::LoadEngine(bool adv_day)
   rda->syslog(LOG_DEBUG,"rdcatchd engine load starts...");
   sql=LoadEventSql()+QString(" where `STATION_NAME`='")+
     RDEscapeString(rda->station()->name())+"'";
-  rda->syslog(LOG_NOTICE,"%s",sql.toUtf8().constData());
   q=new RDSqlQuery(sql);
   while(q->next()) {
     catch_events.push_back(CatchEvent(rda->station(),RDConfiguration()));
@@ -1761,7 +1749,6 @@ void MainObject::LoadDeckList()
 	catch_playout_deck_status[i]=RDDeck::Recording;
       }
       else {
-	//	rda->cae()->stopPlay(catch_playout_handle[i]);
 	catch_playout_deck_status[i]=RDDeck::Offline;
       }
     }
