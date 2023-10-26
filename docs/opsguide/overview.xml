@@ -196,7 +196,7 @@
 	  same network switch and configuring them to use the same IP subnet.
 	  If this is not feasible, then special arrangements, such as
 	  installation of a network bridge or multicast router between the
-	  host subnets will be necessary.
+	  host subnets may be necessary.
 	</para>
       </sect3>
       <sect3 xml:id="sect.overview.users">
