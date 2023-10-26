@@ -24430,3 +24430,6 @@
 	from being updated when the logged-in user changed.
 2023-10-10 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.1.0int1.
+2023-10-26 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'Realms' to 'The Rivendell Object Paradigm' section of the
+	Operations Guide.

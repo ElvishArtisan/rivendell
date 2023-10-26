@@ -126,11 +126,14 @@
     <sect2 xml:id="sect.overview.the_rivendell_object_paradigm">
       <title>The Rivendell Object Paradigm</title>
       <para>
-	All Rivendell modules make use of the following four classes of
+	All Rivendell modules make use of the following classes of
 	system resources:
       </para>
       <para>
 	<itemizedlist>
+	  <listitem>
+	    <link linkend="sect.overview.realms">Realms</link>
+	  </listitem>
 	  <listitem>
 	    <link linkend="sect.overview.hosts">Hosts</link>
 	  </listitem>
@@ -148,21 +151,52 @@
       <para>
 	We'll cover each of these concepts in turn.
       </para>
+      <sect3 xml:id="sect.overview.realms">
+	<title>Realms</title>
+	<para>
+	  A Rivendell <emphasis>realm</emphasis> is a set of one or more
+	  hosts that utilize a common Rivendell database. Each such
+	  realm has its own, independent set of objects, such as cart library,
+	  RDCatch event list, set of hosts, etc. Different Rivendell realms
+	  are effectively isolated from each other at the application level.
+	</para>
+	<caution>
+	  If more than one Rivendell realm will be residing in a single
+	  IP multicast domain, then each realm must be assigned a unique
+	  multicast notification address. See &quot;Multicast Address for
+	  Notifications&quot; in the
+	  <xref linkend="sect.rdadmin.manage_system_settings" />.
+	</caution>
+      </sect3>
+
       <sect3 xml:id="sect.overview.hosts">
 	<title>Hosts</title>
 	<para>
-	  Every physical computer within a given network that is running
+	  Every physical or virtual computer that is running
 	  Rivendell software is referred to as a <emphasis>host</emphasis>.
 	  Any host in a
 	  Rivendell network can be individually configured and controlled
-	  from any other host (provided the system administrator has enabled
-	  this capability).  Hosts can be used for a wide variety of
+	  from any other host within the same realm (provided the system
+	  administrator has enabled this capability).
+	  Hosts can be used for a wide variety of
 	  applications, including content ingestion and management,
 	  automatic recording (sometimes referred to as
 	  &quot;netcatching&quot;),
-	  on-air play out or log (sometimes also referred to as playlist)
+	  on-air play out or log (sometimes also referred to as a
+	  <emphasis>playlist</emphasis>)
 	  generation.  It is also possible for a single host to perform all
 	  of these functions.
+	</para>
+	<para>
+	  Each Rivendell host is a member of precisely one
+	  <link linkend="sect.overview.realms">Rivendell realm</link>.
+	  Each host within a given realm must be reachable from all other hosts
+	  in that realm and reside within the same IP multicast domain. 
+	  In most cases, this can be ensured by connecting all hosts to the
+	  same network switch and configuring them to use the same IP subnet.
+	  If this is not feasible, then special arrangements, such as
+	  installation of a network bridge or multicast router between the
+	  host subnets will be necessary.
 	</para>
       </sect3>
       <sect3 xml:id="sect.overview.users">

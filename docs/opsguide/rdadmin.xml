@@ -2705,7 +2705,8 @@
     <title>Managing System Settings</title>
     <para>
       To manage system-wide settings --i.e. those settings that apply to
-      <emphasis>all</emphasis> Rivendell hosts -- in RDAdmin, touch the
+      <emphasis>all</emphasis> Rivendell hosts in a given realm -- in RDAdmin,
+      touch the
       <computeroutput>System Settings</computeroutput> button to open
       the System-Wide Settings dialog.
     </para>
@@ -2721,8 +2722,9 @@
     </para>
     <para>
       The <computeroutput>Realm Name:</computeroutput> field takes a string
-      that identifies the complete set of Rivendell hosts that share a
-      common database. It should be globally unique.
+      that identifies the name of the
+      <link linkend="sect.overview.realms">database realm</link>.
+      It should be globally unique.
     </para>
     <para>
       The <computeroutput>System Sample Rate:</computeroutput> dropdown sets
