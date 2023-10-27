@@ -24464,3 +24464,7 @@
 2023-10-17 Fred Gleason <fredg@paravelsystems.com>
 	* Modified rdcatchd(8) to use the new-style CAE commands for play-out
 	events.
+2023-10-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdcartslots(1) that caused the color of
+	the start buttons to fail to update correctly when in
+	'Restart Playout (Loop)' mode.

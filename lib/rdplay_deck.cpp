@@ -376,6 +376,7 @@ void RDPlayDeck::reset()
       case RDPlayDeck::Playing:
       case RDPlayDeck::Stopping:
 	play_cae->stopPlayback(play_serial);
+	playbackStoppedData(play_serial);
 
       case RDPlayDeck::Paused:
 	//	play_cae->unloadPlay(play_handle);
@@ -542,10 +543,10 @@ void RDPlayDeck::play(unsigned pos,int segue_start,int segue_end,
 	 (double)play_timescale_speed),
 	 play_timescale_speed,false);
   */
-  printf("startPlayback(\"%s\",%d,%d,%d,%d,%d)\n",
-	 play_cut->cutName().toUtf8().constData(),play_card,play_port,
-	 play_audio_point[0]+pos,
-	 play_audio_point[1],play_timescale_speed);
+  //  printf("startPlayback(\"%s\",%d,%d,%d,%d,%d)\n",
+  //	 play_cut->cutName().toUtf8().constData(),play_card,play_port,
+  //	 play_audio_point[0]+pos,
+  //	 play_audio_point[1],play_timescale_speed);
   play_serial=play_cae->startPlayback(play_cut->cutName(),play_card,play_port,
 				      play_audio_point[0]+pos,
 				      play_timescale_speed,
@@ -586,6 +587,7 @@ void RDPlayDeck::stop()
     play_state=RDPlayDeck::Stopping;
     //    play_cae->stopPlay(play_handle);
     play_cae->stopPlayback(play_serial);
+    playbackStoppedData(play_serial);
   }
 }
 
@@ -683,7 +685,9 @@ void RDPlayDeck::playStartedData(int serial)
 
 void RDPlayDeck::playbackStoppedData(int serial)
 { 
-  if(serial!=play_serial) {
+  //  printf("%p - playbackStoppedData(%d)\n",this,serial);
+
+  if((serial<0)||(serial!=play_serial)) {
     return;
   }
   play_position_timer->stop();
@@ -695,7 +699,6 @@ void RDPlayDeck::playbackStoppedData(int serial)
   }
   else {
     //    play_cae->unloadPlay(play_handle);
-
     play_serial=-1;
     play_state=RDPlayDeck::Stopped;
     play_current_position=0;
