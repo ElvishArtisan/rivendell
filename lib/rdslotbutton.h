@@ -2,7 +2,7 @@
 //
 //   Start/stop button for rdcartslots(1).
 //
-//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -33,9 +33,9 @@ class RDSlotButton : public QPushButton, public RDFontEngine
   RDSlotButton(int slotnum,QWidget *parent,RDConfig *c=NULL);
   int slotNumber() const;
   QString portLabel() const;
+  void setState(RDPlayDeck::State state);
 
  public slots:
-  void setState(int id,RDPlayDeck::State state);
   void setPortLabel(const QString &str);
 
  protected:

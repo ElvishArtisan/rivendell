@@ -59,7 +59,7 @@ QString RDSlotButton::portLabel() const
 }
 
 
-void RDSlotButton::setState(int id,RDPlayDeck::State state)
+void RDSlotButton::setState(RDPlayDeck::State state)
 {
   switch(state) {
   case RDPlayDeck::Playing:

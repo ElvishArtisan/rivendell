@@ -24468,3 +24468,6 @@
 	* Fixed a regression in rdcartslots(1) that caused the color of
 	the start buttons to fail to update correctly when in
 	'Restart Playout (Loop)' mode.
+2023-10-30 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'int id' parameter from the 'RDSlotButton::setState()'
+	method.
