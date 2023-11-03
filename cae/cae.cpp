@@ -320,7 +320,7 @@ MainObject::MainObject(QObject *parent)
   }
 */
   if(rda->config()->enableMixerLogging()) {
-    rda->syslog(LOG_INFO,"mixer logging enabled");
+    rda->syslog(LOG_INFO,"[mixer] logging enabled");
   }
   if(rda->config()->testOutputStreams()) {
     rda->syslog(LOG_INFO,"output stream testing enabled");
@@ -672,7 +672,7 @@ void MainObject::setInputVolumeData(int id,unsigned card,unsigned stream,
   }
   if(rda->config()->enableMixerLogging()) {
     rda->syslog(LOG_INFO,
-			  "SetInputVolume - Card: %d  Stream: %d Level: %d",
+			  "[mixer] SetInputVolume - Card: %d  Stream: %d Level: %d",
 			  card,stream,level);
   }
   cae_server->
@@ -701,7 +701,7 @@ void MainObject::setOutputPortData(int id,unsigned card,unsigned stream,
     }
     if(rda->config()->enableMixerLogging()) {
       rda->syslog(LOG_INFO,
-		  "SetOutputPort - Card: %d  Stream: %d  Port: %d  Level: %d",
+	    "[mixer] SetOutputPort - Card: %d  Stream: %d  Port: %d  Level: %d",
 		  card,stream,port,level);
     }
   }
@@ -735,7 +735,7 @@ void MainObject::setOutputVolumeData(int id,unsigned card,unsigned stream,
     }
     if(rda->config()->enableMixerLogging()) {
       rda->syslog(LOG_INFO,
-		  "SetOutputVolume - Card: %d  Stream: %d  Port: %d  Level: %d",
+	 "[mixer] SetOutputVolume - Card: %d  Stream: %d  Port: %d  Level: %d",
 		  card,stream,port,level);
     }
   }
@@ -764,7 +764,7 @@ void MainObject::fadeOutputVolumeData(int id,unsigned card,unsigned stream,
     }
     if(rda->config()->enableMixerLogging()) {
       rda->syslog(LOG_INFO,
-		  "FadeOutputVolume - Card: %d  Stream: %d  Port: %d  Level: %d  Length: %d",
+		  "[mixer] FadeOutputVolume - Card: %d  Stream: %d  Port: %d  Level: %d  Length: %d",
 		  card,stream,port,level,length);
     }
   }
@@ -792,8 +792,8 @@ void MainObject::setInputLevelData(int id,unsigned card,unsigned port,
   }
   if(rda->config()->enableMixerLogging()) {
     rda->syslog(LOG_INFO,
-			  "SetInputLevel - Card: %d  Port: %d  Level: %d",
-			  card,port,level);
+		"[mixer] SetInputLevel - Card: %d  Port: %d  Level: %d",
+		card,port,level);
   }
   cae_server->sendCommand(id,QString::asprintf("IL %u %u %d +!",
 					       card,port,level));
@@ -817,8 +817,8 @@ void MainObject::setOutputLevelData(int id,unsigned card,unsigned port,
   }
   if(rda->config()->enableMixerLogging()) {
     rda->syslog(LOG_INFO,
-			  "SetOutputLevel - Card: %d  Port: %d  Level: %d",
-			  card,port,level);
+		"[mixer] SetOutputLevel - Card: %d  Port: %d  Level: %d",
+		card,port,level);
   }
   cae_server->sendCommand(id,QString::asprintf("OL %u %u %d +!",
 					       card,port,level));
@@ -842,8 +842,8 @@ void MainObject::setInputModeData(int id,unsigned card,unsigned stream,
   }
   if(rda->config()->enableMixerLogging()) {
     rda->syslog(LOG_INFO,
-			  "SetInputMode - Card: %d  Stream: %d  Mode: %d",
-	   card,stream,mode);
+		"[mixer] SetInputMode - Card: %d  Stream: %d  Mode: %d",
+		card,stream,mode);
   }
   cae_server->sendCommand(id,QString::asprintf("IM %u %u %u +!",
 					       card,stream,mode));
@@ -867,8 +867,8 @@ void MainObject::setOutputModeData(int id,unsigned card,unsigned stream,
   }
   if(rda->config()->enableMixerLogging()) {
     rda->syslog(LOG_INFO,
-			  "SetOutputMode - Card: %d  Stream: %d  Mode: %d",
-			  card,stream,mode);
+		"[mixer] SetOutputMode - Card: %d  Stream: %d  Mode: %d",
+		card,stream,mode);
   }
   cae_server->sendCommand(id,QString::asprintf("OM %u %u %u +!",
 					       card,stream,mode));
@@ -892,8 +892,8 @@ void MainObject::setInputVoxLevelData(int id,unsigned card,unsigned stream,
   }
   if(rda->config()->enableMixerLogging()) {
     rda->syslog(LOG_INFO,
-			  "SetInputVOXLevel - Card: %d  Stream: %d  Level: %d",
-			  card,stream,level);
+		"[mixer] SetInputVOXLevel - Card: %d  Stream: %d  Level: %d",
+		card,stream,level);
   }
   cae_server->sendCommand(id,QString::asprintf("IX %u %u %d +!",
 					       card,stream,level));
@@ -917,8 +917,8 @@ void MainObject::setInputTypeData(int id,unsigned card,unsigned port,
   }
   if(rda->config()->enableMixerLogging()) {
     rda->syslog(LOG_INFO,
-			  "SetInputType - Card: %d  Port: %d  Type: %d",
-			  card,port,type);
+		"[mixer] SetInputType - Card: %d  Port: %d  Type: %d",
+		card,port,type);
   }
   cae_server->sendCommand(id,QString::asprintf("IT %u %u %u +!",
 					       card,port,type));
@@ -961,8 +961,8 @@ void MainObject::setAudioPassthroughLevelData(int id,unsigned card,
   }
   if(rda->config()->enableMixerLogging()) {
     rda->syslog(LOG_INFO,
-	   "SetPassthroughLevel - Card: %d  InPort: %d  OutPort: %d Level: %d",
-	   card,input,output,level);
+		"[mixer] SetPassthroughLevel - Card: %d  InPort: %d  OutPort: %d Level: %d",
+		card,input,output,level);
   }
   cae_server->sendCommand(id,QString::asprintf("AL %u %u %u %d +!",
 					       card,input,output,level));
@@ -993,7 +993,7 @@ void MainObject::setClockSourceData(int id,unsigned card,int input)
   }
   if(rda->config()->enableMixerLogging()) {
     rda->syslog(LOG_INFO,
-			  "SetClockSource - Card: %d  Source: %d",card,input);
+		"[mixer] SetClockSource - Card: %d  Source: %d",card,input);
   }
   cae_server->sendCommand(id,QString::asprintf("CS %u %u +!",card,input));
 }
