@@ -93,7 +93,10 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   connect(rda->cae(),SIGNAL(isConnected(bool)),
 	  this,SLOT(caeConnectedData(bool)));
-  rda->cae()->connectHost();
+  if(!rda->cae()->connectHost(&err_msg)) {
+    QMessageBox::warning(this,"RDPanel - "+tr("Error"),err_msg);
+    exit(RDCoreApplication::ExitInternalError);
+  }
 
   //
   // RIPC Connection

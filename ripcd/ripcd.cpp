@@ -131,7 +131,10 @@ MainObject::MainObject(QObject *parent)
   //
   // CAE Connection
   //
-  rda->cae()->connectHost();
+  if(!rda->cae()->connectHost(&err_msg)) {
+    rda->syslog(LOG_ERR,"failed to start [%s]",err_msg.toUtf8().constData());
+    exit(RDCoreApplication::ExitInternalError);
+  }
 
   if(qApp->arguments().size()!=1) {
     debug=true;

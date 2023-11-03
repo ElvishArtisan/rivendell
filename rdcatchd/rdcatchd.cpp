@@ -225,7 +225,10 @@ MainObject::MainObject(QObject *parent)
 	  this,SLOT(playStoppedData(int)));
   connect(rda->cae(),SIGNAL(playUnloaded(int)),
 	  this,SLOT(playUnloadedData(int)));
-  rda->cae()->connectHost();
+  if(!rda->cae()->connectHost(&err_msg)) {
+    rda->syslog(LOG_ERR,"failed to start [%s]",err_msg.toUtf8().constData());
+    exit(RDCoreApplication::ExitInternalError);
+  }
 
   //
   // Sound Initialization

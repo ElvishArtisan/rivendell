@@ -24435,3 +24435,8 @@
 	Operations Guide.
 2023-10-26 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.1.0int2.
+2023-11-03 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDCoreApplication::ExitInternalError' to the
+	'RDCoreApplication::ExitCode' enumeration.
+	* Refactored the 'RDCae' class to use the native BSD sockets API
+	instead of 'QTcpSocket'.

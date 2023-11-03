@@ -123,7 +123,10 @@ MainWidget::MainWidget(QWidget *parent)
   //
   connect(rda->cae(),SIGNAL(isConnected(bool)),
 	  this,SLOT(caeConnectedData(bool)));
-  rda->cae()->connectHost();
+  if(!rda->cae()->connectHost(&err_msg)) {
+    fprintf(stderr,"meterstrip_test: %s\n",err_msg.toUtf8().constData());
+    exit(RDCoreApplication::ExitInternalError);
+  }
 }
 
 

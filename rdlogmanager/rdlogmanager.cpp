@@ -65,7 +65,10 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // CAE Connection
   //
-  rda->cae()->connectHost();
+  if(!rda->cae()->connectHost(&err_msg)) {
+    QMessageBox::warning(this,"RDLogManager - "+tr("Error"),err_msg);
+    exit(RDCoreApplication::ExitInternalError);
+  }
 
   //
   // RIPC Connection

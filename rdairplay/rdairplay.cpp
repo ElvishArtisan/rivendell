@@ -243,7 +243,10 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   //
   connect(rda->cae(),SIGNAL(isConnected(bool)),
 	  this,SLOT(caeConnectedData(bool)));
-  rda->cae()->connectHost();
+  if(!rda->cae()->connectHost(&err_msg)) {
+    QMessageBox::warning(this,"RDAirPlay - "+tr("Error"),err_msg);
+    exit(RDCoreApplication::ExitInternalError);
+  }
 
   //
   // Set Audio Assignments

@@ -2,7 +2,7 @@
 //
 // Connection to the Rivendell Core Audio Engine
 //
-//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,30 +18,30 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <ctype.h>
-#include <fcntl.h>
-#include <errno.h>
 #include <unistd.h>
+#include <errno.h>
+#include <fcntl.h>
 #include <netinet/in.h>
-#include <sys/socket.h>
+#include <netinet/ip.h>
 #include <sys/types.h>
+#include <sys/socket.h>
 #include <syslog.h>
 
-#include "rdapplication.h"
-#include "rdcae.h"
-#include "rddb.h"
-#include "rddebug.h"
-#include "rdescape_string.h"
+#include <ctype.h>
 
-//
-// Uncomment this to enable latency profiling in the syslog
-//
-// #define DEBUG_LATENCY
+#include <QStringList>
+#include <QTimer>
+
+#include <rdapplication.h>
+#include <rddb.h>
+#include <rdcae.h>
+#include <rddebug.h>
+#include <rdescape_string.h>
 
 RDCae::RDCae(RDStation *station,RDConfig *config,QObject *parent)
   : QObject(parent)
 {
-  int flags=-1;
+  int flags=0;
 
   cae_station=station;
   cae_config=config;
@@ -50,32 +50,55 @@ RDCae::RDCae(RDStation *station,RDConfig *config,QObject *parent)
   argptr=0;
 
   //
-  // TCP Connection
+  // Control Connection
   //
   if((cae_socket=socket(AF_INET,SOCK_STREAM,0))<0) {
-    rda->syslog(LOG_WARNING,"unable to allocate TCP socket [%s]",
-		strerror(errno));
+    rda->syslog(LOG_ERR,"failed to create socket [%s]",strerror(errno));
+    exit(RDCoreApplication::ExitInternalError);
   }
-  if((flags=fcntl(cae_socket,F_GETFL,NULL))>=0) {
-    flags=flags|O_NONBLOCK;
-    if(fcntl(cae_socket,F_SETFL,flags)<0) {
-      rda->syslog(LOG_WARNING,"unable to set TCP socket to non-blocking [%s]",
-		  strerror(errno));
-    }
+  if((flags=fcntl(cae_socket,F_GETFL,NULL))<0) {
+    rda->syslog(LOG_ERR,"failed to get control socket options [%s]",
+		strerror(errno));
+    exit(RDCoreApplication::ExitInternalError);
+  }
+  flags=flags|O_NONBLOCK;
+  if(fcntl(cae_socket,F_SETFL,flags)<0) {
+    rda->syslog(LOG_ERR,"failed to set control socket options [%s]",
+		strerror(errno));
+    exit(RDCoreApplication::ExitInternalError);
   }
 
   //
   // Meter Connection
   //
-  cae_meter_socket=new QUdpSocket(this);
+  if((cae_meter_socket=socket(AF_INET,SOCK_DGRAM,0))<0) {
+    rda->syslog(LOG_ERR,"failed to meter create socket [%s]",strerror(errno));
+    exit(RDCoreApplication::ExitInternalError);
+  }
+  if((flags=fcntl(cae_meter_socket,F_GETFL,NULL))<0) {
+    rda->syslog(LOG_ERR,"failed to get meter socket options [%s]",
+		strerror(errno));
+    exit(RDCoreApplication::ExitInternalError);
+  }
+  flags=flags|O_NONBLOCK;
+  if(fcntl(cae_meter_socket,F_SETFL,flags)<0) {
+    rda->syslog(LOG_ERR,"failed to set meter socket options [%s]",
+		strerror(errno));
+    exit(RDCoreApplication::ExitInternalError);
+  }
   cae_meter_base_port=cae_config->meterBasePort();
   cae_meter_port_range=cae_config->meterPortRange();
   if(cae_meter_port_range>999) {
     cae_meter_port_range=999;
   }
-  for(int16_t i=cae_meter_base_port;
-      i<(cae_meter_base_port+cae_meter_port_range);i++) {
-    if(cae_meter_socket->bind(QHostAddress(),i)) {
+  for(int16_t i=cae_meter_base_port;i<(cae_meter_base_port+cae_meter_port_range);i++) {
+    struct sockaddr_in sa;
+    memset(&sa,0,sizeof(sa));
+    sa.sin_family=AF_INET;
+    sa.sin_port=htons(i);
+    sa.sin_addr.s_addr=htonl(INADDR_ANY);
+    if(bind(cae_meter_socket,(struct sockaddr *)(&sa),sizeof(sa))==0) {
+      cae_meter_port=i;
       i=(cae_meter_base_port+cae_meter_port_range)+1;
     }
   }
@@ -111,42 +134,52 @@ RDCae::RDCae(RDStation *station,RDConfig *config,QObject *parent)
 
 
 RDCae::~RDCae() {
-  close(cae_socket);
+  //  delete cae_socket;
 }
 
 
-void RDCae::connectHost()
+bool RDCae::connectHost(QString *err_msg)
 {
   int count=10;
-  QTimer *timer=new QTimer(this);
   struct sockaddr_in sa;
+  QTimer *timer=new QTimer(this);
 
   connect(timer,SIGNAL(timeout()),this,SLOT(readyData()));
   timer->start(CAE_POLL_INTERVAL);
   memset(&sa,0,sizeof(sa));
   sa.sin_family=AF_INET;
   sa.sin_port=htons(CAED_TCP_PORT);
-  sa.sin_addr.s_addr=htonl(cae_station->caeAddress(cae_config).toIPv4Address());
-  while((::connect(cae_socket,(struct sockaddr *)(&sa),sizeof(sa))!=0)&&
+  sa.sin_addr.s_addr=
+    htonl(rda->station()->caeAddress(rda->config()).toIPv4Address());
+  while((::connect(cae_socket,(struct sockaddr *)(&sa),sizeof(sa))<0)&&
 	(--count>0)) {
     usleep(100000);
-  } 
+  }
   usleep(100000);
   if(count>0) {
-    SendCommand("PW "+cae_config->password()+"!");
+    SendCommand(QString().sprintf("PW %s!",
+				  cae_config->password().toUtf8().constData()));
     for(int i=0;i<RD_MAX_CARDS;i++) {
-      SendCommand(QString::asprintf("TS %d!",i));
+      SendCommand(QString().sprintf("TS %d!",i));
       for(int j=0;j<RD_MAX_PORTS;j++) {
-	SendCommand(QString::asprintf("IS %d %d!",i,j));
+	SendCommand(QString().sprintf("IS %d %d!",i,j));
       }
     }
   }
+  else {
+    *err_msg=QString::asprintf("failed to connect to CAE service [%s]",
+			       strerror(errno));
+    rda->syslog(LOG_ERR,"%s",err_msg->toUtf8().constData());
+    return false;
+  }
+  *err_msg="ok";
+  return true;
 }
 
 
 void RDCae::enableMetering(QList<int> *cards)
 {
-  QString cmd=QString::asprintf("ME %u",cae_meter_socket->localPort());
+  QString cmd=QString().sprintf("ME %u",0xFFFF&cae_meter_port);
   for(int i=0;i<cards->size();i++) {
     if(cards->at(i)>=0) {
       bool found=false;
@@ -156,7 +189,7 @@ void RDCae::enableMetering(QList<int> *cards)
 	}
       }
       if(!found) {
-	cmd+=QString::asprintf(" %d",cards->at(i));
+	cmd+=QString().sprintf(" %d",cards->at(i));
       }
     }
   }
@@ -166,13 +199,10 @@ void RDCae::enableMetering(QList<int> *cards)
 
 bool RDCae::loadPlay(int card,QString name,int *stream,int *handle)
 {
-#ifdef DEBUG_LATENCY
-  rda->syslog(LOG_NOTICE,"RDCae::loadPlay() starts",handle);
-#endif  // DEBUG_LATENCY
-
   int count=0;
 
-  SendCommand("LP "+QString::asprintf(" %d ",card)+name+"!");
+  SendCommand(QString().sprintf("LP %d %s!",
+				card,name.toUtf8().constData()));
 
   //
   // This is really warty, but needed to make the method 'synchronous'
@@ -199,54 +229,40 @@ bool RDCae::loadPlay(int card,QString name,int *stream,int *handle)
       return false;
   }
 
-#ifdef DEBUG_LATENCY
-  rda->syslog(LOG_NOTICE,"RDCae::loadPlay(handle=%d) ends",*handle);
-#endif  // DEBUG_LATENCY
-
   return true;
 }
 
 
 void RDCae::unloadPlay(int handle)
 {
-#ifdef DEBUG_LATENCY
-  rda->syslog(LOG_NOTICE,"RDCae::unloadPlay(handle=%d) starts",handle);
-#endif  // DEBUG_LATENCY
-  SendCommand(QString::asprintf("UP %d!",handle));
+  SendCommand(QString().sprintf("UP %d!",handle));
 }
 
 
-void RDCae::positionPlay(int handle,int msec)
+void RDCae::positionPlay(int handle,int pos)
 {
-  if(msec<0) {
+  if(pos<0) {
     return;
   }
-  SendCommand(QString::asprintf("PP %d %u!",handle,msec));
+  SendCommand(QString().sprintf("PP %d %u!",handle,pos));
 }
 
 
 void RDCae::play(int handle,unsigned length,int speed,bool pitch)
 {
-#ifdef DEBUG_LATENCY
-  rda->syslog(LOG_NOTICE,"RDCae::play(handle=%d) starts",handle);
-#endif  // DEBUG_LATENCY
-
   int pitch_state=0;
 
   if(pitch) {
     pitch_state=1;
   }
-  SendCommand(QString::asprintf("PY %d %u %d %d!",
+  SendCommand(QString().sprintf("PY %d %u %d %d!",
 				handle,length,speed,pitch_state));
 }
 
 
 void RDCae::stopPlay(int handle)
 {
-#ifdef DEBUG_LATENCY
-  rda->syslog(LOG_NOTICE,"RDCae::stopPlay(handle=%d) starts",handle);
-#endif  // DEBUG_LATENCY
-  SendCommand(QString::asprintf("SP %d!",handle));
+  SendCommand(QString().sprintf("SP %d!",handle));
 }
 
 
@@ -255,48 +271,47 @@ void RDCae::loadRecord(int card,int stream,QString name,
 		       int bit_rate)
 {
   // printf("RDCae::loadRecord(%d,%d,%s,%d,%d,%d,%d)\n",
-  //	 card,stream,(const char *)name,coding,chan,samp_rate,bit_rate);
-  SendCommand(QString::asprintf("LR %d %d %d %d %d %d %s!",
+  //    card,stream,(const char *)name,coding,chan,samp_rate,bit_rate);
+  SendCommand(QString().sprintf("LR %d %d %d %d %d %d %s!",
 				card,stream,(int)coding,chan,samp_rate,
 				bit_rate,name.toUtf8().constData()));
 }
 
 
 void RDCae::unloadRecord(int card,int stream)
-
 {
-  SendCommand(QString::asprintf("UR %d %d!",card,stream));
+  SendCommand(QString().sprintf("UR %d %d!",card,stream));
 }
 
 
 void RDCae::record(int card,int stream,unsigned length,int threshold)
 {
-  SendCommand(QString::asprintf("RD %d %d %u %d!",
+  SendCommand(QString().sprintf("RD %d %d %u %d!",
 				card,stream,length,threshold));
 }
 
 
 void RDCae::stopRecord(int card,int stream)
 {
-  SendCommand(QString::asprintf("SR %d %d!",card,stream));
+  SendCommand(QString().sprintf("SR %d %d!",card,stream));
 }
 
 
 void RDCae::setClockSource(int card,RDCae::ClockSource src)
 {
-  SendCommand(QString::asprintf("CS %d %d!",card,src));
+  SendCommand(QString().sprintf("CS %d %d!",card,src));
 }
 
 
 void RDCae::setInputVolume(int card,int stream,int level)
 {
-  SendCommand(QString::asprintf("IV %d %d %d!",card,stream,level));
+  SendCommand(QString().sprintf("IV %d %d %d!",card,stream,level));
 }
 
 
 void RDCae::setOutputVolume(int card,int stream,int port,int level)
 {
-  SendCommand(QString::asprintf("OV %d %d %d %d!",card,stream,port,level));
+  SendCommand(QString().sprintf("OV %d %d %d %d!",card,stream,port,level));
 }
 
 
@@ -308,44 +323,44 @@ void RDCae::setOutputPort(int card,int stream,int port)
 
 void RDCae::fadeOutputVolume(int card,int stream,int port,int level,int length)
 {
-  SendCommand(QString::asprintf("FV %d %d %d %d %d!",
+  SendCommand(QString().sprintf("FV %d %d %d %d %d!",
 				card,stream,port,level,length));
 }
 
 
 void RDCae::setInputLevel(int card,int port,int level)
 {
-  SendCommand(QString::asprintf("IL %d %d %d!",card,port,level));
+  SendCommand(QString().sprintf("IL %d %d %d!",card,port,level));
 }
 
 
 void RDCae::setOutputLevel(int card,int port,int level)
 {
-  SendCommand(QString::asprintf("OL %d %d %d!",card,port,level));
+  SendCommand(QString().sprintf("OL %d %d %d!",card,port,level));
 }
 
 
 void RDCae::setInputMode(int card,int stream,RDCae::ChannelMode mode)
 {
-  SendCommand(QString::asprintf("IM %d %d %d!",card,stream,mode));
+  SendCommand(QString().sprintf("IM %d %d %d!",card,stream,mode));
 }
 
 
 void RDCae::setOutputMode(int card,int stream,RDCae::ChannelMode mode)
 {
-  SendCommand(QString::asprintf("OM %d %d %d!",card,stream,mode));
+  SendCommand(QString().sprintf("OM %d %d %d!",card,stream,mode));
 }
 
 
 void RDCae::setInputVOXLevel(int card,int stream,int level)
 {
-  SendCommand(QString::asprintf("IX %d %d %d!",card,stream,level));
+  SendCommand(QString().sprintf("IX %d %d %d!",card,stream,level));
 }
 
 
 void RDCae::setInputType(int card,int port,RDCae::SourceType type)
 {
-  SendCommand(QString::asprintf("IT %d %d %d!",card,port,type));
+  SendCommand(QString().sprintf("IT %d %d %d!",card,port,type));
 }
 
 
@@ -401,7 +416,7 @@ unsigned RDCae::playPosition(int handle)
 
 void RDCae::requestTimescale(int card)
 {
-  SendCommand(QString::asprintf("TS %d!",card));
+  SendCommand(QString().sprintf("TS %d!",card));
 }
 
 
@@ -441,6 +456,7 @@ void RDCae::readyData(int *stream,int *handle,QString name)
     delayed_cmds.clear();
   }
 
+  //  while((c=cae_socket->readBlock(buf,256))>0) {
   while((c=read(cae_socket,buf,256))>0) {
     buf[c]=0;
     for(int i=0;i<c;i++) {
@@ -460,15 +476,15 @@ void RDCae::readyData(int *stream,int *handle,QString name)
 	args[argnum++][argptr]=0;
 	if(stream==NULL) {
 	  cmd.load(args,argnum,argptr);
-	  /*
+	  
 	  // ************************************
-	  printf("DISPATCHING: ");
-	  for(int z=0;z<cmd.argNum();z++) {
-	    printf(" %s",cmd.arg(z));
-	  }
-	  printf("\n");
+	  // printf("DISPATCHING: ");
+	  // for(int z=0;z<cmd.argNum();z++) {
+	  //   printf(" %s",cmd.arg(z));
+	  // }
+	  // printf("\n");
 	  // ************************************
-	  */
+	  
 	  DispatchCommand(&cmd);
 	}
 	else {
@@ -485,7 +501,7 @@ void RDCae::readyData(int *stream,int *handle,QString name)
 	}
 	argnum=0;
 	argptr=0;
-	if(cae_socket==-1) {
+	if(cae_socket<0) {
 	  return;
 	}
       }
@@ -523,12 +539,7 @@ void RDCae::clockData()
 
 void RDCae::SendCommand(QString cmd)
 {
-  int len=cmd.toUtf8().length();
-  int n=write(cae_socket,cmd.toUtf8(),cmd.toUtf8().length());
-  if(n!=len) {
-    rda->syslog(LOG_WARNING,"RDCae lost %d bytes when sending \"%s\"",
-		len-n,cmd.toUtf8().constData());
-  }
+  write(cae_socket,cmd.toUtf8().constData(),cmd.toUtf8().length());
 }
 
 
@@ -569,10 +580,6 @@ void RDCae::DispatchCommand(RDCmdCache *cmd)
 	  }
 	}
       }
-#ifdef DEBUG_LATENCY
-  rda->syslog(LOG_NOTICE,"RDCae::unloadPlay(handle=%d) ends ",
-	      GetHandle(cmd->arg(1)));
-#endif  // DEBUG_LATENCY
       emit playUnloaded(handle);
     }
   }
@@ -594,20 +601,12 @@ void RDCae::DispatchCommand(RDCmdCache *cmd)
 
   if(!strcmp(cmd->arg(0),"PY")) {   // Play
     if(cmd->arg(4)[0]=='+') {
-#ifdef DEBUG_LATENCY
-      rda->syslog(LOG_NOTICE,"RDCae::play(handle=%d) ends",
-		  GetHandle(cmd->arg(1)));
-#endif  // DEBUG_LATENCY
       emit playing(GetHandle(cmd->arg(1)));
     }
   }
 
   if(!strcmp(cmd->arg(0),"SP")) {   // Stop Play
     if(cmd->arg(2)[0]=='+') {
-#ifdef DEBUG_LATENCY
-  rda->syslog(LOG_NOTICE,"RDCae::stopPlay(handle=%d) ends ",
-	      GetHandle(cmd->arg(1)));
-#endif  // DEBUG_LATENCY
       emit playStopped(GetHandle(cmd->arg(1)));
     }
   }
@@ -704,7 +703,7 @@ void RDCae::UpdateMeters()
   int n;
   QStringList args;
 
-  while((n=cae_meter_socket->readDatagram(msg,1500))>0) {
+  while((n=read(cae_meter_socket,msg,1500))>0) {
     msg[n]=0;
     args=QString(msg).split(" ");
     if(args[0]=="ML") {

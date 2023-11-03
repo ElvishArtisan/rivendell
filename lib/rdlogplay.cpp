@@ -82,8 +82,9 @@ RDLogPlay::RDLogPlay(int id,RDEventPlayer *player,bool enable_cue,QObject *paren
   //
   // CAE Connection
   //
-  play_cae=new RDCae(rda->station(),rda->config(),parent);
-  play_cae->connectHost();
+  //  play_cae=new RDCae(rda->station(),rda->config(),parent);
+  //  play_cae->connectHost();
+  play_cae=rda->cae();
 
   for(int i=0;i<2;i++) {
     play_card[i]=0;

@@ -520,6 +520,7 @@ void MainObject::PutAudio()
   case RDApplication::ExitNoSchedCode:
   case RDApplication::ExitBadTicket:
   case RDApplication::ExitNoStation:
+  case RDApplication::ExitInternalError:
     rda->syslog(LOG_WARNING,
 		"importer process returned exit code %d [cmdline: %s, client addr: %s]",
 		proc->exitCode(),

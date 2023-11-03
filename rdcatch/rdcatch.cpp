@@ -149,7 +149,10 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   connect(rda->cae(),SIGNAL(playing(int)),this,SLOT(playedData(int)));
   connect(rda->cae(),SIGNAL(playStopped(int)),
 	  this,SLOT(playStoppedData(int)));
-  rda->cae()->connectHost();
+  if(!rda->cae()->connectHost(&err_msg)) {
+    QMessageBox::warning(this,"RDCatch - "+tr("Error"),err_msg);
+    exit(RDCoreApplication::ExitInternalError);
+  }
 
   //
   // Deck Monitors

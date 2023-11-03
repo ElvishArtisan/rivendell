@@ -654,6 +654,10 @@ QString RDCoreApplication::exitCodeText(RDCoreApplication::ExitCode code)
     ret=tr("no such host");
     break;
 
+  case RDCoreApplication::ExitInternalError:
+    ret=tr("internal error");
+    break;
+
   case RDCoreApplication::ExitLast:
     break;
   }
