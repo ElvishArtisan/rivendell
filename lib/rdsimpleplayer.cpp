@@ -162,11 +162,15 @@ void RDSimplePlayer::play(int start_pos)
     if(q->first()) {
       play_cut_gain=q->value(2).toInt(); 
       play_handles.push(handle);
+      /*
       for(int i=0;i<RD_MAX_PORTS;i++) {
-        play_cae->setOutputVolume(play_card,play_stream,i,RD_MUTE_DEPTH);
+	play_cae->setOutputVolume(play_card,play_stream,i,RD_MUTE_DEPTH);
       }
-      play_cae->setOutputVolume(play_card,play_stream,play_port,0+play_cut_gain);
-      play_cae->positionPlay(play_handles.back(),q->value(0).toUInt()+start_pos);
+      */
+      play_cae->
+	setOutputVolume(play_card,play_stream,play_port,0+play_cut_gain);
+      play_cae->
+	positionPlay(play_handles.back(),q->value(0).toUInt()+start_pos);
       play_cae->play(play_handles.back(),
                      q->value(1).toUInt()-(q->value(0).toUInt()+start_pos),
                      RD_TIMESCALE_DIVISOR,false);

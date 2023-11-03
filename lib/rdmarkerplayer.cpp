@@ -379,10 +379,8 @@ void RDMarkerPlayer::buttonPlayData()
   d_loop_start_length=0;
   rda->cae()->play(d_cae_handle,d_loop_start_length,100000,false);
   rda->cae()->setPlayPortActive(d_cards.first(),d_port,d_cae_stream);
-  // FIXME: Implement variable gain here!
-  rda->cae()->setOutputVolume(d_cards.first(),d_cae_stream,d_port,0);
-  //    rda->cae()->
-  //      setOutputVolume(d_cards.first(),d_cae_stream,d_port,0+edit_gain_control->value());
+  rda->cae()->setOutputVolume(d_cards.first(),d_cae_stream,
+			      d_port,0+100*d_play_gain_spin->value());
   d_meter_timer->start(RD_METER_UPDATE_INTERVAL);
 }
 
@@ -401,10 +399,8 @@ void RDMarkerPlayer::buttonPlayFromData()
     d_loop_start_length=0;
     rda->cae()->play(d_cae_handle,d_loop_start_length,100000,false);
     rda->cae()->setPlayPortActive(d_cards.first(),d_port,d_cae_stream);
-    // FIXME: Implement variable gain here!
-    rda->cae()->setOutputVolume(d_cards.first(),d_cae_stream,d_port,0);
-    //    rda->cae()->
-    //      setOutputVolume(d_cards.first(),d_cae_stream,d_port,0+edit_gain_control->value());
+    rda->cae()->setOutputVolume(d_cards.first(),d_cae_stream,d_port,
+				0+100*d_play_gain_spin->value());
     d_meter_timer->start(RD_METER_UPDATE_INTERVAL);
   }
 }
@@ -428,10 +424,8 @@ void RDMarkerPlayer::buttonPlayToData()
     rda->cae()->positionPlay(d_cae_handle,d_loop_start_msec);
     rda->cae()->play(d_cae_handle,d_loop_start_length,100000,false);
     rda->cae()->setPlayPortActive(d_cards.first(),d_port,d_cae_stream);
-    // FIXME: Implement variable gain here!
-    rda->cae()->setOutputVolume(d_cards.first(),d_cae_stream,d_port,0);
-    //    rda->cae()->
-    //      setOutputVolume(d_cards.first(),d_cae_stream,d_port,0+edit_gain_control->value());
+    rda->cae()->setOutputVolume(d_cards.first(),d_cae_stream,d_port,
+				0+100*d_play_gain_spin->value());
     d_meter_timer->start(RD_METER_UPDATE_INTERVAL);
   }
 }

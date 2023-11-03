@@ -691,12 +691,12 @@ void MainObject::setOutputPortData(int id,unsigned card,unsigned stream,
     return;
   }
   if(!rda->config()->testOutputStreams()) {
-    for(unsigned i=0;i<RD_MAX_STREAMS;i++) {
-      if(i==port) {
-	dvr->setOutputVolume(card,i,port,level);
+    for(unsigned i=0;i<RD_MAX_PORTS;i++) {
+      if(i==stream) {
+	dvr->setOutputVolume(card,stream,i,level);
       }
       else {
-	dvr->setOutputVolume(card,i,port,RD_FADE_DEPTH);
+	dvr->setOutputVolume(card,stream,i,RD_MUTE_DEPTH);
       }
     }
     if(rda->config()->enableMixerLogging()) {

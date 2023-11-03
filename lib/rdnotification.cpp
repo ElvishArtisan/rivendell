@@ -81,7 +81,7 @@ bool RDNotification::isValid() const
 
 bool RDNotification::read(const QString &str)
 {
-  printf("RDNotification::read(%s)\n",str.toUtf8().constData());
+  //  printf("RDNotification::read(%s)\n",str.toUtf8().constData());
 
   notify_type=RDNotification::NullType;
   notify_action=RDNotification::NoAction;

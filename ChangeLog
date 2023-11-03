@@ -24444,3 +24444,6 @@
 	* Prepended the string '[mixer]' to all syslog entries generated
 	as a result of enabling the 'EnableMixerLogging=' directive in
 	rd.conf(5).
+2023-11-03 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in caed(8) that caused multiple play-outs on
+	a common port to interfere with each others mixer settings.
