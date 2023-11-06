@@ -68,6 +68,7 @@ RDTrackerWidget::RDTrackerWidget(QString *import_path,QWidget *parent)
   }
   d_menu_clicked_point=-1;
   d_shift_pressed=false;
+  d_active=false;
 
   //
   // Create Palettes
@@ -418,6 +419,12 @@ QSizePolicy RDTrackerWidget::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::MinimumExpanding,
 		     QSizePolicy::MinimumExpanding);
+}
+
+
+bool RDTrackerWidget::isActive() const
+{
+  return d_active;
 }
 
 
@@ -1422,6 +1429,14 @@ void RDTrackerWidget::stateChangedData(int id,RDPlayDeck::State state)
     RenderTransition(SingleSelectionLine());
     UpdateControls();
     break;
+  }
+  if((d_deck[0]->state()!=RDPlayDeck::Stopped)||
+     (d_deck[1]->state()!=RDPlayDeck::Stopped)||
+     (d_deck[2]->state()!=RDPlayDeck::Stopped)!=d_active) {
+    d_active=(d_deck[0]->state()!=RDPlayDeck::Stopped)||
+      (d_deck[1]->state()!=RDPlayDeck::Stopped)||
+      (d_deck[2]->state()!=RDPlayDeck::Stopped);
+    emit activeChanged(d_active);
   }
 }
 

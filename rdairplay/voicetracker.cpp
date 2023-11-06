@@ -31,6 +31,8 @@ VoiceTracker::VoiceTracker(QWidget *parent)
   d_load_button=new QPushButton(tr("Load\nLog"),this);
   d_load_button->setFont(bigButtonFont());
   connect(d_load_button,SIGNAL(clicked()),this,SLOT(loadData()));
+  connect(d_tracker_widget,SIGNAL(activeChanged(bool)),
+	  d_load_button,SLOT(setDisabled(bool)));
 }
 
 

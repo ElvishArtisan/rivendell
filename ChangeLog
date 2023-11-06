@@ -24447,3 +24447,8 @@
 2023-11-03 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in caed(8) that caused multiple play-outs on
 	a common port to interfere with each others mixer settings.
+2023-11-06 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'RDTrackerWidget::isActive()' method.
+	* Added a 'RDTrackerWidget::activeChanged()' signal.
+	* Fixed a bug in rdairplay(1) that caused a segfault when attempting
+	to unload a log from the voice tracker while the tracker was active.

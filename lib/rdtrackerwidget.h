@@ -69,6 +69,10 @@ class RDTrackerWidget : public RDWidget
   ~RDTrackerWidget();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
+  bool isActive() const;
+
+ signals:
+  void activeChanged(bool state);
 
  public slots:
   bool load(const QString &logname);
@@ -269,6 +273,8 @@ class RDTrackerWidget : public RDWidget
   QLabel *d_tracks_remaining_label_label;
   QLabel *d_time_remaining_label_label;
   QLabel *d_time_label;
+
+  bool d_active;
 };
 
 
