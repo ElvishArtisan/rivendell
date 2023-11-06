@@ -3,7 +3,7 @@
 // Add scheduler codes dialog
 //
 //   (C) Copyright 2005-2018 Stefan Gabriel <stg@st-gabriel.de>
-//   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,6 +21,7 @@
 
 #include <QMessageBox>
 #include <QPushButton>
+#include <QRegExpValidator>
 
 #include <rddb.h>
 #include <rdescape_string.h>
@@ -43,32 +44,33 @@ AddSchedCode::AddSchedCode(QWidget *parent)
   // Code Name
   //
   d_code_edit=new QLineEdit(this);
-  d_code_edit->setGeometry(105,11,sizeHint().width()-150,19);
   d_code_edit->setMaxLength(10);
-  QLabel *label=new QLabel(tr("New Code:"),this);
-  label->setGeometry(10,11,90,19);
-  label->setFont(labelFont());
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  QRegExpValidator *code_validator=
+    new QRegExpValidator(QRegExp("[a-z0-9 ]{1,10}",Qt::CaseInsensitive),this);
+  d_code_edit->setValidator(code_validator);
+  connect(d_code_edit,SIGNAL(textChanged(const QString &)),
+	  this,SLOT(codeChangedData(const QString &)));
+  d_code_label=new QLabel(tr("New Code:"),this);
+  d_code_label->setFont(labelFont());
+  d_code_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   //  Ok Button
   //
-  QPushButton *ok_button=new QPushButton(this);
-  ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
-  ok_button->setDefault(true);
-  ok_button->setFont(buttonFont());
-  ok_button->setText(tr("OK"));
-  connect(ok_button,SIGNAL(clicked()),this,SLOT(okData()));
+  d_ok_button=new QPushButton(this);
+  d_ok_button->setDefault(true);
+  d_ok_button->setFont(buttonFont());
+  d_ok_button->setText(tr("OK"));
+  d_ok_button->setDisabled(true);
+  connect(d_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
   //  Cancel Button
   //
-  QPushButton *cancel_button=new QPushButton(this);
-  cancel_button->
-    setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
-  cancel_button->setFont(buttonFont());
-  cancel_button->setText(tr("Cancel"));
-  connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
+  d_cancel_button=new QPushButton(this);
+  d_cancel_button->setFont(buttonFont());
+  d_cancel_button->setText(tr("Cancel"));
+  connect(d_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 }
 
 
@@ -97,6 +99,22 @@ int AddSchedCode::exec(QString *scode)
   d_code_edit->setText("");
 
   return QDialog::exec();
+}
+
+
+void AddSchedCode::resizeEvent(QResizeEvent *e)
+{
+  d_code_label->setGeometry(10,11,90,19);
+  d_code_edit->setGeometry(105,11,size().width()-150,19);
+
+  d_ok_button->setGeometry(size().width()-180,sizeHint().height()-60,80,50);
+  d_cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
+}
+
+
+void AddSchedCode::codeChangedData(const QString &str)
+{
+  d_ok_button->setDisabled(str.isEmpty());
 }
 
 
