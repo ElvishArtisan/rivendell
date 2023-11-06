@@ -798,7 +798,16 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
       break;
 
     case 4:  // Voice Tracker
-      trackerButtonData();
+      if(rda->user()->voicetrackLog()) {
+	trackerButtonData();
+      }
+      else {
+	if(rml->echoRequested()) {
+	  rml->acknowledge(false);
+	  rda->ripc()->sendRml(rml);
+	}
+	return;
+      }
       break;
 
     }

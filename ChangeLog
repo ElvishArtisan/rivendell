@@ -24452,3 +24452,7 @@
 	* Added a 'RDTrackerWidget::activeChanged()' signal.
 	* Fixed a bug in rdairplay(1) that caused a segfault when attempting
 	to unload a log from the voice tracker while the tracker was active.
+2023-11-06 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdairplay(1) that allowed access to the Voice
+	Tracker even when the current user had the 'Voicetrack Logs'
+	privilege revoked.

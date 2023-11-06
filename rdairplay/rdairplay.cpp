@@ -1252,6 +1252,7 @@ void MainWidget::userData()
   bool delete_allowed=rda->user()->removefromLog();
   bool arrange_allowed=rda->user()->arrangeLog();
   bool playout_allowed=rda->user()->playoutLog();
+  bool tracking_allowed=rda->user()->voicetrackLog();
 
   air_add_button->setEnabled(add_allowed&&arrange_allowed&&playout_allowed);
   air_move_button->setEnabled(arrange_allowed&&playout_allowed);
@@ -1261,6 +1262,10 @@ void MainWidget::userData()
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
     air_log_list[i]->userChanged(add_allowed,delete_allowed,
 				 arrange_allowed,playout_allowed);
+  }
+  air_tracker_button->setEnabled(tracking_allowed);
+  if((!tracking_allowed)&&air_tracker->isVisible()) {
+    fullLogButtonData(0);
   }
 }
 
