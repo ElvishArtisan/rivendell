@@ -24456,3 +24456,6 @@
 	* Fixed a bug in rdairplay(1) that allowed access to the Voice
 	Tracker even when the current user had the 'Voicetrack Logs'
 	privilege revoked.
+2023-11-06 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlogmanager(1) that caused scheduler codes
+	containing space characters to fail to be processed correctly.

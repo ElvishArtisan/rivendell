@@ -634,14 +634,14 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
     // Load all carts in requested group into schedCL
     //
     sql=QString("select `NUMBER`,`ARTIST`,`TITLE`,")+
-      "CONCAT(GROUP_CONCAT(RPAD(`SC`.`SCHED_CODE`,11,' ') separator ''),'.') as `SCHED_CODES`"+
+      "CONCAT(GROUP_CONCAT(RPAD(`SC`.`SCHED_CODE`,11,'|') separator ''),'.') as `SCHED_CODES`"+
       " from `CART` LEFT JOIN `CART_SCHED_CODES` AS `SC` on (`NUMBER`=`SC`.`CART_NUMBER`)"+
       " where `GROUP_NAME`='"+RDEscapeString(schedGroup())+"'"+
       " group by `NUMBER`";
     RDSchedCartList *schedCL=new RDSchedCartList();
     q=new RDSqlQuery(sql);
     while(q->next()) {
-      QStringList codes=q->value(3).toString().split(" ",QString::SkipEmptyParts);
+      QStringList codes=q->value(3).toString().split("|",QString::SkipEmptyParts);
       if((codes.size()>0)&&(codes.last()==".")) {
 	codes.removeLast();
       }
@@ -649,7 +649,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	insertItem(q->value(0).toUInt(),0,0,q->value(1).toString(),q->value(2).toString(),codes);
     }
     delete q;
-      
+
     //////////////////////////////////
     //                              //
     // Add deconflicting rules here //
