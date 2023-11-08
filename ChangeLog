@@ -24464,3 +24464,5 @@
 	enforce the use of only alphanumeric characters plus space.
 2023-11-08 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'gpio_fuzz_test' test harness in 'tests/'.
+2023-11-08 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'rml_torture_test' test harness in 'tests/'.
