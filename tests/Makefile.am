@@ -1,6 +1,6 @@
 ## Makefile.am
 ##
-## (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -39,6 +39,7 @@ noinst_PROGRAMS = audio_convert_test\
                   download_test\
                   feed_image_test\
                   getpids_test\
+                  gpio_fuzz_test\
                   log_unlink_test\
                   mcast_recv_test\
                   metadata_wildcard_test\
@@ -98,6 +99,9 @@ feed_image_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@ @
 
 dist_getpids_test_SOURCES = getpids_test.cpp getpids_test.h
 getpids_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@ @IMAGEMAGICK_LIBS@
+
+dist_gpio_fuzz_test_SOURCES = gpio_fuzz_test.cpp gpio_fuzz_test.h
+gpio_fuzz_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@ @IMAGEMAGICK_LIBS@
 
 dist_log_unlink_test_SOURCES = log_unlink_test.cpp log_unlink_test.h
 nodist_log_unlink_test_SOURCES = moc_log_unlink_test.cpp
