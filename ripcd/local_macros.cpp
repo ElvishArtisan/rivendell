@@ -254,139 +254,140 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
 	      (const char *)rml_in->toString().toUtf8(),
 	      (const char *)rml_in->address().toString().toUtf8());
 
-  RDMacro *rml=new RDMacro();
-  *rml=ForwardConvert(*rml_in);
+  //  RDMacro *rml=new RDMacro();
+  //  *rml=ForwardConvert(*rml_in);
+  RDMacro rml=ForwardConvert(*rml_in);
 
-  switch(rml->command()) {
+  switch(rml.command()) {
   case RDMacro::BO:
-    tty_port=rml->arg(0).toInt();
+    tty_port=rml.arg(0).toInt();
     if((tty_port<0)||(tty_port>MAX_TTYS)) {
-      if(rml->echoRequested()) {
-	rml->acknowledge(false);
-	sendRml(rml);
+      if(rml.echoRequested()) {
+	rml.acknowledge(false);
+	sendRml(&rml);
 	return;
       }
     }
     if(ripcd_tty_dev[tty_port]==NULL) {
-      rml->acknowledge(false);
-      sendRml(rml);
+      rml.acknowledge(false);
+      sendRml(&rml);
       return;
     }
-    for(int i=1;i<(rml->argQuantity());i++) {
-      d=rml->arg(i).toInt(NULL,16);
+    for(int i=1;i<(rml.argQuantity());i++) {
+      d=rml.arg(i).toInt(NULL,16);
       bin_buf[i-1]=0xFF&d;
     }
-    ripcd_tty_dev[tty_port]->write(bin_buf,rml->argQuantity()-1);
-    rml->acknowledge(true);
-    sendRml(rml);
+    ripcd_tty_dev[tty_port]->write(bin_buf,rml.argQuantity()-1);
+    rml.acknowledge(true);
+    sendRml(&rml);
     return;
     break;
       
   case RDMacro::GI:
-    if(rml->argQuantity()!=5) {
-      if(rml->echoRequested()) {
-	rml->acknowledge(false);
-	sendRml(rml);
+    if(rml.argQuantity()!=5) {
+      if(rml.echoRequested()) {
+	rml.acknowledge(false);
+	sendRml(&rml);
       }
       return;
     }
-    matrix_num=rml->arg(0).toInt();
-    if(rml->arg(1).toLower()=="i") {
+    matrix_num=rml.arg(0).toInt();
+    if(rml.arg(1).toLower()=="i") {
       gpio_type=RDMatrix::GpioInput;
     }
     else {
-      if(rml->arg(1).toLower()=="o") {
+      if(rml.arg(1).toLower()=="o") {
 	gpio_type=RDMatrix::GpioOutput;
       }
       else {
-	if(rml->echoRequested()) {
-	  rml->acknowledge(false);
-	  sendRml(rml);
+	if(rml.echoRequested()) {
+	  rml.acknowledge(false);
+	  sendRml(&rml);
 	}
 	return;
       }
     }
-    gpi=rml->arg(2).toInt()-1;
+    gpi=rml.arg(2).toInt()-1;
     if((ripcd_switcher[matrix_num]==NULL)||
        (gpi>(MAX_GPIO_PINS-1))||
        (gpi<0)||
-       (rml->arg(3).toInt()<0)||(rml->arg(3).toInt()>1)||
-       (rml->arg(4).toInt()<-1)||(rml->arg(4).toInt()>999999)) {
-      if(rml->echoRequested()) {
-	rml->acknowledge(false);
-	sendRml(rml);
+       (rml.arg(3).toInt()<0)||(rml.arg(3).toInt()>1)||
+       (rml.arg(4).toInt()<-1)||(rml.arg(4).toInt()>999999)) {
+      if(rml.echoRequested()) {
+	rml.acknowledge(false);
+	sendRml(&rml);
       }
       return;
     }
     switch(gpio_type) {
     case RDMatrix::GpioInput:
-      ripcd_gpi_macro[matrix_num][gpi][rml->arg(3).toInt()]=
-	rml->arg(4).toInt();
+      ripcd_gpi_macro[matrix_num][gpi][rml.arg(3).toInt()]=
+	rml.arg(4).toInt();
       BroadcastCommand(QString::asprintf("GC %d %d %d %d!",matrix_num,gpi,
 					 ripcd_gpi_macro[matrix_num][gpi][0],
 					 ripcd_gpi_macro[matrix_num][gpi][1]));
       break;
 
     case RDMatrix::GpioOutput:
-      ripcd_gpo_macro[matrix_num][gpi][rml->arg(3).toInt()]=
-	rml->arg(4).toInt();
+      ripcd_gpo_macro[matrix_num][gpi][rml.arg(3).toInt()]=
+	rml.arg(4).toInt();
       BroadcastCommand(QString::asprintf("GD %d %d %d %d!",matrix_num,gpi,
 					 ripcd_gpo_macro[matrix_num][gpi][0],
 					 ripcd_gpo_macro[matrix_num][gpi][1]));
       break;
     }
-    if(rml->echoRequested()) {
-      rml->acknowledge(true);
-      sendRml(rml);
+    if(rml.echoRequested()) {
+      rml.acknowledge(true);
+      sendRml(&rml);
     }
     break;
       
   case RDMacro::GE:
-    if(rml->argQuantity()!=4) {
-      if(rml->echoRequested()) {
-	rml->acknowledge(false);
-	sendRml(rml);
+    if(rml.argQuantity()!=4) {
+      if(rml.echoRequested()) {
+	rml.acknowledge(false);
+	sendRml(&rml);
       }
       return;
     }
-    matrix_num=rml->arg(0).toInt();
+    matrix_num=rml.arg(0).toInt();
     if((ripcd_switcher[matrix_num]==NULL)||
-       (rml->arg(3).toInt()<0)||(rml->arg(3).toInt()>1)) {
-      if(rml->echoRequested()) {
-	rml->acknowledge(false);
-	sendRml(rml);
+       (rml.arg(3).toInt()<0)||(rml.arg(3).toInt()>1)) {
+      if(rml.echoRequested()) {
+	rml.acknowledge(false);
+	sendRml(&rml);
       }
       return;
     }
-    if(rml->arg(1).toLower()=="i") {
+    if(rml.arg(1).toLower()=="i") {
       gpio_type=RDMatrix::GpioInput;
       range=new RDRange(ripcd_switcher[matrix_num]->gpiQuantity());
     }
     else {
-      if(rml->arg(1).toLower()=="o") {
+      if(rml.arg(1).toLower()=="o") {
 	gpio_type=RDMatrix::GpioOutput;
 	range=new RDRange(ripcd_switcher[matrix_num]->gpoQuantity());
       }
       else {
-	if(rml->echoRequested()) {
-	  rml->acknowledge(false);
-	  sendRml(rml);
+	if(rml.echoRequested()) {
+	  rml.acknowledge(false);
+	  sendRml(&rml);
 	}
 	return;
       }
     }
-    if(!range->parse(rml->arg(2))) {
+    if(!range->parse(rml.arg(2))) {
       delete range;
-      if(rml->echoRequested()) {
-	rml->acknowledge(false);
-	sendRml(rml);
+      if(rml.echoRequested()) {
+	rml.acknowledge(false);
+	sendRml(&rml);
       }
       return;
     }
     for(int i=range->start()-1;i<range->end();i++) {
       switch(gpio_type) {
       case RDMatrix::GpioInput:
-	if(rml->arg(3).toInt()==1) {
+	if(rml.arg(3).toInt()==1) {
 	  ripcd_gpi_mask[matrix_num][i]=true;
 	  BroadcastCommand(QString::asprintf("GM %d %d 1!",matrix_num,i));
 	}
@@ -397,7 +398,7 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
 	break;
 
       case RDMatrix::GpioOutput:
-	if(rml->arg(3).toInt()==1) {
+	if(rml.arg(3).toInt()==1) {
 	  ripcd_gpo_mask[matrix_num][i]=true;
 	  BroadcastCommand(QString::asprintf("GN %d %d 1!",matrix_num,i));
 	}
@@ -408,108 +409,108 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
 	break;
       }
     }
-    if(rml->echoRequested()) {
-      rml->acknowledge(true);
-      sendRml(rml);
+    if(rml.echoRequested()) {
+      rml.acknowledge(true);
+      sendRml(&rml);
     }
     break;
 
   case RDMacro::JC:
 #ifdef JACK
-    if(rml->argQuantity()!=2) {
-      if(rml->echoRequested()) {
-	rml->acknowledge(false);
-	sendRml(rml);
+    if(rml.argQuantity()!=2) {
+      if(rml.echoRequested()) {
+	rml.acknowledge(false);
+	sendRml(&rml);
       }
       return;
     }
     if(ripcd_jack_client!=NULL) {
-      if((err=jack_connect(ripcd_jack_client,rml->arg(1).toUtf8(),
-			   rml->arg(0).toUtf8()))==0) {
+      if((err=jack_connect(ripcd_jack_client,rml.arg(1).toUtf8(),
+			   rml.arg(0).toUtf8()))==0) {
 	rda->syslog(LOG_DEBUG,
 		    "executed JACK port connection \"%s %s\"",
-		    (const char *)rml->arg(0).toUtf8(),
-		    (const char *)rml->arg(1).toUtf8());
+		    (const char *)rml.arg(0).toUtf8(),
+		    (const char *)rml.arg(1).toUtf8());
       }
       else {
 	if(err!=EEXIST) {
 	  rda->syslog(LOG_WARNING,
 		      "JACK port connection \"%s %s\" failed, err: %d",
-		      (const char *)rml->arg(0).toUtf8(),
-		      (const char *)rml->arg(1).toUtf8(),
+		      (const char *)rml.arg(0).toUtf8(),
+		      (const char *)rml.arg(1).toUtf8(),
 		      err);
 	}
       }
     }
     else {
-      if(rml->echoRequested()) {
-	rml->acknowledge(false);
-	sendRml(rml);
+      if(rml.echoRequested()) {
+	rml.acknowledge(false);
+	sendRml(&rml);
       }
       return;
     }
-    if(rml->echoRequested()) {
-      rml->acknowledge(true);
-      sendRml(rml);
+    if(rml.echoRequested()) {
+      rml.acknowledge(true);
+      sendRml(&rml);
     }
 #else
-    if(rml->echoRequested()) {
-      rml->acknowledge(false);
-      sendRml(rml);
+    if(rml.echoRequested()) {
+      rml.acknowledge(false);
+      sendRml(&rml);
     }
 #endif  // JACK
     break;
 
   case RDMacro::JD:
 #ifdef JACK
-    if(rml->argQuantity()!=2) {
-      if(rml->echoRequested()) {
-	rml->acknowledge(false);
-	sendRml(rml);
+    if(rml.argQuantity()!=2) {
+      if(rml.echoRequested()) {
+	rml.acknowledge(false);
+	sendRml(&rml);
       }
       return;
     }
     if(ripcd_jack_client!=NULL) {
-      if((err=jack_disconnect(ripcd_jack_client,rml->arg(1).toUtf8(),
-			   rml->arg(0).toUtf8()))==0) {
+      if((err=jack_disconnect(ripcd_jack_client,rml.arg(1).toUtf8(),
+			   rml.arg(0).toUtf8()))==0) {
 	rda->syslog(LOG_DEBUG,
 		    "executed JACK port disconnection \"%s %s\"",
-		    (const char *)rml->arg(0).toUtf8(),
-		    (const char *)rml->arg(1).toUtf8());
+		    (const char *)rml.arg(0).toUtf8(),
+		    (const char *)rml.arg(1).toUtf8());
       }
       else {
 	rda->syslog(LOG_WARNING,
 		    "JACK port disconnection \"%s %s\" failed, err: %d",
-		    (const char *)rml->arg(0).toUtf8(),
-		    (const char *)rml->arg(1).toUtf8(),
+		    (const char *)rml.arg(0).toUtf8(),
+		    (const char *)rml.arg(1).toUtf8(),
 		    err);
       }
     }
     else {
-      if(rml->echoRequested()) {
-	rml->acknowledge(false);
-	sendRml(rml);
+      if(rml.echoRequested()) {
+	rml.acknowledge(false);
+	sendRml(&rml);
       }
       return;
     }
-    if(rml->echoRequested()) {
-      rml->acknowledge(true);
-      sendRml(rml);
+    if(rml.echoRequested()) {
+      rml.acknowledge(true);
+      sendRml(&rml);
     }
 #else
-    if(rml->echoRequested()) {
-      rml->acknowledge(false);
-      sendRml(rml);
+    if(rml.echoRequested()) {
+      rml.acknowledge(false);
+      sendRml(&rml);
     }
 #endif  // JACK
     break;
       
   case RDMacro::JZ:
 #ifdef JACK
-    if(rml->argQuantity()!=0) {
-      if(rml->echoRequested()) {
-	rml->acknowledge(false);
-	sendRml(rml);
+    if(rml.argQuantity()!=0) {
+      if(rml.echoRequested()) {
+	rml.acknowledge(false);
+	sendRml(&rml);
       }
       return;
     }
@@ -542,70 +543,70 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
 	  i++;
 	}
       }
-      if(rml->echoRequested()) {
-	rml->acknowledge(true);
-	sendRml(rml);
+      if(rml.echoRequested()) {
+	rml.acknowledge(true);
+	sendRml(&rml);
       }
     }
 #else
-    if(rml->echoRequested()) {
-      rml->acknowledge(false);
-      sendRml(rml);
+    if(rml.echoRequested()) {
+      rml.acknowledge(false);
+      sendRml(&rml);
     }
 #endif  // JACK
     break;
 
   case RDMacro::LO:
-    if(rml->argQuantity()>2) {
-      if(rml->echoRequested()) {
-	rml->acknowledge(false);
-	sendRml(rml);
+    if(rml.argQuantity()>2) {
+      if(rml.echoRequested()) {
+	rml.acknowledge(false);
+	sendRml(&rml);
       }
       return;
     }
-    if(rml->argQuantity()==0) {
+    if(rml.argQuantity()==0) {
       rduser=new RDUser(rda->station()->defaultName());
     }
     else {
-      rduser=new RDUser(rml->arg(0));
+      rduser=new RDUser(rml.arg(0));
       if(!rduser->exists()) {
-	if(rml->echoRequested()) {
-	  rml->acknowledge(false);
-	  sendRml(rml);
+	if(rml.echoRequested()) {
+	  rml.acknowledge(false);
+	  sendRml(&rml);
 	}
 	delete rduser;
 	return;
       }
-      if(!rduser->checkPassword(rml->arg(1),false)) {
-	if(rml->echoRequested()) {
-	  rml->acknowledge(false);
-	  sendRml(rml);
+      if(!rduser->checkPassword(rml.arg(1),false)) {
+	if(rml.echoRequested()) {
+	  rml.acknowledge(false);
+	  sendRml(&rml);
 	}
 	delete rduser;
 	return;
       }
     }
     SetUser(rduser->name());
-    if(rml->echoRequested()) {
-      rml->acknowledge(true);
-      sendRml(rml);
+    if(rml.echoRequested()) {
+      rml.acknowledge(true);
+      sendRml(&rml);
     }
     delete rduser;
     break;
       
   case RDMacro::MB:
-    if(rml->argQuantity()<3) {
-      if(rml->echoRequested()) {
-	rml->acknowledge(false);
-	sendRml(rml);
+    if(rml.argQuantity()<3) {
+      if(rml.echoRequested()) {
+	rml.acknowledge(false);
+	sendRml(&rml);
       }
       return;
     }
-    severity=rml->arg(1).toInt();
+    severity=rml.arg(1).toInt();
     if((severity<1)||(severity>3)) {
-      if(rml->echoRequested()) {
-	rml->acknowledge(false);
-	sendRml(rml);
+      if(rml.echoRequested()) {
+	rml.acknowledge(false);
+	sendRml(&rml);
       }
       return;
     }
@@ -614,165 +615,165 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
 	if(setegid(rda->config()->gid())<0) {
 	  rda->syslog(LOG_WARNING,"unable to set group id %d for RDPopup",
 		      rda->config()->gid());
-	  if(rml->echoRequested()) {
-	    rml->acknowledge(false);
-	    sendRml(rml);
+	  if(rml.echoRequested()) {
+	    rml.acknowledge(false);
+	    sendRml(&rml);
 	  }
 	}
 	if(seteuid(rda->config()->uid())<0) {
 	  rda->syslog(LOG_WARNING,"unable to set user id %d for RDPopup",
 		      rda->config()->uid());
-	  if(rml->echoRequested()) {
-	    rml->acknowledge(false);
-	    sendRml(rml);
+	  if(rml.echoRequested()) {
+	    rml.acknowledge(false);
+	    sendRml(&rml);
 	  }
 	}
       }
       if(system(QString().
 		sprintf("rdpopup -display %s %s %s",
-			rml->arg(0).toUtf8().constData(),
-			rml->arg(1).toUtf8().constData(),
-			RDEscapeString(rml->rollupArgs(2)).toUtf8().constData()).toUtf8().constData())<0) {
+			rml.arg(0).toUtf8().constData(),
+			rml.arg(1).toUtf8().constData(),
+			RDEscapeString(rml.rollupArgs(2)).toUtf8().constData()).toUtf8().constData())<0) {
 	rda->syslog(LOG_WARNING,"RDPopup returned an error");
       }
       exit(0);
     }
-    if(rml->echoRequested()) {
-      rml->acknowledge(true);
-      sendRml(rml);
+    if(rml.echoRequested()) {
+      rml.acknowledge(true);
+      sendRml(&rml);
     }
     break;
 
   case RDMacro::MT:
-    if(rml->argQuantity()!=3) {
-      if(rml->echoRequested()) {
-	rml->acknowledge(false);
-	sendRml(rml);
+    if(rml.argQuantity()!=3) {
+      if(rml.echoRequested()) {
+	rml.acknowledge(false);
+	sendRml(&rml);
       }
       return;
     }
-    if((rml->arg(0).toUInt()==0)||
-       (rml->arg(0).toUInt()>RD_MAX_MACRO_TIMERS)||
-       (rml->arg(2).toUInt()>999999)) {
-      if(rml->echoRequested()) {
-	rml->acknowledge(false);
-	sendRml(rml);
+    if((rml.arg(0).toUInt()==0)||
+       (rml.arg(0).toUInt()>RD_MAX_MACRO_TIMERS)||
+       (rml.arg(2).toUInt()>999999)) {
+      if(rml.echoRequested()) {
+	rml.acknowledge(false);
+	sendRml(&rml);
       }
       return;
     }
-    if((rml->arg(1).toUInt()==0)||
-       (rml->arg(2).toUInt()==0)) {
-      ripc_macro_cart[rml->arg(0).toUInt()-1]=0;
-      ripc_macro_timer[rml->arg(0).toUInt()-1]->stop();
-      if(rml->echoRequested()) {
-	rml->acknowledge(true);
-	sendRml(rml);
+    if((rml.arg(1).toUInt()==0)||
+       (rml.arg(2).toUInt()==0)) {
+      ripc_macro_cart[rml.arg(0).toUInt()-1]=0;
+      ripc_macro_timer[rml.arg(0).toUInt()-1]->stop();
+      if(rml.echoRequested()) {
+	rml.acknowledge(true);
+	sendRml(&rml);
       }
       return;
     }
-    ripc_macro_cart[rml->arg(0).toUInt()-1]=rml->arg(2).toUInt();
-    ripc_macro_timer[rml->arg(0).toUInt()-1]->stop();
-    ripc_macro_timer[rml->arg(0).toUInt()-1]->
-      start(rml->arg(1).toInt());
-    if(rml->echoRequested()) {
-      rml->acknowledge(true);
-      sendRml(rml);
+    ripc_macro_cart[rml.arg(0).toUInt()-1]=rml.arg(2).toUInt();
+    ripc_macro_timer[rml.arg(0).toUInt()-1]->stop();
+    ripc_macro_timer[rml.arg(0).toUInt()-1]->
+      start(rml.arg(1).toInt());
+    if(rml.echoRequested()) {
+      rml.acknowledge(true);
+      sendRml(&rml);
     }
     return;
       
   case RDMacro::RN:
-    if(rml->argQuantity()<1) {
-      if(rml->echoRequested()) {
-	rml->acknowledge(false);
-	sendRml(rml);
+    if(rml.argQuantity()<1) {
+      if(rml.echoRequested()) {
+	rml.acknowledge(false);
+	sendRml(&rml);
       }
       return;
     }
-    for(int i=0;i<rml->argQuantity();i++) {
-      cmd+=rml->arg(i)+" ";
+    for(int i=0;i<rml.argQuantity();i++) {
+      cmd+=rml.arg(i)+" ";
     }
     RunCommand(rda->config()->rnRmlUid(),rda->config()->rnRmlGid(),
 	       cmd.trimmed());
-    if(rml->echoRequested()) {
-      rml->acknowledge(true);
-      sendRml(rml);
+    if(rml.echoRequested()) {
+      rml.acknowledge(true);
+      sendRml(&rml);
     }
     break;
 
   case RDMacro::SI:
-    tty_port=rml->arg(0).toInt();
-    if((tty_port<0)||(tty_port>MAX_TTYS)||(rml->argQuantity()!=3)) {
-      if(rml->echoRequested()) {
-	rml->acknowledge(false);
-	sendRml(rml);
+    tty_port=rml.arg(0).toInt();
+    if((tty_port<0)||(tty_port>MAX_TTYS)||(rml.argQuantity()!=3)) {
+      if(rml.echoRequested()) {
+	rml.acknowledge(false);
+	sendRml(&rml);
       }
       return;
     }
     if(ripcd_tty_dev[tty_port]==NULL) {
-      rml->acknowledge(false);
-      sendRml(rml);
+      rml.acknowledge(false);
+      sendRml(&rml);
       return;
     }
-    for(int i=2;i<(rml->argQuantity()-1);i++) {
-      str+=(rml->arg(i)+" ");
+    for(int i=2;i<(rml.argQuantity()-1);i++) {
+      str+=(rml.arg(i)+" ");
     }
-    str+=rml->arg(rml->argQuantity()-1);
-    ripcd_tty_trap[tty_port]->addTrap(rml->arg(1).toInt(),
+    str+=rml.arg(rml.argQuantity()-1);
+    ripcd_tty_trap[tty_port]->addTrap(rml.arg(1).toInt(),
 				      str.toUtf8(),str.toUtf8().length());
     rda->syslog(LOG_DEBUG,"added trap \"%s\" to tty port %d",
-		(const char *)str.toUtf8(),rml->arg(1).toInt());
-    rml->acknowledge(true);
-    sendRml(rml);
+		(const char *)str.toUtf8(),rml.arg(1).toInt());
+    rml.acknowledge(true);
+    sendRml(&rml);
     return;
     break;
       
   case RDMacro::SC:
-    tty_port=rml->arg(0).toInt();
+    tty_port=rml.arg(0).toInt();
     if((tty_port<0)||(tty_port>MAX_TTYS)) {
-      if(rml->echoRequested()) {
-	rml->acknowledge(false);
-	sendRml(rml);
+      if(rml.echoRequested()) {
+	rml.acknowledge(false);
+	sendRml(&rml);
 	return;
       }
     }
     if(ripcd_tty_dev[tty_port]==NULL) {
-      if(rml->echoRequested()) {
-	rml->acknowledge(false);
-	sendRml(rml);
+      if(rml.echoRequested()) {
+	rml.acknowledge(false);
+	sendRml(&rml);
       }
       return;
     }
-    switch(rml->argQuantity()) {
+    switch(rml.argQuantity()) {
     case 1:
       ripcd_tty_trap[tty_port]->clear();
-      if(rml->echoRequested()) {
-	rml->acknowledge(true);
-	sendRml(rml);
+      if(rml.echoRequested()) {
+	rml.acknowledge(true);
+	sendRml(&rml);
       }
       break;
 
     case 2:
-      ripcd_tty_trap[tty_port]->removeTrap(rml->arg(1).toInt());
-      if(rml->echoRequested()) {
-	rml->acknowledge(true);
-	sendRml(rml);
+      ripcd_tty_trap[tty_port]->removeTrap(rml.arg(1).toInt());
+      if(rml.echoRequested()) {
+	rml.acknowledge(true);
+	sendRml(&rml);
       }
       break;
 	  
     case 3:
-      ripcd_tty_trap[tty_port]->removeTrap(rml->arg(1).toInt(),
-					   rml->arg(2).toUtf8(),
-					   rml->arg(2).toUtf8().length());
-      if(rml->echoRequested()) {
-	rml->acknowledge(true);
-	sendRml(rml);
+      ripcd_tty_trap[tty_port]->removeTrap(rml.arg(1).toInt(),
+					   rml.arg(2).toUtf8(),
+					   rml.arg(2).toUtf8().length());
+      if(rml.echoRequested()) {
+	rml.acknowledge(true);
+	sendRml(&rml);
       }
       break;
 	  
     default:
-      if(rml->echoRequested()) {
-	rml->acknowledge(false);
-	sendRml(rml);
+      if(rml.echoRequested()) {
+	rml.acknowledge(false);
+	sendRml(&rml);
       }
       return;
       break;
@@ -780,23 +781,23 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
     break;
 
   case RDMacro::SO:
-    tty_port=rml->arg(0).toInt();
+    tty_port=rml.arg(0).toInt();
     if((tty_port<0)||(tty_port>MAX_TTYS)) {
-      if(rml->echoRequested()) {
-	rml->acknowledge(false);
-	sendRml(rml);
+      if(rml.echoRequested()) {
+	rml.acknowledge(false);
+	sendRml(&rml);
 	return;
       }
     }
     if(ripcd_tty_dev[tty_port]==NULL) {
-      rml->acknowledge(false);
-      sendRml(rml);
+      rml.acknowledge(false);
+      sendRml(&rml);
       return;
     }
-    for(int i=1;i<(rml->argQuantity()-1);i++) {
-      str+=(rml->arg(i)+" ");
+    for(int i=1;i<(rml.argQuantity()-1);i++) {
+      str+=(rml.arg(i)+" ");
     }
-    str+=rml->arg(rml->argQuantity()-1);
+    str+=rml.arg(rml.argQuantity()-1);
     switch(ripcd_tty_term[tty_port]) {
     case RDTty::CrTerm:
       str+=QString::asprintf("\x0d");
@@ -815,8 +816,8 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
     }
     data=RDStringToData(str);
     ripcd_tty_dev[tty_port]->write(data);
-    rml->acknowledge(true);
-    sendRml(rml);
+    rml.acknowledge(true);
+    sendRml(&rml);
     return;
     break;
 
@@ -830,29 +831,29 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
   case RDMacro::SR:
   case RDMacro::SL:
   case RDMacro::SX:
-    if((rml->arg(0).toInt()<0)||(rml->arg(0).toInt()>=MAX_MATRICES)) {
-      if(!rml->echoRequested()) {
-	rml->acknowledge(false);
-	sendRml(rml);
+    if((rml.arg(0).toInt()<0)||(rml.arg(0).toInt()>=MAX_MATRICES)) {
+      if(!rml.echoRequested()) {
+	rml.acknowledge(false);
+	sendRml(&rml);
       }
       return;
     }
-    if(ripcd_switcher[rml->arg(0).toInt()]==NULL) {
-      if(rml->echoRequested()) {
-	rml->acknowledge(false);
-	sendRml(rml);
+    if(ripcd_switcher[rml.arg(0).toInt()]==NULL) {
+      if(rml.echoRequested()) {
+	rml.acknowledge(false);
+	sendRml(&rml);
       }
     }
     else {
-      ripcd_switcher[rml->arg(0).toInt()]->processCommand(rml);
+      ripcd_switcher[rml.arg(0).toInt()]->processCommand(&rml);
     }
     break;
       
   case RDMacro::SY:
-    if(rml->argQuantity()!=1) {
+    if(rml.argQuantity()!=1) {
       return;
     }
-    tty_port=rml->arg(0).toInt();
+    tty_port=rml.arg(0).toInt();
     if((tty_port<0)||(tty_port>=MAX_TTYS)) {
       return;
     }
@@ -910,10 +911,10 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
     break;
 
   case RDMacro::SZ:
-    if(rml->argQuantity()!=1) {
+    if(rml.argQuantity()!=1) {
       return;
     }
-    matrix_num=rml->arg(0).toInt();
+    matrix_num=rml.arg(0).toInt();
     if((matrix_num<0)||(matrix_num>=MAX_MATRICES)) {
       return;
     }
@@ -941,62 +942,62 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
     break;
     
   case RDMacro::TA:
-    if((rml->argQuantity()!=1)||
-       (rml->arg(0).toInt()<0)||(rml->arg(0).toInt()>1)) {
-      if(rml->echoRequested()) {
-	rml->acknowledge(false);
-	sendRml(rml);
+    if((rml.argQuantity()!=1)||
+       (rml.arg(0).toInt()<0)||(rml.arg(0).toInt()>1)) {
+      if(rml.echoRequested()) {
+	rml.acknowledge(false);
+	sendRml(&rml);
       }
       return;
     }
-    if((rml->arg(0).toInt()==0)&&ripc_onair_flag) {
+    if((rml.arg(0).toInt()==0)&&ripc_onair_flag) {
       BroadcastCommand("TA 0!");
       rda->syslog(LOG_INFO,"onair flag OFF");
     }
-    if((rml->arg(0).toInt()==1)&&(!ripc_onair_flag)) {
+    if((rml.arg(0).toInt()==1)&&(!ripc_onair_flag)) {
       BroadcastCommand("TA 1!");
       rda->syslog(LOG_INFO,"onair flag ON");
     }
-    ripc_onair_flag=rml->arg(0).toInt();
-    if(rml->echoRequested()) {
-      rml->acknowledge(true);
-      sendRml(rml);
+    ripc_onair_flag=rml.arg(0).toInt();
+    if(rml.echoRequested()) {
+      rml.acknowledge(true);
+      sendRml(&rml);
     }
     break;
 
   case RDMacro::UO:
-    if(rml->argQuantity()<3) {
-      if(rml->echoRequested()) {
-	rml->acknowledge(false);
-	sendRml(rml);
+    if(rml.argQuantity()<3) {
+      if(rml.echoRequested()) {
+	rml.acknowledge(false);
+	sendRml(&rml);
       }
       return;
     }
-    if(!addr.setAddress(rml->arg(0))) {
-      if(rml->echoRequested()) {
-	rml->acknowledge(false);
-	sendRml(rml);
+    if(!addr.setAddress(rml.arg(0))) {
+      if(rml.echoRequested()) {
+	rml.acknowledge(false);
+	sendRml(&rml);
       }
       return;
     }
-    if((rml->arg(1).toInt()<0)||(rml->arg(1).toInt()>0xFFFF)) {
-      if(rml->echoRequested()) {
-	rml->acknowledge(false);
-	sendRml(rml);
+    if((rml.arg(1).toInt()<0)||(rml.arg(1).toInt()>0xFFFF)) {
+      if(rml.echoRequested()) {
+	rml.acknowledge(false);
+	sendRml(&rml);
       }
       return;
     }
-    for(int i=2;i<(rml->argQuantity()-1);i++) {
-      str+=(rml->arg(i)+" ");
+    for(int i=2;i<(rml.argQuantity()-1);i++) {
+      str+=(rml.arg(i)+" ");
     }
-    str+=rml->arg(rml->argQuantity()-1);
+    str+=rml.arg(rml.argQuantity()-1);
     rda->syslog(LOG_INFO,"sending \"%s\" to %s:%d",(const char *)str.toUtf8(),
-		(const char *)addr.toString().toUtf8(),rml->arg(1).toInt());
+		(const char *)addr.toString().toUtf8(),rml.arg(1).toInt());
     data=RDStringToData(str);
-    ripcd_rml_send->writeDatagram(data,addr,(uint16_t)(rml->arg(1).toInt()));
-    if(rml->echoRequested()) {
-      rml->acknowledge(true);
-      sendRml(rml);
+    ripcd_rml_send->writeDatagram(data,addr,(uint16_t)(rml.arg(1).toInt()));
+    if(rml.echoRequested()) {
+      rml.acknowledge(true);
+      sendRml(&rml);
     }
     break;
 

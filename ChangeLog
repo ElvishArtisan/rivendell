@@ -24466,3 +24466,6 @@
 	* Added a 'gpio_fuzz_test' test harness in 'tests/'.
 2023-11-08 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'rml_torture_test' test harness in 'tests/'.
+2023-11-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in ripcd(8) that caused memory to be leaked when
+	processing RMLs.
