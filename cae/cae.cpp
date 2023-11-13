@@ -179,10 +179,6 @@ MainObject::MainObject(QObject *parent)
   connect(cae_server,SIGNAL(setInputVolumeReq(int,unsigned,unsigned,int)),
 	  this,SLOT(setInputVolumeData(int,unsigned,unsigned,int)));
   connect(cae_server,
-	  SIGNAL(setOutputPortReq(int,unsigned,unsigned,unsigned,int)),
-	  this,
-	  SLOT(setOutputPortData(int,unsigned,unsigned,unsigned,int)));
-  connect(cae_server,
 	  SIGNAL(setOutputVolumeReq(int,unsigned,unsigned,int,int)),
 	  this,
 	  SLOT(setOutputVolumeData(int,unsigned,unsigned,int,int)));
@@ -686,36 +682,6 @@ void MainObject::setInputVolumeData(int id,unsigned card,unsigned stream,
   }
   cae_server->
     sendCommand(id,QString::asprintf("IV %u %u %d +!",card,stream,level));
-}
-
-
-void MainObject::setOutputPortData(int id,unsigned card,unsigned stream,
-				   unsigned port,int level)
-{
-  Driver *dvr=GetDriver(card);
-
-  if(dvr==NULL) {
-    cae_server->sendCommand(id,QString::asprintf("OP %u %u %u %d -!",
-						 card,stream,port,level));
-    return;
-  }
-  if(!rda->config()->testOutputStreams()) {
-    for(unsigned i=0;i<RD_MAX_PORTS;i++) {
-      if(i==stream) {
-	dvr->setOutputVolume(card,stream,i,level);
-      }
-      else {
-	dvr->setOutputVolume(card,stream,i,RD_MUTE_DEPTH);
-      }
-    }
-    if(rda->config()->enableMixerLogging()) {
-      rda->syslog(LOG_INFO,
-	    "[mixer] SetOutputPort - Card: %d  Stream: %d  Port: %d  Level: %d",
-		  card,stream,port,level);
-    }
-  }
-  cae_server->sendCommand(id,QString::asprintf("OV %u %u %u %d +!",
-					       card,stream,port,level));
 }
 
 

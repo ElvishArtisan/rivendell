@@ -24475,3 +24475,4 @@
 	caed(8) instance.
 2023-11-13 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'RDCae::setOutputPort()' method.
+	* Removed the 'Set Output Port' ['OP'] CAE command from caed(8).

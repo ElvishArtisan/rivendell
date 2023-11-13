@@ -85,8 +85,6 @@ class MainObject : public QObject
 		 int threshold_level);
   void stopRecordingData(int id,unsigned card,unsigned stream);
   void setInputVolumeData(int id,unsigned card,unsigned stream,int level);
-  void setOutputPortData(int id,unsigned card,unsigned stream,unsigned port,
-			 int level);
   void setOutputVolumeData(int id,unsigned card,unsigned stream,int port,
 			  int level);
   void fadeOutputVolumeData(int id,unsigned card,unsigned stream,unsigned port,

@@ -79,8 +79,6 @@ class CaeServer : public QObject
 		 int threshold_level);
   void stopRecordingReq(int id,unsigned card,unsigned stream);
   void setInputVolumeReq(int id,unsigned card,unsigned stream,int level);
-  void setOutputPortReq(int id,unsigned card,unsigned stream,unsigned port,
-			int level);
   void setOutputVolumeReq(int id,unsigned card,unsigned stream,int port,
 			  int level);
   void fadeOutputVolumeReq(int id,unsigned card,unsigned stream,unsigned port,

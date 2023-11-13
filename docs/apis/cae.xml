@@ -113,7 +113,9 @@
   <sect2>
     <title><command>Load Playback</command></title>
     <para>
-      Prepare an audio interface to play an audio file.
+      Prepare an audio interface to play an audio file, while also muting
+      all stream-to-port mixer controls for the stream returned in
+      <replaceable>stream-num</replaceable>.
     </para>
     <para>
       <userinput>LP <replaceable>card-num</replaceable>
@@ -646,70 +648,6 @@
 	<listitem>
 	  <para>
 	    The stream  number to use. This is relative to the audio adapter
-	    selected.
-	  </para>
-	</listitem>
-      </varlistentry>
-      <varlistentry>
-	<term>
-	  <replaceable>level</replaceable>
-	</term>
-	<listitem>
-	  <para>
-	    The  level, in hundreths of a dB.
-	  </para>
-	</listitem>
-      </varlistentry>
-    </variablelist>
-  </sect2>
-
-  <sect2>
-    <title><command>Set Output Port</command></title>
-    <para>
-      Configure an output stream to use a particular output port.
-    </para>
-    <para>
-      This will cause the <replaceable>stream-num</replaceable> output volume
-      control feeding the <replaceable>port-num</replaceable> port to be set
-      to the level given by <replaceable>level</replaceable>, while all other
-      output_volume controls for that stream to be muted --e.g. set to
-      -100 dB.
-    </para>
-    <para>
-      <userinput>OP <replaceable>card-num</replaceable>
-      <replaceable>stream-num</replaceable>
-      <replaceable>port-num</replaceable>
-      <replaceable>level</replaceable>!</userinput>
-    </para>
-    <variablelist>
-      <varlistentry>
-	<term>
-	  <replaceable>card-num</replaceable>
-	</term>
-	<listitem>
-	  <para>
-	    The number of the audio adapter to use.
-	  </para>
-	</listitem>
-      </varlistentry>
-      <varlistentry>
-	<term>
-	  <replaceable>stream-num</replaceable>
-	</term>
-	<listitem>
-	  <para>
-	    The stream  number to use. This is relative to the audio adapter
-	    selected.
-	  </para>
-	</listitem>
-      </varlistentry>
-      <varlistentry>
-	<term>
-	  <replaceable>port-num</replaceable>
-	</term>
-	<listitem>
-	  <para>
-	    The port number to use. This is relative to the audio adapter
 	    selected.
 	  </para>
 	</listitem>
