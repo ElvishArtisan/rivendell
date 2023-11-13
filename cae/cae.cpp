@@ -41,6 +41,7 @@
 #include <rdconf.h>
 #include <rddb.h>
 #include <rdescape_string.h>
+#include <rd.h>
 #include <rdsocket.h>
 #include <rdsvc.h>
 #include <rdsystem.h>
@@ -364,6 +365,14 @@ void MainObject::loadPlaybackData(int id,unsigned card,const QString &name)
   play_handle[handle].stream=new_stream;
   play_handle[handle].owner=id;
   play_owner[card][new_stream]=id;
+
+  //
+  // Mute all volume controls for the stream
+  //
+  for(int i=0;i<dvr->outputPortQuantity(card);i++) {
+    dvr->setOutputVolume(card,new_stream,i,RD_MUTE_DEPTH);
+  }
+
   rda->syslog(LOG_INFO,
 		     "LoadPlayback  Card: %d  Stream: %d  Name: %s  Handle: %d",
 	 card,new_stream,(const char *)wavename.toUtf8(),handle);

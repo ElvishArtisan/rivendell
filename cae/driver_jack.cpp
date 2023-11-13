@@ -707,6 +707,18 @@ bool DriverJack::initialize(unsigned *next_cardnum)
 }
 
 
+int DriverJack::inputPortQuantity(int card) const
+{
+  return RD_MAX_PORTS;
+}
+
+
+int DriverJack::outputPortQuantity(int card) const
+{
+  return RD_MAX_PORTS;
+}
+
+
 bool DriverJack::loadPlayback(int card,QString wavename,int *stream)
 {
 #ifdef JACK

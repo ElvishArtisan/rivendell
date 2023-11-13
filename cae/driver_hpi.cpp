@@ -91,6 +91,18 @@ bool DriverHpi::initialize(unsigned *next_cardnum)
 }
 
 
+int DriverHpi::inputPortQuantity(int card) const
+{
+  return d_sound_card->getCardInputPorts(card);
+}
+
+
+int DriverHpi::outputPortQuantity(int card) const
+{
+  return d_sound_card->getCardOutputPorts(card);
+}
+
+
 bool DriverHpi::loadPlayback(int card,QString wavename,int *stream)
 {
 #ifdef HPI

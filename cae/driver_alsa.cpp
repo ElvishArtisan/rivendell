@@ -709,14 +709,16 @@ bool DriverAlsa::initialize(unsigned *next_cardnum)
 	setCardName(*next_cardnum,snd_ctl_card_info_get_longname(card_info));
       snd_ctl_close(snd_ctl);
     }
-    rda->station()->
-      setCardInputs(*next_cardnum,
-		    alsa_capture_format[*next_cardnum].
-		    channels/RD_DEFAULT_CHANNELS);
-    rda->station()->
-      setCardOutputs(*next_cardnum,
-		     alsa_play_format[*next_cardnum].
-		     channels/RD_DEFAULT_CHANNELS);
+    alsa_input_port_quantities[*next_cardnum]=
+      alsa_capture_format[*next_cardnum].channels/RD_DEFAULT_CHANNELS;
+    rda->station()->setCardInputs(*next_cardnum,
+			    alsa_input_port_quantities.value(*next_cardnum));
+		    
+    alsa_output_port_quantities[*next_cardnum]=
+      alsa_play_format[*next_cardnum].channels/RD_DEFAULT_CHANNELS;
+    rda->station()->setCardOutputs(*next_cardnum,
+			    alsa_output_port_quantities.value(*next_cardnum));
+		     
     card++;
     if(!pcm_opened) {
       return card>0;
@@ -728,6 +730,18 @@ bool DriverAlsa::initialize(unsigned *next_cardnum)
 #else
   return false;
 #endif  // ALSA
+}
+
+
+int DriverAlsa::inputPortQuantity(int card) const
+{
+  return alsa_input_port_quantities.value(card);
+}
+
+
+int DriverAlsa::outputPortQuantity(int card) const
+{
+  return alsa_output_port_quantities.value(card);
 }
 
 

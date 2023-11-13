@@ -24469,3 +24469,7 @@
 2023-11-08 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in ripcd(8) that caused memory to be leaked when
 	processing RMLs.
+2023-11-13 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in caed(8) that could cause play-outs from different
+	hosts to cross-talk into each other's outputs when using a shared
+	caed(8) instance.

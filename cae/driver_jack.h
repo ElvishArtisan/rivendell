@@ -43,6 +43,8 @@ class DriverJack : public Driver
   ~DriverJack();
   QString version() const;
   bool initialize(unsigned *next_cardnum);
+  int inputPortQuantity(int card) const;
+  int outputPortQuantity(int card) const;
   bool loadPlayback(int card,QString wavename,int *stream);
   bool unloadPlayback(int card,int stream);
   bool playbackPosition(int card,int stream,unsigned pos);

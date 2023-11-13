@@ -48,8 +48,8 @@ class Driver : public QObject
   bool hasCard(int cardnum) const;
   virtual QString version() const=0;
   virtual bool initialize(unsigned *next_cardnum)=0;;
-
- public:
+  virtual int inputPortQuantity(int card) const=0;
+  virtual int outputPortQuantity(int card) const=0;
   virtual bool loadPlayback(int card,QString wavename,int *stream)=0;
   virtual bool unloadPlayback(int card,int stream)=0;
   virtual bool playbackPosition(int card,int stream,unsigned pos)=0;

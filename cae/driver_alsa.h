@@ -21,6 +21,8 @@
 #ifndef DRIVER_ALSA_H
 #define DRIVER_ALSA_H
 
+#include <QMap>
+
 #include <rdconfig.h>
 #include <rdwavefile.h>
 
@@ -53,6 +55,8 @@ class DriverAlsa : public Driver
   ~DriverAlsa();
   QString version() const;
   bool initialize(unsigned *next_cardnum);
+  int inputPortQuantity(int card) const;
+  int outputPortQuantity(int card) const;
   bool loadPlayback(int card,QString wavename,int *stream);
   bool unloadPlayback(int card,int stream);
   bool playbackPosition(int card,int stream,unsigned pos);
@@ -103,6 +107,8 @@ class DriverAlsa : public Driver
   void WriteAlsaBuffer(int card,int stream,short *buffer,unsigned len);
   void FillAlsaOutputStream(int card,int stream);
   void AlsaClock();
+  QMap<int,int> alsa_input_port_quantities;
+  QMap<int,int> alsa_output_port_quantities;
   struct alsa_format alsa_play_format[RD_MAX_CARDS];
   struct alsa_format alsa_capture_format[RD_MAX_CARDS];
   short alsa_input_volume_db[RD_MAX_CARDS][RD_MAX_STREAMS];

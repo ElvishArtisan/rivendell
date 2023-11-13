@@ -2,7 +2,7 @@
 //
 // caed(8) driver for AudioScience HPI audio devices.
 //
-//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -39,6 +39,8 @@ class DriverHpi : public Driver
   ~DriverHpi();
   QString version() const;
   bool initialize(unsigned *next_cardnum);
+  int inputPortQuantity(int card) const;
+  int outputPortQuantity(int card) const;
   void updateMeters();
   bool loadPlayback(int card,QString wavename,int *stream);
   bool unloadPlayback(int card,int stream);
