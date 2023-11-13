@@ -1338,9 +1338,10 @@ void MainObject::StartPlayout(int event)
 		      catch_events[event].cutName(),
 		      &catch_playout_stream[deck-129],
 		      &catch_playout_handle[deck-129]);
-  rda->cae()->setOutputPort(catch_playout_card[deck-129],
-			    catch_playout_stream[deck-129],
-			    catch_playout_port[deck-129]);
+  rda->cae()->setOutputVolume(catch_playout_card[deck-129],
+			      catch_playout_stream[deck-129],
+			      catch_playout_port[deck-129],
+			      catch_events[event].playGain());
   rda->cae()->positionPlay(catch_playout_handle[deck-129],start);
   catch_playout_event_player[deck-129]->start(start);
   rda->cae()->
@@ -1585,56 +1586,58 @@ void MainObject::LoadEngine(bool adv_day)
 QString MainObject::LoadEventSql()
 {
   return QString("select ")+
-    "`ID`,"+                    // 00
-    "`IS_ACTIVE`,"+             // 01
-    "`TYPE`,"+                  // 02
-    "`CHANNEL`,"+               // 03
-    "`CUT_NAME`,"+              // 04
-    "`SUN`,"+                   // 05
-    "`MON`,"+                   // 06
-    "`TUE`,"+                   // 07
-    "`WED`,"+                   // 08
-    "`THU`,"+                   // 09
-    "`FRI`,"+                   // 10
-    "`SAT`,"+                   // 11
-    "`START_TIME`,"+            // 12
-    "`LENGTH`,"+                // 13
-    "`START_GPI`,"+             // 14
-    "`END_GPI`,"+               // 15
-    "`TRIM_THRESHOLD`,"+        // 16
-    "`STARTDATE_OFFSET`,"+      // 17
-    "`ENDDATE_OFFSET`,"+        // 18
-    "`FORMAT`,"                 // 19
-    "`CHANNELS`,"+              // 20
-    "`SAMPRATE`,"+              // 21
-    "`BITRATE`,"+               // 22
-    "`MACRO_CART`,"+            // 23
-    "`SWITCH_INPUT`,"+          // 24
-    "`SWITCH_OUTPUT`,"+         // 25
-    "`ONE_SHOT`,"+              // 26
-    "`START_TYPE`,"+            // 27
-    "`START_LENGTH`,"+          // 28
-    "`START_MATRIX`,"+          // 29
-    "`START_LINE`,"+            // 30
-    "`START_OFFSET`,"+          // 31
-    "`END_TYPE`,"+              // 32
-    "`END_TIME`,"+              // 33
-    "`END_LENGTH`,"+            // 34
-    "`END_MATRIX`,"+            // 35
-    "`END_LINE`,"+              // 36
-    "`URL`,"+                   // 37
-    "`URL_USERNAME`,"+          // 38
-    "`URL_PASSWORD`,"+          // 39
-    "`URL_USE_ID_FILE`,"+       // 40
-    "`QUALITY`,"+               // 40
-    "`NORMALIZE_LEVEL`,"+       // 41
-    "`ALLOW_MULT_RECS`,"+       // 42
-    "`MAX_GPI_REC_LENGTH`,"+    // 43
-    "`DESCRIPTION`,"+           // 44
-    "`FEED_ID`,"+               // 45
-    "`EVENTDATE_OFFSET`,"+      // 46
-    "`ENABLE_METADATA` "+       // 47
-    "from `RECORDINGS`";
+    "`RECORDINGS`.`ID`,"+                    // 00
+    "`RECORDINGS`.`IS_ACTIVE`,"+             // 01
+    "`RECORDINGS`.`TYPE`,"+                  // 02
+    "`RECORDINGS`.`CHANNEL`,"+               // 03
+    "`RECORDINGS`.`CUT_NAME`,"+              // 04
+    "`RECORDINGS`.`SUN`,"+                   // 05
+    "`RECORDINGS`.`MON`,"+                   // 06
+    "`RECORDINGS`.`TUE`,"+                   // 07
+    "`RECORDINGS`.`WED`,"+                   // 08
+    "`RECORDINGS`.`THU`,"+                   // 09
+    "`RECORDINGS`.`FRI`,"+                   // 10
+    "`RECORDINGS`.`SAT`,"+                   // 11
+    "`RECORDINGS`.`START_TIME`,"+            // 12
+    "`RECORDINGS`.`LENGTH`,"+                // 13
+    "`RECORDINGS`.`START_GPI`,"+             // 14
+    "`RECORDINGS`.`END_GPI`,"+               // 15
+    "`RECORDINGS`.`TRIM_THRESHOLD`,"+        // 16
+    "`RECORDINGS`.`STARTDATE_OFFSET`,"+      // 17
+    "`RECORDINGS`.`ENDDATE_OFFSET`,"+        // 18
+    "`RECORDINGS`.`FORMAT`,"                 // 19
+    "`RECORDINGS`.`CHANNELS`,"+              // 20
+    "`RECORDINGS`.`SAMPRATE`,"+              // 21
+    "`RECORDINGS`.`BITRATE`,"+               // 22
+    "`RECORDINGS`.`MACRO_CART`,"+            // 23
+    "`RECORDINGS`.`SWITCH_INPUT`,"+          // 24
+    "`RECORDINGS`.`SWITCH_OUTPUT`,"+         // 25
+    "`RECORDINGS`.`ONE_SHOT`,"+              // 26
+    "`RECORDINGS`.`START_TYPE`,"+            // 27
+    "`RECORDINGS`.`START_LENGTH`,"+          // 28
+    "`RECORDINGS`.`START_MATRIX`,"+          // 29
+    "`RECORDINGS`.`START_LINE`,"+            // 30
+    "`RECORDINGS`.`START_OFFSET`,"+          // 31
+    "`RECORDINGS`.`END_TYPE`,"+              // 32
+    "`RECORDINGS`.`END_TIME`,"+              // 33
+    "`RECORDINGS`.`END_LENGTH`,"+            // 34
+    "`RECORDINGS`.`END_MATRIX`,"+            // 35
+    "`RECORDINGS`.`END_LINE`,"+              // 36
+    "`RECORDINGS`.`URL`,"+                   // 37
+    "`RECORDINGS`.`URL_USERNAME`,"+          // 38
+    "`RECORDINGS`.`URL_PASSWORD`,"+          // 39
+    "`RECORDINGS`.`URL_USE_ID_FILE`,"+       // 40
+    "`RECORDINGS`.`QUALITY`,"+               // 41
+    "`RECORDINGS`.`NORMALIZE_LEVEL`,"+       // 42
+    "`RECORDINGS`.`ALLOW_MULT_RECS`,"+       // 43
+    "`RECORDINGS`.`MAX_GPI_REC_LENGTH`,"+    // 44
+    "`RECORDINGS`.`DESCRIPTION`,"+           // 45
+    "`RECORDINGS`.`FEED_ID`,"+               // 46
+    "`RECORDINGS`.`EVENTDATE_OFFSET`,"+      // 47
+    "`RECORDINGS`.`ENABLE_METADATA`,"+       // 48
+    "`CUTS`.`PLAY_GAIN` "+                   // 49
+    "from `RECORDINGS` left join `CUTS` "+
+    "on `RECORDINGS`.`CUT_NAME`=`CUTS`.`CUT_NAME` ";
 }
 
 
@@ -1690,6 +1693,7 @@ void MainObject::LoadEvent(RDSqlQuery *q,CatchEvent *e,bool add)
   e->setDescription(q->value(45).toString());
   e->setEventdateOffset(q->value(47).toInt());
   e->setEnableMetadata(RDBool(q->value(48).toString()));
+  e->setPlayGain(q->value(49).toInt());
 
   if(add) {
     if(e->startType()==RDRecording::GpiStart) {

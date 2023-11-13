@@ -43,6 +43,8 @@ class CatchEvent
   void setChannel(unsigned chan);
   QString cutName() const;
   void setCutName(const QString &str);
+  int playGain() const;
+  void setPlayGain(int lvl);
   QString tempName() const;
   void setTempName(const QString &str);
   bool deleteTempFile() const;
@@ -148,6 +150,7 @@ class CatchEvent
   RDRecording::Type catch_type;
   unsigned catch_channel;
   QString catch_cut_name;
+  int catch_play_gain;
   QString catch_temp_name;
   bool catch_delete_temp_file;
   bool catch_day_of_week[7];

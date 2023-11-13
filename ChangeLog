@@ -24473,3 +24473,5 @@
 	* Fixed a bug in caed(8) that could cause play-outs from different
 	hosts to cross-talk into each other's outputs when using a shared
 	caed(8) instance.
+2023-11-13 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'RDCae::setOutputPort()' method.

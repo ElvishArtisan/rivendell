@@ -2058,8 +2058,8 @@ bool RDLogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
     if(play_timescaling_available&&logline->enforceLength()) {
       logline->setTimescalingActive(true);
     }
-    play_cae->
-      setOutputPort(playdeck->card(),playdeck->stream(),playdeck->port());
+    play_cae->setOutputVolume(playdeck->card(),playdeck->stream(),
+			      playdeck->port(),playdeck->cut()->playGain());
     if((int)logline->playPosition()>logline->effectiveLength()) {
       rda->syslog(LOG_DEBUG,"log engine: *** position out of bounds: Line: %d  Cart: %d  Pos: %d ***",line,logline->cartNumber(),logline->playPosition());
       logline->setPlayPosition(0);

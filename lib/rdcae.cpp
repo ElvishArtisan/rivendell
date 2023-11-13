@@ -315,12 +315,6 @@ void RDCae::setOutputVolume(int card,int stream,int port,int level)
 }
 
 
-void RDCae::setOutputPort(int card,int stream,int port)
-{
-  SendCommand(QString::asprintf("OP %d %d %d 0!",card,stream,port));
-}
-
-
 void RDCae::fadeOutputVolume(int card,int stream,int port,int level,int length)
 {
   SendCommand(QString().sprintf("FV %d %d %d %d %d!",

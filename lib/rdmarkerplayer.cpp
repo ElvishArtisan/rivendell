@@ -236,7 +236,6 @@ bool RDMarkerPlayer::setCut(unsigned cartnum,int cutnum)
     return false;
   }
   rda->cae()->positionPlay(d_cae_handle,0);
-  rda->cae()->setOutputPort(d_cards.first(),d_cae_stream,d_port);
 
   QString sql=QString("select ")+
     "`START_POINT`,"+        // 00  
@@ -377,10 +376,10 @@ void RDMarkerPlayer::buttonPlayData()
   }
   d_loop_start_msec=d_cursor_position;
   d_loop_start_length=0;
+  rda->cae()->setOutputVolume(d_cards.first(),d_cae_stream,
+  			      d_port,0+100*d_play_gain_spin->value());
   rda->cae()->play(d_cae_handle,d_loop_start_length,100000,false);
   rda->cae()->setPlayPortActive(d_cards.first(),d_port,d_cae_stream);
-  rda->cae()->setOutputVolume(d_cards.first(),d_cae_stream,
-			      d_port,0+100*d_play_gain_spin->value());
   d_meter_timer->start(RD_METER_UPDATE_INTERVAL);
 }
 
@@ -397,10 +396,10 @@ void RDMarkerPlayer::buttonPlayFromData()
     d_loop_start_msec=d_pointers[d_selected_markers[0]];
     rda->cae()->positionPlay(d_cae_handle,d_loop_start_msec);
     d_loop_start_length=0;
+    rda->cae()->setOutputVolume(d_cards.first(),d_cae_stream,d_port,
+    				0+100*d_play_gain_spin->value());
     rda->cae()->play(d_cae_handle,d_loop_start_length,100000,false);
     rda->cae()->setPlayPortActive(d_cards.first(),d_port,d_cae_stream);
-    rda->cae()->setOutputVolume(d_cards.first(),d_cae_stream,d_port,
-				0+100*d_play_gain_spin->value());
     d_meter_timer->start(RD_METER_UPDATE_INTERVAL);
   }
 }
@@ -422,10 +421,10 @@ void RDMarkerPlayer::buttonPlayToData()
       d_loop_start_length=d_pointers[d_selected_markers[1]];
     }
     rda->cae()->positionPlay(d_cae_handle,d_loop_start_msec);
-    rda->cae()->play(d_cae_handle,d_loop_start_length,100000,false);
-    rda->cae()->setPlayPortActive(d_cards.first(),d_port,d_cae_stream);
     rda->cae()->setOutputVolume(d_cards.first(),d_cae_stream,d_port,
 				0+100*d_play_gain_spin->value());
+    rda->cae()->play(d_cae_handle,d_loop_start_length,100000,false);
+    rda->cae()->setPlayPortActive(d_cards.first(),d_port,d_cae_stream);
     d_meter_timer->start(RD_METER_UPDATE_INTERVAL);
   }
 }

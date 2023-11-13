@@ -713,8 +713,6 @@ void MainWidget::headButtonData()
     if(catch_audition_stream<0) {
       return;
     }
-    rda->cae()->setOutputPort(catch_audition_card,catch_audition_stream,
-			      catch_audition_port);
     rda->cae()->positionPlay(catch_play_handle,cut->startPoint());
     rda->cae()->setPlayPortActive(catch_audition_card,catch_audition_port,
 				  catch_audition_stream);
@@ -744,8 +742,6 @@ void MainWidget::tailButtonData()
     if(catch_audition_stream<0) {
       return;
     }
-    rda->cae()->setOutputPort(catch_audition_card,catch_audition_stream,
-			      catch_audition_port);
     if((cut->endPoint()-cut->startPoint()-RDCATCH_AUDITION_LENGTH)>0) {
       rda->cae()->positionPlay(catch_play_handle,
 			      cut->endPoint()-RDCATCH_AUDITION_LENGTH);
