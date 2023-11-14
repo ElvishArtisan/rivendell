@@ -1,6 +1,9 @@
 ; This is the configuration for the 'pypad_nautel.py' script for
 ; Rivendell, which can be used to output Now & Next data to one or more
 ; Nautel VS transmitters as RDP in ASCII TCP mode.
+;
+; When using this plug-in, set the 'Data Source' parameter in the
+; transmitters RDS configuration to 'ASCII over IP'.
 
 ; Section Header
 ;
