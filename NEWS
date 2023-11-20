@@ -1,10 +1,15 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v4.1.0int2 -- 26 October 2023
+v4.1.1 -- 20 November 2023
 
 Changes:
-   Bugfixes. See the 'ChangeLog' for details.
+   Fixed a bug in the CAE subsystem that could cause truncation of audio
+   play-outs.
+
+   Fixed a memory leak in ripcd(8) that could cause system instability.
+
+   Other bugfixes. See the 'ChangeLog' for details.
 
 Database Update:
    This version of Rivendell uses database schema version 371, and will
