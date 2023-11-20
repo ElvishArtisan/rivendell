@@ -23,7 +23,7 @@
 
 #include <qobject.h>
 
-#define SENDMAIL_TEST_USAGE "[options]\n\nTest the Rivendell email sending routines\n\nOptions are:\n--from-address=<addr>\n     Originating email address\n\n--to-addresses=<addrs>\n     To addresses (comma seperated)\n\n--cc-addresses=<addrs>\n     CC addresses (comma seperated)\n\n--bcc-addresses=<addrs>\n     BCC addresses (comma seperated)\n\n--subject=<str>\n     Message subject\n\n--body=<str>\n     Message body\n\n--body-file=<filename>\n     Use contents of <filename> for body\n\n--dry-run\n     Print the raw message to STDOUT, then exit\n\n"
+#define SENDMAIL_TEST_USAGE "[options]\n\nTest the Rivendell email sending routines\n\nOptions are:\n--from-addr=<addr>\n     Originating email address\n\n--to-addrs=<addrs>\n     To addresses (comma seperated)\n\n--cc-addrs=<addrs>\n     CC addresses (comma seperated)\n\n--bcc-addrs=<addrs>\n     BCC addresses (comma seperated)\n\n--subject=<str>\n     Message subject\n\n--body=<str>\n     Message body\n\n--body-file=<filename>\n     Use contents of <filename> for body\n\n--dry-run\n     Print the raw message to STDOUT, then exit\n\n"
 
 class MainObject : public QObject
 {

@@ -24479,3 +24479,6 @@
 2023-11-14 Fred Gleason <fredg@paravelsystems.com>
 	* Added a note about RDS configuration settings to the exemplar
 	file for the 'pypad_nautel.py' plug-in.
+2023-11-20 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a typo in the usage hint for the 'sendmail_test' test
+	harness.
