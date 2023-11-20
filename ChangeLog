@@ -20991,3 +20991,6 @@
 	RPM package.
 2023-03-17 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the copyright notices to use an interval of 2002-2023.
+2023-11-20 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in ripcd(8) that caused memory to be leaked when
+	processing RMLs.
