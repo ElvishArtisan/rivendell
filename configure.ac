@@ -452,8 +452,8 @@ fi
 # Setup Sound API Dependencies
 #
 AC_CHECK_HEADER(asihpi/hpi.h,[HPI_FOUND=yes],[])
-PKG_CHECK_MODULES(LIBJACK,jack,[JACK_FOUND=yes],[])
-PKG_CHECK_MODULES(ASOUNDLIB,alsa,[ALSA_FOUND=yes],[])
+PKG_CHECK_MODULES(LIBJACK,jack,[JACK_FOUND=yes],[JACK_NOT_FOUND=yes])
+PKG_CHECK_MODULES(ASOUNDLIB,alsa,[ALSA_FOUND=yes],[ALSA_NOT_FOUND=yes])
 if test $HPI_FOUND ; then
   if test -z $HPI_DISABLED ; then
     USING_HPI=yes

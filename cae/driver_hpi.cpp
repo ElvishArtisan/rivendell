@@ -93,13 +93,21 @@ bool DriverHpi::initialize(unsigned *next_cardnum)
 
 int DriverHpi::inputPortQuantity(int card) const
 {
+#ifdef HPI
   return d_sound_card->getCardInputPorts(card);
+#else
+  return 0;
+#endif  // HPI
 }
 
 
 int DriverHpi::outputPortQuantity(int card) const
 {
+#ifdef HPI
   return d_sound_card->getCardOutputPorts(card);
+#else
+  return 0;
+#endif  // HPI
 }
 
 

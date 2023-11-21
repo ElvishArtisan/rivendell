@@ -735,13 +735,21 @@ bool DriverAlsa::initialize(unsigned *next_cardnum)
 
 int DriverAlsa::inputPortQuantity(int card) const
 {
+#ifdef ALSA
   return alsa_input_port_quantities.value(card);
+#else
+  return 0;
+#endif  // ALSA
 }
 
 
 int DriverAlsa::outputPortQuantity(int card) const
 {
+#ifdef ALSA
   return alsa_output_port_quantities.value(card);
+#else
+  return 0;
+#endif  // ALSA
 }
 
 

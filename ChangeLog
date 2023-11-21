@@ -24484,3 +24484,12 @@
 	harness.
 2023-11-20 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.1.1.
+2023-11-21 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the build system that caused configuration
+	to halt if JACK support was not detected.
+	* Fixed a regression in build system that caused configuration
+	to halt if ALSA support was not detected.
+	* Fixed a regression in caed(8) that caused the build to fail
+	if HPI support was not enabled.
+	* Fixed a regression in caed(8) that caused the build to fail
+	if ALSA support was not enabled.
