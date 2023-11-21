@@ -24493,3 +24493,5 @@
 	if HPI support was not enabled.
 	* Fixed a regression in caed(8) that caused the build to fail
 	if ALSA support was not enabled.
+2023-11-21 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.1.2.
