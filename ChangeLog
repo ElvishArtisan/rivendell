@@ -24495,3 +24495,6 @@
 	if ALSA support was not enabled.
 2023-11-21 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.1.2.
+2023-11-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in ripcd(8) that could cause a segfault when processing
+	a null password in the 'Login' ['LO'] RML.

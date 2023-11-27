@@ -249,6 +249,7 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
   RDMatrix::GpioType gpio_type;
   QByteArray data;
   int err;
+  QString password="";
 
   rda->syslog(LOG_INFO,"received rml: \"%s\" from %s",
 	      (const char *)rml_in->toString().toUtf8(),
@@ -577,7 +578,11 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
 	delete rduser;
 	return;
       }
-      if(!rduser->checkPassword(rml.arg(1),false)) {
+      for(int i=1;i<rml.argQuantity();i++) {
+	password+=rml.arg(i)+" ";
+      }
+      password=password.left(password.length()-1);
+      if(!rduser->checkPassword(password,false)) {
 	if(rml.echoRequested()) {
 	  rml.acknowledge(false);
 	  sendRml(&rml);
