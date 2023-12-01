@@ -24498,3 +24498,7 @@
 2023-11-27 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in ripcd(8) that could cause a segfault when processing
 	a null password in the 'Login' ['LO'] RML.
+2023-12-01 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdairplay(1) when using the 'Append Log'
+	['AL'] RML caused the Full Log widget to only display the first
+	event of the appended log.

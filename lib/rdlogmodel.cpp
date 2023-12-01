@@ -1162,6 +1162,7 @@ int RDLogModel::LoadLines(const QString &logname,int id_offset,bool track_ptrs)
     delete q;
     return 0;
   }
+  beginInsertRows(QModelIndex(),lineCount(),q->size()+lineCount()-1);
   for(int i=0;i<q->size();i++) {
     lines++;
     line.clear();
@@ -1355,6 +1356,7 @@ int RDLogModel::LoadLines(const QString &logname,int id_offset,bool track_ptrs)
     line.clearModified();
     d_log_lines.push_back(new RDLogLine(line));
   }
+  endInsertRows();
   delete q;
 
   if(track_ptrs) {
