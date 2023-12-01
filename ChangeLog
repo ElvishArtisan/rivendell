@@ -24502,3 +24502,5 @@
 	* Fixed a regression in rdairplay(1) when using the 'Append Log'
 	['AL'] RML caused the Full Log widget to only display the first
 	event of the appended log.
+2023-12-01 Fred Gleason <fredg@paravelsystems.com>
+	* Optimized the handling of cart numbers when searching for carts.

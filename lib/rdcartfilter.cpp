@@ -25,6 +25,7 @@
 #include "rdcart_search_text.h"
 #include "rdcartfilter.h"
 #include "rdescape_string.h"
+#include "rd.h"
 
 RDCartFilter::RDCartFilter(bool show_drag_box,bool user_is_admin,
 			   QWidget *parent)
@@ -590,29 +591,52 @@ void RDCartFilter::resizeEvent(QResizeEvent *e)
 QString RDCartFilter::phraseFilter(const QString &phrase, bool incl_cuts)
 {
   QString sql="";
+  QList<unsigned> cart_numbers;
+  bool ok=false;
 
   if(phrase.isEmpty()) {
     sql=" ";
   }
   else {
-    QString search=RDEscapeString(phrase);
-    sql=sql+QString(" ((`CART`.`TITLE` like '%")+search+"%')||"+
-      "(`CART`.`ARTIST` like '%"+search+"%')||"+
-      "(`CART`.`CLIENT` like '%"+search+"%')||"+
-      "(`CART`.`AGENCY` like '%"+search+"%')||"+
-      "(`CART`.`ALBUM` like '%"+search+"%')||"+
-      "(`CART`.`LABEL` like '%"+search+"%')||"+
-      "(`CART`.`NUMBER` like '%"+search+"%')||"+
-      "(`CART`.`PUBLISHER` like '%"+search+"%')||"+
-      "(`CART`.`COMPOSER` like '%"+search+"%')||"+
-      "(`CART`.`CONDUCTOR` like '%"+search+"%')||"+
-      "(`CART`.`SONG_ID` like '%"+search+"%')||"+
-      "(`CART`.`USER_DEFINED` like '%"+search+"%')";
-    if(incl_cuts) {
-      sql+=QString("||(CUTS.ISCI like '%")+search+"%')"+
-	"||(CUTS.ISRC like '%"+search+"%')"+
-	"||(CUTS.DESCRIPTION like '%"+search+"%')"+
-	"||(CUTS.OUTCUE like '%"+search+"%')";
+    //
+    // Separate Out Cart Numbers
+    //
+    QStringList words=phrase.split(" ",QString::KeepEmptyParts);
+    for(int i=0;i<words.size();i++) {
+      unsigned cartnum=words.at(i).toUInt(&ok);
+      if(ok&&(cartnum>0)&&(cartnum<=RD_MAX_CART_NUMBER)) {
+	cart_numbers.push_back(cartnum);
+	words.removeAt(i);
+	i--;
+      }
+    }
+
+    sql+=" (";
+    if(words.size()>0) {
+      QString search=RDEscapeString(words.join(" "));
+      sql+=QString("(`CART`.`TITLE` like '%")+search+"%')||"+
+	"(`CART`.`ARTIST` like '%"+search+"%')||"+
+	"(`CART`.`CLIENT` like '%"+search+"%')||"+
+	"(`CART`.`AGENCY` like '%"+search+"%')||"+
+	"(`CART`.`ALBUM` like '%"+search+"%')||"+
+	"(`CART`.`LABEL` like '%"+search+"%')||"+
+	"(`CART`.`PUBLISHER` like '%"+search+"%')||"+
+	"(`CART`.`COMPOSER` like '%"+search+"%')||"+
+	"(`CART`.`CONDUCTOR` like '%"+search+"%')||"+
+	"(`CART`.`SONG_ID` like '%"+search+"%')||"+
+	"(`CART`.`USER_DEFINED` like '%"+search+"%')||";
+      if(incl_cuts) {
+	sql+=QString("(`CUTS`.`ISCI` like '%")+search+"%')||"+
+	  "(`CUTS`.`ISRC` like '%"+search+"%')||"+
+	  "(`CUTS`.`DESCRIPTION` like '%"+search+"%')||"+
+	  "(`CUTS`.`OUTCUE` like '%"+search+"%')||";
+      }
+    }
+    for(int i=0;i<cart_numbers.size();i++) {
+      sql+=QString::asprintf("(`CART`.`NUMBER`=%u)||",cart_numbers.at(i));
+    }
+    if(sql.right(2)=="||") {
+      sql=sql.left(sql.length()-2);
     }
     sql+=") && ";
   }
