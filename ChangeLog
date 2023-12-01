@@ -24504,3 +24504,5 @@
 	event of the appended log.
 2023-12-01 Fred Gleason <fredg@paravelsystems.com>
 	* Optimized the handling of cart numbers when searching for carts.
+2023-12-01 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for subclauses in the cart library search filter.

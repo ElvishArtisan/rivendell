@@ -588,13 +588,14 @@ void RDCartFilter::resizeEvent(QResizeEvent *e)
 }
 
 
-QString RDCartFilter::phraseFilter(const QString &phrase, bool incl_cuts)
+QString RDCartFilter::phraseFilter(QString phrase, bool incl_cuts)
 {
   QString sql="";
   QList<unsigned> cart_numbers;
+  QStringList clauses;
   bool ok=false;
 
-  if(phrase.isEmpty()) {
+  if(phrase.trimmed().isEmpty()) {
     sql=" ";
   }
   else {
@@ -610,35 +611,46 @@ QString RDCartFilter::phraseFilter(const QString &phrase, bool incl_cuts)
 	i--;
       }
     }
+    phrase=words.join(" ").trimmed();
 
-    sql+=" (";
-    if(words.size()>0) {
-      QString search=RDEscapeString(words.join(" "));
-      sql+=QString("(`CART`.`TITLE` like '%")+search+"%')||"+
-	"(`CART`.`ARTIST` like '%"+search+"%')||"+
-	"(`CART`.`CLIENT` like '%"+search+"%')||"+
-	"(`CART`.`AGENCY` like '%"+search+"%')||"+
-	"(`CART`.`ALBUM` like '%"+search+"%')||"+
-	"(`CART`.`LABEL` like '%"+search+"%')||"+
-	"(`CART`.`PUBLISHER` like '%"+search+"%')||"+
-	"(`CART`.`COMPOSER` like '%"+search+"%')||"+
-	"(`CART`.`CONDUCTOR` like '%"+search+"%')||"+
-	"(`CART`.`SONG_ID` like '%"+search+"%')||"+
-	"(`CART`.`USER_DEFINED` like '%"+search+"%')||";
-      if(incl_cuts) {
-	sql+=QString("(`CUTS`.`ISCI` like '%")+search+"%')||"+
-	  "(`CUTS`.`ISRC` like '%"+search+"%')||"+
-	  "(`CUTS`.`DESCRIPTION` like '%"+search+"%')||"+
-	  "(`CUTS`.`OUTCUE` like '%"+search+"%')||";
+    //
+    // Generate Clauses
+    //
+    QString accum;
+    for(int i=0;i<phrase.size();i++) {
+      if(phrase.at(i)==QChar('"')) {
+	if(!accum.trimmed().isEmpty()) {
+	  clauses.push_back(accum.trimmed());
+	}
+	accum="";
+      }
+      else {
+	accum+=phrase.at(i);
       }
     }
-    for(int i=0;i<cart_numbers.size();i++) {
-      sql+=QString::asprintf("(`CART`.`NUMBER`=%u)||",cart_numbers.at(i));
+    if(!accum.isEmpty()) {
+      clauses.push_back(accum.trimmed());
     }
-    if(sql.right(2)=="||") {
-      sql=sql.left(sql.length()-2);
+
+    //
+    // Compose SQL
+    //
+    if((clauses.size()==0)&&(cart_numbers.size()==0)) {
+      sql="";
     }
-    sql+=") && ";
+    else {
+      sql+=" (";
+      for(int i=0;i<clauses.size();i++) {
+	sql+=RDCartFilter::ClauseSql(clauses.at(i),incl_cuts);
+      }
+      for(int i=0;i<cart_numbers.size();i++) {
+	sql+=QString::asprintf("(`CART`.`NUMBER`=%u)||",cart_numbers.at(i));
+      }
+      if(sql.right(2)=="||") {
+	sql=sql.left(sql.length()-2);
+      }
+      sql+=") && ";
+    }
   }
 
   return sql;
@@ -772,4 +784,29 @@ void RDCartFilter::UpdateModel()
     }
     emit filterChanged(d_model_filter_sql,d_model_cart_limit);
   }
+}
+
+
+QString RDCartFilter::ClauseSql(const QString &clause,bool incl_cuts)
+{
+  QString search=RDEscapeString(clause);
+  QString sql=QString("(`CART`.`TITLE` like '%")+search+"%')||"+
+    "(`CART`.`ARTIST` like '%"+search+"%')||"+
+    "(`CART`.`CLIENT` like '%"+search+"%')||"+
+    "(`CART`.`AGENCY` like '%"+search+"%')||"+
+    "(`CART`.`ALBUM` like '%"+search+"%')||"+
+    "(`CART`.`LABEL` like '%"+search+"%')||"+
+    "(`CART`.`PUBLISHER` like '%"+search+"%')||"+
+    "(`CART`.`COMPOSER` like '%"+search+"%')||"+
+    "(`CART`.`CONDUCTOR` like '%"+search+"%')||"+
+    "(`CART`.`SONG_ID` like '%"+search+"%')||"+
+    "(`CART`.`USER_DEFINED` like '%"+search+"%')||";
+  if(incl_cuts) {
+    sql+=QString("(`CUTS`.`ISCI` like '%")+search+"%')||"+
+      "(`CUTS`.`ISRC` like '%"+search+"%')||"+
+      "(`CUTS`.`DESCRIPTION` like '%"+search+"%')||"+
+      "(`CUTS`.`OUTCUE` like '%"+search+"%')||";
+  }
+
+  return sql;
 }

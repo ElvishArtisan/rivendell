@@ -57,7 +57,7 @@ class RDCartFilter : public RDWidget
   QString service() const;
   void setService(const QString &svc);
   RDLibraryModel *model() const;
-  static QString phraseFilter(const QString &phrase,bool incl_cuts);
+  static QString phraseFilter(QString phrase,bool incl_cuts);
   static QString groupFilter(const QString &group,const QStringList &groups);
   static QString typeFilter(bool incl_audio,bool incl_macro,RDCart::Type mask);
 
@@ -94,6 +94,7 @@ class RDCartFilter : public RDWidget
   void LoadUserGroups();
   void LoadServiceGroups();
   void UpdateModel();
+  static QString ClauseSql(const QString &clause,bool incl_cuts);
   RDLibraryModel *d_cart_model;
   RDGroupListModel *d_group_model;
   QLineEdit *d_filter_edit;
