@@ -24506,3 +24506,8 @@
 	* Optimized the handling of cart numbers when searching for carts.
 2023-12-01 Fred Gleason <fredg@paravelsystems.com>
 	* Added support for subclauses in the cart library search filter.
+2023-12-03 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the required packages list for Debian Bookworm in
+	'INSTALL'.
+	* Changed the distro name from 'Raspbian' to 'Raspberry Pi OS' in
+	'configure.ac'.

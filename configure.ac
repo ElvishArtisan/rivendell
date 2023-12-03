@@ -154,9 +154,9 @@ case "$ar_distro_id" in
 
      raspbian)
        AC_MSG_NOTICE([Distro is Debian-ish])
-       DISTRO_FAMILY="|                      Distribution Family ... Debian    |"
+       DISTRO_FAMILY="|                       Distribution Family ... Debian    |"
        DISTRO_IS_DEBIANISH=yes
-       DISTRO_NAME="|                        Distribution Name ... Raspbian  |"
+       DISTRO_NAME="|                  Distribution Name ... Raspberry Pi OS  |"
        AC_SUBST(APACHE_PKG,"apache2")
        AC_SUBST(APACHE_CONFIG_DIR,"/etc/apache2/conf.d")
        AC_SUBST(USERMODE_PKG,"")
