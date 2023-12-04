@@ -148,7 +148,13 @@ OPSGUIDE_HTML = appendix.filepath_wildcards.html\
                 sect.wings_filter.usage.html\
                 sect.voicetracking.using_the_voicetracker_dialog.html
 
-OPSGUIDE_IMAGES = rdadmin.add_switcher_dialog.png\
+OPSGUIDE_IMAGES = appendix.library_searches.full_list.png\
+                  appendix.library_searches.searching_for_25.png\
+                  appendix.library_searches.searching_for_25_with_quotes.png\
+                  appendix.library_searches.searching_for_anita_baker.png\
+                  appendix.library_searches.searching_for_anita_baker_with_quotes.png\
+                  appendix.library_searches.searching_for_baker.png\
+                  rdadmin.add_switcher_dialog.png\
                   rdadmin.audio_resource_information_dialog.png\
                   rdadmin.autofill_carts_dialog.png\
                   rdadmin.configure_rdairplay_dialog.png\
@@ -328,6 +334,7 @@ OPSGUIDE_DEPS = $(OPSGUIDE_IMAGES) \
                 gpio_switcher_devices.xml\
                 gfdl.xml\
                 gplv2.xml\
+                library_searches.xml\
                 opsguide.xml\
                 overview.xml\
                 metadata_wildcards.xml\

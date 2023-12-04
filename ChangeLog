@@ -24511,3 +24511,5 @@
 	'INSTALL'.
 	* Changed the distro name from 'Raspbian' to 'Raspberry Pi OS' in
 	'configure.ac'.
+2023-12-04 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Library Text Searches' appendix to the Operations Guide.

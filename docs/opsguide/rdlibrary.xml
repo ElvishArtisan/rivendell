@@ -813,7 +813,7 @@
     <sect2 xml:id="sect.rdlibrary.selecting_carts_by_the_filter_field">
       <title>Selecting Carts by the Filter Field</title>
       <para>
-	Very often, one will want to find a cart or set of carts whose
+	Often, one will want to find a cart or set of carts whose
 	label(s) contains a particular word or phrase.  It's possible to
 	narrow the list of displayed carts to this set by simply entering
 	the desired word or phrase into the
@@ -822,6 +822,10 @@
 	the <computeroutput>Filter</computeroutput> field or by clicking
 	the Clear button.
       </para>
+      <note>
+	For a detailed description of search filter syntax, including
+	examples, see <xref linkend="appendix.library_searches" />.
+      </note>
     </sect2>
     <sect2 xml:id="sect.rdlibrary.selecting_carts_by_group">
       <title>Selecting Carts by Group</title>

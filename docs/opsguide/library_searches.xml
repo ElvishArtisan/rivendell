@@ -1,0 +1,145 @@
+<appendix xmlns="http://docbook.org/ns/docbook" xml:id="appendix.library_searches">
+  <title>Library Text Searches</title>
+  <para>
+    Except as noted below, text searches of the cart library are done by
+    looking for a match of the complete contents of the
+    <computeroutput>Filter</computeroutput> string with any of the following
+    metadata fields:
+  </para>
+  <simplelist>
+    <member><computeroutput>Artist</computeroutput></member>
+    <member><computeroutput>Agency</computeroutput></member>
+    <member><computeroutput>Album</computeroutput></member>
+    <member><computeroutput>Client</computeroutput></member>
+    <member><computeroutput>Composer</computeroutput></member>
+    <member><computeroutput>Conductor</computeroutput></member>
+    <member><computeroutput>Description</computeroutput></member>
+    <member><computeroutput>ISCI Code</computeroutput></member>
+    <member><computeroutput>ISRC (International Standard Recording Code)</computeroutput></member>
+    <member><computeroutput>Label</computeroutput></member>
+    <member><computeroutput>Outcue</computeroutput></member>
+    <member><computeroutput>Publisher</computeroutput></member>
+    <member><computeroutput>Song ID</computeroutput></member>
+    <member><computeroutput>Title</computeroutput></member>
+    <member><computeroutput>User Defined</computeroutput></member>
+  </simplelist>
+  <sect2 xml:id="appendix.library_searches.using_multiple_search_phrases">
+    <title>Using Multiple Search Phrases</title>
+    <para>
+      It's possible to change this behavior by enclosing portions of the
+      search string within double quotes. Rivendell will then treat each
+      quote-enclosed section as being its own search clause, with the results
+      of each clause logically OR'd together in the results.
+      A few examples will make this clear. Consider the following set of
+      carts, contained in a group called
+      <computeroutput>TEMP</computeroutput>.
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="appendix.library_searches.full_list.png" width="154mm"/>
+	</imageobject>
+	<caption>
+	  <para>The full set of example carts</para>
+	</caption>
+      </mediaobject>
+    </para>
+    <para>
+      We'd like to narrow the view down to show only carts where
+      'Baker' appears in the 
+      <computeroutput>Artist</computeroutput> field. Entering 'baker'
+      into the <computeroutput>Filter</computeroutput> gets us:
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="appendix.library_searches.searching_for_baker.png" width="154mm"/>
+	</imageobject>
+	<caption>
+	  <para>Searching for 'baker'</para>
+	</caption>
+      </mediaobject>
+    </para>
+    <para>
+      This does show us cart number 10588 ('Sweet Love', by
+      'Anita Baker'), but also 10008 ('Baker Street',
+      by 'Gerry Rafferty'), because of the inadvertent match in
+      the <computeroutput>Title</computeroutput> field. We can eliminate this
+      by specifying the <computeroutput>Filter</computeroutput>  more
+      precisely, changing 'baker' to 'anita baker'.
+    </para> 
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="appendix.library_searches.searching_for_anita_baker.png" width="154mm"/>
+	</imageobject>
+	<caption>
+	  <para>Searching for 'anita baker'</para>
+	</caption>
+      </mediaobject>
+    </para>
+    <para>
+      Now let's try placing each search word in double-quotes:
+      &quot;anita&quot; &quot;baker&quot;. What will happen?
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="appendix.library_searches.searching_for_anita_baker_with_quotes.png" width="154mm"/>
+	</imageobject>
+	<caption>
+	  <para>Searching for '&quot;anita&quot; &quot;baker&quot;'</para>
+	</caption>
+      </mediaobject>
+    </para>
+    <para>
+      The 'Baker Street' cart (number 10008) has returned, because
+      we split the search phrase into two sub-phrases by use of the quotes.
+      It's as it we ran two searches; one with 'anita' and another with
+      'baker' and then OR'd the two together into one result set.
+    </para>
+  </sect2>
+  <sect2 xml:id="appendix.library_searches.cart_numbers">
+    <title>Cart Numbers</title>
+    <para>
+      If one or more integer numbers in the range <userinput>1</userinput>
+      through <userinput>999999</userinput> (inclusive) is included in a 
+      search clause, instead of being search for the textual metadata fields,
+      it will be treated as a Rivendell cart number. To search
+      for a literal number in the Library textual metadata fields, enclose
+      the numeral in quotes --e.g. <userinput>&quot;123456&quot;</userinput>
+      rather than <userinput>123456</userinput>.
+    </para>
+    <para>
+      Returning to our examples, we simply enter '25' into the filter:
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="appendix.library_searches.searching_for_25.png" width="154mm"/>
+	</imageobject>
+	<caption>
+	  <para>Searching for '25'</para>
+	</caption>
+      </mediaobject>
+    </para>
+    <para>
+      We get cart 25 ('Siren Song'), even though there is no '25' in any of
+      the text metadata fields. Next we surround the '25' with double-quotes:
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="appendix.library_searches.searching_for_25_with_quotes.png" width="154mm"/>
+	</imageobject>
+	<caption>
+	  <para>Searching for '&quot;25&quot;'</para>
+	</caption>
+      </mediaobject>
+    </para>
+    <para>
+      We see that the double-quotes overrides the special cart-number
+      detection.
+    </para>
+  </sect2>
+</appendix>
