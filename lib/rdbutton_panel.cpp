@@ -283,8 +283,8 @@ void RDButtonPanel::resizeEvent(QResizeEvent *e)
 {
   for(int i=0;i<PANEL_MAX_BUTTON_ROWS;i++) {
     for(int j=0;j<PANEL_MAX_BUTTON_COLUMNS;j++) {
-      panel_button[i][j]->setGeometry((15+PANEL_BUTTON_SIZE_X)*j,
-				      (15+PANEL_BUTTON_SIZE_Y)*i,
+      panel_button[i][j]->setGeometry((14+PANEL_BUTTON_SIZE_X)*j,
+				      (14+PANEL_BUTTON_SIZE_Y)*i,
 				      PANEL_BUTTON_SIZE_X,
 				      PANEL_BUTTON_SIZE_Y);
     }

@@ -24513,3 +24513,6 @@
 	'configure.ac'.
 2023-12-04 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'Library Text Searches' appendix to the Operations Guide.
+2023-12-05 Fred Gleason <fredg@paravelsystems.com>
+	* Reduced the minimum size of rdairplay(1) to 1280x870 so as to fit
+	on a 1280x1024 display.
