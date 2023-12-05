@@ -217,6 +217,24 @@
 	  </listitem>
 	</varlistentry>
 	<varlistentry>
+	  <term><computeroutput>Source</computeroutput></term>
+	  <listitem>
+	    <para>
+	      The Rivendell user and host names from which the audio content
+	      originated.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><computeroutput>Ingest</computeroutput></term>
+	  <listitem>
+	    <para>
+	      The name of the host and the date/time at which the audio content
+	      was ingested.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
 	  <term><computeroutput>Origin</computeroutput></term>
 	  <listitem>
 	    <para>
@@ -398,6 +416,17 @@
 	  able to audition and play the audio without limitation in the
 	  other Rivendell modules.
 	</para>
+      <sect4 xml:id="sect.rdlibrary.cut_dayparting.evergreen_cuts">
+	<title>Evergreen Cuts</title>
+	<para>
+	  By ticking the <computeroutput>Cut is EVERGREEN</computeroutput>
+	  box, the cut is played into evergreen mode; wherein the normal
+	  dayparting rules are bypassed. Instead, such a cut will play if.
+	  and only if, <emphasis>no other</emphasis> cuts in the cart
+	  are eligible to play, thus providing insurance in the event that
+	  other cuts in the cart were not updated in a timely fashion.
+	</para>
+      </sect4>
       </sect3>
       <sect3 xml:id="sect.rdlibrary.cart_and_cut_color_coding">
 	<title>Cart and Cut Color Coding</title>

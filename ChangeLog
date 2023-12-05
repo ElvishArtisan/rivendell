@@ -24519,3 +24519,8 @@
 2023-12-05 Fred Gleason <fredg@paravelsystems.com>
 	* Rewrote and expanded the 'Events' section of the 'RDLogManager'
 	chapter of the Operations Guide.
+2023-12-05 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'Evergreen Cuts' section to the 'RDLibrary' chapter of
+	the Operations Guide.
+	* Documented the 'Source' and 'Ingest' fields for Cuts in the
+	'RDLibrary' chapter of the Operations Guide.
