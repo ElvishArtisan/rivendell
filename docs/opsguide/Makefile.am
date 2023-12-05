@@ -285,6 +285,10 @@ OPSGUIDE_IMAGES = appendix.library_searches.full_list.png\
                   rdlogmanager.edit_event_assignment_dialog.png\
                   rdlogmanager.edit_grid_dialog.png\
                   rdlogmanager.editing_event.png\
+                  rdlogmanager.events.importation_parameters.png\
+                  rdlogmanager.events.post_import_events.png\
+                  rdlogmanager.events.pre_import_events.png\
+                  rdlogmanager.events.scheduling_parameters.png\
                   rdlogmanager.generate_log_dialog.png\
                   rdlogmanager.generate_log_dialog_fully_merged.png\
                   rdlogmanager.generate_log_dialog_music_merge_required.png\
