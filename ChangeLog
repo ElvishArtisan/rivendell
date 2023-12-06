@@ -24376,7 +24376,8 @@
 2023-08-25 Fred Gleason <fredg@paravelsystems.com>
 	* Added profiling code (disabled by default) to the 'RDCae' class.
 2023-08-25 Fred Gleason <fredg@paravelsystems.com>
-	* Added a 'PadSegueOverlap=' directive to rd.conf(5).
+	* Added a 'PadSegueOverlap=' directive to the '[Hacks]' section if
+	rd.conf(5).
 2023-08-25 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the 'RDSvc::remove()' method that failed to remove
 	records from the 'USER_SERVICE_PERMS' table.
