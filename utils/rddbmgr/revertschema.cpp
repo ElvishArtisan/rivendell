@@ -459,10 +459,27 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // Revert 348
   //
   if((cur_schema==348)&&(set_schema<cur_schema)) {
-    // Nothing to do!
+    //
+    // Remove "out-of-bounds" data for SoundPanel buttons so they don't
+    // cause segfaults in "naive" v3.x code.
+    //
+    sql=QString("delete from `PANELS` where ")+
+      "`ROW_NO`>=5 || `COLUMN_NO`>=5";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("delete from `EXTENDED_PANELS` where ")+
+      "`ROW_NO`>=7 || `COLUMN_NO`>=9";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
 
     WriteSchemaVersion(--cur_schema);
   }
+
+  /************************************************************************
+   * Boundary between v3.x and v4.x
+   ************************************************************************/
 
   //
   // Revert 347

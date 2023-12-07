@@ -24525,3 +24525,6 @@
 	the Operations Guide.
 	* Documented the 'Source' and 'Ingest' fields for Cuts in the
 	'RDLibrary' chapter of the Operations Guide.
+2023-12-07 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the schema reversion 348=>347 in rddbmgr(8) to remove
+	out-of-bounds SoundPanel button entries.

@@ -10787,6 +10787,10 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  /************************************************************************
+   * Boundary between v3.x and v4.x
+   ************************************************************************/
+
   if((cur_schema<348)&&(set_schema>cur_schema)) {
     CheckSchedCodeRules(false);
     WriteSchemaVersion(++cur_schema);
