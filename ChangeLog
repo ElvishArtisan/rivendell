@@ -24528,3 +24528,15 @@
 2023-12-07 Fred Gleason <fredg@paravelsystems.com>
 	* Modified the schema reversion 348=>347 in rddbmgr(8) to remove
 	out-of-bounds SoundPanel button entries.
+2023-12-11 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the CAE control interface to assign session IDs
+	from the client rather than the service end.
+	* Added a 'serial' parameter to the 'Load Playback' ['LP'],
+	'Unload Playback' ['UP'], 'Play Position' ['PP'], 'Play' ['PY'],
+	'Stop Playback' ['SP'], 'Set Output Volume' ['OV'] and
+	'Fade Output Volume' ['FV'] CAE commands.
+	* Removed the 'card-num', 'port-num' and 'stream-num' parameters
+	from the 'Set Output Volume' ['OV'] and 'Fade Output Volume' ['FV']
+	CAE commands.
+2023-12-14 Fred Gleason <fredg@paravelsystems.com>
+	* Moved LINE_NUMBER macros to 'lib/rd.h'.

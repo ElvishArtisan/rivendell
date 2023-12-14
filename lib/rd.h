@@ -690,5 +690,12 @@
 #define RD_OFFSET_FORMAT "mm:ss"
 #define RD_OFFSET_TENTHS_FORMAT "mm:ss.z"
 
+/*
+ * Line number macros
+ */
+#define STRINGIZE(x) STRINGIZE2(x)
+#define STRINGIZE2(x) #x
+#define LINE_NUMBER QString(STRINGIZE(__LINE__)).toInt()
+
 
 #endif  // RD_H

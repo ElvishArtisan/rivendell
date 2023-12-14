@@ -26,9 +26,6 @@
 #include <rdaudioconvert.h>
 #include <rdformpost.h>
 
-#define STRINGIZE(x) STRINGIZE2(x)
-#define STRINGIZE2(x) #x
-#define LINE_NUMBER QString(STRINGIZE(__LINE__)).toInt()
 #define WEBGET_CGI_USAGE "\n"
 
 class MainObject : public QObject

@@ -30,9 +30,6 @@
 #include <rdsvc.h>
 
 #define RDXPORT_CGI_USAGE "\n"
-#define STRINGIZE(x) STRINGIZE2(x)
-#define STRINGIZE2(x) #x
-#define LINE_NUMBER QString(STRINGIZE(__LINE__)).toInt()
 
 class Xport : public QObject
 {
