@@ -31,7 +31,7 @@ RDPlayDeck::RDPlayDeck(RDCae *cae,int id,QObject *parent)
   play_start_time=QTime();
   play_owner=-1;
   play_last_start_position=0;
-  play_handle=-1;
+  play_serial=0;
   play_audio_length=0;
   play_channel=-1;
   play_hook_mode=false;
@@ -50,12 +50,13 @@ RDPlayDeck::RDPlayDeck(RDCae *cae,int id,QObject *parent)
   // CAE Connection
   //
   play_cae=cae;
-  connect(play_cae,SIGNAL(playing(int)),this,SLOT(playingData(int)));
-  connect(play_cae,SIGNAL(playStopped(int)),this,SLOT(playStoppedData(int)));
+  connect(play_cae,SIGNAL(playing(unsigned)),this,SLOT(playingData(unsigned)));
+  connect(play_cae,SIGNAL(playStopped(unsigned)),
+	  this,SLOT(playStoppedData(unsigned)));
   play_cart=NULL;
   play_cut=NULL;
   play_card=-1;
-  play_stream=-1;
+  play_serial=0;
 
   //
   // Timers
@@ -86,8 +87,8 @@ RDPlayDeck::RDPlayDeck(RDCae *cae,int id,QObject *parent)
 RDPlayDeck::~RDPlayDeck()
 {
   if(play_state!=RDPlayDeck::Stopped) {
-    play_cae->stopPlay(play_handle);
-    play_cae->unloadPlay(play_handle);
+    play_cae->stopPlay(play_serial);
+    play_cae->unloadPlay(play_serial);
   }
 }
 
@@ -237,10 +238,7 @@ bool RDPlayDeck::setCart(RDLogLine *logline,bool rotate)
   play_duck_gain[0]=logline->duckUpGain();
   play_duck_gain[1]=logline->duckDownGain();
   if(play_state!=RDPlayDeck::Paused) {
-    if(!play_cae->loadPlay(play_card,play_cut->cutName(),
-			   &play_stream,&play_handle)) {
-      return false;
-    }
+    play_serial=play_cae->loadPlay(play_card,play_port,play_cut->cutName());
   }
   play_state=RDPlayDeck::Stopped;
   return true;
@@ -255,7 +253,7 @@ RDCut *RDPlayDeck::cut() const
 
 bool RDPlayDeck::playable() const
 {
-  if(play_handle<0) {
+  if(play_serial==0) {
     return false;
   }
   return true;
@@ -274,9 +272,9 @@ void RDPlayDeck::setCard(int card_num)
 }
 
 
-int RDPlayDeck::stream() const
+unsigned RDPlayDeck::serial() const
 {
-  return play_stream;
+  return play_serial;
 }
 
 
@@ -349,7 +347,7 @@ void RDPlayDeck::clear()
 	break;
 
       case RDPlayDeck::Paused:
-	play_cae->unloadPlay(play_handle);
+	play_cae->unloadPlay(play_serial);
 	emit stateChanged(play_id,RDPlayDeck::Stopped);
 	break;
 
@@ -366,10 +364,10 @@ void RDPlayDeck::reset()
   switch(play_state) {
       case RDPlayDeck::Playing:
       case RDPlayDeck::Stopping:
-	play_cae->stopPlay(play_handle);
+	play_cae->stopPlay(play_serial);
 
       case RDPlayDeck::Paused:
-	play_cae->unloadPlay(play_handle);
+	play_cae->unloadPlay(play_serial);
 	break;
 
       default:
@@ -450,7 +448,7 @@ void RDPlayDeck::play(unsigned pos,int segue_start,int segue_end,
   else
     play_ducked=play_duck_gain[0];
 
-  if(play_handle<0) {
+  if(play_serial==0) {
     return;
   }
   if(segue_start>=0) {
@@ -464,26 +462,23 @@ void RDPlayDeck::play(unsigned pos,int segue_start,int segue_end,
   play_last_start_position=play_start_position;
   stop_called=false;
   pause_called=false;
-  play_cae->positionPlay(play_handle,play_audio_point[0]+pos);
-  play_cae->setPlayPortActive(play_card,play_port,play_stream);
-  play_cae->setOutputVolume(play_card,play_stream,-1,RD_MUTE_DEPTH);
+  play_cae->positionPlay(play_serial,play_audio_point[0]+pos);
   if((play_fade_point[0]==-1)||(play_fade_point[0]==play_audio_point[0])||
      ((fadeup=play_fade_point[0]-play_audio_point[0]-pos)<=0)||
      (play_state==RDPlayDeck::Paused)) {
     if((play_fade_point[1]==-1)||((fadeup=pos-play_fade_point[1])<=0)||
        (play_state==RDPlayDeck::Paused)) {
-      play_cae->setOutputVolume(play_card,play_stream,play_port,
-				play_ducked+play_cut_gain+play_duck_level);
-      play_cae->fadeOutputVolume(play_card,play_stream,play_port,
+      play_cae->
+	setOutputVolume(play_serial,play_ducked+play_cut_gain+play_duck_level);
+      play_cae->fadeOutputVolume(play_serial,
 				 play_ducked+play_cut_gain+play_duck_level,10);
     }
     else {  // Fadedown event in progress, interpolate the gain accordingly
       int level=play_fade_gain[1]*((int)pos-play_fade_point[1])/
 			(play_audio_point[1]-play_fade_point[1]);
       play_cae->
-	setOutputVolume(play_card,play_stream,play_port,
-			level+play_cut_gain+play_duck_level);
-      play_cae->fadeOutputVolume(play_card,play_stream,play_port,
+	setOutputVolume(play_serial,level+play_cut_gain+play_duck_level);
+      play_cae->fadeOutputVolume(play_serial,
 				 play_fade_gain[1]+play_cut_gain+
 				 play_duck_level,
 				 play_audio_point[1]-(int)pos);
@@ -494,23 +489,21 @@ void RDPlayDeck::play(unsigned pos,int segue_start,int segue_end,
 		      (play_fade_point[0]-play_audio_point[0]));
     if (level>play_ducked) {
     play_cae->
-      setOutputVolume(play_card,play_stream,play_port,
-		      play_ducked+play_cut_gain+play_duck_level);
-    play_cae->fadeOutputVolume(play_card,play_stream,play_port,
+      setOutputVolume(play_serial,play_ducked+play_cut_gain+play_duck_level);
+    play_cae->fadeOutputVolume(play_serial,
 			       play_ducked+play_cut_gain+play_duck_level,
 			       fadeup);
     }
     else {
     play_cae->
-      setOutputVolume(play_card,play_stream,play_port,
-		      level+play_cut_gain+play_duck_level);
-    play_cae->fadeOutputVolume(play_card,play_stream,play_port,
+      setOutputVolume(play_serial,level+play_cut_gain+play_duck_level);
+    play_cae->fadeOutputVolume(play_serial,
 			       play_ducked+play_cut_gain+play_duck_level,
 			       fadeup);
     }
   }
   play_cae->
-    play(play_handle,
+    play(play_serial,
 	 (int)(100000.0*(double)(play_audio_point[1]-play_audio_point[0]-pos)/
 	 (double)play_timescale_speed),
 	 play_timescale_speed,false);
@@ -531,7 +524,7 @@ void RDPlayDeck::pause()
 {
   pause_called=true;
   play_state=RDPlayDeck::Paused;
-  play_cae->stopPlay(play_handle);
+  play_cae->stopPlay(play_serial);
 }
 
 
@@ -546,7 +539,7 @@ void RDPlayDeck::stop()
   else {
     stop_called=true;
     play_state=RDPlayDeck::Stopping;
-    play_cae->stopPlay(play_handle);
+    play_cae->stopPlay(play_serial);
   }
 }
 
@@ -578,8 +571,9 @@ void RDPlayDeck::stop(int interval,int gain)
         level=0;
       }        
       if(level>play_duck_gain[1]){
-         play_cae->fadeOutputVolume(play_card,play_stream,play_port,
-			       play_duck_gain[1]+play_cut_gain+play_duck_level,play_duck_down);
+	play_cae->fadeOutputVolume(play_serial,
+				   play_duck_gain[1]+play_cut_gain+
+				   play_duck_level,play_duck_down);
         play_duck_timer->start(play_duck_down);
         play_duck_down_state=true;
         play_segue_interval=interval;
@@ -587,8 +581,9 @@ void RDPlayDeck::stop(int interval,int gain)
     }
     else {
       if(play_point_gain!=0) {
-        play_cae->fadeOutputVolume(play_card,play_stream,play_port,
-			       play_point_gain+play_cut_gain+play_duck_level,interval);
+        play_cae->fadeOutputVolume(play_serial,
+				   play_point_gain+play_cut_gain+
+				   play_duck_level,interval);
       }
     }
     play_stop_timer->start(interval);
@@ -603,8 +598,9 @@ void RDPlayDeck::stop(int interval,int gain)
 void RDPlayDeck::duckDown(int interval)
 {
   if(play_duck_gain[1]<0) {
-    play_cae->fadeOutputVolume(play_card,play_stream,play_port,
-      	       play_duck_gain[1]+play_cut_gain+play_duck_level,play_duck_down);
+    play_cae->fadeOutputVolume(play_serial,
+			       play_duck_gain[1]+play_cut_gain+play_duck_level,
+			       play_duck_down);
     play_duck_timer->start(play_duck_down);
     play_duck_down_state=true;
     play_segue_interval=interval;
@@ -617,15 +613,16 @@ void RDPlayDeck::duckVolume(int level,int fade)
 {
   play_duck_level=level;
   if((state()==RDPlayDeck::Playing || state()==RDPlayDeck::Stopping) && fade>0) {
-	  play_cae->fadeOutputVolume(play_card,play_stream,play_port,play_cut_gain+play_duck_level,
-					   fade);
+	  play_cae->fadeOutputVolume(play_serial,
+				     play_cut_gain+play_duck_level,
+				     fade);
   }
 }
 
 
-void RDPlayDeck::playingData(int handle)
+void RDPlayDeck::playingData(unsigned serial)
 {
-  if(handle!=play_handle) {
+  if(serial!=play_serial) {
     return;
   }
   play_position_timer->start(POSITION_INTERVAL);
@@ -633,9 +630,9 @@ void RDPlayDeck::playingData(int handle)
 }
 
 
-void RDPlayDeck::playStoppedData(int handle)
+void RDPlayDeck::playStoppedData(unsigned serial)
 { 
-  if(handle!=play_handle) {
+  if(serial!=play_serial) {
     return;
   }
   play_position_timer->stop();
@@ -646,9 +643,9 @@ void RDPlayDeck::playStoppedData(int handle)
     emit stateChanged(play_id,RDPlayDeck::Paused);
   }
   else {
-    play_cae->unloadPlay(play_handle);
+    play_cae->unloadPlay(play_serial);
 
-    play_handle=-1;
+    play_serial=0;
     play_state=RDPlayDeck::Stopped;
     play_current_position=0;
     play_duck_down_state=false;
@@ -728,7 +725,8 @@ void RDPlayDeck::fadeTimerData()
 {
   if(!play_duck_down_state) {
   play_cae->
-    fadeOutputVolume(play_card,play_stream,play_port,play_fade_gain[1]+play_cut_gain+play_duck_level,
+    fadeOutputVolume(play_serial,
+		     play_fade_gain[1]+play_cut_gain+play_duck_level,
 		     play_fade_down);
   }
   play_fade_down_state=true;
@@ -739,21 +737,23 @@ void RDPlayDeck::duckTimerData()
 {
   if (!play_duck_down_state) { //duck up
     play_cae->
-      fadeOutputVolume(play_card,play_stream,play_port,0+play_cut_gain+play_duck_level,play_duck_up);
+      fadeOutputVolume(play_serial,
+		       0+play_cut_gain+play_duck_level,play_duck_up);
     play_ducked=0;
   }
   else { //duck down
-	  if(play_point_gain!=0) {
-      play_cae->fadeOutputVolume(play_card,play_stream,play_port,
-	  		       play_point_gain+play_cut_gain+play_duck_level,
-                               play_segue_interval-play_duck_down);
+    if(play_point_gain!=0) {
+      play_cae->fadeOutputVolume(play_serial,
+				 play_point_gain+play_cut_gain+play_duck_level,
+				 play_segue_interval-play_duck_down);
     }
     else {
       if(play_fade_down_state && 
          play_fade_gain[1]<play_duck_gain[1]) { //fade down in progress
-        play_cae->fadeOutputVolume(play_card,play_stream,play_port,
-	  		       play_fade_gain[1]+play_cut_gain+play_duck_level,
-                               play_segue_interval-play_duck_down);
+        play_cae->fadeOutputVolume(play_serial,
+				   play_fade_gain[1]+play_cut_gain+
+				   play_duck_level,
+				   play_segue_interval-play_duck_down);
       }   
     } 
     play_duck_down_state=false;

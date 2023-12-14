@@ -2,7 +2,7 @@
 //
 // Connection to the Rivendell Core Audio Engine
 //
-//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,8 +21,6 @@
 #ifndef RDCAE_H
 #define RDCAE_H
 
-//#include <q3socketdevice.h>
-
 #include <QLabel>
 #include <QList>
 #include <QObject>
@@ -31,6 +29,25 @@
 #include <rdcmd_cache.h>
 #include <rdstation.h>
 #include <rdconfig.h>
+
+class __RDCae_PlayChannel
+{
+ public:
+  __RDCae_PlayChannel(unsigned card,unsigned port);
+  unsigned card() const;
+  unsigned port() const;
+  unsigned position() const;
+  void setPosition(unsigned pos);
+  bool operator==(const __RDCae_PlayChannel &other) const;
+
+ private:
+  unsigned d_card;
+  unsigned d_port;
+  unsigned d_position;
+};
+
+
+
 
 class RDCae : public QObject
 {
@@ -44,11 +61,11 @@ class RDCae : public QObject
   ~RDCae();
   bool connectHost(QString *err_msg);
   void enableMetering(QList<int> *cards);
-  bool loadPlay(int card,QString name,int *stream,int *handle);
-  void unloadPlay(int handle);
-  void positionPlay(int handle,int pos);
-  void play(int handle,unsigned length,int speed,bool pitch);
-  void stopPlay(int handle);
+  unsigned loadPlay(unsigned card,unsigned port,const QString &name);
+  void unloadPlay(unsigned serial);
+  void positionPlay(unsigned serial,int pos);
+  void play(unsigned serial,unsigned length,int speed,bool pitch);
+  void stopPlay(unsigned serial);
   void loadRecord(int card,int stream,QString name,AudioCoding coding,
 		  int chan,int samp_rate,int bit_rate);
   void unloadRecord(int card,int stream);
@@ -56,8 +73,8 @@ class RDCae : public QObject
   void stopRecord(int card,int stream);
   void setClockSource(int card,RDCae::ClockSource src);
   void setInputVolume(int card,int stream,int level);
-  void setOutputVolume(int card,int stream,int port,int level);
-  void fadeOutputVolume(int card,int stream,int port,int level,int length);
+  void setOutputVolume(unsigned serial,int level);
+  void fadeOutputVolume(unsigned serial,int level,int length);
   void setInputLevel(int card,int port,int level);
   void setOutputLevel(int card,int port,int level);
   void setInputMode(int card,int stream,RDCae::ChannelMode mode);
@@ -69,18 +86,17 @@ class RDCae : public QObject
   void inputMeterUpdate(int card,int port,short levels[2]);
   void outputMeterUpdate(int card,int port,short levels[2]);
   void outputStreamMeterUpdate(int card,int stream,short levels[2]);
-  unsigned playPosition(int handle);
+  unsigned playPosition(unsigned serial);
   void requestTimescale(int card);
-  bool playPortActive(int card,int port,int except_stream=-1);
-  void setPlayPortActive(int card,int port,int stream);
+  bool playPortStatus(int card,int port,unsigned except_serial=0) const;
 
  signals:
   void isConnected(bool state);
-  void playLoaded(int handle);
-  void playPositioned(int handle,unsigned pos);
-  void playing(int handle);
-  void playStopped(int handle);
-  void playUnloaded(int handle);
+  void playLoaded(unsigned serial);
+  void playPositioned(unsigned serial,unsigned pos);
+  void playing(unsigned serial);
+  void playStopped(unsigned serial);
+  void playUnloaded(unsigned serial);
   void recordLoaded(int card,int stream);
   void recording(int card,int stream);
   void recordStopped(int card,int stream);
@@ -88,32 +104,24 @@ class RDCae : public QObject
   void gpiInputChanged(int line,bool state);
   void connected(bool state);
   void inputStatusChanged(int card,int stream,bool state);
-  void playPositionChanged(int handle,unsigned sample);
+  void playPositionChanged(unsigned serial,unsigned sample);
   void timescalingSupported(int card,bool state);
+  void playPortStatusChanged(int card,int port,bool status);
 
  private slots:
   void readyData();
-  void readyData(int *stream,int *handle,QString name);
-  void clockData();
   
  private:
   void SendCommand(QString cmd);
-  void DispatchCommand(RDCmdCache *cmd);
-  int CardNumber(const char *arg);
-  int StreamNumber(const char *arg);
-  int GetHandle(const char *arg);
+  void DispatchCommand(const QString &cmd);
+  bool SerialCheck(unsigned serial,int linenum) const;
   void UpdateMeters();
-  //  Q3SocketDevice *cae_socket;
+  unsigned next_serial_number;
   int cae_socket;
   bool debug;
-  char args[CAE_MAX_ARGS][CAE_MAX_LENGTH];
-  int argnum;
-  int argptr;
+  QByteArray cae_accum;
   bool cae_connected;
   bool input_status[RD_MAX_CARDS][RD_MAX_PORTS];
-  int cae_handle[RD_MAX_CARDS][RD_MAX_STREAMS];
-  unsigned cae_pos[RD_MAX_CARDS][RD_MAX_STREAMS];
-  //  Q3SocketDevice *cae_meter_socket;
   int cae_meter_socket;
   uint16_t cae_meter_port;
   int cae_meter_base_port;
@@ -121,9 +129,7 @@ class RDCae : public QObject
   short cae_input_levels[RD_MAX_CARDS][RD_MAX_PORTS][2];
   short cae_output_levels[RD_MAX_CARDS][RD_MAX_PORTS][2];
   short cae_stream_output_levels[RD_MAX_CARDS][RD_MAX_PORTS][2];
-  unsigned cae_output_positions[RD_MAX_CARDS][RD_MAX_STREAMS];
-  bool cae_output_status_flags[RD_MAX_CARDS][RD_MAX_PORTS][RD_MAX_STREAMS];
-  std::vector<RDCmdCache> delayed_cmds;
+  QMap<unsigned,__RDCae_PlayChannel *> cae_play_channels;
   RDStation *cae_station;
   RDConfig *cae_config;
 };

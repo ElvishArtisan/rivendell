@@ -2,7 +2,7 @@
 //
 // Cueing Editor for RDLogLine-based Events
 //
-//   (C) Copyright 2013-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -622,8 +622,8 @@ void RDCueEdit::UpdateCounters()
 
 void RDCueEdit::ClearChannel()
 {
-  if(rda->cae()->playPortActive(edit_play_deck->card(),edit_play_deck->port(),
-				edit_play_deck->stream())) {
+  if(rda->cae()->playPortStatus(edit_play_deck->card(),edit_play_deck->port(),
+				edit_play_deck->serial())) {
     return;
   }
   if((!edit_stop_rml.isEmpty())&&(edit_event_player!=NULL)) {

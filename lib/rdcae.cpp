@@ -2,7 +2,7 @@
 //
 // Connection to the Rivendell Core Audio Engine
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -38,6 +38,46 @@
 #include <rddebug.h>
 #include <rdescape_string.h>
 
+__RDCae_PlayChannel::__RDCae_PlayChannel(unsigned card,unsigned port)
+{
+  d_card=card;
+  d_port=port;
+  d_position=0;
+}
+
+
+unsigned __RDCae_PlayChannel::card() const
+{
+  return d_card;
+}
+
+
+unsigned __RDCae_PlayChannel::port() const
+{
+  return d_port;
+}
+
+
+unsigned __RDCae_PlayChannel::position() const
+{
+  return d_position;
+}
+
+
+void __RDCae_PlayChannel::setPosition(unsigned pos)
+{
+  d_position=pos;
+}
+
+
+bool __RDCae_PlayChannel::operator==(const __RDCae_PlayChannel &other) const
+{
+  return (d_card==other.d_card)&&(d_port==other.d_port);
+}
+
+
+
+
 RDCae::RDCae(RDStation *station,RDConfig *config,QObject *parent)
   : QObject(parent)
 {
@@ -46,8 +86,7 @@ RDCae::RDCae(RDStation *station,RDConfig *config,QObject *parent)
   cae_station=station;
   cae_config=config;
   cae_connected=false;
-  argnum=0;
-  argptr=0;
+  next_serial_number=1;
 
   //
   // Control Connection
@@ -114,27 +153,18 @@ RDCae::RDCae(RDStation *station,RDConfig *config,QObject *parent)
 	cae_output_levels[i][j][k]=-10000;
 	cae_stream_output_levels[i][j][k]=-10000;
       }
-      for(int k=0;k<RD_MAX_STREAMS;k++) {
-	cae_output_status_flags[i][j][k]=false;
-      }
-    }
-    for(int j=0;j<RD_MAX_STREAMS;j++) {
-      cae_handle[i][j]=-1;
-      cae_output_positions[i][j]=0;
     }
   }
-
-  //
-  // The Clock Timer
-  //
-  QTimer *timer=new QTimer(this);
-  connect(timer,SIGNAL(timeout()),this,SLOT(clockData()));
-  timer->start(RD_METER_UPDATE_INTERVAL);
 }
 
 
 RDCae::~RDCae() {
-  //  delete cae_socket;
+  if(cae_socket>=0) {
+    close(cae_socket);
+  }
+  if(cae_meter_socket>=0) {
+    close(cae_meter_socket);
+  }
 }
 
 
@@ -197,72 +227,73 @@ void RDCae::enableMetering(QList<int> *cards)
 }
 
 
-bool RDCae::loadPlay(int card,QString name,int *stream,int *handle)
+unsigned RDCae::loadPlay(unsigned card,unsigned port,const QString &name)
 {
-  int count=0;
-
-  SendCommand(QString().sprintf("LP %d %s!",
-				card,name.toUtf8().constData()));
-
-  //
-  // This is really warty, but needed to make the method 'synchronous'
-  // with respect to CAE.
-  //
-  *stream=-2;
-  *handle=-1;
-  while(*stream==-2) {
-    readyData(stream,handle,name);
-    usleep(1000);
-    count++;
+  /*
+  cae_serials[card][port]=next_serial_number++;
+  SendCommand(QString().sprintf("LP %u %u %u %s!",
+				cae_serials[card][port],card,port,
+				name.toUtf8().constData()));
+  __RDCae_PlayChannel chan(card,port);
+  for(QMap<unsigned,__RDCae_PlayChannel>::const_iterator it=cae_play_channels.begin();it!=cae_play_channels.end();it++) {
+    if(it.value()==chan) {
+      emit playPortStatusChanged(card,port,true);
+      break;
+    }
   }
-  if(count>1000) {
-    rda->syslog(LOG_ERR,
-		"*** LoadPlay: CAE took %d mS to return stream for %s ***",
-		count,name.toUtf8().constData());
-  }
-  cae_handle[card][*stream]=*handle;
-  cae_pos[card][*stream]=0xFFFFFFFF;
+  cae_play_channelscae_serials
 
-  // CAE Daemon sends back a stream of -1 if there is an issue with allocating it
-  // such as file missing, etc.
-  if(*stream < 0) {
-      return false;
+  return cae_serials[card][port];
+  */
+  unsigned serial=next_serial_number++;
+  SendCommand(QString().sprintf("LP %u %u %u %s!",
+				serial,card,port,name.toUtf8().constData()));
+  bool found=false;
+  for(QMap<unsigned,__RDCae_PlayChannel *>::const_iterator it=cae_play_channels.begin();it!=cae_play_channels.end();it++) {
+    if((it.value()->card()==card)&&(it.value()->port()==port)) {
+      found=true;
+      break;
+    }
+  }
+  cae_play_channels[serial]=new __RDCae_PlayChannel(card,port);
+  if(!found) {
+    emit playPortStatusChanged(card,port,true);
   }
 
-  return true;
+  return serial;
 }
 
 
-void RDCae::unloadPlay(int handle)
+void RDCae::unloadPlay(unsigned serial)
 {
-  SendCommand(QString().sprintf("UP %d!",handle));
+  SendCommand(QString().sprintf("UP %u!",serial));
 }
 
 
-void RDCae::positionPlay(int handle,int pos)
+void RDCae::positionPlay(unsigned serial,int pos)
 {
   if(pos<0) {
     return;
   }
-  SendCommand(QString().sprintf("PP %d %u!",handle,pos));
+  SendCommand(QString().sprintf("PP %u %u!",serial,pos));
 }
 
 
-void RDCae::play(int handle,unsigned length,int speed,bool pitch)
+void RDCae::play(unsigned serial,unsigned length,int speed,bool pitch)
 {
   int pitch_state=0;
 
   if(pitch) {
     pitch_state=1;
   }
-  SendCommand(QString().sprintf("PY %d %u %d %d!",
-				handle,length,speed,pitch_state));
+  SendCommand(QString().sprintf("PY %u %u %d %d!",
+				serial,length,speed,pitch_state));
 }
 
 
-void RDCae::stopPlay(int handle)
+void RDCae::stopPlay(unsigned serial)
 {
-  SendCommand(QString().sprintf("SP %d!",handle));
+  SendCommand(QString().sprintf("SP %u!",serial));
 }
 
 
@@ -270,8 +301,6 @@ void RDCae::loadRecord(int card,int stream,QString name,
 		       AudioCoding coding,int chan,int samp_rate,
 		       int bit_rate)
 {
-  // printf("RDCae::loadRecord(%d,%d,%s,%d,%d,%d,%d)\n",
-  //    card,stream,(const char *)name,coding,chan,samp_rate,bit_rate);
   SendCommand(QString().sprintf("LR %d %d %d %d %d %d %s!",
 				card,stream,(int)coding,chan,samp_rate,
 				bit_rate,name.toUtf8().constData()));
@@ -309,16 +338,15 @@ void RDCae::setInputVolume(int card,int stream,int level)
 }
 
 
-void RDCae::setOutputVolume(int card,int stream,int port,int level)
+void RDCae::setOutputVolume(unsigned serial,int level)
 {
-  SendCommand(QString().sprintf("OV %d %d %d %d!",card,stream,port,level));
+  SendCommand(QString().sprintf("OV %u %d!",serial,level));
 }
 
 
-void RDCae::fadeOutputVolume(int card,int stream,int port,int level,int length)
+void RDCae::fadeOutputVolume(unsigned serial,int level,int length)
 {
-  SendCommand(QString().sprintf("FV %d %d %d %d %d!",
-				card,stream,port,level,length));
+  SendCommand(QString().sprintf("FV %u %d %d!",serial,level,length));
 }
 
 
@@ -395,15 +423,14 @@ void RDCae::outputStreamMeterUpdate(int card,int stream,short levels[2])
 }
 
 
-unsigned RDCae::playPosition(int handle)
+unsigned RDCae::playPosition(unsigned serial)
 {
-  for(int i=0;i<RD_MAX_CARDS;i++) {
-    for(int j=0;j<RD_MAX_STREAMS;j++) {
-      if(cae_handle[i][j]==handle) {
-	return cae_pos[i][j];
-      }
-    }
+  __RDCae_PlayChannel *chan=NULL;
+
+  if((chan=cae_play_channels.value(serial))!=NULL) {
+    return chan->position();
   }
+
   return 0;
 }
 
@@ -414,10 +441,13 @@ void RDCae::requestTimescale(int card)
 }
 
 
-bool RDCae::playPortActive(int card,int port,int except_stream)
+bool RDCae::playPortStatus(int card,int port,unsigned except_serial) const
 {
-  for(int i=0;i<RD_MAX_STREAMS;i++) {
-    if(cae_output_status_flags[card][port][i]&&(i!=except_stream)) {
+  for(QMap<unsigned,__RDCae_PlayChannel *>::const_iterator it=
+	cae_play_channels.begin();it!=cae_play_channels.end();it++) {
+    if((((int)it.value()->card())==card)&&
+       (((int)it.value()->port())==port)&&
+       (it.key()!=except_serial)) {
       return true;
     }
   }
@@ -425,106 +455,26 @@ bool RDCae::playPortActive(int card,int port,int except_stream)
 }
 
 
-void RDCae::setPlayPortActive(int card,int port,int stream)
-{
-  cae_output_status_flags[card][port][stream]=true;
-}
-
-
 void RDCae::readyData()
 {
-  readyData(0,0,"");
-}
+  char data[1501];
+  int n;
 
+  if((n=read(cae_socket,data,1500))>0) {
+    for(int i=0;i<n;i++) {
+      switch(0xFF&data[i]) {
+      case 10:  // Ignore CR/LF
+      case 13:
+	break;
 
-void RDCae::readyData(int *stream,int *handle,QString name)
-{
-  char buf[256];
-  int c;
-  RDCmdCache cmd;
+      case '!':
+	DispatchCommand(QString::fromUtf8(cae_accum));
+	cae_accum.clear();
+	break;
 
-  if(stream==NULL) {
-    for(unsigned i=0;i<delayed_cmds.size();i++) {
-      DispatchCommand(&delayed_cmds[i]);
-    }
-    delayed_cmds.clear();
-  }
-
-  //  while((c=cae_socket->readBlock(buf,256))>0) {
-  while((c=read(cae_socket,buf,256))>0) {
-    buf[c]=0;
-    for(int i=0;i<c;i++) {
-      if(buf[i]==' ') {
-	if(argnum<CAE_MAX_ARGS) {
-	  args[argnum][argptr]=0;
-	  argnum++;
-	  argptr=0;
-	}
-	else {
-	  if(debug) {
-	    printf("Argument list truncated!\n");
-	  }
-	}
-      }
-      if(buf[i]=='!') {
-	args[argnum++][argptr]=0;
-	if(stream==NULL) {
-	  cmd.load(args,argnum,argptr);
-	  
-	  // ************************************
-	  // printf("DISPATCHING: ");
-	  // for(int z=0;z<cmd.argNum();z++) {
-	  //   printf(" %s",cmd.arg(z));
-	  // }
-	  // printf("\n");
-	  // ************************************
-	  
-	  DispatchCommand(&cmd);
-	}
-	else {
-	  if(!strcmp(args[0],"LP")) {
-	    if(QString(args[2])==name) {
-	      sscanf(args[3],"%d",stream);
-	      sscanf(args[4],"%d",handle);
-	    }
-	  }
-	  else {
-	    cmd.load(args,argnum,argptr);
-	    delayed_cmds.push_back(cmd);
-	  }
-	}
-	argnum=0;
-	argptr=0;
-	if(cae_socket<0) {
-	  return;
-	}
-      }
-      if((isgraph(buf[i]))&&(buf[i]!='!')) {
-	if(argptr<CAE_MAX_LENGTH) {
-	  args[argnum][argptr]=buf[i];
-	  argptr++;
-	}
-	else {
-	  if(debug) {
-	    printf("WARNING: argument truncated!\n");
-	  }
-	}
-      }
-    }
-  }
-}
-
-
-void RDCae::clockData()
-{
-  for(int i=0;i<RD_MAX_CARDS;i++) {
-    for(int j=0;j<RD_MAX_STREAMS;j++) {
-      if(cae_handle[i][j]>=0) {
-	if(cae_output_positions[i][j]!=cae_pos[i][j]) {
-	  emit playPositionChanged(cae_handle[i][j],
-				   cae_output_positions[i][j]);
-	  cae_pos[i][j]=cae_output_positions[i][j];
-	}
+      default:
+	cae_accum+=0xFF&data[i];
+	break;
       }
     }
   }
@@ -537,157 +487,165 @@ void RDCae::SendCommand(QString cmd)
 }
 
 
-void RDCae::DispatchCommand(RDCmdCache *cmd)
+void RDCae::DispatchCommand(const QString &cmd)
 {
-  int pos;
-  int card;
+  __RDCae_PlayChannel *chan=NULL;
+  QStringList cmds=cmd.split(" ",QString::SkipEmptyParts);
+  bool was_processed=false;
+  bool ok=false;
 
-  if(!strcmp(cmd->arg(0),"PW")) {   // Password Response
-    if(cmd->arg(1)[0]=='+') {
-      emit isConnected(true);
-    }
-    else {
-      emit isConnected(false);
-    }
+  if((cmds.at(0)=="PW")&&(cmds.size()==2)) {   // Password Response
+    emit isConnected(cmds.at(1)=="+");
+    was_processed=true;
   }
 
-  if(!strcmp(cmd->arg(0),"LP")) {   // Load Play
-    int handle=GetHandle(cmd->arg(4));
-    int card=CardNumber(cmd->arg(1));
-    int stream=StreamNumber(cmd->arg(3));
-    rda->syslog(LOG_ERR,"*** RDCae::DispatchCommand: received unhandled play stream from CAE, handle=%d, card=%d, stream=%d, name=\"%s\" ***",
-		handle,card,stream,cmd->arg(2));
-    
-    unloadPlay(handle);
+  if((cmds.at(0),"LP")&&(cmds.size()==5)) {   // Load Play
+    // FIXME: What should go here?
+    was_processed=true;
   }
 
-  if(!strcmp(cmd->arg(0),"UP")) {   // Unload Play
-    if(cmd->arg(2)[0]=='+') {
-      int handle=GetHandle(cmd->arg(1));
-      for(int i=0;i<RD_MAX_CARDS;i++) {
-	for(int j=0;j<RD_MAX_STREAMS;j++) {
-	  if(cae_handle[i][j]==handle) {
-	    cae_handle[i][j]=-1;
-	    for(unsigned k=0;k<RD_MAX_PORTS;k++) {
-	      cae_output_status_flags[i][k][j]=false;
-	    }
+  if((cmds.at(0)=="UP")&&(cmds.size()==3)) {   // Unload Play
+    unsigned serial=cmds.at(1).toUInt(&ok);
+    if(ok) {
+      if(cmds.at(2)=='+') {
+	if((chan=cae_play_channels.value(serial))!=NULL) {
+	  delete chan;
+	  cae_play_channels.remove(serial);
+	  if(SerialCheck(serial,LINE_NUMBER)) {
+	    emit playUnloaded(serial);
 	  }
 	}
       }
-      emit playUnloaded(handle);
+      was_processed=true;
     }
   }
 
-  if(!strcmp(cmd->arg(0),"PP")) {   // Position Play
-    if(cmd->arg(3)[0]=='+') {
-      int handle=GetHandle(cmd->arg(1));
-      sscanf(cmd->arg(2),"%u",&pos);
-      for(int i=0;i<RD_MAX_CARDS;i++) {
-	for(int j=0;j<RD_MAX_STREAMS;j++) {
-	  if(cae_handle[i][j]==handle) {
-	    emit playPositionChanged(handle,pos);
+  if((cmds.at(0)=="PP")&&(cmds.size()==3)) {   // Position Play
+    printf("Position Play\n");
+    unsigned serial=cmds.at(1).toUInt(&ok);
+    if(ok) {
+      unsigned pos=cmds.at(2).toUInt(&ok);
+      if(ok) {
+	if((chan=cae_play_channels.value(serial))!=NULL) {
+	  if(SerialCheck(serial,LINE_NUMBER)) {
+	    printf("emitting playPositioned(%u,%u)\n",serial,pos);
+	    emit playPositioned(serial,pos);
 	  }
 	}
       }
-      emit playPositioned(handle,pos);
     }
+    was_processed=true;
   }
 
-  if(!strcmp(cmd->arg(0),"PY")) {   // Play
-    if(cmd->arg(4)[0]=='+') {
-      emit playing(GetHandle(cmd->arg(1)));
-    }
-  }
-
-  if(!strcmp(cmd->arg(0),"SP")) {   // Stop Play
-    if(cmd->arg(2)[0]=='+') {
-      emit playStopped(GetHandle(cmd->arg(1)));
-    }
-  }
-
-  if(!strcmp(cmd->arg(0),"TS")) {   // Timescale Supported
-    if(sscanf(cmd->arg(1),"%d",&card)==1) {
-      if(cmd->arg(2)[0]=='+') {
-	emit timescalingSupported(card,true);
-      }
-      else {
-	emit timescalingSupported(card,false);
+  if((cmds.at(0)=="PY")&&(cmds.size()==6)) {   // Play
+    if(cmds.at(5)=='+') {
+      unsigned serial=cmds.at(1).toUInt(&ok);
+      if(ok) {
+	if(SerialCheck(serial,LINE_NUMBER)) {
+	  emit playing(serial);
+	}
       }
     }
+    was_processed=true;
   }
 
-  if(!strcmp(cmd->arg(0),"LR")) {   // Load Record
-    if(cmd->arg(8)[0]=='+') {
-      emit recordLoaded(CardNumber(cmd->arg(1)),StreamNumber(cmd->arg(2)));
+  if((cmds.at(0)=="SP")&&(cmds.size()==3)) {   // Stop Play
+    if(cmds.at(2)=='+') {
+      unsigned serial=cmds.at(1).toUInt(&ok);
+      if(ok) {
+	if(SerialCheck(serial,LINE_NUMBER)) {
+	  emit playStopped(serial);
+	}
+      }
     }
+    was_processed=true;
   }
 
-  if(!strcmp(cmd->arg(0),"UR")) {   // Unload Record
-    if(cmd->arg(4)[0]=='+') {
-      emit recordUnloaded(CardNumber(cmd->arg(1)),StreamNumber(cmd->arg(2)),
-			  QString(cmd->arg(3)).toUInt());
+  if((cmds.at(0)=="TS")&&(cmds.size()==3)) {   // Timescaling Support
+    int card=cmds.at(1).toInt(&ok);
+    if(ok&&(card>=0)&&(card<RD_MAX_CARDS)) {
+      emit timescalingSupported(card,cmds.at(2)=="+");
     }
+    was_processed=true;
   }
 
-  if(!strcmp(cmd->arg(0),"RD")) {   // Record
-  }
-
-  if(!strcmp(cmd->arg(0),"RS")) {   // Record Start
-    if(cmd->arg(3)[0]=='+') {
-      emit recording(CardNumber(cmd->arg(1)),StreamNumber(cmd->arg(2)));
+  if((cmds.at(0)=="LR")&&(cmds.size()==9)) {   // Load Record
+    if(cmds.at(8)=='+') {
+      int card=cmds.at(1).toInt(&ok);
+      if(ok&&(card>=0)&&(card<RD_MAX_CARDS)) {
+	int port=cmds.at(2).toInt(&ok);
+	if(ok&&(port>=0)&&(port<RD_MAX_PORTS)) {
+	  emit recordLoaded(card,port);
+	}
+      }
     }
+    was_processed=true;
   }
 
-  if(!strcmp(cmd->arg(0),"SR")) {   // Stop Record
-    if(cmd->arg(3)[0]=='+') {
-      emit recordStopped(CardNumber(cmd->arg(1)),StreamNumber(cmd->arg(2)));
+  if((cmds.at(0)=="UR")&&(cmds.size()==5)) {   // Unload Record
+    if(cmds.at(3)=='+') {
+      int card=cmds.at(1).toInt(&ok);
+      if(ok&&(card>=0)&&(card<RD_MAX_CARDS)) {
+	int port=cmds.at(2).toInt(&ok);
+	if(ok&&(port>=0)&&(port<RD_MAX_PORTS)) {
+	  unsigned len=cmds.at(3).toUInt(&ok);
+	  if(ok) {
+	    emit recordUnloaded(card,port,len);
+	  }
+	}
+      }
     }
+    was_processed=true;
   }
 
-  if(!strcmp(cmd->arg(0),"IS")) {   // Input Status
-    switch(cmd->arg(3)[0]) {
-	case '0':
-	  emit inputStatusChanged(CardNumber(cmd->arg(1)),
-				  StreamNumber(cmd->arg(2)),true);
-	  input_status[CardNumber(cmd->arg(1))][StreamNumber(cmd->arg(2))]=
-	    true;
-	  break;
+  if((cmds.at(0)=="RD")&&(cmds.size()==6)) {   // Record
+    was_processed=true;
+  }
 
-	case '1':
-	  emit inputStatusChanged(CardNumber(cmd->arg(1)),
-				  StreamNumber(cmd->arg(2)),false);
-	  input_status[CardNumber(cmd->arg(1))][StreamNumber(cmd->arg(2))]=
-	    false;
-	  break;
+  if((cmds.at(0)=="RS")&&(cmds.size()==4)) {   // Record Start
+    if(cmds.at(3)=='+') {
+      int card=cmds.at(1).toInt(&ok);
+      if(ok&&(card>=0)&&(card<RD_MAX_CARDS)) {
+	int port=cmds.at(2).toInt(&ok);
+	if(ok&&(port>=0)&&(port<RD_MAX_PORTS)) {
+	  emit recording(card,port);
+	}
+      }
     }
+    was_processed=true;
   }
-}
 
+  if((cmds.at(0)=="SR")&&(cmds.size()==4)) {   // Stop Record
+    if(cmds.at(3)=='+') {
+      int card=cmds.at(1).toInt(&ok);
+      if(ok&&(card>=0)&&(card<RD_MAX_CARDS)) {
+	int port=cmds.at(2).toInt(&ok);
+	if(ok&&(port>=0)&&(port<RD_MAX_PORTS)) {
+	  emit recordStopped(card,port);
+	}
+      }
+    }
+    was_processed=true;
+  }
 
-int RDCae::CardNumber(const char *arg)
-{
-  int n=-1;
+  if((cmds.at(0)=="IS")&&(cmds.size()==5)) {   // Input Status
+    if(cmds.at(4)=='+') {
+      int card=cmds.at(1).toInt(&ok);
+      if(ok&&(card>=0)&&(card<RD_MAX_CARDS)) {
+	int port=cmds.at(2).toInt(&ok);
+	if(ok&&(port>=0)&&(port<RD_MAX_PORTS)) {
+	  emit inputStatusChanged(card,port,cmds.at(3)=="0");
+	  input_status[card][port]=cmds.at(3)=="0";
+	}
+      }
+    }
+    was_processed=true;
+  }
 
-  sscanf(arg,"%d",&n);
-  return n;
-}
-
-
-int RDCae::StreamNumber(const char *arg)
-{
-  int n=-1;
-
-  sscanf(arg,"%d",&n);
-  return n;
-}
-
-
-int RDCae::GetHandle(const char *arg)
-{
-  int n=-1;
-
-  sscanf(arg,"%d",&n);
-  return n;
+  if(!was_processed) {
+    rda->syslog(LOG_WARNING,"CAE response command \"%s\" was not processed",
+		cmd.toUtf8().constData());
+  }
 }
 
 
@@ -696,6 +654,8 @@ void RDCae::UpdateMeters()
   char msg[1501];
   int n;
   QStringList args;
+
+  bool ok=false;
 
   while((n=read(cae_meter_socket,msg,1500))>0) {
     msg[n]=0;
@@ -723,9 +683,23 @@ void RDCae::UpdateMeters()
       }
     }
     if(args[0]=="MP") {
-      if(args.size()==4) {
-	cae_output_positions[args[1].toInt()][args[2].toInt()]=args[3].toUInt();
+      if(args.size()==3) {
+	unsigned serial=args.at(1).toUInt(&ok);
+	if(ok) {
+	  emit playPositionChanged(serial,args.at(2).toUInt());
+	}
       }
     }
   }
+}
+
+
+bool RDCae::SerialCheck(unsigned serial,int linenum) const
+{
+  if(serial==0) {
+        rda->syslog(LOG_WARNING,
+		"attempting to use null serial value at rdcae.cpp:%d",linenum);
+    return false;
+  }
+  return true;
 }

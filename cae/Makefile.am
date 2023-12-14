@@ -2,7 +2,7 @@
 ##
 ## Core Audio Engine Makefile.am for Rivendell
 ##
-## Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+## Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -34,7 +34,8 @@ dist_caed_SOURCES = cae.cpp cae.h\
                     driver.cpp driver.h\
                     driver_alsa.cpp driver_alsa.h\
                     driver_hpi.cpp driver_hpi.h\
-                    driver_jack.cpp driver_jack.h
+                    driver_jack.cpp driver_jack.h\
+                    playsession.cpp play_session.h
 
 nodist_caed_SOURCES = moc_cae.cpp\
                       moc_cae_server.cpp\

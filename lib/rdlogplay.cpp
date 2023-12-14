@@ -2058,8 +2058,7 @@ bool RDLogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
     if(play_timescaling_available&&logline->enforceLength()) {
       logline->setTimescalingActive(true);
     }
-    play_cae->setOutputVolume(playdeck->card(),playdeck->stream(),
-			      playdeck->port(),playdeck->cut()->playGain());
+    play_cae->setOutputVolume(playdeck->serial(),playdeck->cut()->playGain());
     if((int)logline->playPosition()>logline->effectiveLength()) {
       rda->syslog(LOG_DEBUG,"log engine: *** position out of bounds: Line: %d  Cart: %d  Pos: %d ***",line,logline->cartNumber(),logline->playPosition());
       logline->setPlayPosition(0);
@@ -2081,12 +2080,12 @@ bool RDLogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
     }
     emit channelStarted(play_id,playdeck->channel(),
 			playdeck->card(),playdeck->port());
-    rda->syslog(LOG_INFO,"log engine: started audio cart: Line: %d  Cart: %u  Cut: %u Pos: %d  Card: %d  Stream: %d  Port: %d",
+    rda->syslog(LOG_INFO,"log engine: started audio cart: Line: %d  Cart: %u  Cut: %u Pos: %d  Serial: %u  Card: %d  Port: %d",
 		line,logline->cartNumber(),
 		playdeck->cut()->cutNumber(),
 		logline->playPosition(),
+		playdeck->serial(),
 		playdeck->card(),
-		playdeck->stream(),
 		playdeck->port());
 
     //
@@ -2292,11 +2291,12 @@ void RDLogPlay::CleanupEvent(int id)
 		logline->cartNumber());
   }
   else {
-    rda->syslog(LOG_INFO,"log engine: finished event: Line: %d  Cart: %u  Cut: %u Card: %d  Stream: %d  Port: %d",
+    rda->syslog(LOG_INFO,"log engine: finished event: Line: %d  Cart: %u  Cut: %u  Serial: %u  Card: %d  Port: %d",
 		line,logline->cartNumber(),
 		playdeck->cut()->cutNumber(),
+		playdeck->serial(),
 		playdeck->card(),
-		playdeck->stream(),playdeck->port());
+		playdeck->port());
   }
   RDLogLine *prev_logline;
   if((prev_logline=logLine(line-1))==NULL) {
@@ -2985,12 +2985,11 @@ void RDLogPlay::ClearChannel(int deckid)
   if(play_deck[deckid]->channel()<0) {
     return;
   }
-  if(play_cae->playPortActive(play_deck[deckid]->card(),
+  if(play_cae->playPortStatus(play_deck[deckid]->card(),
 			      play_deck[deckid]->port(),
-			      play_deck[deckid]->stream())) {
+			      play_deck[deckid]->serial())) {
     return;
   }
-
   if(play_deck[deckid]->channel()>=0) {
     play_event_player->exec(play_stop_rml[play_deck[deckid]->channel()]);
     /*

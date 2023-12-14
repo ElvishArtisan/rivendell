@@ -56,14 +56,15 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
   rec_port_no[0]=rda->libraryConf()->inputPort();
   rec_card_no[1]=rda->libraryConf()->outputCard();
   rec_port_no[1]=rda->libraryConf()->outputPort();
-  rec_play_handle=-1;
+  rec_play_serial=0;
 
   //
   // CAE Connection
   //
   connect(rda->cae(),SIGNAL(isConnected(bool)),this,SLOT(initData(bool)));
-  connect(rda->cae(),SIGNAL(playing(int)),this,SLOT(playedData(int)));
-  connect(rda->cae(),SIGNAL(playStopped(int)),this,SLOT(playStoppedData(int)));
+  connect(rda->cae(),SIGNAL(playing(unsigned)),this,SLOT(playedData(unsigned)));
+  connect(rda->cae(),SIGNAL(playStopped(unsigned)),
+	  this,SLOT(playStoppedData(unsigned)));
   connect(rda->cae(),SIGNAL(recordLoaded(int,int)),
 	  this,SLOT(recordLoadedData(int,int)));
   connect(rda->cae(),SIGNAL(recordUnloaded(int,int,unsigned)),
@@ -582,8 +583,6 @@ void RecordCut::channelsData(int id)
 
 void RecordCut::recordData()
 {
-  //  QString filename;
-
   if((!is_ready)&&(!is_recording)&&(!is_playing)) {
     if(rec_cut->length()>0) {
       if(QMessageBox::warning(this,tr("Audio Exists"),
@@ -653,14 +652,11 @@ void RecordCut::playData()
   int end=rec_cut->endPoint(true);
 
   if((!is_recording)&&(!is_playing)&&(!is_ready)) {  // Start Play
-    rda->cae()->loadPlay(rec_card_no[1],rec_cut->cutName(),
-		    &rec_stream_no[1],&rec_play_handle);
-    rda->cae()->positionPlay(rec_play_handle,start);
-    rda->cae()->
-      setPlayPortActive(rec_card_no[1],rec_port_no[1],rec_stream_no[1]);
-    rda->cae()->setOutputVolume(rec_card_no[1],rec_stream_no[1],rec_port_no[1],
-           0+rec_cut->playGain());
-    rda->cae()->play(rec_play_handle,end-start,RD_TIMESCALE_DIVISOR,false);
+    rec_play_serial=rda->cae()->
+      loadPlay(rec_card_no[1],rec_port_no[1],rec_cut->cutName());
+    rda->cae()->positionPlay(rec_play_serial,start);
+    rda->cae()->setOutputVolume(rec_play_serial,0+rec_cut->playGain());
+    rda->cae()->play(rec_play_serial,end-start,RD_TIMESCALE_DIVISOR,false);
   }
   if(is_ready&&(!is_recording)) {
     if(rec_mode_box->currentIndex()==1) {
@@ -679,7 +675,7 @@ void RecordCut::playData()
 void RecordCut::stopData()
 {
   if(is_playing) {
-    rda->cae()->stopPlay(rec_play_handle);
+    rda->cae()->stopPlay(rec_play_serial);
     return;
   }
   if(is_recording) {
@@ -717,7 +713,7 @@ void RecordCut::recordedData(int card,int stream)
 }
 
 
-void RecordCut::playedData(int handle)
+void RecordCut::playedData(unsigned serial)
 {
   rec_play_button->on();
   rec_stop_button->off();
@@ -729,9 +725,9 @@ void RecordCut::playedData(int handle)
 }
 
 
-void RecordCut::playStoppedData(int handle)
+void RecordCut::playStoppedData(unsigned serial)
 {
-  rda->cae()->unloadPlay(rec_play_handle);
+  rda->cae()->unloadPlay(rec_play_serial);
   rec_timer->stop();
   rec_play_button->off();
   rec_stop_button->on();

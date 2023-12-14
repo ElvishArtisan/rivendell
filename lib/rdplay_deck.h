@@ -53,7 +53,7 @@ class RDPlayDeck : public QObject
   bool playable() const;
   int card() const;
   void setCard(int card_num);
-  int stream() const;
+  unsigned serial() const;
   int port() const;
   void setPort(int port_num);
   int channel() const;
@@ -86,8 +86,8 @@ class RDPlayDeck : public QObject
   void talkEnd(int id);
 
  private slots:
-  void playingData(int handle);
-  void playStoppedData(int handle); 
+  void playingData(unsigned serial);
+  void playStoppedData(unsigned serial); 
   void pointTimerData(int);
   void positionTimerData();
   void fadeTimerData();
@@ -124,10 +124,9 @@ class RDPlayDeck : public QObject
   int play_ducked;
   int play_duck_up_point;
   int play_card;
-  int play_stream;
+  unsigned play_serial;
   int play_port;
   int play_channel;
-  int play_handle;
   unsigned play_forced_length;
   bool play_hook_mode;
   QTime play_start_time;

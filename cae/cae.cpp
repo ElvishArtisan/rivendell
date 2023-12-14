@@ -114,19 +114,11 @@ MainObject::MainObject(QObject *parent)
       }
     }
   }
-  for(int i=0;i<256;i++) {
-    play_handle[i].card=-1;
-    play_handle[i].stream=-1;
-    play_handle[i].owner=-1;
-  }
-  next_play_handle=0;
-
   for(int i=0;i<RD_MAX_CARDS;i++) {
     for(int j=0;j<RD_MAX_STREAMS;j++) {
       record_length[i][j]=0;
       record_threshold[i][j]=-10000;
       record_owner[i][j]=-1;
-      play_owner[i][j]=-1;
       play_length[i][j]=0;
       play_speed[i][j]=100;
       play_pitch[i][j]=false;
@@ -152,16 +144,18 @@ MainObject::MainObject(QObject *parent)
   }
   connect(cae_server,SIGNAL(connectionDropped(int)),
 	  this,SLOT(connectionDroppedData(int)));
-  connect(cae_server,SIGNAL(loadPlaybackReq(int,unsigned,const QString &)),
-	  this,SLOT(loadPlaybackData(int,unsigned,const QString &)));
-  connect(cae_server,SIGNAL(unloadPlaybackReq(int,unsigned)),
-	  this,SLOT(unloadPlaybackData(int,unsigned)));
-  connect(cae_server,SIGNAL(playPositionReq(int,unsigned,unsigned)),
-	  this,SLOT(playPositionData(int,unsigned,unsigned)));
-  connect(cae_server,SIGNAL(playReq(int,unsigned,unsigned,unsigned,unsigned)),
-	  this,SLOT(playData(int,unsigned,unsigned,unsigned,unsigned)));
-  connect(cae_server,SIGNAL(stopPlaybackReq(int,unsigned)),
-	  this,SLOT(stopPlaybackData(int,unsigned)));
+  connect(cae_server,
+	  SIGNAL(loadPlaybackReq(uint64_t,unsigned,unsigned,const QString &)),
+	  this,
+	  SLOT(loadPlaybackData(uint64_t,unsigned,unsigned,const QString &)));
+  connect(cae_server,SIGNAL(unloadPlaybackReq(uint64_t)),
+	  this,SLOT(unloadPlaybackData(uint64_t)));
+  connect(cae_server,SIGNAL(playPositionReq(uint64_t,unsigned)),
+	  this,SLOT(playPositionData(uint64_t,unsigned)));
+  connect(cae_server,SIGNAL(playReq(uint64_t,unsigned,unsigned,unsigned)),
+	  this,SLOT(playData(uint64_t,unsigned,unsigned,unsigned)));
+  connect(cae_server,SIGNAL(stopPlaybackReq(uint64_t)),
+	  this,SLOT(stopPlaybackData(uint64_t)));
   connect(cae_server,SIGNAL(timescalingSupportReq(int,unsigned)),
 	  this,SLOT(timescalingSupportData(int,unsigned)));
   connect(cae_server,
@@ -178,14 +172,10 @@ MainObject::MainObject(QObject *parent)
 	  this,SLOT(stopRecordingData(int,unsigned,unsigned)));
   connect(cae_server,SIGNAL(setInputVolumeReq(int,unsigned,unsigned,int)),
 	  this,SLOT(setInputVolumeData(int,unsigned,unsigned,int)));
-  connect(cae_server,
-	  SIGNAL(setOutputVolumeReq(int,unsigned,unsigned,int,int)),
-	  this,
-	  SLOT(setOutputVolumeData(int,unsigned,unsigned,int,int)));
-  connect(cae_server,SIGNAL(fadeOutputVolumeReq(int,unsigned,unsigned,
-						unsigned,int,unsigned)),
-	  this,SLOT(fadeOutputVolumeData(int,unsigned,unsigned,
-					 unsigned,int,unsigned)));
+  connect(cae_server,SIGNAL(setOutputVolumeReq(uint64_t,int)),
+	  this,SLOT(setOutputVolumeData(uint64_t,int)));
+  connect(cae_server,SIGNAL(fadeOutputVolumeReq(uint64_t,int,unsigned)),
+	  this,SLOT(fadeOutputVolumeData(uint64_t,int,unsigned)));
   connect(cae_server,SIGNAL(setInputLevelReq(int,unsigned,unsigned,int)),
 	  this,SLOT(setInputLevelData(int,unsigned,unsigned,int)));
   connect(cae_server,SIGNAL(setOutputLevelReq(int,unsigned,unsigned,int)),
@@ -326,194 +316,210 @@ MainObject::MainObject(QObject *parent)
 }
 
 
-void MainObject::loadPlaybackData(int id,unsigned card,const QString &name)
+void MainObject::loadPlaybackData(uint64_t phandle,unsigned cardnum,
+				  unsigned portnum,const QString &name)
 {
   QString wavename;
   int new_stream=-1;
-  int handle;
-  Driver *dvr=GetDriver(card);
+  unsigned serial=PlaySession::serialNumber(phandle);
+  Driver *dvr=GetDriver(cardnum);
 
   if(dvr==NULL) {
     cae_server->
-      sendCommand(id,QString::asprintf("LP %d %s -1 -1 -!",card,
-				       name.toUtf8().constData()));
+      sendCommand(phandle,QString::asprintf("LP %u %u %u %s -!",
+					    serial,cardnum,portnum,
+					    name.toUtf8().constData()));
     return;
   }
   wavename=rda->config()->audioFileName(name);
-  if(!dvr->loadPlayback(card,wavename,&new_stream)) {
+  if(dvr->loadPlayback(cardnum,wavename,&new_stream)) {
+    play_sessions[phandle]=new PlaySession(phandle,cardnum,portnum,new_stream);
+  }
+  else {
     cae_server->
-      sendCommand(id,QString::asprintf("LP %d %s -1 -1 -!",card,
-				       name.toUtf8().constData()));
+      sendCommand(phandle,QString::asprintf("LP %u %u %u %s -!",
+					    serial,cardnum,portnum,
+					    name.toUtf8().constData()));
     rda->syslog(LOG_WARNING,
-			  "unable to allocate stream for card %d",card);
+			  "unable to allocate stream for card %d",cardnum);
     return;
   }
-  if((handle=GetHandle(card,new_stream))>=0) {
-    rda->syslog(LOG_WARNING,
-	   "*** clearing stale stream assignment, card=%d  stream=%d ***",
-	   card,new_stream);
-    play_handle[handle].card=-1;
-    play_handle[handle].stream=-1;
-    play_handle[handle].owner=-1;
-  }
-  handle=GetNextHandle();
-  play_handle[handle].card=card;
-  play_handle[handle].stream=new_stream;
-  play_handle[handle].owner=id;
-  play_owner[card][new_stream]=id;
 
   //
   // Mute all volume controls for the stream
   //
-  for(int i=0;i<dvr->outputPortQuantity(card);i++) {
-    dvr->setOutputVolume(card,new_stream,i,RD_MUTE_DEPTH);
+  for(int i=0;i<dvr->outputPortQuantity(cardnum);i++) {
+    dvr->setOutputVolume(cardnum,new_stream,i,RD_MUTE_DEPTH);
   }
 
-  rda->syslog(LOG_INFO,
-		     "LoadPlayback  Card: %d  Stream: %d  Name: %s  Handle: %d",
-	 card,new_stream,(const char *)wavename.toUtf8(),handle);
+  rda->
+    syslog(LOG_INFO,"LoadPlayback  Card: %d  Stream: %d  Name: %s  Serial: %u",
+	   cardnum,new_stream,wavename.toUtf8().constData(),serial);
   cae_server->
-    sendCommand(id,QString::asprintf("LP %d %s %d %d +!",card,
-				     (const char *)name.toUtf8(),
-				     new_stream,handle));
+    sendCommand(phandle,QString::asprintf("LP %u %u %u %s +!",
+					  serial,cardnum,portnum,
+					  name.toUtf8().constData()));
 }
 
 
-void MainObject::unloadPlaybackData(int id,unsigned handle)
+void MainObject::unloadPlaybackData(uint64_t phandle)
 {
-  int card=play_handle[handle].card;
-  int stream=play_handle[handle].stream;
-  Driver *dvr=GetDriver(card);
+  PlaySession *psess=play_sessions.value(phandle);
+  unsigned serial=PlaySession::serialNumber(phandle);
 
-  if(dvr==NULL) {
-    cae_server->sendCommand(id,QString::asprintf("UP %d -!",handle));
-    return;
-  }
-  if((play_owner[card][stream]==-1)||(play_owner[card][stream]==id)) {
-    if(dvr->unloadPlayback(card,stream)) {
-      if(!rda->config()->testOutputStreams()) {
-	for(int i=0;i<RD_MAX_PORTS;i++) {
-	  dvr->setOutputVolume(card,stream,i,RD_MUTE_DEPTH);  // Clear mixer
-	}
-      }
-      play_owner[card][stream]=-1;
-      rda->syslog(LOG_INFO,"UnloadPlayback - Card: %d  Stream: %d  Handle: %d",
-		  card,stream,handle);
-      cae_server->sendCommand(id,QString::asprintf("UP %d +!",handle));
-    }
-    else {
-      cae_server->sendCommand(id,QString::asprintf("UP %d -!",handle));
-    }
-    play_handle[handle].card=-1;
-    play_handle[handle].stream=-1;
-    play_handle[handle].owner=-1;
-    return;
+  if(psess==NULL) {
+    cae_server->sendCommand(phandle,QString::asprintf("UP %u -!",serial));
+    rda->syslog(LOG_WARNING,
+		"attempted to unload non-existent session, serial:%u",serial);
   }
   else {
-    cae_server->sendCommand(id,QString::asprintf("UP %d -!",handle));
-  }
-}
-
-
-void MainObject::playPositionData(int id,unsigned handle,unsigned pos)
-{
-  int card=play_handle[handle].card;
-  int stream=play_handle[handle].stream;
-  Driver *dvr=GetDriver(card);
-
-  if(dvr==NULL) {
-    cae_server->sendCommand(id,QString::asprintf("PP %d %d -!",handle,pos));
-    return;
-  }
-  if(play_owner[card][stream]==id) {
-    if(dvr->playbackPosition(card,stream,pos)) {
-      rda->syslog(LOG_INFO,
-		 "PlaybackPosition - Card: %d  Stream: %d  Pos: %d  Handle: %d",
-		  card,stream,pos,handle);
-      cae_server->sendCommand(id,QString::asprintf("PP %d %d +!",handle,pos));
+    Driver *dvr=GetDriver(psess->cardNumber());
+    if(dvr==NULL) {
+      cae_server->sendCommand(phandle,QString::asprintf("UP %u -!",serial));
+      rda->syslog(LOG_WARNING,
+		  "attempted to access non-existent card, serial: %u card: %u",
+		  serial,psess->cardNumber());
     }
     else {
-      cae_server->sendCommand(id,QString::asprintf("PP %d %d -!",handle,pos));
+      if(dvr->unloadPlayback(psess->cardNumber(),psess->streamNumber())) {
+	if(!rda->config()->testOutputStreams()) {
+	  for(int i=0;i<RD_MAX_PORTS;i++) {
+	    dvr->setOutputVolume(psess->cardNumber(),psess->streamNumber(),i,
+				 RD_MUTE_DEPTH);  // Clear mixer
+	  }
+	}
+	rda->syslog(LOG_INFO,
+		    "UnloadPlayback - Card: %d  Stream: %d  Serial: %u",
+		    psess->cardNumber(),psess->streamNumber(),
+		    psess->serialNumber());
+	cae_server->sendCommand(phandle,QString::asprintf("UP %u +!",serial));
+      }
+      else {
+	cae_server->sendCommand(phandle,QString::asprintf("UP %d -!",serial));
+	rda->syslog(LOG_WARNING,
+	      "failed to unload play session, serial: %u, card: %u  stream: %d",
+		    serial,psess->cardNumber(),psess->streamNumber());
+      }
+      play_sessions.remove(phandle);
     }
-    return;
   }
-  cae_server->sendCommand(id,QString::asprintf("PP %d %d -!",handle,pos));
 }
 
 
-void MainObject::playData(int id,unsigned handle,unsigned length,unsigned speed,
+void MainObject::playPositionData(uint64_t phandle,unsigned pos)
+{
+  PlaySession *psess=play_sessions.value(phandle);
+  unsigned serial=PlaySession::serialNumber(phandle);
+
+  if(psess==NULL) {
+    cae_server->sendCommand(phandle,QString::asprintf("PP %u %u -!",
+						      serial,pos));
+    rda->syslog(LOG_WARNING,
+		"attempted to unload non-existent session, serial: %u",serial);
+  }
+  else {
+    Driver *dvr=GetDriver(psess->cardNumber());
+    if(dvr==NULL) {
+    cae_server->sendCommand(phandle,QString::asprintf("PP %u %u -!",
+						      serial,pos));
+      rda->syslog(LOG_WARNING,
+		  "attempted to access non-existent card, serial: %u pos: %u",
+		  serial,pos);
+    }
+    else {
+      if(dvr->playbackPosition(psess->cardNumber(),psess->streamNumber(),pos)) {
+	rda->
+	  syslog(LOG_DEBUG,
+		 "PlaybackPosition - Card: %d  Stream: %d  Pos: %d  Serial: %d",
+		 psess->cardNumber(),psess->streamNumber(),pos,serial);
+	cae_server->
+	  sendCommand(phandle,QString::asprintf("PP %u %u +!",serial,pos));
+      }
+      else {
+	cae_server->
+	  sendCommand(phandle,QString::asprintf("PP %u %u -!",serial,pos));
+	rda->syslog(LOG_WARNING,"PlaybackPosition failed, serial: %u, pos: %u",
+		    serial,pos);
+      }
+    }
+  }
+}
+
+
+void MainObject::playData(uint64_t phandle,unsigned length,unsigned speed,
 			  unsigned pitch_flag)
 {
-  int card=play_handle[handle].card;
-  int stream=play_handle[handle].stream;
-  Driver *dvr=GetDriver(card);
+  PlaySession *psess=play_sessions.value(phandle);
+  unsigned serial=PlaySession::serialNumber(phandle);
 
-  if(dvr==NULL) {
+  if(psess==NULL) {
     cae_server->
-      sendCommand(id,QString::asprintf("PY %u %u %u %u -!",
-				       handle,length,speed,pitch_flag));
-    return;
+      sendCommand(phandle,QString::asprintf("PY %u %u %u %u -!",
+					 serial,length,speed,pitch_flag));
+    rda->syslog(LOG_WARNING,
+		"attempted to play non-existent session, serial:%u",serial);
   }
-  play_length[card][stream]=length;
-  play_speed[card][stream]=speed;
-  switch(pitch_flag) {
-  case 0:
-    play_pitch[card][stream]=false;
-    break;
-
-  case 1:
-    play_pitch[card][stream]=true;
-    break;
-
-  default:
+  else {
+    Driver *dvr=GetDriver(psess->cardNumber());
+    if(dvr==NULL) {
     cae_server->
-      sendCommand(id,QString::asprintf("PY %u %u %u %u -!",
-				       handle,length,speed,pitch_flag));
-    return;
-  }
-  if(play_owner[card][stream]==id) {
-    if(!dvr->play(card,stream,play_length[card][stream],
-		  play_speed[card][stream],play_pitch[card][stream],
-		  RD_ALLOW_NONSTANDARD_RATES)) {
-      cae_server->
-	sendCommand(id,QString::asprintf("PY %u %u %u %u -!",
-					 handle,length,speed,pitch_flag));
-      return;
+      sendCommand(phandle,QString::asprintf("PY %u %u %u %u -!",
+					 serial,length,speed,pitch_flag));
+      rda->syslog(LOG_WARNING,
+		  "attempted to access non-existent card, serial: %u card: %u",
+		  serial,psess->cardNumber());
     }
-    rda->syslog(LOG_INFO,
-		"Play - Card: %d  Stream: %d  Handle: %d  Length: %d  Speed: %d  Pitch: %d",
-		card,stream,handle,play_length[card][stream],
-		play_speed[card][stream],pitch_flag);
-    // No command echo for success -- statePlayUpdate() sends it!
-    return;
+    else {
+      psess->setLength(length);
+      psess->setSpeed(speed);
+      if(!dvr->play(psess->cardNumber(),psess->streamNumber(),psess->length(),
+		    psess->speed(),false,RD_ALLOW_NONSTANDARD_RATES)) {
+	cae_server->
+	  sendCommand(phandle,QString::asprintf("PY %u %u %u %u -!",
+						serial,length,speed,
+						pitch_flag));
+      }
+      else {
+	rda->syslog(LOG_INFO,
+		    "Play - Card: %d  Stream: %d  Serial: %d  Length: %d  Speed: %d  Pitch: %d",
+		    psess->cardNumber(),psess->streamNumber(),serial,
+		    psess->length(),psess->speed(),pitch_flag);
+	// No command echo for success -- statePlayUpdate() sends it!
+      }
+    }
   }
-  cae_server->
-    sendCommand(id,QString::asprintf("PY %u %u %u %u -!",
-				     handle,length,speed,pitch_flag));
 }
 
 
-void MainObject::stopPlaybackData(int id,unsigned handle)
+void MainObject::stopPlaybackData(uint64_t phandle)
 {
-  int card=play_handle[handle].card;
-  int stream=play_handle[handle].stream;
-  Driver *dvr=GetDriver(card);
+  PlaySession *psess=play_sessions.value(phandle);
+  unsigned serial=PlaySession::serialNumber(phandle);
 
-  if(dvr==NULL) {
-    cae_server->sendCommand(id,QString::asprintf("SP %u -!",handle));
-    return;
+  if(psess==NULL) {
+    cae_server->sendCommand(phandle,QString::asprintf("SP %u -!",serial));
+    rda->syslog(LOG_WARNING,
+		"attempted to stop non-existent session, serial: %u",serial);
   }
-  if(play_owner[card][stream]==id) {
-    if(!dvr->stopPlayback(card,stream)) {
-      cae_server->sendCommand(id,QString::asprintf("SP %u -!",handle));
+  else {
+    Driver *dvr=GetDriver(psess->cardNumber());
+    if(dvr==NULL) {
+      cae_server->sendCommand(phandle,QString::asprintf("SP %u -!",serial));
+      rda->syslog(LOG_WARNING,
+		  "attempted to access non-existent card, serial: %u card: %u",
+		  serial,psess->cardNumber());
+    }
+    else {
+      if(!dvr->stopPlayback(psess->cardNumber(),psess->streamNumber())) {
+	cae_server->sendCommand(phandle,QString::asprintf("SP %u -!",serial));
+	return;
+      }
+      rda->syslog(LOG_INFO,"StopPlayback - Card: %d  Stream: %d  Serial: %d",
+		  psess->cardNumber(),psess->streamNumber(),serial);
       return;
     }
-    rda->syslog(LOG_INFO,
-			  "StopPlayback - Card: %d  Stream: %d  Handle: %d",
-	   card,stream,handle);
-    return;
   }
-  cae_server->sendCommand(id,QString::asprintf("SP %u -!",handle));
+  cae_server->sendCommand(phandle,QString::asprintf("SP %u -!",serial));
 }
 
 
@@ -685,67 +691,97 @@ void MainObject::setInputVolumeData(int id,unsigned card,unsigned stream,
 }
 
 
-void MainObject::setOutputVolumeData(int id,unsigned card,unsigned stream,
-				     int port,int level)
+void MainObject::setOutputVolumeData(uint64_t phandle,int level)
 {
-  Driver *dvr=GetDriver(card);
+  PlaySession *psess=play_sessions.value(phandle);
+  unsigned serial=PlaySession::serialNumber(phandle);
 
-  if(dvr==NULL) {
-    cae_server->sendCommand(id,QString::asprintf("OV %u %u %u %d -!",
-						 card,stream,port,level));
-    return;
+  if(psess==NULL) {
+    cae_server->sendCommand(phandle,QString::asprintf("SP %u -!",serial));
+    rda->syslog(LOG_WARNING,
+		"attempted to operate non-existent session, serial: %u",serial);
   }
-  if(!rda->config()->testOutputStreams()) {
-    if(port>=0) {
-      if(!dvr->setOutputVolume(card,stream,port,level)) {
-	cae_server->sendCommand(id,QString::asprintf("OV %u %u %u %d -!",
-						     card,stream,port,level));
-	return;
-      }
+  else {
+    Driver *dvr=GetDriver(psess->cardNumber());
+    if(dvr==NULL) {
+      cae_server->sendCommand(phandle,QString::asprintf("SP %u -!",serial));
+      rda->syslog(LOG_WARNING,
+		  "attempted to access non-existent card, serial: %u card: %u",
+		  serial,psess->cardNumber());
     }
     else {
-      for(int i=0;i<RD_MAX_PORTS;i++) {
-	dvr->setOutputVolume(card,stream,i,level);
+      if(!rda->config()->testOutputStreams()) {
+	if(psess->portNumber()>=0) {
+	  if(!dvr->setOutputVolume(psess->cardNumber(),psess->streamNumber(),
+				   psess->portNumber(),level)) {
+	    cae_server->sendCommand(phandle,QString::asprintf("OV %u %d -!",
+							      serial,level));
+	    return;
+	  }
+	}
+	/*  RESET SECTION?
+	else {
+	  for(int i=0;i<RD_MAX_PORTS;i++) {
+	    dvr->setOutputVolume(card,stream,i,level);
+	  }
+	}
+	*/
+	if(rda->config()->enableMixerLogging()) {
+	  rda->syslog(LOG_INFO,
+		      "[mixer] SetOutputVolume - Serial: %u  Card: %d  Stream: %d  Port: %d  Level: %d",
+		      serial,psess->cardNumber(),psess->streamNumber(),
+		      psess->portNumber(),level);
+	}
       }
-    }
-    if(rda->config()->enableMixerLogging()) {
-      rda->syslog(LOG_INFO,
-	 "[mixer] SetOutputVolume - Card: %d  Stream: %d  Port: %d  Level: %d",
-		  card,stream,port,level);
+      cae_server->sendCommand(phandle,QString::asprintf("OV %u %d +!",
+						   serial,level));
     }
   }
-  cae_server->sendCommand(id,QString::asprintf("OV %u %u %u %d +!",
-					       card,stream,port,level));
 }
 
 
-void MainObject::fadeOutputVolumeData(int id,unsigned card,unsigned stream,
-				      unsigned port,int level,unsigned length)
+void MainObject::fadeOutputVolumeData(uint64_t phandle,int level,
+				      unsigned length)
 {
-  Driver *dvr=GetDriver(card);
+  PlaySession *psess=play_sessions.value(phandle);
+  unsigned serial=PlaySession::serialNumber(phandle);
 
-  if(dvr==NULL) {
-    cae_server->
-      sendCommand(id,QString::asprintf("FV %u %u %u %d %u -!",
-				       card,stream,port,level,length));
-    return;
+  if(psess==NULL) {
+    cae_server->sendCommand(phandle,QString::asprintf("FV %u %d %u -!",
+						      serial,level,length));
+    rda->syslog(LOG_WARNING,
+		"attempted to operate non-existent session, serial: %u",serial);
   }
-  if(!rda->config()->testOutputStreams()) {
-    if(!dvr->fadeOutputVolume(card,stream,port,level,length)) {
+  else {
+    Driver *dvr=GetDriver(psess->cardNumber());
+    if(dvr==NULL) {
+      cae_server->sendCommand(phandle,QString::asprintf("FV %u %d %u -!",
+							serial,level,length));
+      rda->syslog(LOG_WARNING,
+		  "attempted to access non-existent card, serial: %u card: %u",
+		  serial,psess->cardNumber());
+    }
+    else {
+      if(!rda->config()->testOutputStreams()) {
+	if(!dvr->fadeOutputVolume(psess->cardNumber(),psess->streamNumber(),
+				  psess->portNumber(),level,length)) {
+	  cae_server->
+	    sendCommand(phandle,QString::asprintf("FV %u %d %u -!",
+						  serial,level,length));
+	  return;
+	}
+	if(rda->config()->enableMixerLogging()) {
+	  rda->syslog(LOG_INFO,
+		      "[mixer] FadeOutputVolume - Serial: %u  Card: %d  Stream: %d  Port: %d  Level: %d  Length: %d",
+		      serial,psess->cardNumber(),psess->streamNumber(),
+		      psess->portNumber(),level,length);
+	}
+      }
       cae_server->
-	sendCommand(id,QString::asprintf("FV %u %u %u %d %u -!",
-					 card,stream,port,level,length));
-      return;
-    }
-    if(rda->config()->enableMixerLogging()) {
-      rda->syslog(LOG_INFO,
-		  "[mixer] FadeOutputVolume - Card: %d  Stream: %d  Port: %d  Level: %d  Length: %d",
-		  card,stream,port,level,length);
+	sendCommand(phandle,QString::asprintf("FV %u %d %u +!",
+					      serial,level,length));
     }
   }
-  cae_server->
-    sendCommand(id,QString::asprintf("FV %u %u %u %d %u +!",
-				     card,stream,port,level,length));
 }
 
 
@@ -1024,33 +1060,31 @@ void MainObject::connectionDroppedData(int id)
 
 void MainObject::statePlayUpdate(int card,int stream,int state)
 {
-  printf("statePlayUpdate(%d,%d,%d)\n",card,stream,state);
-  int handle=GetHandle(card,stream);
+  rda->syslog(LOG_NOTICE,"statePlayUpdate(%d,%d,%d)\n",card,stream,state);
+  uint64_t phandle=GetPlayHandle(card,stream);
+  unsigned serial=PlaySession::serialNumber(phandle);
+  PlaySession *psess=play_sessions.value(phandle);
 
-  if(handle<0) {
+  if(psess==NULL) {
     return;
   }
-  if(play_owner[card][stream]!=-1) {
-    switch(state) {
-    case 1:   // Playing
-      cae_server->sendCommand(play_owner[card][stream],
-			      QString::asprintf("PY %d %d %d +!",handle,
-				      play_length[card][stream],
-				      play_speed[card][stream]).toUtf8());
-      break;
+  switch(state) {
+  case 1:   // Playing
+    cae_server->
+      sendCommand(phandle,QString::asprintf("PY %u %d %d 0 +!",
+					    serial,
+					    psess->length(),
+					    psess->speed()));
+    break;
 
-    case 2:   // Paused
-      cae_server->
-	sendCommand(play_owner[card][stream],
-		    QString::asprintf("SP %d +!",handle).toUtf8());
-      break;
+  case 2:   // Paused
+    cae_server->sendCommand(phandle,QString::asprintf("SP %d +!",serial));
+    break;
 
-    case 0:   // Stopped
-      cae_server->
-	sendCommand(play_owner[card][stream],
-		    QString::asprintf("SP %d +!",handle).toUtf8());
-      break;
-    }
+  case 0:   // Stopped
+    cae_server->
+      sendCommand(phandle,QString::asprintf("SP %d +!",serial).toUtf8());
+    break;
   }
 }
 
@@ -1230,16 +1264,19 @@ void MainObject::InitMixers()
 }
 
 
-void MainObject::KillSocket(int ch)
+void MainObject::KillSocket(int sock)
 {
   for(int i=0;i<RD_MAX_CARDS;i++) {
     Driver *dvr=GetDriver(i);
     for(int j=0;j<RD_MAX_STREAMS;j++) {
-      if(record_owner[i][j]==ch) {
-	rda->syslog(LOG_DEBUG,"force unloading record context for connection %s:%u: Card: %d  Stream: %d  Handle: %d",
-			      cae_server->peerAddress(ch).toString().toUtf8().constData(),
-			      0xFFFF&cae_server->peerPort(ch),
-			      i,j,GetHandle(i,j));
+      //
+      // Clear Active Record Events
+      //
+      if(record_owner[i][j]==sock) {
+	rda->syslog(LOG_DEBUG,"force unloading record context for connection %s:%u: Card: %d  Stream: %d",
+		    cae_server->peerAddress(sock).toString().toUtf8().constData(),
+		    0xFFFF&cae_server->peerPort(sock),
+		    i,j);
 	unsigned len=0;
 	if(dvr!=NULL) {
 	  dvr->unloadRecord(i,j,&len);
@@ -1248,26 +1285,25 @@ void MainObject::KillSocket(int ch)
 	record_threshold[i][j]=-10000;
 	record_owner[i][j]=-1;
       }
-      if(play_owner[i][j]==ch) {
-	rda->syslog(LOG_DEBUG,"force unloading play context for connection %d [%s:%u]: Card: %d  Stream: %d  Handle: %d",
-			      ch,
-			      cae_server->peerAddress(ch).toString().toUtf8().constData(),
-			      0xFFFF&cae_server->peerPort(ch),
-			      i,j,GetHandle(i,j));
-	if(dvr!=NULL) {
-	  dvr->unloadPlayback(i,j);
+
+      //
+      // Clear Active Playout Events
+      //
+      QMap<uint64_t,PlaySession *>::iterator it=play_sessions.begin();
+      while(it!=play_sessions.end()) {
+	if((it.value()!=NULL)&&(it.value()->socketDescriptor()==sock)) {
+	  rda->syslog(LOG_DEBUG,"force unloading play context for connection [%s:%u]: Serial: %u  Card: %d  Stream: %d",
+		      cae_server->peerAddress(sock).toString().toUtf8().
+		      constData(),
+		      0xFFFF&cae_server->peerPort(sock),
+		      it.value()->serialNumber(),i,j);
+	  dvr->unloadPlayback(it.value()->cardNumber(),
+			      it.value()->streamNumber());
+	  it=play_sessions.erase(it);
 	}
-	play_owner[i][j]=-1;
-	play_length[i][j]=0;
-	play_speed[i][j]=100;
-	play_pitch[i][j]=false;
-      }
-    }
-    for(int i=0;i<256;i++) {
-      if(play_handle[i].owner==ch) {
-	play_handle[i].card=-1;
-	play_handle[i].stream=-1;
-	play_handle[i].owner=-1;
+	else {
+	  ++it;
+	}
       }
     }
   }
@@ -1300,27 +1336,16 @@ bool MainObject::CheckDaemon(QString name)
 }
 
 
-int MainObject::GetNextHandle()
+uint64_t MainObject::GetPlayHandle(unsigned cardnum,unsigned streamnum) const
 {
-  while(play_handle[next_play_handle].card>=0) {
-    next_play_handle++;
-    next_play_handle&=0xFF;
-  }
-  int handle=next_play_handle;
-  next_play_handle++;
-  next_play_handle&=0xFF;
-  return handle;
-}
-
-
-int MainObject::GetHandle(int card,int stream)
-{
-  for(int i=0;i<256;i++) {
-    if((play_handle[i].card==card)&&(play_handle[i].stream==stream)) {
-      return i;
+  for(QMap<uint64_t,PlaySession *>::const_iterator it=play_sessions.begin();
+      it!=play_sessions.end();it++) {
+    if((it.value()->cardNumber()==cardnum)&&
+       (it.value()->streamNumber()==streamnum)) {
+      return it.key();
     }
   }
-  return -1;
+  return 0;
 }
 
 
@@ -1579,14 +1604,18 @@ void MainObject::SendStreamMeterLevelUpdate(int cardnum,int streamnum,
 
 void MainObject::SendMeterPositionUpdate(int cardnum,unsigned pos[])
 {
+  PlaySession *psess=NULL;
   QList<int> ids=cae_server->connectionIds();
 
   for(unsigned k=0;k<RD_MAX_STREAMS;k++) {
-    for(int l=0;l<ids.size();l++) {
-      if((cae_server->meterPort(ids.at(l))>0)&&
-	 cae_server->metersEnabled(ids.at(l),cardnum)) {
-	SendMeterUpdate(QString::asprintf("MP %d %d %d",cardnum,k,pos[k]),
-			ids.at(l));
+    if((psess=GetPlaySession(cardnum,k))!=NULL) {
+      for(int l=0;l<ids.size();l++) {
+	if((cae_server->meterPort(ids.at(l))>0)&&
+	   cae_server->metersEnabled(ids.at(l),cardnum)) {
+	  SendMeterUpdate(QString::asprintf("MP %u %d",
+					    psess->serialNumber(),pos[k]),
+			  psess->socketDescriptor());
+	}
       }
     }
   }
@@ -1630,6 +1659,12 @@ void MainObject::SendMeterOutputStatusUpdate(int card,int port,int stream)
 
 void MainObject::SendMeterUpdate(const QString &msg,int conn_id)
 {
+  /*
+  rda->syslog(LOG_NOTICE,"writing %s to %s:%u",
+	      msg.toUtf8().constData(),
+	      cae_server->peerAddress(conn_id).toString().toUtf8().constData(),
+	      0xFFFF&cae_server->meterPort(conn_id));
+  */
   meter_socket->writeDatagram(msg.toUtf8(),cae_server->peerAddress(conn_id),
 			      cae_server->meterPort(conn_id));
 }
@@ -1705,6 +1740,19 @@ void MainObject::MakeDriver(unsigned *next_card,RDStation::AudioDriver type)
       delete dvr;
     }
   }
+}
+
+
+PlaySession *MainObject::GetPlaySession(unsigned card,unsigned stream) const
+{
+  for(QMap<uint64_t,PlaySession *>::const_iterator it=play_sessions.begin();
+      it!=play_sessions.end();it++) {
+    if((it.value()->cardNumber()==card)&&
+       (it.value()->streamNumber()==stream)) {
+      return it.value();
+    }
+  }
+  return NULL;
 }
 
 

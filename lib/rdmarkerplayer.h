@@ -2,7 +2,7 @@
 //
 // Audio player for RDMarkerDialog
 //
-//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -80,9 +80,9 @@ class RDMarkerPlayer : public RDWidget
   void buttonTrimEndData();
   void readoutClickedData(int role);
   void meterData();
-  void caePlayedData(int handle);
-  void caePausedData(int handle);
-  void caePositionData(int handle,unsigned pos);
+  void caePlayedData(unsigned serial);
+  void caePausedData(unsigned serial);
+  void caePositionData(unsigned serial,unsigned pos);
   void trimThresholdChanged(int dbfs);
 
  protected:
@@ -122,8 +122,7 @@ class RDMarkerPlayer : public RDWidget
   QSpinBox *d_trim_spin;
   QList<int> d_cards;
   int d_port;
-  int d_cae_stream;
-  int d_cae_handle;
+  unsigned d_cae_serial;
   bool d_is_playing;
   RDMarkerHandle::PointerRole d_selected_markers[2];
   int d_pointers[RDMarkerHandle::LastRole];

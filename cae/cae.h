@@ -2,7 +2,7 @@
 //
 // The Core Audio Engine component of Rivendell
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -47,6 +47,7 @@
 
 #include "driver.h"
 #include "cae_server.h"
+#include "playsession.h"
 
 #ifndef HAVE_SRC_CONV
 void src_int_to_float_array (const int *in, float *out, int len);
@@ -70,12 +71,13 @@ class MainObject : public QObject
   MainObject(QObject *parent=0);
 
  private slots:
-  void loadPlaybackData(int id,unsigned card,const QString &name);
-  void unloadPlaybackData(int id,unsigned handle);
-  void playPositionData(int id,unsigned handle,unsigned pos);
-  void playData(int id,unsigned handle,unsigned length,unsigned speed,
+   void loadPlaybackData(uint64_t phandle,unsigned card,unsigned portnum,
+			 const QString &name);
+  void unloadPlaybackData(uint64_t phandle);
+  void playPositionData(uint64_t phandle,unsigned pos);
+  void playData(uint64_t phandle,unsigned length,unsigned speed,
 		unsigned pitch_flag);
-  void stopPlaybackData(int id,unsigned handle);
+  void stopPlaybackData(uint64_t phandle);
   void timescalingSupportData(int id,unsigned card);
   void loadRecordingData(int id,unsigned card,unsigned port,unsigned coding,
 			unsigned channels,unsigned samprate,unsigned bitrate,
@@ -85,10 +87,8 @@ class MainObject : public QObject
 		 int threshold_level);
   void stopRecordingData(int id,unsigned card,unsigned stream);
   void setInputVolumeData(int id,unsigned card,unsigned stream,int level);
-  void setOutputVolumeData(int id,unsigned card,unsigned stream,int port,
-			  int level);
-  void fadeOutputVolumeData(int id,unsigned card,unsigned stream,unsigned port,
-			   int level,unsigned length);
+  void setOutputVolumeData(uint64_t phandle,int level);
+  void fadeOutputVolumeData(uint64_t phandle,int level,unsigned length);
   void setInputLevelData(int id,unsigned card,unsigned stream,int level);
   void setOutputLevelData(int id,unsigned card,unsigned port,int level);
   void setInputModeData(int id,unsigned card,unsigned stream,unsigned mode);
@@ -116,8 +116,8 @@ class MainObject : public QObject
   void KillSocket(int);
   bool CheckDaemon(QString);
   pid_t GetPid(QString pidfile);
-  int GetNextHandle();
-  int GetHandle(int card,int stream);
+  PlaySession *GetPlaySession(unsigned card,unsigned stream) const;
+  uint64_t GetPlayHandle(unsigned cardnum,unsigned streamnum) const;
   void ProbeCaps(RDStation *station);
   void ClearDriverEntries() const;
   void SendMeterLevelUpdate(const QString &type,int cardnum,int portnum,
@@ -138,19 +138,12 @@ class MainObject : public QObject
   int record_owner[RD_MAX_CARDS][RD_MAX_STREAMS];
   int record_length[RD_MAX_CARDS][RD_MAX_STREAMS];
   int record_threshold[RD_MAX_CARDS][RD_MAX_STREAMS];
-  int play_owner[RD_MAX_CARDS][RD_MAX_STREAMS];
   int play_length[RD_MAX_CARDS][RD_MAX_STREAMS];
   int play_speed[RD_MAX_CARDS][RD_MAX_STREAMS];
   bool play_pitch[RD_MAX_CARDS][RD_MAX_STREAMS];
   bool port_status[RD_MAX_CARDS][RD_MAX_PORTS];
   bool output_status_flag[RD_MAX_CARDS][RD_MAX_PORTS][RD_MAX_STREAMS];
-  struct {
-    int card;
-    int stream;
-    int owner;
-  } play_handle[256];
-  int next_play_handle;
-
+  QMap<uint64_t,PlaySession *> play_sessions;
  private:
   bool CheckLame();
   bool CheckMp4Decode();

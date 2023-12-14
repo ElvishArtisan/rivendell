@@ -2,7 +2,7 @@
 //
 // A naively simple player for Rivendell Carts.
 //
-//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -54,8 +54,8 @@ class RDSimplePlayer : public QWidget
   void stopped();
 
  private slots:
-  void playingData(int handle);
-  void playStoppedData(int handle);
+  void playingData(unsigned serial);
+  void playStoppedData(unsigned serial);
 
  private:
   RDCae *play_cae;
@@ -63,7 +63,7 @@ class RDSimplePlayer : public QWidget
   int play_card;
   int play_stream;
   int play_port;
-  std::queue<int> play_handles;
+  std::queue<unsigned> play_serials;
   unsigned play_cart;
   QString play_cut;
   unsigned play_start_cart;

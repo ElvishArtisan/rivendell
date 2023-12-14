@@ -2,7 +2,7 @@
 //
 // The Rivendell Netcatcher.
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -123,7 +123,7 @@ class MainObject : public QObject
   void LoadEvent(RDSqlQuery *q,CatchEvent *e,bool add);
   void LoadDeckList();
   int GetRecordDeck(int card,int stream);
-  int GetPlayoutDeck(int handle);
+  int GetPlayoutDeck(unsigned serial);
   int GetFreeEvent();
   bool AddEvent(int id);
   void RemoveEvent(int id);
@@ -175,9 +175,8 @@ class MainObject : public QObject
   unsigned catch_record_pending_maxlen[MAX_DECKS];
   bool catch_playout_status[MAX_DECKS];
   int catch_playout_card[MAX_DECKS];
-  int catch_playout_stream[MAX_DECKS];
   int catch_playout_port[MAX_DECKS];
-  int catch_playout_handle[MAX_DECKS];
+  unsigned catch_playout_serial[MAX_DECKS];
   RDDeck::Status catch_playout_deck_status[MAX_DECKS];
   int catch_playout_event_id[MAX_DECKS];
   int catch_playout_id[MAX_DECKS];

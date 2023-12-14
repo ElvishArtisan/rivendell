@@ -94,8 +94,7 @@ class MainWidget : public RDMainWindow
   QScrollArea *catch_monitor_area;
   VBox *catch_monitor_vbox;
   QSqlDatabase *catch_db;
-  int catch_audition_stream;
-  int catch_play_handle;
+  unsigned catch_audition_serial;
   CatchTableView *catch_recordings_view;
   RecordListModel *catch_recordings_model;
   RDTransportButton *catch_head_button;

@@ -118,16 +118,36 @@
       <replaceable>stream-num</replaceable>.
     </para>
     <para>
-      <userinput>LP <replaceable>card-num</replaceable>
+      <userinput>LP <replaceable>serial</replaceable>
+      <replaceable>card-num</replaceable>
+      <replaceable>port-num</replaceable>
       <replaceable>name</replaceable>!</userinput>
     </para>
     <variablelist>
+      <varlistentry>
+	<term>
+	  <replaceable>serial</replaceable>
+	</term>
+	<listitem>
+	  32 bit Unsigned integer, unique within the scope of the TCP
+	  connection.
+	  Used to refer to this playback session in subsequent calls to CAE.
+	</listitem>
+      </varlistentry>
       <varlistentry>
 	<term>
 	  <replaceable>card-num</replaceable>
 	</term>
 	<listitem>
 	  The number of the audio adapter to use.
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>
+	  <replaceable>port-num</replaceable>
+	</term>
+	<listitem>
+	  The output port number of the audio adapter to use.
 	</listitem>
       </varlistentry>
       <varlistentry>
@@ -141,35 +161,11 @@
     </variablelist>
     <para>
       Returns:  <computeroutput>LP
+      <replaceable>serial</replaceable>
       <replaceable>card-num</replaceable>
-      <replaceable>name</replaceable>
-      <replaceable>stream-num</replaceable>
-      <replaceable>conn-handle</replaceable>!</computeroutput>
+      <replaceable>port-num</replaceable>
+      <replaceable>name</replaceable>!</computeroutput>
     </para>
-    <variablelist>
-      <varlistentry>
-	<term>
-	  <replaceable>stream-num</replaceable>
-	</term>
-	<listitem>
-	  <para>
-	    The stream number selected to be used, or a -1 in case  of error.
-	    This is relative to the audio adapter selected.
-	  </para>
-	</listitem>
-      </varlistentry>
-      <varlistentry>
-	<term>
-	  <replaceable>conn-handle</replaceable>
-	</term>
-	<listitem>
-	  <para>
-	    The connection handle. This will be used to refer to the playback
-	    event in all subsequent calls to CAE.
-	  </para>
-	</listitem>
-      </varlistentry>
-    </variablelist>
   </sect2>
 
   <sect2>
@@ -179,16 +175,16 @@
       output stream->output port volume controls.
     </para>
     <para>
-      <userinput>UP <replaceable>conn-handle</replaceable>!</userinput>
+      <userinput>UP <replaceable>serial</replaceable>!</userinput>
     </para>
     <variablelist>
       <varlistentry>
 	<term>
-	  <replaceable>conn-handle</replaceable>
+	  <replaceable>serial</replaceable>
 	</term>
 	<listitem>
 	  <para>
-	    The connection handle of the playback event, from the
+	    The serial number of the playback event, from the
 	    <command>Load Playback</command> call.
 	  </para>
 	</listitem>
@@ -202,17 +198,17 @@
       Position the playback pointer.
     </para>
     <para>
-      <userinput>PP <replaceable>conn-handle</replaceable>
+      <userinput>PP <replaceable>serial</replaceable>
       <replaceable>position</replaceable>!</userinput>
     </para>
     <variablelist>
       <varlistentry>
 	<term>
-	  <replaceable>conn-handle</replaceable>
+	  <replaceable>serial</replaceable>
 	</term>
 	<listitem>
 	  <para>
-	    The connection handle of the playback event, from the
+	    The serial number of the playback event, from the
 	    <command>Load Playback</command> call.
 	  </para>
 	</listitem>
@@ -236,7 +232,7 @@
       Play the loaded file from the current position.
     </para>
     <para>
-      <userinput>PY <replaceable>conn-handle</replaceable>
+      <userinput>PY <replaceable>serial</replaceable>
       <replaceable>length</replaceable>
       <replaceable>speed</replaceable>
       <replaceable>pitch-flag</replaceable>!</userinput>
@@ -244,11 +240,11 @@
     <variablelist>
       <varlistentry>
 	<term>
-	  <replaceable>conn-handle</replaceable>
+	  <replaceable>serial</replaceable>
 	</term>
 	<listitem>
 	  <para>
-	    The connection handle of the playback event, from the
+	    The serial number of the playback event, from the
 	    <command>Load Playback</command> call.
 	  </para>
 	</listitem>
@@ -294,16 +290,16 @@
       Stop playback of the specified playback interface.
     </para>
     <para>
-      <userinput>SP <replaceable>conn-handle</replaceable>!</userinput>
+      <userinput>SP <replaceable>serial</replaceable>!</userinput>
     </para>
     <variablelist>
       <varlistentry>
 	<term>
-	  <replaceable>conn-handle</replaceable>
+	  <replaceable>serial</replaceable>
 	</term>
 	<listitem>
 	  <para>
-	    The connection handle of the playback event, from the
+	    The serial number of the playback event, from the
 	    <command>Load Playback</command> call.
 	  </para>
 	</listitem>
@@ -668,36 +664,25 @@
   <sect2>
     <title><command>Set Output Volume</command></title>
     <para>
-      Set the volume of an output stream.
+      Set the volume of an output playback.
     </para>
     <para>
-      <userinput>OV <replaceable>card-num</replaceable>
-      <replaceable>stream-num</replaceable>
-      <replaceable>port-num</replaceable>
+      <userinput>OV <replaceable>serial</replaceable>
       <replaceable>level</replaceable>!</userinput>
     </para>
     <variablelist>
       <varlistentry>
 	<term>
-	  <replaceable>card-num</replaceable>
+	  <replaceable>serial</replaceable>
 	</term>
 	<listitem>
 	  <para>
-	    The number of the audio adapter to use.
+	    The serial number of the playback event, from the
+	    <command>Load Playback</command> call.
 	  </para>
 	</listitem>
       </varlistentry>
-      <varlistentry>
-	<term>
-	  <replaceable>stream-num</replaceable>
-	</term>
-	<listitem>
-	  <para>
-	    The stream  number to use. This is relative to the audio adapter
-	    selected.
-	  </para>
-	</listitem>
-      </varlistentry>
+<!--
       <varlistentry>
 	<term>
 	  <replaceable>port-num</replaceable>
@@ -707,11 +692,13 @@
 	    The port number to use. This is relative to the audio adapter
 	    selected. If a value less than <userinput>0</userinput> is
 	    provided, then <emphasis>all</emphasis> output ports for
-	    <replaceable>stream-num</replaceable> will have their volume
+	    the output stream referenced by
+	    <replaceable>serial</replaceable> will have their volume
 	    controls set to <replaceable>level</replaceable>.
 	  </para>
 	</listitem>
       </varlistentry>
+-->
       <varlistentry>
 	<term>
 	  <replaceable>level</replaceable>
@@ -728,45 +715,22 @@
   <sect2>
     <title><command>Fade Output Volume</command></title>
     <para>
-      Transition the volume of an output stream over time.
+      Transition the volume of an output playback over time.
     </para>
     <para>
-      <userinput>FV <replaceable>card-num</replaceable>
-      <replaceable>stream-num</replaceable>
-      <replaceable>port-num</replaceable>
+      <userinput>FV <replaceable>serial</replaceable>
       <replaceable>level</replaceable>
       <replaceable>length</replaceable>!</userinput>
     </para>
     <variablelist>
       <varlistentry>
 	<term>
-	  <replaceable>card-num</replaceable>
+	  <replaceable>serial</replaceable>
 	</term>
 	<listitem>
 	  <para>
-	    The number of the audio adapter to use.
-	  </para>
-	</listitem>
-      </varlistentry>
-      <varlistentry>
-	<term>
-	  <replaceable>stream-num</replaceable>
-	</term>
-	<listitem>
-	  <para>
-	    The stream  number to use. This is relative to the audio adapter
-	    selected.
-	  </para>
-	</listitem>
-      </varlistentry>
-      <varlistentry>
-	<term>
-	  <replaceable>port-num</replaceable>
-	</term>
-	<listitem>
-	  <para>
-	    The port number to use. This is relative to the audio adapter
-	    selected.
+	    The serial number of the playback event, from the
+	    <command>Load Playback</command> call.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -1614,34 +1578,24 @@
   </sect2>
 
   <sect2>
-    <title><command>Output Stream Position</command></title>
+    <title><command>Output Play Position</command></title>
     <para>
       Output play position.
     </para>
     <para>
       <computeroutput>MP
-      <replaceable>card-num</replaceable>
-      <replaceable>stream-num</replaceable>
+      <replaceable>serial</replaceable>
       <replaceable>pos</replaceable>!</computeroutput>
     </para>
     <variablelist>
       <varlistentry>
 	<term>
-	  <replaceable>card-num</replaceable>
+	  <replaceable>serial</replaceable>
 	</term>
 	<listitem>
 	  <para>
-	    The number of the audio adapter to use.
-	  </para>
-	</listitem>
-      </varlistentry>
-      <varlistentry>
-	<term>
-	  <replaceable>stream-num</replaceable>
-	</term>
-	<listitem>
-	  <para>
-	    The stream number on the audio adapter.
+	    The serial number of the playback event, from the
+	    <command>Load Playback</command> call.
 	  </para>
 	</listitem>
       </varlistentry>

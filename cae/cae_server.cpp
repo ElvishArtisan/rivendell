@@ -27,6 +27,7 @@
 #include <rdapplication.h>
 
 #include "cae_server.h"
+#include "playsession.h"
 
 //
 // Uncomment this to send all protocol messages to syslog (DEBUG priority)
@@ -137,6 +138,12 @@ void CaeServer::sendCommand(const QString &cmd)
 }
 
 
+void CaeServer::sendCommand(uint64_t phandle,const QString &cmd)
+{
+  sendCommand(PlaySession::socketDescriptor(phandle),cmd);
+}
+
+
 void CaeServer::sendCommand(int id,const QString &cmd)
 {
 #ifdef __CAE_SERVER_LOG_PROTOCOL_MESSAGES
@@ -237,7 +244,7 @@ bool CaeServer::ProcessCommand(int id,const QString &cmd)
   // Unpriviledged Commands
   //
   if(f0.at(0)=="DC") {
-    connectionClosedData(id);
+    cae_connections.value(id)->socket->close();
     return true;
   }
 
@@ -281,32 +288,41 @@ bool CaeServer::ProcessCommand(int id,const QString &cmd)
   }
   bool was_processed=false;
 
-  if((f0.at(0)=="LP")&&(f0.size()==3)) {  // Load Playback
-    unsigned card=f0.at(1).toUInt(&ok);
-    if(ok&&(card<RD_MAX_CARDS)) {
-      emit loadPlaybackReq(id,card,f0.at(2));
-      was_processed=true;
+  if((f0.at(0)=="LP")&&(f0.size()==5)) {  // Load Playback
+    unsigned serial=f0.at(1).toUInt(&ok);
+    if(ok) {
+      unsigned cardnum=f0.at(2).toUInt(&ok);
+      if(ok&&(cardnum<RD_MAX_CARDS)) {
+	unsigned portnum=f0.at(3).toUInt(&ok);
+	if(ok&&(portnum<RD_MAX_PORTS)) {
+	  printf("makeHandle(%d,%u) = %lu\n",id,serial,
+		 PlaySession::makeHandle(id,serial));
+	  emit loadPlaybackReq(PlaySession::makeHandle(id,serial),cardnum,
+			       portnum,f0.at(4));
+	  was_processed=true;
+	}
+      }
     }
   }
   if((f0.at(0)=="UP")&&(f0.size()==2)) {  // Unload Playback
-    unsigned card=f0.at(1).toUInt(&ok);
+    unsigned serial=f0.at(1).toUInt(&ok);
     if(ok) {
-      emit unloadPlaybackReq(id,card);
+      emit unloadPlaybackReq(PlaySession::makeHandle(id,serial));
       was_processed=true;
     }
   }
   if((f0.at(0)=="PP")&&(f0.size()==3)) {  // Play Position
-    unsigned handle=f0.at(1).toUInt(&ok);
+    unsigned serial=f0.at(1).toUInt(&ok);
     if(ok) {
       unsigned pos=f0.at(2).toUInt(&ok);
       if(ok) {
-	emit playPositionReq(id,handle,pos);
+	emit playPositionReq(PlaySession::makeHandle(id,serial),pos);
 	was_processed=true;
       }
     }
   }
   if((f0.at(0)=="PY")&&(f0.size()==5)) {  // Play
-    unsigned handle=f0.at(1).toUInt(&ok);
+    unsigned serial=f0.at(1).toUInt(&ok);
     if(ok) {
       unsigned len=f0.at(2).toUInt(&ok);
       if(ok) {
@@ -314,7 +330,7 @@ bool CaeServer::ProcessCommand(int id,const QString &cmd)
 	if(ok) {
 	  unsigned pitch=f0.at(4).toUInt(&ok);
 	  if(ok) {
-	    emit playReq(id,handle,len,speed,pitch);
+	    emit playReq(PlaySession::makeHandle(id,serial),len,speed,pitch);
 	    was_processed=true;
 	  }
 	}
@@ -322,9 +338,9 @@ bool CaeServer::ProcessCommand(int id,const QString &cmd)
     }
   }
   if((f0.at(0)=="SP")&&(f0.size()==2)) {  // Stop Playback
-    unsigned handle=f0.at(1).toUInt(&ok);
+    unsigned serial=f0.at(1).toUInt(&ok);
     if(ok) {
-      emit stopPlaybackReq(id,handle);
+      emit stopPlaybackReq(PlaySession::makeHandle(id,serial));
       was_processed=true;
     }
   }
@@ -413,41 +429,26 @@ bool CaeServer::ProcessCommand(int id,const QString &cmd)
       }
     }
   }
-  if((f0.at(0)=="OV")&&(f0.size()==5)) {  // Set Output Volume
-    unsigned card=f0.at(1).toUInt(&ok);
-    if(ok&&(card<RD_MAX_CARDS)) {
-      unsigned stream=f0.at(2).toUInt(&ok);
-      if(ok&&(stream<RD_MAX_STREAMS)) {
-	if(ok) {
-	  int port=f0.at(3).toInt(&ok);
-	  if(ok&&(port<RD_MAX_PORTS)) {
-	    int level=f0.at(4).toInt(&ok);
-	    if(ok) {
-	      emit setOutputVolumeReq(id,card,stream,port,level);
-	      was_processed=true;
-	    }
-	  }
-	}
+  if((f0.at(0)=="OV")&&(f0.size()==3)) {  // Set Output Volume
+    unsigned serial=f0.at(1).toUInt(&ok);
+    if(ok) {
+      int level=f0.at(2).toInt(&ok);
+      if(ok) {
+	emit setOutputVolumeReq(PlaySession::makeHandle(id,serial),level);
+	was_processed=true;
       }
     }
   }
-  if((f0.at(0)=="FV")&&(f0.size()==6)) {  // Fade Output Volume
-    unsigned card=f0.at(1).toUInt(&ok);
-    if(ok&&(card<RD_MAX_CARDS)) {
-      unsigned stream=f0.at(2).toUInt(&ok);
-      if(ok&&(stream<RD_MAX_STREAMS)) {
+  if((f0.at(0)=="FV")&&(f0.size()==4)) {  // Fade Output Volume
+    unsigned serial=f0.at(1).toUInt(&ok);
+    if(ok) {
+      int level=f0.at(2).toInt(&ok);
+      if(ok) {
+	int len=f0.at(3).toUInt(&ok);
 	if(ok) {
-	  unsigned port=f0.at(3).toUInt(&ok);
-	  if(ok&&(port<RD_MAX_PORTS)) {
-	    int level=f0.at(4).toInt(&ok);
-	    if(ok) {
-	      int len=f0.at(5).toUInt(&ok);
-	      if(ok) {
-		emit fadeOutputVolumeReq(id,card,stream,port,level,len);
-		was_processed=true;
-	      }
-	    }
-	  }
+	  emit fadeOutputVolumeReq(PlaySession::makeHandle(id,serial),level,
+				   len);
+	  was_processed=true;
 	}
       }
     }

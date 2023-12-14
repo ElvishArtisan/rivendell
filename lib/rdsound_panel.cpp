@@ -1738,8 +1738,9 @@ void RDSoundPanel::Stopped(int id)
 void RDSoundPanel::ClearChannel(int id)
 {
   RDPlayDeck *playdeck=panel_active_buttons[id]->playDeck();
+
   if(rda->cae()->
-     playPortActive(playdeck->card(),playdeck->port(),playdeck->stream())) {
+     playPortStatus(playdeck->card(),playdeck->port(),playdeck->serial())) {
     return;
   }
   panel_event_player->exec(panel_stop_rml[panel_active_buttons[id]->output()]);

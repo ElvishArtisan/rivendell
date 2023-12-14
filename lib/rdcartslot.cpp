@@ -373,6 +373,7 @@ void RDCartSlot::setPauseEnabled(bool state)
 
 void RDCartSlot::updateMeters()
 {
+  /*
   short lvls[2];
 
   switch(slot_deck->state()) {
@@ -388,6 +389,7 @@ void RDCartSlot::updateMeters()
   case RDPlayDeck::Finished:
     break;
   }
+  */
 }
 
 

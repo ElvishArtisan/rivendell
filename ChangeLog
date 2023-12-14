@@ -24540,3 +24540,6 @@
 	CAE commands.
 2023-12-14 Fred Gleason <fredg@paravelsystems.com>
 	* Moved LINE_NUMBER macros to 'lib/rd.h'.
+2023-12-14 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed regressions in the CAE subsystem that broke play-out positing
+	and active output port reporting.

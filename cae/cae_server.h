@@ -42,6 +42,9 @@ class CaeServerConnection
   QString accum;
   uint16_t meter_port;
   bool meters_enabled[RD_MAX_CARDS];
+  unsigned play_serial;
+  unsigned play_stream;
+  bool belongsTo(QTcpSocket *sock,unsigned serial) const;
 };
 
 
@@ -61,15 +64,18 @@ class CaeServer : public QObject
   void setMetersEnabled(int id,unsigned card,bool state);
   bool listen(const QHostAddress &addr,uint16_t port);
   void sendCommand(const QString &cmd);
+  void sendCommand(uint64_t phandle,const QString &cmd);
   void sendCommand(int id,const QString &cmd);
 
  signals:
   void connectionDropped(int id);
-  void loadPlaybackReq(int id,unsigned card,const QString &name);
-  void unloadPlaybackReq(int id,unsigned handle);
-  void playPositionReq(int id,unsigned handle,unsigned pos);
-  void playReq(int id,unsigned handle,unsigned length,unsigned speed,unsigned pitch_flag);
-  void stopPlaybackReq(int id,unsigned handle);
+  void loadPlaybackReq(uint64_t phandle,unsigned card,unsigned port,
+		       const QString &name);
+  void unloadPlaybackReq(uint64_t phandle);
+  void playPositionReq(uint64_t phandle,unsigned pos);
+  void playReq(uint64_t phandle,unsigned length,unsigned speed,
+	       unsigned pitch_flag);
+  void stopPlaybackReq(uint64_t phandle);
   void timescalingSupportReq(int id,unsigned card);
   void loadRecordingReq(int id,unsigned card,unsigned port,unsigned coding,
 			unsigned channels,unsigned samprate,unsigned bitrate,
@@ -79,10 +85,8 @@ class CaeServer : public QObject
 		 int threshold_level);
   void stopRecordingReq(int id,unsigned card,unsigned stream);
   void setInputVolumeReq(int id,unsigned card,unsigned stream,int level);
-  void setOutputVolumeReq(int id,unsigned card,unsigned stream,int port,
-			  int level);
-  void fadeOutputVolumeReq(int id,unsigned card,unsigned stream,unsigned port,
-			   int level,unsigned length);
+  void setOutputVolumeReq(uint64_t phandle,int level);
+  void fadeOutputVolumeReq(uint64_t phandle,int level,unsigned length);
   void setInputLevelReq(int id,unsigned card,unsigned port,int level);
   void setOutputLevelReq(int id,unsigned card,unsigned port,int level);
   void setInputModeReq(int id,unsigned card,unsigned stream,unsigned mode);
