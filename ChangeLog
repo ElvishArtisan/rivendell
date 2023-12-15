@@ -24557,3 +24557,5 @@
 2023-12-15 Fred Gleason <fredg@paravelsystems.com>
 	* Removed vestigal support for the 'Open RTP Capture Channel' ['CO']
 	CAE command.
+2023-12-15 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up warnings about unprocessed CAE commands in the syslog.

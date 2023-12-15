@@ -503,8 +503,11 @@ void RDCae::DispatchCommand(const QString &cmd)
     was_processed=true;
   }
 
-  if((cmds.at(0),"LP")&&(cmds.size()==5)) {   // Load Play
-    // FIXME: What should go here?
+  if((cmds.at(0),"LP")&&(cmds.size()==6)) {   // Load Play
+    unsigned serial=cmds.at(1).toUInt(&ok);
+    if(ok) {
+      emit playLoaded(serial);
+    }
     was_processed=true;
   }
 
@@ -641,6 +644,22 @@ void RDCae::DispatchCommand(const QString &cmd)
 	}
       }
     }
+    was_processed=true;
+  }
+
+  //
+  // Processing stubs
+  //
+  if(cmds.at(0)=="FV") {  // Fade Output Volume
+    was_processed=true;
+  }
+  if(cmds.at(0)=="ME") {  // Meter Enable
+    was_processed=true;
+  }
+  if(cmds.at(0)=="OV") {  // Set Output Volume
+    was_processed=true;
+  }
+  if(cmds.at(0)=="PP") {  // Play Position
     was_processed=true;
   }
 
