@@ -2,7 +2,7 @@
 //
 // The cart slot widget.
 //
-//   (C) Copyright 2012-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -373,14 +373,12 @@ void RDCartSlot::setPauseEnabled(bool state)
 
 void RDCartSlot::updateMeters()
 {
-  /*
   short lvls[2];
 
   switch(slot_deck->state()) {
   case RDPlayDeck::Playing:
   case RDPlayDeck::Stopping:
-    slot_cae->
-      outputStreamMeterUpdate(slot_deck->card(),slot_deck->stream(),lvls);
+    slot_cae->outputStreamMeterUpdate(slot_deck->serial(),lvls);
     slot_box->updateMeters(lvls);
     break;
 
@@ -389,7 +387,6 @@ void RDCartSlot::updateMeters()
   case RDPlayDeck::Finished:
     break;
   }
-  */
 }
 
 
@@ -470,7 +467,6 @@ void RDCartSlot::optionsData()
 
 void RDCartSlot::stateChangedData(int id,RDPlayDeck::State state)
 {
-  //printf("stateChangedData(%d,%d)\n",id,state);
   short lvls[2]={-10000,-10000};
   RDCart *cart=NULL;
 

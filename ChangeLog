@@ -24543,3 +24543,8 @@
 2023-12-14 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed regressions in the CAE subsystem that broke play-out
 	positioning and active output port reporting.
+2023-12-15 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the call parameters of the 'Output Stream Meter Levels'
+	['MO'] CAE command to use play session serial numbers rather than
+	card and stream numbers.
+	* Fixed a regression in rdcartslots(1) that broke audio meters.

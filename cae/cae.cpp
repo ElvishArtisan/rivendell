@@ -1142,6 +1142,10 @@ void MainObject::updateMeters()
     Driver *dvr=GetDriver(i);
     if(dvr!=NULL) {
       for(int j=0;j<RD_MAX_PORTS;j++) {
+
+	//
+	// Input Port Statuses
+	//
 	if(dvr->getInputStatus(i,j)!=port_status[i][j]) {
 	  port_status[i][j]=dvr->getInputStatus(i,j);
 	  if(port_status[i][j]) {
@@ -1151,6 +1155,10 @@ void MainObject::updateMeters()
 	    cae_server->sendCommand(QString::asprintf("IS %d %d 1!",i,j));
 	  }
 	}
+
+	//
+	// Port Meters
+	//
 	if(dvr->getInputMeters(i,j,levels)) {
 	  SendMeterLevelUpdate("I",i,j,levels);
 	}
@@ -1158,12 +1166,25 @@ void MainObject::updateMeters()
 	  SendMeterLevelUpdate("O",i,j,levels);
 	}      
       }
+
+      //
+      // Output Positions
+      //
       dvr->getOutputPosition(i,positions);
       SendMeterPositionUpdate(i,positions);
-      for(int j=0;j<RD_MAX_STREAMS;j++) {
-	if(dvr->getStreamOutputMeters(i,j,levels)) {
-	  SendStreamMeterLevelUpdate(i,j,levels);
-	}      
+
+      //
+      // Output Stream Meters
+      //
+      for(QMap<uint64_t,PlaySession *>::const_iterator it=play_sessions.begin();
+	  it!=play_sessions.end();it++) {
+	if((int)it.value()->cardNumber()==i) {
+	  if(dvr->getStreamOutputMeters(it.value()->cardNumber(),
+					it.value()->streamNumber(),
+					levels)) {
+	    SendStreamMeterLevelUpdate(it.value(),levels);
+	  }
+	}
       }
     }
   }
@@ -1587,18 +1608,15 @@ void MainObject::SendMeterLevelUpdate(const QString &type,int cardnum,
 }
 
 
-void MainObject::SendStreamMeterLevelUpdate(int cardnum,int streamnum,
-					    short levels[])
+void MainObject::SendStreamMeterLevelUpdate(PlaySession *psess,short levels[])
 {
-  QList<int> ids=cae_server->connectionIds();
-
-  for(int l=0;l<ids.size();l++) {
-    if((cae_server->meterPort(ids.at(l))>0)&&
-       cae_server->metersEnabled(ids.at(l),cardnum)) {
-      SendMeterUpdate(QString::asprintf("MO %d %d %d %d",
-		  cardnum,streamnum,levels[0],levels[1]),ids.at(l));
-    }
+  if((cae_server->meterPort(psess->socketDescriptor())>0)&&
+     cae_server->metersEnabled(psess->socketDescriptor(),psess->cardNumber())) {
+    SendMeterUpdate(QString::asprintf("MO %u %d %d",psess->serialNumber(),
+				      levels[0],levels[1]),
+		    psess->socketDescriptor());
   }
+
 }
 
 

@@ -122,7 +122,7 @@ class MainObject : public QObject
   void ClearDriverEntries() const;
   void SendMeterLevelUpdate(const QString &type,int cardnum,int portnum,
 			    short levels[]);
-  void SendStreamMeterLevelUpdate(int cardnum,int streamnum,short levels[]);
+  void SendStreamMeterLevelUpdate(PlaySession *psess,short levels[]);
   void SendMeterPositionUpdate(int cardnum,unsigned pos[]);
   void SendMeterOutputStatusUpdate();
   void SendMeterOutputStatusUpdate(int card,int port,int stream);

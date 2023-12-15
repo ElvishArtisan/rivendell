@@ -38,12 +38,15 @@ class __RDCae_PlayChannel
   unsigned port() const;
   unsigned position() const;
   void setPosition(unsigned pos);
+  void getStreamLevels(short lvls[2]);
+  void setStreamLevels(short left_lvl,short right_lvl);
   bool operator==(const __RDCae_PlayChannel &other) const;
 
  private:
   unsigned d_card;
   unsigned d_port;
   unsigned d_position;
+  short d_stream_levels[2];
 };
 
 
@@ -85,7 +88,7 @@ class RDCae : public QObject
   bool inputStatus(int card,int port) const;
   void inputMeterUpdate(int card,int port,short levels[2]);
   void outputMeterUpdate(int card,int port,short levels[2]);
-  void outputStreamMeterUpdate(int card,int stream,short levels[2]);
+  void outputStreamMeterUpdate(unsigned serial,short levels[2]);
   unsigned playPosition(unsigned serial);
   void requestTimescale(int card);
   bool playPortStatus(int card,int port,unsigned except_serial=0) const;
@@ -128,7 +131,6 @@ class RDCae : public QObject
   int cae_meter_port_range;
   short cae_input_levels[RD_MAX_CARDS][RD_MAX_PORTS][2];
   short cae_output_levels[RD_MAX_CARDS][RD_MAX_PORTS][2];
-  short cae_stream_output_levels[RD_MAX_CARDS][RD_MAX_PORTS][2];
   QMap<unsigned,__RDCae_PlayChannel *> cae_play_channels;
   RDStation *cae_station;
   RDConfig *cae_config;

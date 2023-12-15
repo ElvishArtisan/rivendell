@@ -1528,29 +1528,19 @@
     </para>
     <para>
       <computeroutput>MO
-      <replaceable>card-num</replaceable>
-      <replaceable>port-num</replaceable>
+      <replaceable>serial</replaceable>
       <replaceable>left-lvl</replaceable>
       <replaceable>right-lvl</replaceable>!</computeroutput>
     </para>
     <variablelist>
       <varlistentry>
 	<term>
-	  <replaceable>card-num</replaceable>
+	  <replaceable>serial</replaceable>
 	</term>
 	<listitem>
 	  <para>
-	    The number of the audio adapter to use.
-	  </para>
-	</listitem>
-      </varlistentry>
-      <varlistentry>
-	<term>
-	  <replaceable>port-num</replaceable>
-	</term>
-	<listitem>
-	  <para>
-	    The port number on the audio adapter.
+	    The serial number of the playback event, from the
+	    <command>Load Playback</command> call.
 	  </para>
 	</listitem>
       </varlistentry>

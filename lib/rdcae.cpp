@@ -43,6 +43,9 @@ __RDCae_PlayChannel::__RDCae_PlayChannel(unsigned card,unsigned port)
   d_card=card;
   d_port=port;
   d_position=0;
+  for(int i=0;i<2;i++) {
+    d_stream_levels[i]=RD_MUTE_DEPTH;
+  }
 }
 
 
@@ -67,6 +70,21 @@ unsigned __RDCae_PlayChannel::position() const
 void __RDCae_PlayChannel::setPosition(unsigned pos)
 {
   d_position=pos;
+}
+
+
+void __RDCae_PlayChannel::getStreamLevels(short lvls[2])
+{
+  for(int i=0;i<2;i++) {
+    lvls[i]=d_stream_levels[i];
+  }
+}
+
+
+void __RDCae_PlayChannel::setStreamLevels(short left_lvl,short right_lvl)
+{
+  d_stream_levels[0]=left_lvl;
+  d_stream_levels[1]=right_lvl;
 }
 
 
@@ -151,7 +169,6 @@ RDCae::RDCae(RDStation *station,RDConfig *config,QObject *parent)
       for(unsigned k=0;k<2;k++) {
 	cae_input_levels[i][j][k]=-10000;
 	cae_output_levels[i][j][k]=-10000;
-	cae_stream_output_levels[i][j][k]=-10000;
       }
     }
   }
@@ -415,11 +432,14 @@ void RDCae::outputMeterUpdate(int card,int port,short levels[2])
 }
 
 
-void RDCae::outputStreamMeterUpdate(int card,int stream,short levels[2])
+void RDCae::outputStreamMeterUpdate(unsigned serial,short levels[2])
 {
-  UpdateMeters();
-  levels[0]=cae_stream_output_levels[card][stream][0];
-  levels[1]=cae_stream_output_levels[card][stream][1];
+  __RDCae_PlayChannel *chan=NULL;
+
+  if((chan=cae_play_channels.value(serial))!=NULL) {
+    UpdateMeters();
+    chan->getStreamLevels(levels);
+  }
 }
 
 
@@ -521,14 +541,12 @@ void RDCae::DispatchCommand(const QString &cmd)
   }
 
   if((cmds.at(0)=="PP")&&(cmds.size()==3)) {   // Position Play
-    printf("Position Play\n");
     unsigned serial=cmds.at(1).toUInt(&ok);
     if(ok) {
       unsigned pos=cmds.at(2).toUInt(&ok);
       if(ok) {
 	if((chan=cae_play_channels.value(serial))!=NULL) {
 	  if(SerialCheck(serial,LINE_NUMBER)) {
-	    printf("emitting playPositioned(%u,%u)\n",serial,pos);
 	    emit playPositioned(serial,pos);
 	  }
 	}
@@ -654,6 +672,7 @@ void RDCae::UpdateMeters()
   char msg[1501];
   int n;
   QStringList args;
+  __RDCae_PlayChannel *chan=NULL;
 
   bool ok=false;
 
@@ -675,11 +694,13 @@ void RDCae::UpdateMeters()
       }
     }
     if(args[0]=="MO") {
-      if(args.size()==5) {
-	cae_stream_output_levels[args[1].toInt()][args[2].toInt()][0]=
-	    args[3].toInt();
-	cae_stream_output_levels[args[1].toInt()][args[2].toInt()][1]=
-	    args[4].toInt();
+      if(args.size()==4) {
+	unsigned serial=args.at(1).toUInt(&ok);
+	if(ok) {
+	  if((chan=cae_play_channels.value(serial))!=NULL) {
+	    chan->setStreamLevels(args.at(2).toShort(),args.at(3).toShort());
+	  }
+	}
       }
     }
     if(args[0]=="MP") {
