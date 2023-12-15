@@ -24548,3 +24548,6 @@
 	['MO'] CAE command to use play session serial numbers rather than
 	card and stream numbers.
 	* Fixed a regression in rdcartslots(1) that broke audio meters.
+2023-12-15 Fred Gleason <fredg@paravelsystems.com>
+	* Rewrote the CAE API documentation so as to use the term 'stream'
+	more consistently.

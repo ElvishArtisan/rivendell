@@ -114,8 +114,8 @@
     <title><command>Load Playback</command></title>
     <para>
       Prepare an audio interface to play an audio file, while also muting
-      all stream-to-port mixer controls for the stream returned in
-      <replaceable>stream-num</replaceable>.
+      all stream-to-port mixer controls for the stream that is internally
+      allocated by <command>caed</command><manvolnum>8</manvolnum>.
     </para>
     <para>
       <userinput>LP <replaceable>serial</replaceable>
@@ -171,8 +171,7 @@
   <sect2>
     <title><command>Unload Playback</command></title>
     <para>
-      Free an audio playback interface. This will also mute all associated
-      output stream->output port volume controls.
+      Free an audio playback interface.
     </para>
     <para>
       <userinput>UP <replaceable>serial</replaceable>!</userinput>
@@ -184,8 +183,8 @@
 	</term>
 	<listitem>
 	  <para>
-	    The serial number of the playback event, from the
-	    <command>Load Playback</command> call.
+	    The <replaceable>serial</replaceable> value used in the
+	    corresponding <command>Load Playback</command> command.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -208,8 +207,8 @@
 	</term>
 	<listitem>
 	  <para>
-	    The serial number of the playback event, from the
-	    <command>Load Playback</command> call.
+	    The <replaceable>serial</replaceable> value used in the
+	    corresponding <command>Load Playback</command> command.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -244,8 +243,8 @@
 	</term>
 	<listitem>
 	  <para>
-	    The serial number of the playback event, from the
-	    <command>Load Playback</command> call.
+	    The <replaceable>serial</replaceable> value used in the
+	    corresponding <command>Load Playback</command> command.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -299,8 +298,87 @@
 	</term>
 	<listitem>
 	  <para>
-	    The serial number of the playback event, from the
-	    <command>Load Playback</command> call.
+	    The <replaceable>serial</replaceable> value used in the
+	    corresponding <command>Load Playback</command> command.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </sect2>
+
+  <sect2>
+    <title><command>Set Output Volume</command></title>
+    <para>
+      Set the volume of an output playback.
+    </para>
+    <para>
+      <userinput>OV <replaceable>serial</replaceable>
+      <replaceable>level</replaceable>!</userinput>
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term>
+	  <replaceable>serial</replaceable>
+	</term>
+	<listitem>
+	  <para>
+	    The <replaceable>serial</replaceable> value used in the
+	    corresponding <command>Load Playback</command> command.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>
+	  <replaceable>level</replaceable>
+	</term>
+	<listitem>
+	  <para>
+	    The  level, in hundreths of a dB.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </sect2>
+
+  <sect2>
+    <title><command>Fade Output Volume</command></title>
+    <para>
+      Transition the volume of an output playback over time.
+    </para>
+    <para>
+      <userinput>FV <replaceable>serial</replaceable>
+      <replaceable>level</replaceable>
+      <replaceable>length</replaceable>!</userinput>
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term>
+	  <replaceable>serial</replaceable>
+	</term>
+	<listitem>
+	  <para>
+	    The <replaceable>serial</replaceable> value used in the
+	    corresponding <command>Load Playback</command> command.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>
+	  <replaceable>level</replaceable>
+	</term>
+	<listitem>
+	  <para>
+	    The  level, in hundreths of a dB.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>
+	  <replaceable>length</replaceable>
+	</term>
+	<listitem>
+	  <para>
+	    The  length of the transition, in milliseconds.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -359,7 +437,7 @@
 	</term>
 	<listitem>
 	  <para>
-	    The number of the audio adapter to query.
+	    The number of the audio adapter to use.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -369,8 +447,8 @@
 	</term>
 	<listitem>
 	  <para>
-	    The port number to use.  This is relative to the audio adapter
-	    selected.
+	    The input port number to use.  This is relative to the audio
+	    adapter selected.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -427,6 +505,12 @@
 	</listitem>
       </varlistentry>
     </variablelist>
+    <note>
+      Rivendell always assumes that the input port number specified in
+      <replaceable>port-num</replaceable> corresponds to
+      the recording stream number used internally by
+      <command>caed</command><manvolnum>8</manvolnum>.
+    </note>
   </sect2>
 
   <sect2>
@@ -436,7 +520,7 @@
     </para>
     <para>
       <userinput>UR <replaceable>card-num</replaceable>
-      <replaceable>stream-num</replaceable>!</userinput>
+      <replaceable>port-num</replaceable>!</userinput>
     </para>
     <variablelist>
       <varlistentry>
@@ -445,18 +529,19 @@
 	</term>
 	<listitem>
 	  <para>
-	    The number of the audio adapter to use.
+	    The <replaceable>card-num</replaceable> value used in the
+	    corresponding <command>Load Recording</command> command.
 	  </para>
 	</listitem>
       </varlistentry>
       <varlistentry>
 	<term>
-	  <replaceable>stream-num</replaceable>
+	  <replaceable>port-num</replaceable>
 	</term>
 	<listitem>
 	  <para>
-	    The stream number to use. This is relative to the audio adapter
-	    selected.
+	    The <replaceable>port-num</replaceable> value used in the
+	    corresponding <command>Load Recording</command> command.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -464,13 +549,13 @@
     <para>
       Returns: <computeroutput>UR
       <replaceable>card-num</replaceable> 
-      <replaceable>stream-num</replaceable>
-      <replaceable>len</replaceable>!</computeroutput>
+      <replaceable>port-num</replaceable>
+      <replaceable>length</replaceable>!</computeroutput>
     </para>
     <variablelist>
       <varlistentry>
 	<term>
-	  <replaceable>len</replaceable>
+	  <replaceable>length</replaceable>
 	</term>
 	<listitem>
 	  <para>
@@ -488,7 +573,7 @@
     </para>
     <para>
       <userinput>RD <replaceable>card-num</replaceable>
-      <replaceable>stream-num</replaceable>
+      <replaceable>port-num</replaceable>
       <replaceable>length</replaceable>
       <replaceable>threshold</replaceable>!</userinput>
     </para>
@@ -499,18 +584,19 @@
 	</term>
 	<listitem>
 	  <para>
-	    The number of the audio adapter to use.
+	    The <replaceable>card-num</replaceable> value used in the
+	    corresponding <command>Load Recording</command> command.
 	  </para>
 	</listitem>
       </varlistentry>
       <varlistentry>
 	<term>
-	  <replaceable>stream-num</replaceable>
+	  <replaceable>port-num</replaceable>
 	</term>
 	<listitem>
 	  <para>
-	    The stream number to use. This is relative to the audio adapter
-	    selected.
+	    The <replaceable>port-num</replaceable> value used in the
+	    corresponding <command>Load Recording</command> command.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -521,7 +607,7 @@
 	<listitem>
 	  <para>
 	    Length of time to record in milliseconds. If zero, record until
-	    told to stop.
+	    sent a <command>Stop Recording</command> command.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -551,7 +637,7 @@
     </para>
     <para>
       <userinput>SR <replaceable>card-num</replaceable>
-      <replaceable>stream-num</replaceable>!</userinput>
+      <replaceable>port-num</replaceable>!</userinput>
     </para>
     <variablelist>
       <varlistentry>
@@ -560,17 +646,19 @@
 	</term>
 	<listitem>
 	  <para>
-	    The number of the audio adapter.
+	    The <replaceable>card-num</replaceable> value used in the
+	    corresponding <command>Load Recording</command> command.
 	  </para>
 	</listitem>
       </varlistentry>
       <varlistentry>
 	<term>
-	  <replaceable>stream-num</replaceable>
+	  <replaceable>port-num</replaceable>
 	</term>
 	<listitem>
 	  <para>
-	    The stream number.
+	    The <replaceable>port-num</replaceable> value used in the
+	    corresponding <command>Load Recording</command> command.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -586,7 +674,7 @@
     </para>
     <para>
       <computeroutput>RS <replaceable>card-num</replaceable>
-      <replaceable>stream-num</replaceable>!</computeroutput>
+      <replaceable>port-num</replaceable>!</computeroutput>
     </para>
     <variablelist>
       <varlistentry>
@@ -595,27 +683,25 @@
 	</term>
 	<listitem>
 	  <para>
-	    The number of the audio adapter to use.
+	    The <replaceable>card-num</replaceable> value used in the
+	    corresponding <command>Load Recording</command> command.
 	  </para>
 	</listitem>
       </varlistentry>
       <varlistentry>
 	<term>
-	  <replaceable>stream-num</replaceable>
+	  <replaceable>port-num</replaceable>
 	</term>
 	<listitem>
 	  <para>
-	    The stream number to use. This is relative to the audio adapter
-	    selected.
+	    The <replaceable>port-num</replaceable> value used in the
+	    corresponding <command>Load Recording</command> command.
 	  </para>
 	</listitem>
       </varlistentry>
     </variablelist>
   </sect2>
-</sect1>
 
-<sect1>
-  <title>Mixer Operations</title>
   <sect2>
     <title><command>Set Input Volume</command></title>
     <para>
@@ -623,147 +709,6 @@
     </para>
     <para>
       <userinput>IV <replaceable>card-num</replaceable>
-      <replaceable>stream-num</replaceable>
-      <replaceable>level</replaceable>!</userinput>
-    </para>
-    <variablelist>
-      <varlistentry>
-	<term>
-	  <replaceable>card-num</replaceable>
-	</term>
-	<listitem>
-	  <para>
-	    The number of the audio adapter to use.
-	  </para>
-	</listitem>
-      </varlistentry>
-      <varlistentry>
-	<term>
-	  <replaceable>stream-num</replaceable>
-	</term>
-	<listitem>
-	  <para>
-	    The stream  number to use. This is relative to the audio adapter
-	    selected.
-	  </para>
-	</listitem>
-      </varlistentry>
-      <varlistentry>
-	<term>
-	  <replaceable>level</replaceable>
-	</term>
-	<listitem>
-	  <para>
-	    The  level, in hundreths of a dB.
-	  </para>
-	</listitem>
-      </varlistentry>
-    </variablelist>
-  </sect2>
-
-  <sect2>
-    <title><command>Set Output Volume</command></title>
-    <para>
-      Set the volume of an output playback.
-    </para>
-    <para>
-      <userinput>OV <replaceable>serial</replaceable>
-      <replaceable>level</replaceable>!</userinput>
-    </para>
-    <variablelist>
-      <varlistentry>
-	<term>
-	  <replaceable>serial</replaceable>
-	</term>
-	<listitem>
-	  <para>
-	    The serial number of the playback event, from the
-	    <command>Load Playback</command> call.
-	  </para>
-	</listitem>
-      </varlistentry>
-<!--
-      <varlistentry>
-	<term>
-	  <replaceable>port-num</replaceable>
-	</term>
-	<listitem>
-	  <para>
-	    The port number to use. This is relative to the audio adapter
-	    selected. If a value less than <userinput>0</userinput> is
-	    provided, then <emphasis>all</emphasis> output ports for
-	    the output stream referenced by
-	    <replaceable>serial</replaceable> will have their volume
-	    controls set to <replaceable>level</replaceable>.
-	  </para>
-	</listitem>
-      </varlistentry>
--->
-      <varlistentry>
-	<term>
-	  <replaceable>level</replaceable>
-	</term>
-	<listitem>
-	  <para>
-	    The  level, in hundreths of a dB.
-	  </para>
-	</listitem>
-      </varlistentry>
-    </variablelist>
-  </sect2>
-
-  <sect2>
-    <title><command>Fade Output Volume</command></title>
-    <para>
-      Transition the volume of an output playback over time.
-    </para>
-    <para>
-      <userinput>FV <replaceable>serial</replaceable>
-      <replaceable>level</replaceable>
-      <replaceable>length</replaceable>!</userinput>
-    </para>
-    <variablelist>
-      <varlistentry>
-	<term>
-	  <replaceable>serial</replaceable>
-	</term>
-	<listitem>
-	  <para>
-	    The serial number of the playback event, from the
-	    <command>Load Playback</command> call.
-	  </para>
-	</listitem>
-      </varlistentry>
-      <varlistentry>
-	<term>
-	  <replaceable>level</replaceable>
-	</term>
-	<listitem>
-	  <para>
-	    The  level, in hundreths of a dB.
-	  </para>
-	</listitem>
-      </varlistentry>
-      <varlistentry>
-	<term>
-	  <replaceable>length</replaceable>
-	</term>
-	<listitem>
-	  <para>
-	    The  length of the transition, in milliseconds.
-	  </para>
-	</listitem>
-      </varlistentry>
-    </variablelist>
-  </sect2>
-
-  <sect2>
-    <title><command>Set Input Level</command></title>
-    <para>
-      Set the gain level of an input port.
-    </para>
-    <para>
-      <userinput>IL <replaceable>card-num</replaceable>
       <replaceable>port-num</replaceable>
       <replaceable>level</replaceable>!</userinput>
     </para>
@@ -774,18 +719,19 @@
 	</term>
 	<listitem>
 	  <para>
-	    The number of the audio adapter to use.
+	    The <replaceable>card-num</replaceable> value used in the
+	    corresponding <command>Load Recording</command> command.
 	  </para>
 	</listitem>
       </varlistentry>
       <varlistentry>
 	<term>
-	  <replaceable>stream-num</replaceable>
+	  <replaceable>port-num</replaceable>
 	</term>
 	<listitem>
 	  <para>
-	    The port number to use. This is relative to the audio adapter
-	    selected.
+	    The <replaceable>port-num</replaceable> value used in the
+	    corresponding <command>Load Recording</command> command.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -802,6 +748,59 @@
     </variablelist>
   </sect2>
 
+  <sect2>
+    <title><command>Set Input Vox Level</command></title>
+    <para>
+      Set the VOX threshold level of an input stream.
+    </para>
+    <para>
+      <userinput>IX <replaceable>card-num</replaceable>
+      <replaceable>port-num</replaceable>
+      <replaceable>level</replaceable>!</userinput>
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term>
+	  <replaceable>card-num</replaceable>
+	</term>
+	<listitem>
+	  <para>
+	    The <replaceable>card-num</replaceable> value used in the
+	    corresponding <command>Load Recording</command> command.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>
+	  <replaceable>port-num</replaceable>
+	</term>
+	<listitem>
+	  <para>
+	    The <replaceable>port-num</replaceable> value used in the
+	    corresponding <command>Load Recording</command> command.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>
+	  <replaceable>level</replaceable>
+	</term>
+	<listitem>
+	  <para>
+	    The  level, in hundreths of a dB.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </sect2>
+</sect1>
+
+<sect1>
+  <title>Global Mixer Operations</title>
+  <para>
+    These commands operate independently of any specific playback or
+    recording operation.
+  </para>
   <sect2>
     <title><command>Set Output Level</command></title>
     <para>
@@ -848,13 +847,13 @@
   </sect2>
 
   <sect2>
-    <title><command>Set Input Mode</command></title>
+    <title><command>Set Output Mode</command></title>
     <para>
-      Set the mode of an input stream.
+      Set the mode of an output port.
     </para>
     <para>
-      <userinput>IM <replaceable>card-num</replaceable>
-      <replaceable>stream-num</replaceable>
+      <userinput>OM <replaceable>card-num</replaceable>
+      <replaceable>port-num</replaceable>
       <replaceable>mode</replaceable>!</userinput>
     </para>
     <variablelist>
@@ -874,8 +873,8 @@
 	</term>
 	<listitem>
 	  <para>
-	    The stream number to use. This is relative to the audio adapter
-	    selected.
+	    The output port  number to use. This is relative to the audio
+	    adapter selected.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -935,100 +934,13 @@
   </sect2>
 
   <sect2>
-    <title><command>Set Output Mode</command></title>
+    <title><command>Set Input Level</command></title>
     <para>
-      Set the mode of an output stream.
+      Set the gain level of an input port.
     </para>
     <para>
-      <userinput>OM <replaceable>card-num</replaceable>
-      <replaceable>stream-num</replaceable>
-      <replaceable>mode</replaceable>!</userinput>
-    </para>
-    <variablelist>
-      <varlistentry>
-	<term>
-	  <replaceable>card-num</replaceable>
-	</term>
-	<listitem>
-	  <para>
-	    The number of the audio adapter to use.
-	  </para>
-	</listitem>
-      </varlistentry>
-      <varlistentry>
-	<term>
-	  <replaceable>stream-num</replaceable>
-	</term>
-	<listitem>
-	  <para>
-	    The stream number to use. This is relative to the audio adapter
-	    selected.
-	  </para>
-	</listitem>
-      </varlistentry>
-      <varlistentry>
-	<term>
-	  <replaceable>mode</replaceable>
-	</term>
-	<listitem>
-	  <para>
-	    The  mode, as follows:
-	    <variablelist>
-	      <varlistentry>
-		<term>
-		  <userinput>0</userinput>
-		</term>
-		<listitem>
-		  <para>
-		    Normal
-		  </para>
-		</listitem>
-	      </varlistentry>
-	      <varlistentry>
-		<term>
-		  <userinput>1</userinput>
-		</term>
-		<listitem>
-		  <para>
-		    Swap left and right channels
-		  </para>
-		</listitem>
-	      </varlistentry>
-	      <varlistentry>
-		<term>
-		  <userinput>2</userinput>
-		</term>
-		<listitem>
-		  <para>
-		    Left audio on both channels
-		  </para>
-		</listitem>
-	      </varlistentry>
-	      <varlistentry>
-		<term>
-		  <userinput>3</userinput>
-		</term>
-		<listitem>
-		  <para>
-		    Right audio on both channels
-		  </para>
-		</listitem>
-	      </varlistentry>
-	    </variablelist>
-	  </para>
-	</listitem>
-      </varlistentry>
-    </variablelist>
-  </sect2>
-
-  <sect2>
-    <title><command>Set Input Vox Level</command></title>
-    <para>
-      Set the VOX threshold level of an input stream.
-    </para>
-    <para>
-      <userinput>IX <replaceable>card-num</replaceable>
-      <replaceable>stream-num</replaceable>
+      <userinput>IL <replaceable>card-num</replaceable>
+      <replaceable>port-num</replaceable>
       <replaceable>level</replaceable>!</userinput>
     </para>
     <variablelist>
@@ -1048,8 +960,8 @@
 	</term>
 	<listitem>
 	  <para>
-	    The stream number to use. This is relative to the audio adapter
-	    selected.
+	    The input port number to use. This is relative to the audio
+	    adapter selected.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -1060,6 +972,93 @@
 	<listitem>
 	  <para>
 	    The  level, in hundreths of a dB.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </sect2>
+
+  <sect2>
+    <title><command>Set Input Mode</command></title>
+    <para>
+      Set the mode of an input port.
+    </para>
+    <para>
+      <userinput>IM <replaceable>card-num</replaceable>
+      <replaceable>port-num</replaceable>
+      <replaceable>mode</replaceable>!</userinput>
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term>
+	  <replaceable>card-num</replaceable>
+	</term>
+	<listitem>
+	  <para>
+	    The number of the audio adapter to use.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>
+	  <replaceable>port-num</replaceable>
+	</term>
+	<listitem>
+	  <para>
+	    The input port  number to use. This is relative to the audio
+	    adapter selected.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>
+	  <replaceable>mode</replaceable>
+	</term>
+	<listitem>
+	  <para>
+	    The  mode, as follows:
+	    <variablelist>
+	      <varlistentry>
+		<term>
+		  <userinput>0</userinput>
+		</term>
+		<listitem>
+		  <para>
+		    Normal
+		  </para>
+		</listitem>
+	      </varlistentry>
+	      <varlistentry>
+		<term>
+		  <userinput>1</userinput>
+		</term>
+		<listitem>
+		  <para>
+		    Swap left and right channels
+		  </para>
+		</listitem>
+	      </varlistentry>
+	      <varlistentry>
+		<term>
+		  <userinput>2</userinput>
+		</term>
+		<listitem>
+		  <para>
+		    Left audio on both channels
+		  </para>
+		</listitem>
+	      </varlistentry>
+	      <varlistentry>
+		<term>
+		  <userinput>3</userinput>
+		</term>
+		<listitem>
+		  <para>
+		    Right audio on both channels
+		  </para>
+		</listitem>
+	      </varlistentry>
+	    </variablelist>
 	  </para>
 	</listitem>
       </varlistentry>
@@ -1435,7 +1434,7 @@
   <sect2>
     <title><command>Port Meter Levels</command></title>
     <para>
-      Send current meter level of output stream
+      Current meter levels of an input or output port.
     </para>
     <para>
       <computeroutput>ML
@@ -1524,7 +1523,7 @@
   <sect2>
     <title><command>Output Stream Meter Levels</command></title>
     <para>
-      Send current meter level of output stream
+      Send current meter level of the output stream.
     </para>
     <para>
       <computeroutput>MO
@@ -1605,43 +1604,22 @@
   <sect2>
     <title><command>Output Stream Status</command></title>
     <para>
-      The current output stream transport status.
+      Output stream transport status.
     </para>
     <para>
       <computeroutput>MS
-      <replaceable>card-num</replaceable>
-      <replaceable>port-num</replaceable>
-      <replaceable>stream-num</replaceable>
+      <replaceable>serial</replaceable>
       <replaceable>status</replaceable>!</computeroutput>
     </para>
     <variablelist>
       <varlistentry>
 	<term>
-	  <replaceable>card-num</replaceable>
+	  <replaceable>serial</replaceable>
 	</term>
 	<listitem>
 	  <para>
-	    The number of the audio adapter to use.
-	  </para>
-	</listitem>
-      </varlistentry>
-      <varlistentry>
-	<term>
-	  <replaceable>port-num</replaceable>
-	</term>
-	<listitem>
-	  <para>
-	    The port number on the audio adapter.
-	  </para>
-	</listitem>
-      </varlistentry>
-      <varlistentry>
-	<term>
-	  <replaceable>stream-num</replaceable>
-	</term>
-	<listitem>
-	  <para>
-	    The stream number on the audio adapter.
+	    The <replaceable>serial</replaceable> value used in the
+	    corresponding <command>Load Playback</command> command.
 	  </para>
 	</listitem>
       </varlistentry>
