@@ -1600,59 +1600,6 @@
       </varlistentry>
     </variablelist>
   </sect2>
-
-  <sect2>
-    <title><command>Output Stream Status</command></title>
-    <para>
-      Output stream transport status.
-    </para>
-    <para>
-      <computeroutput>MS
-      <replaceable>serial</replaceable>
-      <replaceable>status</replaceable>!</computeroutput>
-    </para>
-    <variablelist>
-      <varlistentry>
-	<term>
-	  <replaceable>serial</replaceable>
-	</term>
-	<listitem>
-	  <para>
-	    The <replaceable>serial</replaceable> value used in the
-	    corresponding <command>Load Playback</command> command.
-	  </para>
-	</listitem>
-      </varlistentry>
-      <varlistentry>
-	<term>
-	  <replaceable>status</replaceable>
-	</term>
-	<listitem>
-	  <para>
-	    Current transport status.
-	    <variablelist>
-	      <varlistentry>
-		<term>
-		  <computeroutput>0</computeroutput>
-		</term>
-		<listitem>
-		  Stopped
-		</listitem>
-	      </varlistentry>
-	      <varlistentry>
-		<term>
-		  <computeroutput>1</computeroutput>
-		</term>
-		<listitem>
-		  Playing
-		</listitem>
-	      </varlistentry>
-	    </variablelist>
-	  </para>
-	</listitem>
-      </varlistentry>
-    </variablelist>
-  </sect2>
 </sect1>
 
 </article>
