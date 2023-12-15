@@ -1006,13 +1006,6 @@ void MainObject::setClockSourceData(int id,unsigned card,int input)
 }
 
 
-void MainObject::openRtpCaptureChannelData(int id,unsigned card,unsigned port,
-					   uint16_t udp_port,unsigned samprate,
-					   unsigned chans)
-{
-}
-
-
 void MainObject::meterEnableData(int id,uint16_t udp_port,
 				 const QList<unsigned> &cards)
 {

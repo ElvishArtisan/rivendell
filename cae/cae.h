@@ -99,9 +99,6 @@ class MainObject : public QObject
   void setAudioPassthroughLevelData(int id,unsigned card,unsigned input,
 				    unsigned output,int level);
   void setClockSourceData(int id,unsigned card,int input);
-  void openRtpCaptureChannelData(int id,unsigned card,unsigned port,
-				 uint16_t udp_port,unsigned samprate,
-				 unsigned chans);
   void meterEnableData(int id,uint16_t udp_port,const QList<unsigned> &cards);
   void statePlayUpdate(int card,int stream,int state);
   void stateRecordUpdate(int card,int stream,int state);

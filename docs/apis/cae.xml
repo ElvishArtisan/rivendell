@@ -1301,97 +1301,13 @@
 </sect1>
 
 <sect1>
-  <title>External Operations</title>
-  <sect2>
-    <title><command>Open RTP Capture Channel</command></title>
-    <para>
-      Open an RTP channel for audio capture.
-    </para>
-    <para>
-      <userinput>CO <replaceable>card-num</replaceable>
-      <replaceable>port-num</replaceable>
-      <replaceable>udp-port</replaceable>
-      <replaceable>samp-rate</replaceable>
-      <replaceable>channels</replaceable>!</userinput>
-    </para>
-    <variablelist>
-      <varlistentry>
-	<term>
-	  <replaceable>card-num</replaceable>
-	</term>
-	<listitem>
-	  <para>
-	    The number of the audio adapter to use.
-	  </para>
-	</listitem>
-      </varlistentry>
-      <varlistentry>
-	<term>
-	  <replaceable>udp-port</replaceable>
-	</term>
-	<listitem>
-	  <para>
-	    The port number on the remote system to which to send RTP packets.
-	  </para>
-	</listitem>
-      </varlistentry>
-      <varlistentry>
-	<term>
-	  <replaceable>samp-rate</replaceable>
-	</term>
-	<listitem>
-	  <para>
-	    The requested sample rate.
-	  </para>
-	</listitem>
-      </varlistentry>
-      <varlistentry>
-	<term>
-	  <replaceable>channels</replaceable>
-	</term>
-	<listitem>
-	  <para>
-	    The requested number of channels.
-	  </para>
-	</listitem>
-      </varlistentry>
-    </variablelist>
-    <para>
-      Returns: <computeroutput>CO 
-      <replaceable>card-num</replaceable>
-      <replaceable>port-num</replaceable>
-      <replaceable>udp-port</replaceable>
-      <replaceable>samp-rate</replaceable>
-      <replaceable>chans</replaceable>
-      <replaceable>pkt-size</replaceable>!</computeroutput>
-    </para>
-    <variablelist>
-      <varlistentry>
-	<term>
-	  <replaceable>pkt-size</replaceable>
-	</term>
-	<listitem>
-	  <para>
-	    The number of bytes to send per UDP packet.
-	  </para>
-	</listitem>
-      </varlistentry>
-    </variablelist>
-    <para>
-      The actual sample rate and number of channels may be different from
-      those requested; clients must be prepared to detect and deal with this
-      possibility!
-    </para>
-  </sect2>
-</sect1>
-
-<sect1>
-  <title>Meter Commands</title>
+  <title>Meter and Positioning Updates</title>
   <sect2>
     <title><command>Meter Enable</command></title>
     <para>
       Set UDP port to which to send meter update messages for the specified
-      card(s).
+      card(s). If set to a non-zero UDP port, update messages (see below)
+      from the specified cards will be sent to that port.
     </para>
     <para>
       <userinput>ME
@@ -1427,8 +1343,8 @@
 <sect1>
   <title>Meter Status Updates</title>
   <para>
-    The following messages are sent by CAE to indicate current status and
-    audio levels. They are sent to the UDP port requested by the Meter
+    The following messages are sent by CAE to indicate audio levels and
+    playout positions. They are sent to the UDP port requested by the Meter
     Enable ['ME'] command.
   </para>
   <sect2>

@@ -97,9 +97,6 @@ class CaeServer : public QObject
   void setAudioPassthroughLevelReq(int id,unsigned card,unsigned input,
 				   unsigned output,int level);
   void setClockSourceReq(int id,unsigned card,int input);
-  void openRtpCaptureChannelReq(int id,unsigned card,unsigned port,
-				uint16_t udp_port,unsigned samprate,
-				unsigned chans);
   void meterEnableReq(int id,uint16_t udp_port,const QList<unsigned> &cards);
 
  private slots:
