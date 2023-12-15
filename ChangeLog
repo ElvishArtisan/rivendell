@@ -24565,3 +24565,5 @@
 2023-12-15 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdcatch(1) that broke play-out of the
 	head and tail audition buttons.
+2023-12-15 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdcatchd(8) that broke play-out events.

@@ -197,12 +197,6 @@ MainObject::MainObject(QObject *parent)
   connect(cae_server,SIGNAL(setClockSourceReq(int,unsigned,int)),
 	  this,SLOT(setClockSourceData(int,unsigned,int)));
   connect(cae_server,
-	  SIGNAL(openRtpCaptureChannelReq(int,unsigned,unsigned,uint16_t,
-					  unsigned,unsigned)),
-	  this,
-	  SLOT(openRtpCaptureChannelData(int,unsigned,unsigned,uint16_t,
-					unsigned,unsigned)));
-  connect(cae_server,
 	  SIGNAL(meterEnableReq(int,uint16_t,const QList<unsigned> &)),
 	  this,
 	  SLOT(meterEnableData(int,uint16_t,const QList<unsigned> &)));

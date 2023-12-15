@@ -70,10 +70,10 @@ class MainObject : public QObject
   void recordingData(int card,int stream);
   void recordStoppedData(int card,int stream);
   void recordUnloadedData(int card,int stream,unsigned msecs);
-  void playLoadedData(int handle);
-  void playingData(int handle);
-  void playStoppedData(int handle);
-  void playUnloadedData(int handle);
+  void playLoadedData(unsigned serial);
+  void playingData(unsigned serial);
+  void playStoppedData(unsigned serial);
+  void playUnloadedData(unsigned serial);
   void runCartData(int chan,int number,unsigned cartnum);
   void meterData();
   void eventFinishedData(int id);

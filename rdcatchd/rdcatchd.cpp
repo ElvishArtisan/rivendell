@@ -217,14 +217,14 @@ MainObject::MainObject(QObject *parent)
 	  this,SLOT(recordStoppedData(int,int)));
   connect(rda->cae(),SIGNAL(recordUnloaded(int,int,unsigned)),
 	  this,SLOT(recordUnloadedData(int,int,unsigned)));
-  connect(rda->cae(),SIGNAL(playLoaded(int)),
-	  this,SLOT(playLoadedData(int)));
-  connect(rda->cae(),SIGNAL(playing(int)),
-	  this,SLOT(playingData(int)));
-  connect(rda->cae(),SIGNAL(playStopped(int)),
-	  this,SLOT(playStoppedData(int)));
-  connect(rda->cae(),SIGNAL(playUnloaded(int)),
-	  this,SLOT(playUnloadedData(int)));
+  connect(rda->cae(),SIGNAL(playLoaded(unsigned)),
+	  this,SLOT(playLoadedData(unsigned)));
+  connect(rda->cae(),SIGNAL(playing(unsigned)),
+	  this,SLOT(playingData(unsigned)));
+  connect(rda->cae(),SIGNAL(playStopped(unsigned)),
+	  this,SLOT(playStoppedData(unsigned)));
+  connect(rda->cae(),SIGNAL(playUnloaded(unsigned)),
+	  this,SLOT(playUnloadedData(unsigned)));
   if(!rda->cae()->connectHost(&err_msg)) {
     rda->syslog(LOG_ERR,"failed to start [%s]",err_msg.toUtf8().constData());
     exit(RDCoreApplication::ExitInternalError);
@@ -941,9 +941,9 @@ void MainObject::recordUnloadedData(int card,int stream,unsigned msecs)
 }
 
 
-void MainObject::playLoadedData(int handle)
+void MainObject::playLoadedData(unsigned serial)
 {
-  int deck=GetPlayoutDeck(handle);
+  int deck=GetPlayoutDeck(serial);
   catch_playout_deck_status[deck-129]=RDDeck::Ready;
   SendEventResponse(deck,catch_playout_deck_status[deck-129],
 		    catch_playout_id[deck-129],"");
@@ -955,15 +955,15 @@ void MainObject::playLoadedData(int handle)
 }
 
 
-void MainObject::playingData(int handle)
+void MainObject::playingData(unsigned serial)
 {
-  int deck=GetPlayoutDeck(handle);
+  int deck=GetPlayoutDeck(serial);
   int event=GetEvent(catch_playout_id[deck-129]);
   catch_playout_deck_status[deck-129]=RDDeck::Recording;
   WriteExitCode(event,RDRecording::PlayActive);
   SendEventResponse(deck,catch_playout_deck_status[deck-129],
 		    catch_playout_id[deck-129],"");
-  catch_playout_status[GetPlayoutDeck(handle)]=true;
+  catch_playout_status[deck]=true;
   if(debug) {
     printf("Playing - Serial: %u  Card: %d\n",
 	   catch_playout_serial[deck-129],
@@ -972,9 +972,9 @@ void MainObject::playingData(int handle)
 }
 
 
-void MainObject::playStoppedData(int handle)
+void MainObject::playStoppedData(unsigned serial)
 {
-  int deck=GetPlayoutDeck(handle);
+  int deck=GetPlayoutDeck(serial);
 
   catch_playout_status[deck-129]=false;
   catch_playout_event_player[deck-129]->stop();
@@ -985,13 +985,13 @@ void MainObject::playStoppedData(int handle)
 	   catch_playout_serial[deck-129],
 	   catch_playout_card[deck-129]);
   }
-  rda->cae()->unloadPlay(handle);
+  rda->cae()->unloadPlay(serial);
 }
 
 
-void MainObject::playUnloadedData(int handle)
+void MainObject::playUnloadedData(unsigned serial)
 {
-  int deck=GetPlayoutDeck(handle);
+  int deck=GetPlayoutDeck(serial);
   int event=GetEvent(catch_playout_id[deck-129]);
 
   rda->syslog(LOG_INFO,"play complete: cut %s",
