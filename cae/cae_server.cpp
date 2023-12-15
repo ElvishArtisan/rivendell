@@ -567,19 +567,6 @@ bool CaeServer::ProcessCommand(int id,const QString &cmd)
       }
     }
   }
-  if((f0.at(0)=="OS")&&(f0.size()==5)) {  // Set Output Status Flag
-    unsigned card=f0.at(1).toUInt(&ok);
-    if(ok&&(card<RD_MAX_CARDS)) {
-      unsigned port=f0.at(2).toUInt(&ok);
-      if(ok&&(port<RD_MAX_PORTS)) {
-	unsigned stream=f0.at(3).toUInt(&ok);
-	if(ok&&(stream<RD_MAX_STREAMS)) {
-	  emit setOutputStatusFlagReq(id,card,port,stream,f0.at(4)=="1");
-	  was_processed=true;
-	}
-      }
-    }
-  }
 
   if(f0.at(0)=="ME") {  // Meter Enable
     if(f0.size()>2) {  // So we don't warn if no cards are specified

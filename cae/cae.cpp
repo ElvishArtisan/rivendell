@@ -197,10 +197,6 @@ MainObject::MainObject(QObject *parent)
   connect(cae_server,SIGNAL(setClockSourceReq(int,unsigned,int)),
 	  this,SLOT(setClockSourceData(int,unsigned,int)));
   connect(cae_server,
-	  SIGNAL(setOutputStatusFlagReq(int,unsigned,unsigned,unsigned,bool)),
-	  this,
-	  SLOT(setOutputStatusFlagData(int,unsigned,unsigned,unsigned,bool)));
-  connect(cae_server,
 	  SIGNAL(openRtpCaptureChannelReq(int,unsigned,unsigned,uint16_t,
 					  unsigned,unsigned)),
 	  this,
@@ -1010,16 +1006,6 @@ void MainObject::setClockSourceData(int id,unsigned card,int input)
 }
 
 
-void MainObject::setOutputStatusFlagData(int id,unsigned card,unsigned port,
-					 unsigned stream,bool state)
-{
-  output_status_flag[card][port][stream]=state;
-  SendMeterOutputStatusUpdate(card,port,stream);
-  cae_server->sendCommand(id,QString::asprintf("OS %u %u %u %u +!",
-					       card,port,stream,state));
-}
-
-
 void MainObject::openRtpCaptureChannelData(int id,unsigned card,unsigned port,
 					   uint16_t udp_port,unsigned samprate,
 					   unsigned chans)
@@ -1048,7 +1034,6 @@ void MainObject::meterEnableData(int id,uint16_t udp_port,
   }
 
   cae_server->sendCommand(id,cmd+" +!");
-  SendMeterOutputStatusUpdate();
 }
 
 
@@ -1060,7 +1045,6 @@ void MainObject::connectionDroppedData(int id)
 
 void MainObject::statePlayUpdate(int card,int stream,int state)
 {
-  rda->syslog(LOG_NOTICE,"statePlayUpdate(%d,%d,%d)\n",card,stream,state);
   uint64_t phandle=GetPlayHandle(card,stream);
   unsigned serial=PlaySession::serialNumber(phandle);
   PlaySession *psess=play_sessions.value(phandle);
@@ -1639,41 +1623,6 @@ void MainObject::SendMeterPositionUpdate(int cardnum,unsigned pos[])
   }
 }
 
-
-void MainObject::SendMeterOutputStatusUpdate()
-{
-  QList<int> ids=cae_server->connectionIds();
-
-  for(unsigned i=0;i<RD_MAX_CARDS;i++) {
-    if(GetDriver(i)!=NULL) {
-      for(unsigned j=0;j<RD_MAX_PORTS;j++) {
-	for(unsigned k=0;k<RD_MAX_STREAMS;k++) {
-	  for(int l=0;l<ids.size();l++) {
-	    if((cae_server->meterPort(ids.at(l))>0)&&
-	       cae_server->metersEnabled(ids.at(l),i)) {
-	      SendMeterUpdate(QString::asprintf("MS %d %d %d %d",i,j,k,
-				      output_status_flag[i][j][k]),ids.at(l));
-	    }
-	  }
-	}
-      }
-    }
-  }
-}
-
-
-void MainObject::SendMeterOutputStatusUpdate(int card,int port,int stream)
-{
-  QList<int> ids=cae_server->connectionIds();
-
-  for(int l=0;l<ids.size();l++) {
-    if((cae_server->meterPort(ids.at(l))>0)&&
-       cae_server->metersEnabled(ids.at(l),card)) {
-      SendMeterUpdate(QString::asprintf("MS %d %d %d %d",card,port,stream,
-			    output_status_flag[card][port][stream]),ids.at(l));
-    }
-  }
-}
 
 void MainObject::SendMeterUpdate(const QString &msg,int conn_id)
 {

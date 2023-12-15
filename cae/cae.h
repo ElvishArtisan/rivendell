@@ -99,8 +99,6 @@ class MainObject : public QObject
   void setAudioPassthroughLevelData(int id,unsigned card,unsigned input,
 				    unsigned output,int level);
   void setClockSourceData(int id,unsigned card,int input);
-  void setOutputStatusFlagData(int id,unsigned card,unsigned port,
-			       unsigned stream,bool state);
   void openRtpCaptureChannelData(int id,unsigned card,unsigned port,
 				 uint16_t udp_port,unsigned samprate,
 				 unsigned chans);
@@ -124,8 +122,6 @@ class MainObject : public QObject
 			    short levels[]);
   void SendStreamMeterLevelUpdate(PlaySession *psess,short levels[]);
   void SendMeterPositionUpdate(int cardnum,unsigned pos[]);
-  void SendMeterOutputStatusUpdate();
-  void SendMeterOutputStatusUpdate(int card,int port,int stream);
   void SendMeterUpdate(const QString &msg,int conn_id);
   Driver *GetDriver(unsigned card) const;
   void MakeDriver(unsigned *next_card,RDStation::AudioDriver type);

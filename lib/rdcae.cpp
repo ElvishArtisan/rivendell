@@ -246,22 +246,6 @@ void RDCae::enableMetering(QList<int> *cards)
 
 unsigned RDCae::loadPlay(unsigned card,unsigned port,const QString &name)
 {
-  /*
-  cae_serials[card][port]=next_serial_number++;
-  SendCommand(QString().sprintf("LP %u %u %u %s!",
-				cae_serials[card][port],card,port,
-				name.toUtf8().constData()));
-  __RDCae_PlayChannel chan(card,port);
-  for(QMap<unsigned,__RDCae_PlayChannel>::const_iterator it=cae_play_channels.begin();it!=cae_play_channels.end();it++) {
-    if(it.value()==chan) {
-      emit playPortStatusChanged(card,port,true);
-      break;
-    }
-  }
-  cae_play_channelscae_serials
-
-  return cae_serials[card][port];
-  */
   unsigned serial=next_serial_number++;
   SendCommand(QString().sprintf("LP %u %u %u %s!",
 				serial,card,port,name.toUtf8().constData()));
