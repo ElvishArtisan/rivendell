@@ -1520,7 +1520,7 @@ void RDLogPlay::graceTimerData()
 void RDLogPlay::playStateChangedData(int id,RDPlayDeck::State state)
 {
 #ifdef SHOW_SLOTS
-  printf("playStateChangedData(%d,%d), log: %s\n",id,state,(const char *)logName());
+  printf("playStateChangedData(%d,%d), log: %s\n",id,state,logName().toUtf8().constData());
 #endif
   switch(state) {
   case RDPlayDeck::Playing:

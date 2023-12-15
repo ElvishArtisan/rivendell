@@ -666,12 +666,14 @@ void RDPlayDeck::pointTimerData(int point)
       case RDPlayDeck::Segue:
 	if(play_point_state[point]) {
 	  play_point_state[point]=false;
+	  //printf("  segueEnd: %s\n",QTime::currentTime().toString("hh:mm:ss.zzz").toUtf8().constData());
 	  emit segueEnd(play_id);
 	}
 	else {
 	  play_point_state[point]=true;
 	  play_point_timer[point]->
 	    start(play_point_value[point][1]-play_point_value[point][0]);
+	  //printf("segueStart: %s\n",QTime::currentTime().toString("hh:mm:ss.zzz").toUtf8().constData());
 	  emit segueStart(play_id);
 	}
 	break;
@@ -767,7 +769,8 @@ void RDPlayDeck::StartTimers(int offset)
 
   for(int i=0;i<RDPlayDeck::SizeOf;i++) {
     play_point_state[i]=false;
-    if(play_point_value[i][0]!=-1) {
+    if((play_point_value[i][0]!=-1)&&
+       (play_point_value[i][0]!=play_point_value[i][1])) {
       audio_point=(int)
 	(RD_TIMESCALE_DIVISOR*(double)play_audio_point[0]/
 	 (double)play_timescale_speed);

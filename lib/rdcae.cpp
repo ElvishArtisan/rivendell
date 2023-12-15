@@ -287,6 +287,7 @@ void RDCae::play(unsigned serial,unsigned length,int speed,bool pitch)
   if(pitch) {
     pitch_state=1;
   }
+  //printf("      play: %s\n",QTime::currentTime().toString("hh:mm:ss.zzz").toUtf8().constData());
   SendCommand(QString().sprintf("PY %u %u %d %d!",
 				serial,length,speed,pitch_state));
 }
