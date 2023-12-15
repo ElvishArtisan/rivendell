@@ -146,9 +146,9 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   // CAE Connection
   //
   connect(rda->cae(),SIGNAL(isConnected(bool)),this,SLOT(initData(bool)));
-  connect(rda->cae(),SIGNAL(playing(int)),this,SLOT(playedData(int)));
-  connect(rda->cae(),SIGNAL(playStopped(int)),
-	  this,SLOT(playStoppedData(int)));
+  connect(rda->cae(),SIGNAL(playing(unsigned)),this,SLOT(playedData(unsigned)));
+  connect(rda->cae(),SIGNAL(playStopped(unsigned)),
+	  this,SLOT(playStoppedData(unsigned)));
   if(!rda->cae()->connectHost(&err_msg)) {
     QMessageBox::warning(this,"RDCatch - "+tr("Error"),err_msg);
     exit(RDCoreApplication::ExitInternalError);
@@ -778,26 +778,30 @@ void MainWidget::initData(bool state)
 }
 
 
-void MainWidget::playedData(int handle)
+void MainWidget::playedData(unsigned serial)
 {
-  if(head_playing) {
-    catch_head_button->on();
+  if(catch_audition_serial==serial) {
+    if(head_playing) {
+      catch_head_button->on();
+    }
+    if(tail_playing) {
+      catch_tail_button->on();
+    }
+    catch_stop_button->off();
   }
-  if(tail_playing) {
-    catch_tail_button->on();
-  }
-  catch_stop_button->off();
 }
 
 
-void MainWidget::playStoppedData(int handle)
+void MainWidget::playStoppedData(unsigned serial)
 {
-  head_playing=false;
-  tail_playing=false;
-  catch_head_button->off();
-  catch_tail_button->off();
-  catch_stop_button->on();
-  rda->cae()->unloadPlay(catch_audition_serial);
+  if(catch_audition_serial==serial) {
+    head_playing=false;
+    tail_playing=false;
+    catch_head_button->off();
+    catch_tail_button->off();
+    catch_stop_button->on();
+    rda->cae()->unloadPlay(catch_audition_serial);
+  }
 }
 
 

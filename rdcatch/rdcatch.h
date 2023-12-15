@@ -69,8 +69,8 @@ class MainWidget : public RDMainWindow
   void tailButtonData();
   void stopButtonData();
   void initData(bool);
-  void playedData(int);
-  void playStoppedData(int);
+  void playedData(unsigned serial);
+  void playStoppedData(unsigned serial);
   void selectionChangedData(const QItemSelection &before,
 			    const QItemSelection &after);
   void doubleClickedData(const QModelIndex &index);
