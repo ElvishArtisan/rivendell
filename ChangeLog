@@ -24570,3 +24570,7 @@
 2023-12-18 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed regressions in 'RDCae' and the HPI driver in caed(8)
 	that caused the length of audio captures to be reported incorrectly.
+2023-12-18 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the 'Cut Info / Record' dialog in
+	rdlibrary(1) that caused the audio meter to fail to be zeroed
+	when resetting from record ready.

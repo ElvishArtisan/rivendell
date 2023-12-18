@@ -736,7 +736,7 @@ void RecordCut::playStoppedData(unsigned serial)
   is_recording=false;
   rec_meter->setLeftSolidBar(-10000);
   rec_meter->setRightSolidBar(-10000);
-  if(is_closing) {
+ if(is_closing) {
     is_closing=false;
     closeData();
   }
@@ -745,13 +745,14 @@ void RecordCut::playStoppedData(unsigned serial)
 
 void RecordCut::recordStoppedData(int card,int stream)
 {
-  //printf("recordStoppedData()\n");
   rda->cae()->unloadRecord(rec_card_no[0],rec_port_no[0]);
   rec_timer->stop();
   rec_play_button->off();
   rec_stop_button->on();
   rec_record_button->off();
   rec_meter->resetClipLight();
+  rec_meter->setLeftSolidBar(-10000);
+  rec_meter->setRightSolidBar(-10000);
   is_playing=false;
   is_recording=false;
 }
@@ -759,7 +760,6 @@ void RecordCut::recordStoppedData(int card,int stream)
 
 void RecordCut::recordUnloadedData(int card,int stream,unsigned len)
 {
-  //printf("recordUnloadedData(%d,%d,%u)\n",card,stream,len);
   QString filename;
 
   rec_meter->setLeftSolidBar(-100000);
