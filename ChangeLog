@@ -24581,3 +24581,5 @@
 	* Fixed a regression in rdcatchd(8) that caused recordings to
 	always be saved in PCM16 format when the 'Normalize' attribute
 	was set for the recording event.
+2023-12-18 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a typo in 'cae/Makefile.am' that broke the build.

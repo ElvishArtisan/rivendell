@@ -35,7 +35,7 @@ dist_caed_SOURCES = cae.cpp cae.h\
                     driver_alsa.cpp driver_alsa.h\
                     driver_hpi.cpp driver_hpi.h\
                     driver_jack.cpp driver_jack.h\
-                    playsession.cpp play_session.h
+                    playsession.cpp playsession.h
 
 nodist_caed_SOURCES = moc_cae.cpp\
                       moc_cae_server.cpp\
