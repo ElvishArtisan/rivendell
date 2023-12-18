@@ -2,7 +2,7 @@
 //
 // Abstract base class for caed(8) audio driver implementations.
 //
-//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -59,7 +59,7 @@ class Driver : public QObject
   virtual bool timescaleSupported(int card)=0;
   virtual bool loadRecord(int card,int port,int coding,int chans,int samprate,
 		     int bitrate,QString wavename)=0;
-  virtual bool unloadRecord(int card,int stream,unsigned *len)=0;
+  virtual bool unloadRecord(int card,int stream,unsigned *len_frames)=0;
   virtual bool record(int card,int stream,int length,int thres)=0;
   virtual bool stopRecord(int card,int stream)=0;
   virtual bool setClockSource(int card,int src)=0;

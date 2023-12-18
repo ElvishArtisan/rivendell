@@ -24574,3 +24574,6 @@
 	* Fixed a regression in the 'Cut Info / Record' dialog in
 	rdlibrary(1) that caused the audio meter to fail to be zeroed
 	when resetting from record ready.
+2023-12-18 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed a parameter in the 'Driver::unloadRecord()' method in
+	caed(8).

@@ -1026,15 +1026,15 @@ bool DriverAlsa::loadRecord(int card,int port,int coding,int chans,int samprate,
 }
 
 
-bool DriverAlsa::unloadRecord(int card,int port,unsigned *len)
+bool DriverAlsa::unloadRecord(int card,int port,unsigned *len_frames)
 {
 #ifdef ALSA
   alsa_recording[card][port]=false;
   alsa_ready[card][port]=false;
   EmptyAlsaInputStream(card,port);
-  *len=alsa_samples_recorded[card][port];
+  *len_frames=alsa_samples_recorded[card][port];
   alsa_samples_recorded[card][port]=0;
-  alsa_record_wave[card][port]->closeWave(*len);
+  alsa_record_wave[card][port]->closeWave(*len_frames);
   delete alsa_record_wave[card][port];
   alsa_record_wave[card][port]=NULL;
   delete alsa_record_ring[card][port];

@@ -1003,7 +1003,7 @@ bool DriverJack::loadRecord(int card,int port,int coding,int chans,int samprate,
 }
 
 
-bool DriverJack::unloadRecord(int card,int port,unsigned *len)
+bool DriverJack::unloadRecord(int card,int port,unsigned *len_frames)
 {
 #ifdef JACK
   if((port <0)||(port>=RD_MAX_PORTS)) {
@@ -1012,9 +1012,9 @@ bool DriverJack::unloadRecord(int card,int port,unsigned *len)
   jack_recording[port]=false;
   jack_ready[port]=false;
   EmptyJackInputStream(port,true);
-  *len=jack_samples_recorded[port];
+  *len_frames=jack_samples_recorded[port];
   jack_samples_recorded[port]=0;
-  jack_record_wave[port]->closeWave(*len);
+  jack_record_wave[port]->closeWave(*len_frames);
   delete jack_record_wave[port];
   jack_record_wave[port]=NULL;
   delete jack_record_ring[port];
