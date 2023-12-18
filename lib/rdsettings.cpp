@@ -52,6 +52,35 @@ void RDSettings::setFormat(Format format)
 }
 
 
+void RDSettings::setFormat(RDCae::AudioCoding coding)
+{
+  RDSettings::Format fmt=RDSettings::Pcm16;
+
+  switch(coding) {
+  case RDCae::Pcm16:
+    fmt=RDSettings::Pcm16;
+    break;
+
+  case RDCae::MpegL1:
+    fmt=RDSettings::MpegL1;
+    break;
+
+  case RDCae::MpegL2:
+    fmt=RDSettings::MpegL2;
+    break;
+
+  case RDCae::MpegL3:
+    fmt=RDSettings::MpegL2;    
+    break;
+
+  case RDCae::Pcm24:
+    fmt=RDSettings::Pcm24;
+    break;
+  }
+  setFormat(fmt);
+}
+
+
 QString RDSettings::formatName() const
 {
   return set_format_name;

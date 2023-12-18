@@ -2,7 +2,7 @@
 //
 // Batch Routines for the Rivendell netcatcher daemon
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -451,17 +451,21 @@ bool MainObject::Import(CatchEvent *evt,QString *err_msg)
   RDAudioConvert *conv=new RDAudioConvert(this);
   conv->setSourceFile(RDEscapeString(evt->tempName()));
   conv->setDestinationFile(RDCut::pathName(evt->cutName()));
+  RDDeck *deck=new RDDeck(rda->station()->name(),evt->channel());
   RDSettings *settings=new RDSettings();
-  settings->setFormat(evt->format());
+  //  settings->setFormat(catch_record_coding[evt->channel()-1]);
+  settings->setFormat(deck->defaultFormat());
   settings->setChannels(evt->channels());
   settings->setSampleRate(rda->system()->sampleRate());
-  settings->setBitRate(evt->bitrate());
+  settings->setBitRate(catch_record_bitrate[evt->channel()-1]);
   settings->setNormalizationLevel(evt->normalizeLevel()/100);
   rda->syslog(LOG_INFO,"started import of %s to cut %s, id=%d",
 	      (const char *)evt->tempName().toUtf8(),
 	      (const char *)evt->cutName().toUtf8(),
 	 evt->id());
   conv->setDestinationSettings(settings);
+  delete deck;
+
   switch((conv_err=conv->convert())) {
   case RDAudioConvert::ErrorOk:
     CheckInRecording(evt->cutName(),evt,msecs,evt->trimThreshold());

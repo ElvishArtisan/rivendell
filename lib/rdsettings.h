@@ -23,6 +23,8 @@
 
 #include <qstring.h>
 
+#include <rdcae.h>
+
 class RDSettings
 {
  public:
@@ -33,6 +35,7 @@ class RDSettings
   void setName(const QString &str);
   RDSettings::Format format() const;
   void setFormat(Format format);
+  void setFormat(RDCae::AudioCoding coding);
   QString formatName() const;
   void setFormatName(const QString &str);
   unsigned channels() const;
