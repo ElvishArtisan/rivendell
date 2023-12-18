@@ -282,7 +282,7 @@ bool DriverHpi::loadRecord(int card,int port,int coding,int chans,int samprate,
 }
 
 
-bool DriverHpi::unloadRecord(int card,int port,unsigned *len)
+bool DriverHpi::unloadRecord(int card,int port,unsigned *len_frames)
 {
 #ifdef HPI
   if(d_record_streams[card][port]==NULL) {
@@ -292,7 +292,7 @@ bool DriverHpi::unloadRecord(int card,int port,unsigned *len)
     d_record_streams[card][port]->pause();
   }
   d_record_streams[card][port]->disconnect();
-  *len=d_record_streams[card][port]->samplesRecorded();
+  *len_frames=d_record_streams[card][port]->samplesRecorded();
   d_record_streams[card][port]->closeWave();
   delete d_record_streams[card][port];
   d_record_streams[card][port]=NULL;

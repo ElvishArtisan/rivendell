@@ -24567,3 +24567,6 @@
 	head and tail audition buttons.
 2023-12-15 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdcatchd(8) that broke play-out events.
+2023-12-18 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed regressions in 'RDCae' and the HPI driver in caed(8)
+	that caused the length of audio captures to be reported incorrectly.

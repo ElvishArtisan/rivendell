@@ -377,7 +377,7 @@ int RDHPIRecordStream::getPosition() const
 
 unsigned RDHPIRecordStream::samplesRecorded() const
 {
-  return samples_recorded;
+  return samples_captured;
 }
 
 
@@ -394,6 +394,7 @@ bool RDHPIRecordStream::recordReady()
   }
   if((!is_recording)&&(!is_paused)) {
     resetWave();
+    samples_captured=0;
     if(LogHpi(HPI_InStreamGetInfoEx(NULL,hpi_stream,
 				    &state,&buffer_size,&data_recorded,
 				    &samples_recorded,&reserved),__LINE__)!=0) {
@@ -599,6 +600,7 @@ void RDHPIRecordStream::pause()
   LogHpi(HPI_InStreamGetInfoEx(NULL,hpi_stream,&state,&buffer_size,
 			       &data_recorded,&samples_recorded,&reserved),
 	 __LINE__);
+  samples_captured=samples_recorded;
   is_recording=false;
   is_paused=true;
   LogHpi(HPI_InStreamStart(NULL,hpi_stream),__LINE__);
@@ -620,6 +622,7 @@ void RDHPIRecordStream::stop()
     LogHpi(HPI_InStreamStop(NULL,hpi_stream),__LINE__);
     tickClock();
     clock->stop();
+    samples_captured=samples_recorded;
     is_recording=false;
     is_paused=false;
     is_ready=false;

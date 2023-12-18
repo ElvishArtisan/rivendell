@@ -2,7 +2,7 @@
 //
 //   A class for recording Microsoft WAV files.
 //
-//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -116,6 +116,7 @@ class RDHPIRecordStream : public QObject,public RDWaveFile
   uint32_t buffer_size;
   uint32_t data_recorded;
   uint32_t samples_recorded;
+  uint32_t samples_captured;
   uint32_t reserved;
   uint32_t fragment_size;
   int fragment_time;

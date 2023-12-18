@@ -51,7 +51,7 @@ class DriverHpi : public Driver
   bool timescaleSupported(int card);
   bool loadRecord(int card,int port,int coding,int chans,int samprate,
 		     int bitrate,QString wavename);
-  bool unloadRecord(int card,int port,unsigned *len);
+  bool unloadRecord(int card,int port,unsigned *len_frames);
   bool record(int card,int port,int length,int thres);
   bool stopRecord(int card,int port);
   bool setClockSource(int card,int src);

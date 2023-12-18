@@ -589,7 +589,7 @@ void RDCae::DispatchCommand(const QString &cmd)
   }
 
   if((cmds.at(0)=="UR")&&(cmds.size()==5)) {   // Unload Record
-    if(cmds.at(3)=='+') {
+    if(cmds.at(4)=='+') {
       int card=cmds.at(1).toInt(&ok);
       if(ok&&(card>=0)&&(card<RD_MAX_CARDS)) {
 	int port=cmds.at(2).toInt(&ok);
