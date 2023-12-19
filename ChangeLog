@@ -24583,3 +24583,6 @@
 	was set for the recording event.
 2023-12-18 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a typo in 'cae/Makefile.am' that broke the build.
+2023-12-19 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'debhelper' to the list of required build packages for
+	Debian 11 "Bullseye" in 'INSTALL'.
