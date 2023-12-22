@@ -24586,3 +24586,6 @@
 2023-12-19 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'debhelper' to the list of required build packages for
 	Debian 11 "Bullseye" in 'INSTALL'.
+2023-12-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'Wants-hpklinux.service' to the 'rivendell' SystemD
+	service definition.
