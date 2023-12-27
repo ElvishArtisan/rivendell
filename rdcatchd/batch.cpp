@@ -453,11 +453,10 @@ bool MainObject::Import(CatchEvent *evt,QString *err_msg)
   conv->setDestinationFile(RDCut::pathName(evt->cutName()));
   RDDeck *deck=new RDDeck(rda->station()->name(),evt->channel());
   RDSettings *settings=new RDSettings();
-  //  settings->setFormat(catch_record_coding[evt->channel()-1]);
   settings->setFormat(deck->defaultFormat());
   settings->setChannels(evt->channels());
   settings->setSampleRate(rda->system()->sampleRate());
-  settings->setBitRate(catch_record_bitrate[evt->channel()-1]);
+  settings->setBitRate(deck->defaultBitrate());
   settings->setNormalizationLevel(evt->normalizeLevel()/100);
   rda->syslog(LOG_INFO,"started import of %s to cut %s, id=%d",
 	      (const char *)evt->tempName().toUtf8(),

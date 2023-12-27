@@ -24593,3 +24593,6 @@
 	* Fixed a regression in rdairplay(1) that caused the time remaining
 	readouts in the Voice Tracker to overlap the Save button when
 	at the minimum window size.
+2023-12-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdcatchd(8) that caused recordings to MPEG
+	Layer II to fail.

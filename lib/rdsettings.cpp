@@ -55,6 +55,7 @@ void RDSettings::setFormat(Format format)
 void RDSettings::setFormat(RDCae::AudioCoding coding)
 {
   RDSettings::Format fmt=RDSettings::Pcm16;
+  int layer=0;
 
   switch(coding) {
   case RDCae::Pcm16:
@@ -63,14 +64,17 @@ void RDSettings::setFormat(RDCae::AudioCoding coding)
 
   case RDCae::MpegL1:
     fmt=RDSettings::MpegL1;
+    layer=1;
     break;
 
   case RDCae::MpegL2:
-    fmt=RDSettings::MpegL2;
+    fmt=RDSettings::MpegL2Wav;
+    layer=2;
     break;
 
   case RDCae::MpegL3:
-    fmt=RDSettings::MpegL2;    
+    fmt=RDSettings::MpegL3;
+    layer=3;
     break;
 
   case RDCae::Pcm24:
@@ -78,6 +82,7 @@ void RDSettings::setFormat(RDCae::AudioCoding coding)
     break;
   }
   setFormat(fmt);
+  setLayer(layer);
 }
 
 
