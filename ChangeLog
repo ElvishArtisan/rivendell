@@ -24589,3 +24589,7 @@
 2023-12-22 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'Wants=hpklinux.service' to the 'rivendell' SystemD
 	service definition.
+2023-12-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdairplay(1) that caused the time remaining
+	readouts in the Voice Tracker to overlap the Save button when
+	at the minimum window size.

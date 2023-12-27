@@ -411,7 +411,7 @@ RDTrackerWidget::~RDTrackerWidget()
 
 QSize RDTrackerWidget::sizeHint() const
 {
-  return QSize(800,700);
+  return QSize(715,645);
 } 
 
 
@@ -1796,17 +1796,19 @@ void RDTrackerWidget::resizeEvent(QResizeEvent *e)
     d_finished_button->setGeometry(size().width()-80,164,70,70);
   }
 
-  d_play_button->setGeometry(9,254,80,50);
-  d_stop_button->setGeometry(99,254,80,50);
-  d_meter->setGeometry(194,249,d_meter->sizeHint().width(),
-			   d_meter->sizeHint().height());
-  d_length_label->setGeometry(554,244,110,25);
+  d_play_button->setGeometry(9,254,70,50);
+  d_stop_button->setGeometry(89,254,70,50);
+  d_meter->setGeometry(169,249,d_meter->sizeHint().width(),
+		       d_meter->sizeHint().height());
+  d_length_label->setGeometry(518,244,100,25);
 
-  d_tracks_remaining_label_label->setGeometry(544,277,116,14);
-  d_tracks_remaining_label->setGeometry(544,302,40,18);
-  d_time_remaining_label_label->setGeometry(544,289,40,14);
-  d_time_remaining_label->setGeometry(589,302,80,18);
-  d_time_label->setGeometry(594,289,60,14);
+  d_tracks_remaining_label_label->setGeometry(511,277,110,14);
+  d_tracks_remaining_label->setGeometry(509,302,35,18);
+
+  d_time_remaining_label_label->setGeometry(511,289,34,14);
+  d_time_remaining_label->setGeometry(549,302,74,18);
+
+  d_time_label->setGeometry(556,289,60,14);
 
   d_log_view->
     setGeometry(0,324,size().width()-88,size().height()-384);
