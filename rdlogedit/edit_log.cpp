@@ -239,6 +239,7 @@ EditLog::EditLog(QString *filter,QString *group,QString *schedcode,
   edit_log_model->setFont(defaultFont());
   edit_log_model->setPalette(palette());
   edit_log_view->setModel(edit_log_model);
+  edit_log_view->hideColumn(7);  // Scheduled Time is redundant
   connect(edit_log_model,
 	  SIGNAL(dataChanged(const QModelIndex &,const QModelIndex &)),
 	  this,SLOT(dataChangedData(const QModelIndex &,const QModelIndex &)));

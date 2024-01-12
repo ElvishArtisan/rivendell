@@ -24596,3 +24596,10 @@
 2023-12-27 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdcatchd(8) that caused recordings to MPEG
 	Layer II to fail.
+2024-01-12 Fred Gleason <fredg@paravelsystems.com>
+	* Documented the meaning of the 'RDLogLine::StartTimeType' enum
+	in 'lib/rdlog_line.h'.
+	* Changed the default value of the 'RDLogLine::Imported' start time
+	from '00:00:00' to NULL.
+	* Fixed a regression in rdairplay(1) that caused the 'Sch. Time'
+	column to be removed from the Full Log lists.
