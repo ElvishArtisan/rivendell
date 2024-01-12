@@ -24606,3 +24606,6 @@
 2024-01-12 Fred Gleason <fredg@paravelsystems.com>
 	* Changed the recommended base branch for PRs from 'master' to 'v4'
 	in the 'CONTRIBUTING CHANGES' section of 'CODINGSTYLE'.
+2024-01-12 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the screenshot of the Full Log widget in the 'Running Logs
+	with RDAirPlay' chapter of the Operations Guide.
