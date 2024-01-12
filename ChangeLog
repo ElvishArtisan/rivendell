@@ -24609,3 +24609,6 @@
 2024-01-12 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the screenshot of the Full Log widget in the 'Running Logs
 	with RDAirPlay' chapter of the Operations Guide.
+2024-01-12 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the build system to DEB packages to support environments
+	with no HPI support.

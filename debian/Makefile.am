@@ -2,7 +2,7 @@
 ##
 ## Automake.am for rivendell debian/
 ##
-##   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+##   (C) Copyright 2021-2023 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License as
@@ -35,4 +35,5 @@ EXTRA_DIST = changelog\
 
 MAINTAINERCLEANFILES = changelog\
                        control\
+                       control.src2\
                        rules
