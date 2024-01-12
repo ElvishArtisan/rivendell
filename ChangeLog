@@ -24603,3 +24603,6 @@
 	from '00:00:00' to NULL.
 	* Fixed a regression in rdairplay(1) that caused the 'Sch. Time'
 	column to be removed from the Full Log lists.
+2024-01-12 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the recommended base branch for PRs from 'master' to 'v4'
+	in the 'CONTRIBUTING CHANGES' section of 'CODINGSTYLE'.

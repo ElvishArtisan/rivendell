@@ -371,14 +371,14 @@ a GUI context. They should *not* be used in other contexts, including
 
 
 CONTRIBUTING CHANGES:
-The master code repository for Rivendell resides at GitHub, and can be
+The primary code repository for Rivendell resides at GitHub, and can be
 found at:
 
       https://github.com/ElvishArtisan/rivendell
 
 Changes should be submitted in the form of a pull request [PR] against
-the 'master' branch. Information about drafting and submitting PRs can
-be found at:
+the default branch ('v4' as of this writing). Information about drafting and
+submitting PRs can be found at:
 
     https://help.github.com/en/articles/about-pull-requests
 
