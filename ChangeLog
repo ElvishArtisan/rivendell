@@ -24596,3 +24596,5 @@
 2023-12-27 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdcatchd(8) that caused recordings to MPEG
 	Layer II to fail.
+2024-01-13 Fred Gleason <fredg@paravelsystems.com>
+	* Added an extended event PAD output at TCP port 34290.

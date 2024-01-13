@@ -2,7 +2,7 @@
 //
 // Rivendell Log Playout Machine
 //
-//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -256,7 +256,7 @@ class RDLogPlay : public RDLogModel
   bool play_audition_head_played;
   int play_audition_preroll;
   RDEventPlayer *play_event_player;
-  RDUnixSocket *play_pad_socket;
+  RDUnixSocket *play_pad_socket[2];
   bool play_hours[24];
   int play_slot_quantity;
 };

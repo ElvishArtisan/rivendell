@@ -626,7 +626,7 @@
  * PAD Update Connection Points
  */
 #define RD_PAD_CLIENT_TCP_PORT 34289
-#define RD_PAD_SOURCE_UNIX_ADDRESS "m4w8n8fsfddf-473fdueusurt-8954"
+#define RD_PAD_SOURCE_UNIX_BASE_ADDRESS "m4w8n8fsfddf-473fdueusurt-8954"
 
 /*
  * Default 'ServiceTimeout=' value in rd.conf(5)

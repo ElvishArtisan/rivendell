@@ -2,7 +2,7 @@
 ##
 ## Rivendell PAD Consolidation Server
 ##
-## (C) Copyright 2018-2022 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2018-2024 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -31,9 +31,11 @@ moc_%.cpp:	%.h
 
 sbin_PROGRAMS = rdpadd
 
-dist_rdpadd_SOURCES = rdpadd.cpp rdpadd.h
+dist_rdpadd_SOURCES = rdpadd.cpp rdpadd.h\
+                      repeater.cpp repeater.h
 
-nodist_rdpadd_SOURCES = moc_rdpadd.cpp
+nodist_rdpadd_SOURCES = moc_rdpadd.cpp\
+                        moc_repeater.cpp
 
 rdpadd_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@ @IMAGEMAGICK_LIBS@
 

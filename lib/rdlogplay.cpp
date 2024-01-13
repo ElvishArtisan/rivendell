@@ -2,7 +2,7 @@
 //
 // Rivendell Log Playout Machine
 //
-//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -74,16 +74,18 @@ RDLogPlay::RDLogPlay(int id,RDEventPlayer *player,bool enable_cue,QObject *paren
   //
   // PAD Server Connection
   //
-  play_pad_socket=new RDUnixSocket(this);
-  if(!play_pad_socket->connectToAbstract(RD_PAD_SOURCE_UNIX_ADDRESS)) {
-    fprintf(stderr,"RDLogPlay: unable to connect to rdpadd\n");
+  for(int i=0;i<2;i++) {
+    play_pad_socket[i]=new RDUnixSocket(this);
+    if(!play_pad_socket[i]->
+       connectToAbstract(QString::asprintf("%s-%d",
+				    RD_PAD_SOURCE_UNIX_BASE_ADDRESS,i))) {
+      fprintf(stderr,"RDLogPlay: unable to connect to rdpadd\n");
+    }
   }
 
   //
   // CAE Connection
   //
-  //  play_cae=new RDCae(rda->station(),rda->config(),parent);
-  //  play_cae->connectHost();
   play_cae=rda->cae();
 
   for(int i=0;i<2;i++) {
@@ -3109,11 +3111,13 @@ void RDLogPlay::SendNowNext()
   // Get NEXT Event
   //
   logline[1]=NULL;
-  for(int i=nextLine();i<lineCount();i++) {
-    if((ll=logLine(i))!=NULL) {
-      if((ll->status()==RDLogLine::Scheduled)&&(!logLine(i)->asyncronous())) {
-	logline[1]=logLine(i);
-	i=lineCount();
+  if(nextLine()>=0) {
+    for(int i=nextLine();i<lineCount();i++) {
+      if((ll=logLine(i))!=NULL) {
+	if((ll->status()==RDLogLine::Scheduled)&&(!logLine(i)->asyncronous())) {
+	  logline[1]=logLine(i);
+	  i=lineCount();
+	}
       }
     }
   }
@@ -3158,71 +3162,96 @@ void RDLogPlay::SendNowNext()
   //
   // Send to PAD Server
   //
-  play_pad_socket->write(QString("{\r\n").toUtf8());
-  play_pad_socket->write(QString("    \"padUpdate\": {\r\n").toUtf8());
-  play_pad_socket->
-    write(RDJsonField("dateTime",QDateTime::currentDateTime(),8).toUtf8());
-  play_pad_socket->
-    write(RDJsonField("hostName",rda->station()->name(),8).toUtf8());
-  play_pad_socket->
-    write(RDJsonField("shortHostName",rda->station()->shortName(),8).toUtf8());
-  play_pad_socket->write(RDJsonField("machine",play_id+1,8).toUtf8());
-  play_pad_socket->write(RDJsonField("onairFlag",play_onair_flag,8).toUtf8());
-  play_pad_socket->
-    write(RDJsonField("mode",RDAirPlayConf::logModeText(play_op_mode),8).toUtf8());
-
-  //
-  // Service
-  //
-  if(svcname.isEmpty()) {
-    play_pad_socket->write(RDJsonNullField("service",8).toUtf8());
-  }
-  else {
-    RDSvc *svc=new RDSvc(svcname,rda->station(),rda->config(),this);
-    play_pad_socket->write(QString("        \"service\": {\r\n").toUtf8());
-    play_pad_socket->write(RDJsonField("name",svcname,12).toUtf8());
-    play_pad_socket->
-      write(RDJsonField("description",svc->description(),12).toUtf8());
-    play_pad_socket->
-      write(RDJsonField("programCode",svc->programCode(),12,true).toUtf8());
-    play_pad_socket->write(QString("        },\r\n").toUtf8());
-    delete svc;
-  }
-
-  //
-  // Log
-  //
-  play_pad_socket->write(QString("        \"log\": {\r\n").toUtf8());
-  play_pad_socket->write(RDJsonField("name",logName(),12,true).toUtf8());
-  play_pad_socket->write(QString("        },\r\n").toUtf8());
-
-  //
-  // Now
-  //
-  QDateTime start_datetime;
+  QDateTime next_datetime;
   if(logline[0]!=NULL) {
-    start_datetime=
+    next_datetime=
       QDateTime(QDate::currentDate(),logline[0]->startTime(RDLogLine::Actual));
   }
-  play_pad_socket->
-    write(GetPadJson("now",logline[0],start_datetime,now_line,8,false).
-	  toUtf8());
+  int next_num=1;
 
-  //
-  // Next
-  //
-  QDateTime next_datetime;
-  if((mode()==RDAirPlayConf::Auto)&&(logline[0]!=NULL)) {
-    next_datetime=start_datetime.addSecs(logline[0]->forcedLength()/1000);
+  for(int i=0;i<2;i++) {
+    play_pad_socket[i]->write(QString("{\r\n").toUtf8());
+    play_pad_socket[i]->write(QString("    \"padUpdate\": {\r\n").toUtf8());
+    play_pad_socket[i]->
+      write(RDJsonField("dateTime",QDateTime::currentDateTime(),8).toUtf8());
+    play_pad_socket[i]->
+      write(RDJsonField("hostName",rda->station()->name(),8).toUtf8());
+    play_pad_socket[i]->
+      write(RDJsonField("shortHostName",rda->station()->shortName(),8).toUtf8());
+    play_pad_socket[i]->write(RDJsonField("machine",play_id+1,8).toUtf8());
+    play_pad_socket[i]->write(RDJsonField("onairFlag",play_onair_flag,8).toUtf8());
+    play_pad_socket[i]->
+      write(RDJsonField("mode",RDAirPlayConf::logModeText(play_op_mode),8).toUtf8());
+
+    //
+    // Service
+    //
+    if(svcname.isEmpty()) {
+      play_pad_socket[i]->write(RDJsonNullField("service",8).toUtf8());
+    }
+    else {
+      RDSvc *svc=new RDSvc(svcname,rda->station(),rda->config(),this);
+      play_pad_socket[i]->write(QString("        \"service\": {\r\n").toUtf8());
+      play_pad_socket[i]->write(RDJsonField("name",svcname,12).toUtf8());
+      play_pad_socket[i]->
+	write(RDJsonField("description",svc->description(),12).toUtf8());
+      play_pad_socket[i]->
+	write(RDJsonField("programCode",svc->programCode(),12,true).toUtf8());
+      play_pad_socket[i]->write(QString("        },\r\n").toUtf8());
+      delete svc;
+    }
+
+    //
+    // Log
+    //
+    play_pad_socket[i]->write(QString("        \"log\": {\r\n").toUtf8());
+    play_pad_socket[i]->write(RDJsonField("name",logName(),12,true).toUtf8());
+    play_pad_socket[i]->write(QString("        },\r\n").toUtf8());
+
+    //
+    // Now
+    //
+    play_pad_socket[i]->
+      write(GetPadJson("now",logline[0],next_datetime,now_line,8,false).
+	    toUtf8());
+
+    //
+    // Next
+    //
+    if((mode()==RDAirPlayConf::Auto)&&(logline[0]!=NULL)) {
+      next_datetime=next_datetime.addSecs(logline[0]->forcedLength()/1000);
+    }
+    play_pad_socket[i]->
+      write(GetPadJson("next",logline[1],
+		       next_datetime,nextLine(),8,(i==0)||
+		       ((1+nextLine())==lineCount())||(nextLine()<0)).toUtf8());
+
+    if(nextLine()>=0) {
+      //
+      // Extended Events
+      //
+      if((i>0)&&(nextLine()>=0)) {
+	for(int j=nextLine()+1;j<lineCount();j++) {
+	  if((ll=logLine(j))!=NULL) {
+	    if((ll->status()==RDLogLine::Scheduled)&&
+	       (!logLine(i)->asyncronous())) {
+	      next_datetime=next_datetime.addSecs(ll->forcedLength()/1000);
+	      play_pad_socket[i]->
+		write(GetPadJson(QString::asprintf("next%d",next_num++),
+				 ll,next_datetime,j,8,(1+j)==lineCount()).
+		      toUtf8());
+	    }
+	  }
+	}
+      }
+    }
+
+    //
+    // Commit the update
+    //
+    play_pad_socket[i]->write(QString("    }\r\n").toUtf8());
+    play_pad_socket[i]->write(QString("}\r\n\r\n").toUtf8());
   }
- play_pad_socket->write(GetPadJson("next",logline[1],
-				   next_datetime,nextLine(),8,true).toUtf8());
-
-  //
-  // Commit the update
-  //
-  play_pad_socket->write(QString("    }\r\n").toUtf8());
-  play_pad_socket->write(QString("}\r\n\r\n").toUtf8());
 
   //
   // Clean up
