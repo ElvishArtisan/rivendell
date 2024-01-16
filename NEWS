@@ -1,6 +1,25 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
+v4.1.2int0 -- 16 January 2024
+
+Changes:
+   Library Search. Optimized search library syntax to better handle cart
+   numbers and phrase vs. individual word search scenarios. See the
+   'Library Text Searches' appendix in the Operations Guide for details.
+
+   Tweaked rdairplay(1) layout to work with 1280x1024 resolution displays.
+
+   Bugfixes. See the ChangeLog for details
+
+Database Update:
+   This version of Rivendell uses database schema version 371, and will
+   automatically upgrade any earlier versions. To see the current schema
+   version prior to upgrade, do 'sudo rddbmgr'.
+
+   Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
+   to allow any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
 v4.1.2 -- 21 November 2023
 
 Changes:

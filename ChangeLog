@@ -24612,3 +24612,5 @@
 2024-01-12 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the build system to DEB packages to support environments
 	with no HPI support.
+2024-01-16 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.1.2int0.
