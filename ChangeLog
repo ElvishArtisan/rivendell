@@ -24614,3 +24614,5 @@
 	with no HPI support.
 2024-01-16 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.1.2int0.
+2024-01-24 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.1.3.
