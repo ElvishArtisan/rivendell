@@ -21,6 +21,7 @@
 *.rpm
 *.so
 *.spec
+*.src?
 *.tar.gz
 *.tar.xz
 *.whl
