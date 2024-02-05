@@ -11423,6 +11423,23 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<372)&&(set_schema>cur_schema)) {
+    sql=QString("alter table `REPLICATORS` ")+
+    "add column `PROGRAM_CODE` varchar(191) "+
+    "after `STATION_NAME`";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("create index `FILENAME_IDX` on ")+
+      "`ISCI_XREFERENCE` (`FILENAME`)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
 
   // NEW SCHEMA UPDATES GO HERE...
 

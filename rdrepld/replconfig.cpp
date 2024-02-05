@@ -64,6 +64,18 @@ void ReplConfig::setStationName(const QString &str)
 }
 
 
+QString ReplConfig::programCode() const
+{
+  return repl_program_code;
+}
+
+
+void ReplConfig::setProgramCode(const QString &str)
+{
+  repl_program_code=str;
+}
+
+
 QString ReplConfig::description() const
 {
   return repl_description;
@@ -200,6 +212,7 @@ void ReplConfig::clear()
 {
   repl_name="";
   repl_station_name="";
+  repl_program_code="";
   repl_description="";
   repl_format=RDSettings::Pcm16;
   repl_channels=2;

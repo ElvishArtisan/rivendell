@@ -9,6 +9,7 @@ NAME                 varchar(32)       not null, primary key
 DESCRIPTION          varchar(64)
 TYPE_ID              int(10) unsigned  not null
 STATION_NAME         varchar(64)       from STATIONS.NAME
+PROGRAM_CODE         varchar(191)
 FORMAT               int(10) unsigned
 CHANNELS             int(10) unsigned
 SAMPRATE             int(10) unsigned

@@ -24616,3 +24616,13 @@
 	* Incremented the package version to 4.1.2int0.
 2024-01-24 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.1.3.
+2024-02-05 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'REPLICATORS.PROGRAM_CODE' field to the database.
+	* Incremented the database version to 372.
+	* Added 'RDReplicator::programCode()' and
+	'RDReplicator::setProgramCode()' methods.
+	* Added a 'Program Code' control to the 'Rivendell Replicators'
+	dialog in rdadmin(1).
+	* Renamed the 'Citadel X-Digital Portal' replicator to
+	'X-Digital National ISCI Model'.
+	* Added a 'X-Digital Cue Model' replicator.

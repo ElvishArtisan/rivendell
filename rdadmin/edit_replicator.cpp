@@ -70,10 +70,21 @@ EditReplicator::EditReplicator(const QString &repl_name,QWidget *parent)
   repl_description_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
+  // Replicator Program Code
+  //
+  repl_program_code_edit=new QLineEdit(this);
+  repl_program_code_edit->setGeometry(105,55,sizeHint().width()-115,19);
+  repl_program_code_edit->setMaxLength(191);
+  QLabel *repl_program_code_label=new QLabel(tr("Program Code")+":",this);
+  repl_program_code_label->setFont(labelFont());
+  repl_program_code_label->setGeometry(0,55,100,19);
+  repl_program_code_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+
+  //
   // Replicator Type
   //
   repl_type_box=new QComboBox(this);
-  repl_type_box->setGeometry(105,55,sizeHint().width()-115,19);
+  repl_type_box->setGeometry(105,77,sizeHint().width()-115,19);
   for(unsigned i=0;i<(int)RDReplicator::TypeLast;i++) {
     repl_type_box->insertItem(repl_type_box->count(),
 			      RDReplicator::typeString((RDReplicator::Type)i));
@@ -83,14 +94,14 @@ EditReplicator::EditReplicator(const QString &repl_name,QWidget *parent)
   }
   QLabel *repl_type_label=new QLabel(tr("Type:"),this);
   repl_type_label->setFont(labelFont());
-  repl_type_label->setGeometry(10,55,90,19);
+  repl_type_label->setGeometry(10,77,90,19);
   repl_type_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Host System
   //
   repl_station_box=new QComboBox(this);
-  repl_station_box->setGeometry(155,77,sizeHint().width()-165,19);
+  repl_station_box->setGeometry(155,99,sizeHint().width()-165,19);
   repl_station_model=new RDStationListModel(false,"",this);
   repl_station_model->setFont(defaultFont());
   repl_station_model->setPalette(palette());
@@ -98,55 +109,55 @@ EditReplicator::EditReplicator(const QString &repl_name,QWidget *parent)
   repl_station_box->setCurrentText(repl_replicator->stationName());
   QLabel *repl_station_label=new QLabel(tr("Host System:"),this);
   repl_station_label->setFont(labelFont());
-  repl_station_label->setGeometry(10,77,140,19);
+  repl_station_label->setGeometry(10,99,140,19);
   repl_station_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Upload Audio URL
   //
   repl_url_edit=new QLineEdit(this);
-  repl_url_edit->setGeometry(155,99,335,19);
+  repl_url_edit->setGeometry(155,121,335,19);
   repl_url_edit->setMaxLength(255);
   repl_url_label=new QLabel(tr("Audio Upload URL:"),this);
   repl_url_label->setFont(labelFont());
-  repl_url_label->setGeometry(20,99,130,19);
+  repl_url_label->setGeometry(20,121,130,19);
   repl_url_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Upload Username
   //
   repl_username_edit=new QLineEdit(this);
-  repl_username_edit->setGeometry(225,121,95,19);
+  repl_username_edit->setGeometry(225,143,95,19);
   repl_username_edit->setMaxLength(64);
   repl_username_label=new QLabel(tr("Username:"),this);
   repl_username_label->setFont(labelFont());
-  repl_username_label->setGeometry(40,121,180,19);
+  repl_username_label->setGeometry(40,143,180,19);
   repl_username_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Upload Password
   //
   repl_password_edit=new QLineEdit(this);
-  repl_password_edit->setGeometry(395,121,95,19);
+  repl_password_edit->setGeometry(395,143,95,19);
   repl_password_edit->setMaxLength(64);
   repl_password_edit->setEchoMode(QLineEdit::Password);
   repl_password_label=new QLabel(tr("Password:"),this);
   repl_password_label->setFont(labelFont());
-  repl_password_label->setGeometry(320,121,70,19);
+  repl_password_label->setGeometry(320,143,70,19);
   repl_password_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Audio Format
   //
   repl_format_edit=new QLineEdit(this);
-  repl_format_edit->setGeometry(155,143,285,20);
+  repl_format_edit->setGeometry(155,165,285,20);
   repl_format_edit->setReadOnly(true);
   repl_format_label=new QLabel(tr("Upload Format:"),this);
   repl_format_label->setFont(labelFont());
-  repl_format_label->setGeometry(5,143,145,20);
+  repl_format_label->setGeometry(5,165,145,20);
   repl_format_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   repl_format_button=new QPushButton(this);
-  repl_format_button->setGeometry(450,142,40,24);
+  repl_format_button->setGeometry(450,164,40,24);
   repl_format_button->setFont(subButtonFont());
   repl_format_button->setText(tr("Set"));
   connect(repl_format_button,SIGNAL(clicked()),this,SLOT(setFormatData()));
@@ -155,11 +166,11 @@ EditReplicator::EditReplicator(const QString &repl_name,QWidget *parent)
   // Normalize Check Box
   //
   repl_normalize_box=new QCheckBox(this);
-  repl_normalize_box->setGeometry(155,167,15,15);
+  repl_normalize_box->setGeometry(155,189,15,15);
   repl_normalize_box->setChecked(true);
   repl_normalize_check_label=new QLabel(tr("Normalize"),this);
   repl_normalize_check_label->setFont(labelFont());
-  repl_normalize_check_label->setGeometry(175,165,83,20);
+  repl_normalize_check_label->setGeometry(175,187,83,20);
   repl_normalize_check_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   connect(repl_normalize_box,SIGNAL(toggled(bool)),
 	  this,SLOT(normalizeCheckData(bool)));
@@ -168,22 +179,22 @@ EditReplicator::EditReplicator(const QString &repl_name,QWidget *parent)
   // Normalize Level
   //
   repl_normalize_spin=new QSpinBox(this);
-  repl_normalize_spin->setGeometry(295,165,40,20);
+  repl_normalize_spin->setGeometry(295,187,40,20);
   repl_normalize_spin->setRange(-30,-1);
   repl_normalize_label=new QLabel(tr("Level:"),this);
   repl_normalize_label->setFont(labelFont());
-  repl_normalize_label->setGeometry(245,165,45,20);
+  repl_normalize_label->setGeometry(245,187,45,20);
   repl_normalize_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   repl_normalize_unit_label=new QLabel(tr("dBFS"),this);
   repl_normalize_unit_label->setFont(labelFont());
-  repl_normalize_unit_label->setGeometry(340,165,40,20);
+  repl_normalize_unit_label->setGeometry(340,187,40,20);
   repl_normalize_unit_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Groups Selector
   //
   repl_groups_sel=new RDListSelector(this);
-  repl_groups_sel->setGeometry(60,192,380,130);
+  repl_groups_sel->setGeometry(60,214,380,130);
   repl_groups_sel->sourceSetLabel(tr("Available Groups"));
   repl_groups_sel->destSetLabel(tr("Active Groups"));
 
@@ -212,6 +223,7 @@ EditReplicator::EditReplicator(const QString &repl_name,QWidget *parent)
   //
   repl_name_edit->setText(repl_replicator->name());
   repl_description_edit->setText(repl_replicator->description());
+  repl_program_code_edit->setText(repl_replicator->programCode());
   repl_url_edit->setText(repl_replicator->url());
   repl_username_edit->setText(repl_replicator->urlUsername());
   repl_password_edit->setText(repl_replicator->urlPassword());
@@ -290,6 +302,7 @@ void EditReplicator::okData()
   RDSqlQuery *q;
 
   repl_replicator->setDescription(repl_description_edit->text());
+  repl_replicator->setProgramCode(repl_program_code_edit->text());
   repl_replicator->setType((RDReplicator::Type)repl_type_box->currentIndex());
   repl_replicator->setStationName(repl_station_box->currentText());
   repl_replicator->setUrl(repl_url_edit->text());

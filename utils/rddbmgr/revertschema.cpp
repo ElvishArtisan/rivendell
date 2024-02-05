@@ -41,6 +41,17 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // NEW SCHEMA REVERSIONS GO HERE...
 
   //
+  // Revert 372
+  //
+  if((cur_schema == 372) && (set_schema < cur_schema))
+  {
+    DropIndex("ISCI_XREFERENCE","FILENAME_IDX");
+    DropColumn("REPLICATORS", "PROGRAM_CODE");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 371
   //
   if((cur_schema == 371) && (set_schema < cur_schema))
@@ -49,7 +60,6 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
     WriteSchemaVersion(--cur_schema);
   }
-
 
   //
   // Revert 370

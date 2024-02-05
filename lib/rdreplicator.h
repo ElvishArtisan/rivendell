@@ -28,13 +28,15 @@
 class RDReplicator
 {
  public:
-  enum Type {TypeCitadelXds=0,TypeWw1Ipump=1,TypeLast=2};
+  enum Type {TypeCitadelXds=0,TypeWw1Ipump=1,TypeXdsCue=2,TypeLast=3};
   RDReplicator(const QString &name);
   QString name() const;
   RDReplicator::Type type() const;
   void setType(RDReplicator::Type type) const;
   QString stationName() const;
   void setStationName(const QString &str);
+  QString programCode() const;
+  void setProgramCode(const QString &str);
   QString description() const;
   void setDescription(const QString &str) const;
   RDSettings::Format format() const;

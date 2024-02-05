@@ -1,6 +1,6 @@
 ## Makefile.am
 ##
-## (C) Copyright 2010-2023 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2010-2024 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -30,7 +30,8 @@ dist_rdrepld_SOURCES = rdrepld.cpp rdrepld.h \
                        replconfig.cpp replconfig.h\
                        replfactory.cpp replfactory.h\
                        citadelxds.cpp citadelxds.h\
-                       ww1ipump.cpp ww1ipump.h
+                       ww1ipump.cpp ww1ipump.h\
+                       xdscue.cpp xdscue.h\
 nodist_rdrepld_SOURCES = moc_rdrepld.cpp
 rdrepld_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@ @IMAGEMAGICK_LIBS@
 
