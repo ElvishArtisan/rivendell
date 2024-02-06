@@ -24631,3 +24631,7 @@
 	'make rpm' target.
 2024-02-06 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.1.3int0.
+2024-02-06 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the 'AUDIO_CARDS.NAME' database field from 'varchar(64)'
+	to 'text'.
+	* Incremented the database version to 373.

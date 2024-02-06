@@ -2,7 +2,7 @@
 //
 // Update Rivendell DB schema.
 //
-//   (C) Copyright 2018-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -11433,6 +11433,16 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 
     sql=QString("create index `FILENAME_IDX` on ")+
       "`ISCI_XREFERENCE` (`FILENAME`)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
+  if((cur_schema<373)&&(set_schema>cur_schema)) {
+    sql=QString("alter table `AUDIO_CARDS` ")+
+      "modify column `NAME` text";
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
