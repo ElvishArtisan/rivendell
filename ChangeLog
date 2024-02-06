@@ -24629,3 +24629,5 @@
 2024-02-06 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in 'rdrepld/Makefile.am' that broke the
 	'make rpm' target.
+2024-02-06 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.1.3int0.

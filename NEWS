@@ -1,6 +1,19 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
+v4.1.3int0 -- 6 February 2024
+
+Changes:
+   Replication. Added a 'X-Digital Cue Model' replicator.
+
+Database Update:
+   This version of Rivendell uses database schema version 372, and will
+   automatically upgrade any earlier versions. To see the current schema
+   version prior to upgrade, do 'sudo rddbmgr'.
+
+   Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
+   to allow any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
 v4.1.3 -- 24 January 2024
 
 Changes:
