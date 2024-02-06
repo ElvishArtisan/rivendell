@@ -29,6 +29,8 @@
 WallClock::WallClock(QWidget *parent)
   : RDPushButton(parent)
 {
+  setFocusPolicy(Qt::NoFocus);
+
   previous_time=QTime::currentTime();
   show_date=true;
   check_sync=true;

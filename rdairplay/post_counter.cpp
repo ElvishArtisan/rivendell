@@ -29,6 +29,8 @@
 PostCounter::PostCounter(QWidget *parent)
   : RDPushButton(parent)
 {
+  setFocusPolicy(Qt::NoFocus);
+
   post_running=false;
   post_time_format="hh:mm:ss";
   post_time=QTime();

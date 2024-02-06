@@ -2,7 +2,7 @@
 //
 // Rivendell Voice Tracker
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -69,6 +69,7 @@ RDTrackerWidget::RDTrackerWidget(QString *import_path,QWidget *parent)
   d_menu_clicked_point=-1;
   d_shift_pressed=false;
   d_active=false;
+  d_focus_policy=Qt::WheelFocus;
 
   //
   // Create Palettes
@@ -425,6 +426,25 @@ QSizePolicy RDTrackerWidget::sizePolicy() const
 bool RDTrackerWidget::isActive() const
 {
   return d_active;
+}
+
+
+void RDTrackerWidget::setFocusPolicy(Qt::FocusPolicy pol)
+{
+  d_focus_policy=pol;
+  d_play_button->setFocusPolicy(pol);
+  d_stop_button->setFocusPolicy(pol);
+  d_track1_button->setFocusPolicy(pol);
+  d_record_button->setFocusPolicy(pol);
+  d_track2_button->setFocusPolicy(pol);
+  d_finished_button->setFocusPolicy(pol);
+  d_post_button->setFocusPolicy(pol);
+  d_reset_button->setFocusPolicy(pol);
+  d_previous_button->setFocusPolicy(pol);
+  d_next_button->setFocusPolicy(pol);
+  d_insert_button->setFocusPolicy(pol);
+  d_delete_button->setFocusPolicy(pol);
+  d_log_view->setFocusPolicy(pol);
 }
 
 
@@ -3507,7 +3527,9 @@ void RDTrackerWidget::UpdateControls()
 	  d_track1_button->setPalette(d_record_palette);
 	  d_record_button->setEnabled(!d_group->name().isEmpty());
 	  d_record_button->setText(tr("Record"));
-	  d_record_button->setFocus();
+	  if(d_focus_policy!=Qt::NoFocus) {
+	    d_record_button->setFocus();
+	  }
 	}
 	else {
 	  if((logline->transType()==RDLogLine::Segue)) {
@@ -3515,7 +3537,9 @@ void RDTrackerWidget::UpdateControls()
 	      setEnabled(!d_group->name().isEmpty());
 	    d_track1_button->setText(tr("Start"));
 	    d_track1_button->setPalette(d_start_palette);
-	    d_track1_button->setFocus();
+	    if(d_focus_policy!=Qt::NoFocus) {
+	      d_track1_button->setFocus();
+	    }
 	    d_record_button->
 	      setEnabled(!d_group->name().isEmpty());
 	    d_record_button->setText(tr("Import"));
@@ -3528,7 +3552,9 @@ void RDTrackerWidget::UpdateControls()
 	    d_record_button->
 	      setEnabled(!d_group->name().isEmpty());
 	    d_record_button->setText(tr("Record"));
-	    d_record_button->setFocus();
+	    if(d_focus_policy!=Qt::NoFocus) {
+	      d_record_button->setFocus();
+	    }
 	  }
 	}
 	d_track2_button->setDisabled(true);
@@ -3553,7 +3579,9 @@ void RDTrackerWidget::UpdateControls()
 	d_track1_button->setPalette(d_start_palette);
 	d_record_button->setEnabled(true);
 	d_record_button->setText(tr("Record"));
-	d_record_button->setFocus();
+	if(d_focus_policy!=Qt::NoFocus) {
+	  d_record_button->setFocus();
+	}
 	d_track2_button->setDisabled(true);
 	d_finished_button->setPalette(d_abort_palette);
 	d_finished_button->setText(tr("Abort"));
@@ -3578,7 +3606,9 @@ void RDTrackerWidget::UpdateControls()
 	if(d_wave_name[2].isEmpty()) {
 	  d_finished_button->setPalette(d_done_palette);
 	  d_finished_button->setText(tr("Save"));
-	  d_finished_button->setFocus();
+	  if(d_focus_policy!=Qt::NoFocus) {
+	    d_finished_button->setFocus();
+	  }
 	  d_track2_button->setDisabled(true);
 	}
 	else {
@@ -3598,7 +3628,9 @@ void RDTrackerWidget::UpdateControls()
 	    d_finished_button->setPalette(d_done_palette);
 	    d_track2_button->setDisabled(true);
 	  }
-	  d_track2_button->setFocus();
+	  if(d_focus_policy!=Qt::NoFocus) {
+	    d_track2_button->setFocus();
+	  }
 	}
 	d_finished_button->setEnabled(true);
 	d_reset_button->setDisabled(true);
@@ -3622,7 +3654,9 @@ void RDTrackerWidget::UpdateControls()
 	d_finished_button->setPalette(d_done_palette);
 	d_finished_button->setText(tr("Save"));
 	d_finished_button->setEnabled(true);
-	d_finished_button->setFocus();
+	if(d_focus_policy!=Qt::NoFocus) {
+	  d_finished_button->setFocus();
+	}
 	d_reset_button->setDisabled(true);
 	d_post_button->setDisabled(true);
 	d_insert_button->setDisabled(true);
@@ -3650,7 +3684,7 @@ void RDTrackerWidget::UpdateControls()
       d_stop_button->setEnabled(true);
       d_next_button->setEnabled(transport_idle);
       d_previous_button->setEnabled(transport_idle);
-      if(transport_idle) {
+      if(transport_idle&&(d_focus_policy!=Qt::NoFocus)) {
 	d_next_button->setFocus();
       }
       d_insert_button->setEnabled(transport_idle&&CanInsertTrack());
@@ -3674,7 +3708,7 @@ void RDTrackerWidget::UpdateControls()
     d_stop_button->setEnabled(true);
     d_next_button->setEnabled(transport_idle);
     d_previous_button->setEnabled(transport_idle);
-    if(transport_idle) {
+    if(transport_idle&&(d_focus_policy!=Qt::NoFocus)) {
       d_next_button->setFocus();
     }
     d_insert_button->setEnabled(transport_idle&&CanInsertTrack());

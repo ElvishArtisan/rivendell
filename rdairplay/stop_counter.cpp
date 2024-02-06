@@ -28,6 +28,8 @@
 StopCounter::StopCounter(QWidget *parent)
   : RDPushButton(parent)
 {
+  setFocusPolicy(Qt::NoFocus);
+
   stop_running=false;
 
   stop_text=tr("Next Stop [none]");  
