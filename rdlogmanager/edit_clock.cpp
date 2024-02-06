@@ -602,7 +602,7 @@ void EditClock::UpdateClock(int line)
   //
   // Title
   //
-  p->drawText((edit_clock_label->size().width()-
+  p->drawText((CLOCK_EDGE-
 	       edit_title_metrics->width(edit_clocks_model->clockName()))/2,
 	      50,edit_clocks_model->clockName());
 

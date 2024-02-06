@@ -24638,3 +24638,7 @@
 2024-02-06 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdairplay(1) that could cause the space bar
 	to fail to start the next main log event.
+2024-02-06 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdlogmanager(1) that caused clock titles
+	to fail to be centered in the pie wedge display in the
+	'Edit Clock' dialog.
