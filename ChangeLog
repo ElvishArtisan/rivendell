@@ -24626,3 +24626,6 @@
 	* Renamed the 'Citadel X-Digital Portal' replicator to
 	'X-Digital National ISCI Model'.
 	* Added a 'X-Digital Cue Model' replicator.
+2024-02-06 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'rdrepld/Makefile.am' that broke the
+	'make rpm' target.

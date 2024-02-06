@@ -31,8 +31,10 @@ dist_rdrepld_SOURCES = rdrepld.cpp rdrepld.h \
                        replfactory.cpp replfactory.h\
                        citadelxds.cpp citadelxds.h\
                        ww1ipump.cpp ww1ipump.h\
-                       xdscue.cpp xdscue.h\
+                       xdscue.cpp xdscue.h
+
 nodist_rdrepld_SOURCES = moc_rdrepld.cpp
+
 rdrepld_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@ @IMAGEMAGICK_LIBS@
 
 CLEANFILES = *~ moc_*
