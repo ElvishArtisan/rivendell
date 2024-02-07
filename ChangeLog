@@ -24642,3 +24642,6 @@
 	* Fixed a regression in rdlogmanager(1) that caused clock titles
 	to fail to be centered in the pie wedge display in the
 	'Edit Clock' dialog.
+2024-02-07 Fred Gleason <fredg@paravelsystems.com>
+	* Added the option to provision users from an existing RSS feed
+	to the 'Add RSS Feed' dialog in rdadmin(1).

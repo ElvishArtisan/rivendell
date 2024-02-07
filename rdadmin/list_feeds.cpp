@@ -2,7 +2,7 @@
 //
 // List Rivendell Feeds
 //
-//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -144,9 +144,10 @@ void ListFeeds::addData()
 {
   QString feed;
   unsigned id;
+  QStringList usernames;
   QString sql;
 
-  AddFeed *ad=new AddFeed(&id,&feed,this);
+  AddFeed *ad=new AddFeed(&id,&feed,&usernames,this);
   if(ad->exec()) {
     EditFeed *d=new EditFeed(feed,this);
     if(d->exec()) {
@@ -168,8 +169,6 @@ void ListFeeds::addData()
       sql=QString("delete from `FEEDS` where ")+
 	"`KEY_NAME`='"+RDEscapeString(feed)+"'";
       RDSqlQuery::apply(sql);
-
-      return;
     }
     delete d;
   }

@@ -2,7 +2,7 @@
 //
 // Add a Rivendell Feed
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,40 +21,53 @@
 #ifndef ADD_FEED_H
 #define ADD_FEED_H
 
-#include <qcheckbox.h>
-#include <qcombobox.h>
-#include <qlineedit.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
+#include <QButtonGroup>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QGroupBox>
+#include <QLineEdit>
+#include <QLabel>
+#include <QPushButton>
+#include <QRadioButton>
+#include <QStringList>
 
 #include <rddialog.h>
+#include <rdfeedlistmodel.h>
 
 class AddFeed : public RDDialog
 {
   Q_OBJECT
  public:
-  AddFeed(unsigned *id,QString *keyname,QWidget *parent=0);
+  AddFeed(unsigned *id,QString *keyname,QStringList *usernames,QWidget *parent);
   ~AddFeed();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 
  private slots:
   void keynameChangedData(const QString &str);
+  void buttonToggledData(QAbstractButton *rbutton,bool checked);
   void okData();
   void cancelData();
 
  protected:
   void resizeEvent(QResizeEvent *e);
 
-  private:
-   QLabel *feed_keyname_label;
-   QLineEdit *feed_keyname_edit;
-   QCheckBox *feed_users_box;
-   QLabel *feed_users_label;
-   QPushButton *feed_ok_button;
-   QPushButton *feed_cancel_button;
-   QString *feed_keyname;
-   unsigned *feed_id;
+ private:
+  void AuthorizeUser(const QString &keyname,const QString &login_name) const;
+  QLabel *feed_keyname_label;
+  QLineEdit *feed_keyname_edit;
+  QGroupBox *feed_usernames_groupbox;
+  QButtonGroup *feed_usernames_group;
+  QRadioButton *feed_none_radio;
+  QRadioButton *feed_all_radio;
+  QRadioButton *feed_some_radio;
+  QComboBox *feed_keyname_box;
+  RDFeedListModel *feed_keyname_model;
+  QPushButton *feed_ok_button;
+  QPushButton *feed_cancel_button;
+  QString *feed_keyname;
+  unsigned *feed_id;
+  QStringList *feed_usernames;
 };
 
 
