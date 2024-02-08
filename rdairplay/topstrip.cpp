@@ -2,7 +2,7 @@
 //
 // Top row of indicator widgets for rdairplay(1)
 //
-//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,6 +17,8 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
+
+#include <QUrl>
 
 #include <rdapplication.h>
 #include <rd.h>
@@ -45,18 +47,10 @@ TopStrip::TopStrip(QWidget *parent)
   // Audio Meters
   //
   d_meter_widget=new RDMeterStrip(this);
-  
   //
-  // Message Display
+  // Message Widget
   //
-  d_message_widget=new QLabel(this);
-  d_message_widget->setStyleSheet("background-color: "+
-				   QColor(LOGLINEBOX_BACKGROUND_COLOR).name());
-  d_message_widget->setWordWrap(true);
-  d_message_widget->setLineWidth(1);
-  d_message_widget->setMidLineWidth(1);
-  d_message_widget->setFrameStyle(QFrame::Box|QFrame::Raised);
-  d_message_widget->setAlignment(Qt::AlignCenter);
+  d_message_widget=new MessageWidget(this);
 
   //
   // Logo
@@ -114,7 +108,7 @@ RDMeterStrip *TopStrip::meterWidget()
 }
 
 
-QLabel *TopStrip::messageWidget() const
+MessageWidget *TopStrip::messageWidget() const
 {
   return d_message_widget;
 }
@@ -131,6 +125,8 @@ void TopStrip::setOnairFlag(bool state)
 
 void TopStrip::resizeEvent(QResizeEvent *e)
 {
+  int w=size().width();
+
   d_wall_clock_widget->setGeometry(10,5,
 				   d_wall_clock_widget->sizeHint().width(),
 				   d_wall_clock_widget->sizeHint().height());
@@ -148,10 +144,10 @@ void TopStrip::resizeEvent(QResizeEvent *e)
   
   d_message_widget->setGeometry(10+d_meter_widget->geometry().x()+
 				d_meter_widget->geometry().width(),
-				 5,
-				size().width()-(30+d_meter_widget->geometry().x()+d_meter_widget->geometry().width()+RD_RDAIRPLAY_LOGO_WIDTH),
-				 125);
-  d_logo->setGeometry(size().width()-RD_RDAIRPLAY_LOGO_WIDTH-10,
+				5,
+				w-(30+d_meter_widget->geometry().x()+d_meter_widget->geometry().width()+RD_RDAIRPLAY_LOGO_WIDTH),
+				125);
+  d_logo->setGeometry(w-RD_RDAIRPLAY_LOGO_WIDTH-10,
 		      5,
 		      RD_RDAIRPLAY_LOGO_WIDTH,
 		      RD_RDAIRPLAY_LOGO_HEIGHT);

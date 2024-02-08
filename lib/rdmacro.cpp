@@ -80,6 +80,7 @@ void RDMacro::setCommand(const QString &str)
   case RDMacro::LB:
   case RDMacro::LC:
   case RDMacro::LL:
+  case RDMacro::LM:
   case RDMacro::LO:
   case RDMacro::MB:
   case RDMacro::MD:
@@ -320,6 +321,7 @@ RDMacro RDMacro::fromString(const QString &str,RDMacro::Role role)
   case RDMacro::LB:
   case RDMacro::LC:
   case RDMacro::LL:
+  case RDMacro::LM:
   case RDMacro::LO:
   case RDMacro::MB:
   case RDMacro::MD:
