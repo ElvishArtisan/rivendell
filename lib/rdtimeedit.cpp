@@ -2,7 +2,7 @@
 //
 // A QTimeEdit with tenth-second precision.
 //
-//   (C) Copyright 2003-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2003-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,12 +27,26 @@
 RDTimeEdit::RDTimeEdit(QWidget *parent)
   : QTimeEdit(parent)
 {
+  d_mode=RDTimeEdit::TimeMode;
   d_show_hours=true;
   d_show_tenths=false;
   d_step_enabled=StepDownEnabled|StepUpEnabled;
   d_width_variance=0;
   d_read_only=false;
 
+  SetFormat();
+}
+
+
+RDTimeEdit::Mode RDTimeEdit::mode() const
+{
+  return d_mode;
+}
+
+
+void RDTimeEdit::setMode(Mode mode)
+{
+  d_mode=mode;
   SetFormat();
 }
 
@@ -70,6 +84,18 @@ void RDTimeEdit::setShowTenths(bool state)
 bool RDTimeEdit::isReadOnly() const
 {
   return d_read_only;
+}
+
+
+int RDTimeEdit::length() const
+{
+  return QTime(0,0,0).msecsTo(time());
+}
+
+
+void RDTimeEdit::setLength(int msec)
+{
+  setTime(QTime(0,0,0).addMSecs(100*(msec/100)));
 }
 
 
@@ -206,48 +232,60 @@ QAbstractSpinBox::StepEnabled RDTimeEdit::stepEnabled() const
 
 void RDTimeEdit::SetFormat()
 {
-  if(rda->system()->showTwelveHourTime()) {
-    if(d_show_tenths) {
-      if(d_show_hours) {
-	setDisplayFormat(RD_TWELVE_HOUR_TENTHS_FORMAT);
-	d_width_variance=1;
+  if(d_mode==RDTimeEdit::TimeMode) {
+    if(rda->system()->showTwelveHourTime()) {
+      if(d_show_tenths) {
+	if(d_show_hours) {
+	  setDisplayFormat(RD_TWELVE_HOUR_TENTHS_FORMAT);
+	  d_width_variance=1;
+	}
+	else {
+	  setDisplayFormat(RD_OFFSET_TENTHS_FORMAT);
+	  d_width_variance=0;
+	}
       }
       else {
-	setDisplayFormat(RD_OFFSET_TENTHS_FORMAT);
-	d_width_variance=0;
+	if(d_show_hours) {
+	  setDisplayFormat(RD_TWELVE_HOUR_FORMAT);
+	  d_width_variance=0;
+	}
+	else {
+	  setDisplayFormat(RD_OFFSET_FORMAT);
+	  d_width_variance=0;
+	}
       }
     }
     else {
-      if(d_show_hours) {
-	setDisplayFormat(RD_TWELVE_HOUR_FORMAT);
-	d_width_variance=0;
+      if(d_show_tenths) {
+	if(d_show_hours) {
+	  setDisplayFormat(RD_TWENTYFOUR_HOUR_TENTHS_FORMAT);
+	  d_width_variance=0;
+	}
+	else {
+	  setDisplayFormat(RD_OFFSET_TENTHS_FORMAT);
+	  d_width_variance=0;
+	}
       }
       else {
-	setDisplayFormat(RD_OFFSET_FORMAT);
-	d_width_variance=0;
+	if(d_show_hours) {
+	  setDisplayFormat(RD_TWENTYFOUR_HOUR_FORMAT);
+	  d_width_variance=0;
+	}
+	else {
+	  setDisplayFormat(RD_OFFSET_FORMAT);
+	  d_width_variance=0;
+	}
       }
     }
   }
-  else {
+  if(d_mode==RDTimeEdit::LengthMode) {
     if(d_show_tenths) {
-      if(d_show_hours) {
-	setDisplayFormat(RD_TWENTYFOUR_HOUR_TENTHS_FORMAT);
-	d_width_variance=0;
-      }
-      else {
-	setDisplayFormat(RD_OFFSET_TENTHS_FORMAT);
-	d_width_variance=0;
-      }
+      setDisplayFormat(RD_OFFSET_TENTHS_FORMAT);
+      d_width_variance=0;
     }
     else {
-      if(d_show_hours) {
-	setDisplayFormat(RD_TWENTYFOUR_HOUR_FORMAT);
-	d_width_variance=0;
-      }
-      else {
-	setDisplayFormat(RD_OFFSET_FORMAT);
-	d_width_variance=0;
-      }
+      setDisplayFormat(RD_OFFSET_FORMAT);
+      d_width_variance=0;
     }
   }
 }

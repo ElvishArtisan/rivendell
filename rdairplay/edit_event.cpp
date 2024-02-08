@@ -191,6 +191,7 @@ int EditEvent::exec(int line)
 	edit_grace_bgroup->button(2)->setChecked(true);
 	graceClickedData(2);
 	edit_grace_edit->setTime(QTime(0,0,0).addMSecs(edit_logline->graceTime()));
+	edit_grace_edit->setLength(edit_logline->graceTime());
 	break;
   }
   edit_transtype_box->setCurrentIndex((int)edit_logline->transType());
@@ -389,8 +390,7 @@ void EditEvent::okData()
 	    break;
 
 	  case 2:
-	    edit_logline->
-	      setGraceTime(QTime(0,0,0).msecsTo(edit_grace_edit->time()));
+	    edit_logline->setGraceTime(edit_grace_edit->length());
 	    break;
       }
     }

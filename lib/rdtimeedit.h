@@ -2,7 +2,7 @@
 //
 // A QTimeEdit with tenth-second precision.
 //
-//   (C) Copyright 2003-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2003-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,15 +28,20 @@ class RDTimeEdit : public QTimeEdit
 {
   Q_OBJECT
  public:
+  enum Mode {TimeMode=0,LengthMode=1};
   RDTimeEdit(QWidget *parent=0);
+  Mode mode() const;
+  void setMode(Mode mode);
   bool showHours() const;
   void setShowHours(bool state);
   bool showTenths() const;
   void setShowTenths(bool state);
   bool isReadOnly() const;
+  int length() const;
 
  public slots:
-   void setReadOnly(bool state);
+  void setLength(int msec);
+  void setReadOnly(bool state);
 
  protected:
   QValidator::State validate(QString &input,int &pos) const;
@@ -51,6 +56,7 @@ class RDTimeEdit : public QTimeEdit
   int d_width_variance;
   QAbstractSpinBox::StepEnabled d_step_enabled;
   bool d_read_only;
+  Mode d_mode;
 };
 
 

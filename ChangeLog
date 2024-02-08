@@ -24645,3 +24645,10 @@
 2024-02-07 Fred Gleason <fredg@paravelsystems.com>
 	* Added the option to provision users from an existing RSS feed
 	to the 'Add RSS Feed' dialog in rdadmin(1).
+2024-02-08 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDTimeEdit::Mode' enumeration.
+	* Added 'RDTimeEdit::mode()', 'RDTimeEdit::setMode()',
+	'RDTimeEdit::length()' and 'RDTimeEdit::setLength()' methods.
+	* Fixed a regression in rdlibrary(1) that caused the 'Forced Length'
+	control in the 'Edit Cart' dialog to be misformatted when the
+	system was configured to use 12 hour time format.
