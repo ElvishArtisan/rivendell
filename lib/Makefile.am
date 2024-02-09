@@ -132,6 +132,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdevent.cpp rdevent.h\
                         rdevent_line.cpp rdevent_line.h\
                         rdevent_player.cpp rdevent_player.h\
+                        rdeventfilter.cpp rdeventfilter.h\
                         rdeventimportlist.cpp rdeventimportlist.h\
                         rdexport_settings_dialog.cpp rdexport_settings_dialog.h\
                         rdfeed.cpp rdfeed.h\
@@ -344,6 +345,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdemptycart.cpp\
                           moc_rdendpointlistmodel.cpp\
                           moc_rdevent_player.cpp\
+                          moc_rdeventfilter.cpp\
                           moc_rdexport_settings_dialog.cpp\
                           moc_rdfeed.cpp\
                           moc_rdfeedlistmodel.cpp\

@@ -1,6 +1,6 @@
-// messagewidget.h
+// rdeventfilter.h
 //
-// Message Widget for RDAirPlay Rivendell
+// Filter one or more window system events
 //
 //   (C) Copyright 2024 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -18,36 +18,23 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef MESSAGEWIDGET_H
-#define MESSAGEWIDGET_H
+#ifndef RDEVENTFILTER_H
+#define RDEVENTFILTER_H
 
-#include <QLabel>
-#include <QWebView>
+#include <QList>
+#include <QObject>
 
-#define MESSAGE_FONT_QUANTITY 8
-#define MESSAGE_WIDGET_WIDTH 410
-
-class MessageWidget : public QWidget
+class RDEventFilter : public QObject
 {
- Q_OBJECT
  public:
-  MessageWidget(QWidget *parent=0);
-  void setText(const QString &str,const QColor &col);
-  bool setUrl(const QString &url);
-  void clear();
-
- private slots:
-  void webLoadFinishedData(bool state);
+  RDEventFilter(QObject *parent);
+  QList<QEvent::Type> filterList() const;
+  void addFilter(QEvent::Type type);
+  void removeFilter(QEvent::Type type);
 
  protected:
-  void resizeEvent(QResizeEvent *e);
-
- private:
-  QFont MessageFont(QString str) const;
-  QLabel *d_label;
-  QWebView *d_view;
-  QFont d_message_fonts[MESSAGE_FONT_QUANTITY];
-  QFontMetrics *d_message_metrics[MESSAGE_FONT_QUANTITY];
+  bool eventFilter(QObject *obj,QEvent *e) override;
+  QList<QEvent::Type> d_filter_types;
 };
 
-#endif  // MESSAGEWIDGET_H
+#endif  // RDEVENTFILTER_H

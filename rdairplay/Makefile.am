@@ -20,7 +20,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib  -Wno-strict-aliasing -std=c++11 -fPIC @QT5_CFLAGS@ -I/usr/include/qt5/QtWebKitWidgets @MUSICBRAINZ_CFLAGS@ @IMAGEMAGICK_CFLAGS@
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib  -Wno-strict-aliasing -std=c++11 -fPIC @QT5_CFLAGS@ @MUSICBRAINZ_CFLAGS@ @IMAGEMAGICK_CFLAGS@
 LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
 
@@ -82,7 +82,7 @@ nodist_rdairplay_SOURCES = moc_button_log.cpp\
                            moc_voicetracker.cpp\
                            moc_wall_clock.cpp
 
-rdairplay_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@ @IMAGEMAGICK_LIBS@ -lQt5WebKitWidgets
+rdairplay_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@ @IMAGEMAGICK_LIBS@
 rdairplay_LDFLAGS = -rdynamic
 
 EXTRA_DIST = rdairplay.pro\

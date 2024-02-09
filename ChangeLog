@@ -24654,3 +24654,7 @@
 	system was configured to use 12 hour time format.
 2024-02-08 Fred Gleason <fredg@paravelsystems.com>
 	* Implemented the 'Load Message" ['LM'] RML.
+2024-02-09 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'RDEventFilter' class.
+	* Fixed bugs in rdairplay(1) that caused scroll bars to appear when
+	loading web content into the message widget.

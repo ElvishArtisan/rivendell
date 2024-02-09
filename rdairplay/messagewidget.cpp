@@ -18,6 +18,12 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <QEvent>
+#include <QKeyEvent>
+#include <QWebFrame>
+
+#include <rdeventfilter.h>
+
 #include "colors.h"
 #include "messagewidget.h"
 
@@ -43,7 +49,20 @@ MessageWidget::MessageWidget(QWidget *parent)
   d_label->setWordWrap(true);
   d_label->setAlignment(Qt::AlignCenter);
   d_view=new QWebView(this);
+  connect(d_view,SIGNAL(loadFinished(bool)),
+	  this,SLOT(webLoadFinishedData(bool)));
   d_view->hide();
+  RDEventFilter *filter=new RDEventFilter(this);
+  filter->addFilter(QEvent::Enter);
+  filter->addFilter(QEvent::Leave);
+  filter->addFilter(QEvent::KeyPress);
+  filter->addFilter(QEvent::KeyRelease);
+  filter->addFilter(QEvent::MouseButtonPress);
+  filter->addFilter(QEvent::MouseButtonRelease);
+  filter->addFilter(QEvent::MouseButtonDblClick);
+  filter->addFilter(QEvent::MouseMove);
+  filter->addFilter(QEvent::Wheel);
+  d_view->installEventFilter(filter);
 }
 
   
@@ -88,6 +107,15 @@ void MessageWidget::clear()
   d_label->clear();
   d_label->show();
   d_view->hide();
+}
+
+
+void MessageWidget::webLoadFinishedData(bool state)
+{
+  d_view->page()->mainFrame()->
+    setScrollBarPolicy(Qt::Horizontal,Qt::ScrollBarAlwaysOff);
+  d_view->page()->mainFrame()->
+    setScrollBarPolicy(Qt::Vertical,Qt::ScrollBarAlwaysOff);
 }
 
 
