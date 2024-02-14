@@ -590,11 +590,17 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
   int minutes_len_length=q->value(19).toInt();
   int seconds_len_offset=q->value(20).toInt();
   int seconds_len_length=q->value(21).toInt();
-  int trans_type_offset=q->value(22).toInt();
-  int trans_type_length=q->value(23).toInt();
-  int time_type_offset=q->value(24).toInt();
-  int time_type_length=q->value(25).toInt();
 
+  int trans_type_offset=0;  // Only used for music imports
+  int trans_type_length=0;
+  int time_type_offset=0;
+  int time_type_length=0;
+  if(src==RDSvc::Music) {
+    trans_type_offset=q->value(22).toInt();
+    trans_type_length=q->value(23).toInt();
+    time_type_offset=q->value(24).toInt();
+    time_type_length=q->value(25).toInt();
+  }
   delete q;
 
   //
@@ -737,10 +743,10 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
     //
     if(start_time_ok&&cart_ok&&(cartnum>0)&&(cartnum<=RD_MAX_CART_NUMBER)) {
       sql+=QString::asprintf("`TYPE`=%u,",RDLogLine::Cart)+
-	"`EXT_DATA`='"+data_buf.trimmed()+"',"+
-	"`EXT_EVENT_ID`='"+eventid_buf.trimmed()+"',"+
-	"`EXT_ANNC_TYPE`='"+annctype_buf.trimmed()+"',"+
-	"`EXT_CART_NAME`='"+cartname.trimmed()+"',"+
+	"`EXT_DATA`='"+RDEscapeString(data_buf.trimmed())+"',"+
+	"`EXT_EVENT_ID`='"+RDEscapeString(eventid_buf.trimmed())+"',"+
+	"`EXT_ANNC_TYPE`='"+RDEscapeString(annctype_buf.trimmed())+"',"+
+	"`EXT_CART_NAME`='"+RDEscapeString(cartname.trimmed())+"',"+
 	QString::asprintf("`CART_NUMBER`=%u,",cartnum)+
 	"`TITLE`='"+RDEscapeString(title)+"'";
       RDSqlQuery::apply(sql);

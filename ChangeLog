@@ -24658,3 +24658,8 @@
 	* Added a 'RDEventFilter' class.
 	* Fixed bugs in rdairplay(1) that caused scroll bars to appear when
 	loading web content into the message widget.
+2024-02-14 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdlogmanager(1) that could throw SQL
+	'column out of range' errors when importing traffic logs.
+	* Fixed a bug in rdlogmanager(1) that threw SQL errors when processing
+	log GUIDs containing apostrophes.
