@@ -24672,3 +24672,5 @@
 	URL across instances.
 	* Modified rdairplay(1) to make the Message Widget continually poll
 	and update loaded URLs using the 'file:' schema.
+2024-02-14 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to v4.1.3int1.
