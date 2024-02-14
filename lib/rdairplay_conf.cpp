@@ -749,6 +749,24 @@ void RDAirPlayConf::setAuditionPreroll(int msecs) const
 }
 
 
+QString RDAirPlayConf::messageWidgetUrl() const
+{
+  return RDGetSqlValue(air_tablename,"ID",air_id,"MESSAGE_WIDGET_URL").
+    toString();
+}
+
+
+void RDAirPlayConf::setMessageWidgetUrl(const QString url)
+{
+  if(url.trimmed().isEmpty()) {
+    SetRowNull("MESSAGE_WIDGET_URL");
+  }
+  else {
+    SetRow("MESSAGE_WIDGET_URL",url);
+  }
+}
+
+
 RDAirPlayConf::StartMode RDAirPlayConf::startMode(int lognum) const
 {
   RDAirPlayConf::StartMode ret=RDAirPlayConf::StartEmpty;
@@ -1162,50 +1180,53 @@ void RDAirPlayConf::SetLogMode(const QString &param,int mach,
 			       RDAirPlayConf::OpMode mode) const
 {
   QString sql;
-  RDSqlQuery *q;
 
   sql=QString("update `LOG_MODES` set `")+param+QString::asprintf("`=%d ",mode)+
     "where (`STATION_NAME`='"+RDEscapeString(air_station)+"')&&"+
     QString::asprintf("(`MACHINE`=%d)",mach);
-  q=new RDSqlQuery(sql);
-  delete q;
+  RDSqlQuery::apply(sql);
 }
 
 
 void RDAirPlayConf::SetRow(const QString &param,int value) const
 {
-  RDSqlQuery *q;
   QString sql;
 
   sql=QString("update `")+air_tablename+"` set `"+
     param+QString::asprintf("`=%d where ",value)+
     "`STATION`='"+RDEscapeString(air_station)+"'";
-  q=new RDSqlQuery(sql);
-  delete q;
+  RDSqlQuery::apply(sql);
 }
 
 
 void RDAirPlayConf::SetRow(const QString &param,unsigned value) const
 {
-  RDSqlQuery *q;
   QString sql;
 
   sql=QString("update `")+air_tablename+"` set `"+
     param+QString::asprintf("`=%u where ",value)+
     "`STATION`='"+RDEscapeString(air_station)+"'";
-  q=new RDSqlQuery(sql);
-  delete q;
+  RDSqlQuery::apply(sql);
 }
 
 
 void RDAirPlayConf::SetRow(const QString &param,const QString &value) const
 {
-  RDSqlQuery *q;
   QString sql;
 
   sql=QString("update `")+air_tablename+"` set `"+
     param+"`='"+RDEscapeString(value)+"' where "+
     "`STATION`='"+RDEscapeString(air_station)+"'";
-  q=new RDSqlQuery(sql);
-  delete q;
+  RDSqlQuery::apply(sql);
 }
+
+
+ void RDAirPlayConf::SetRowNull(const QString &param) const
+ {
+  QString sql;
+
+  sql=QString("update `")+air_tablename+"` set `"+
+    param+"`=NULL where "+
+    "`STATION`='"+RDEscapeString(air_station)+"'";
+  RDSqlQuery::apply(sql);
+ }

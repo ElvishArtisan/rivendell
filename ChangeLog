@@ -24663,3 +24663,12 @@
 	'column out of range' errors when importing traffic logs.
 	* Fixed a bug in rdlogmanager(1) that threw SQL errors when processing
 	log GUIDs containing apostrophes.
+2024-02-14 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'RDAIRPLAY.MESSAGE_WIDGET_URL' field to the database.
+	* Incremented the database version to 374.
+	* Added 'RDAirPlayConf::messageWidgetUrl()' and
+	'RDAirPlayConf::setMessageWidgetUrl()' methods.
+	* Modified rdairplay(1) to make the Message Widget retain the loaded
+	URL across instances.
+	* Modified rdairplay(1) to make the Message Widget continually poll
+	and update loaded URLs using the 'file:' schema.

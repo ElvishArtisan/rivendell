@@ -22,6 +22,7 @@
 #define MESSAGEWIDGET_H
 
 #include <QLabel>
+#include <QTimer>
 #include <QWebView>
 
 #define MESSAGE_FONT_QUANTITY 8
@@ -38,6 +39,7 @@ class MessageWidget : public QWidget
 
  private slots:
   void webLoadFinishedData(bool state);
+  void refreshData();
 
  protected:
   void resizeEvent(QResizeEvent *e);
@@ -46,8 +48,10 @@ class MessageWidget : public QWidget
   QFont MessageFont(QString str) const;
   QLabel *d_label;
   QWebView *d_view;
+  QTimer *d_refresh_timer;
   QFont d_message_fonts[MESSAGE_FONT_QUANTITY];
   QFontMetrics *d_message_metrics[MESSAGE_FONT_QUANTITY];
+  QString d_url;
 };
 
 #endif  // MESSAGEWIDGET_H

@@ -22,6 +22,7 @@
 #include <QKeyEvent>
 #include <QWebFrame>
 
+#include <rdapplication.h>
 #include <rdeventfilter.h>
 
 #include "colors.h"
@@ -63,6 +64,21 @@ MessageWidget::MessageWidget(QWidget *parent)
   filter->addFilter(QEvent::MouseMove);
   filter->addFilter(QEvent::Wheel);
   d_view->installEventFilter(filter);
+
+  //
+  // Refresh Timer
+  //
+  d_refresh_timer=new QTimer(this);
+  d_refresh_timer->setSingleShot(true);
+  connect(d_refresh_timer,SIGNAL(timeout()),this,SLOT(refreshData()));
+
+  //
+  // Load Current Page
+  //
+  QString url=rda->airplayConf()->messageWidgetUrl();
+  if(!url.isEmpty()) {
+    setUrl(url);
+  }
 }
 
   
@@ -77,6 +93,8 @@ void MessageWidget::setText(const QString &str,const QColor &col)
   d_label->setText(str);
   d_label->show();
   d_view->hide();
+
+  d_refresh_timer->stop();
 }
 
 
@@ -85,6 +103,7 @@ bool MessageWidget::setUrl(const QString &str)
   QUrl url(str);
   if(!url.isValid()) {
     setText(tr("invalid URL")+": "+str.toUtf8().constData(),Qt::black);
+    d_refresh_timer->stop();
     return false;
   }
   if((url.scheme().toLower()!="http")&&
@@ -92,11 +111,21 @@ bool MessageWidget::setUrl(const QString &str)
      (url.scheme().toLower()!="file")) {
     setText(tr("unsupported URL scheme")+": "+str.toUtf8().constData(),
 		   Qt::black);
+    d_refresh_timer->stop();
     return false;
   }
   d_view->load(url);
   d_view->show();
   d_label->hide();
+
+  d_url=str;
+  rda->airplayConf()->setMessageWidgetUrl(str);
+  if(url.scheme().toLower()=="file") {
+    d_refresh_timer->start(1000);
+  }
+  else {
+    d_refresh_timer->stop();
+  }
 
   return true;
 }
@@ -107,6 +136,9 @@ void MessageWidget::clear()
   d_label->clear();
   d_label->show();
   d_view->hide();
+  d_refresh_timer->stop();
+
+  rda->airplayConf()->setMessageWidgetUrl(QString());
 }
 
 
@@ -116,6 +148,13 @@ void MessageWidget::webLoadFinishedData(bool state)
     setScrollBarPolicy(Qt::Horizontal,Qt::ScrollBarAlwaysOff);
   d_view->page()->mainFrame()->
     setScrollBarPolicy(Qt::Vertical,Qt::ScrollBarAlwaysOff);
+}
+
+
+void MessageWidget::refreshData()
+{
+  d_view->load(d_url);
+  d_refresh_timer->start(1000);
 }
 
 

@@ -41,6 +41,16 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // NEW SCHEMA REVERSIONS GO HERE...
 
   //
+  // Revert 374
+  //
+  if((cur_schema == 374) && (set_schema < cur_schema))
+  {
+    DropColumn("RDAIRPLAY","MESSAGE_WIDGET_URL");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 373
   //
   if((cur_schema == 373) && (set_schema < cur_schema))

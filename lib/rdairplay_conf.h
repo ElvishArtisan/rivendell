@@ -143,6 +143,8 @@ class RDAirPlayConf
   void setShowCounters(bool state) const;
   int auditionPreroll() const;
   void setAuditionPreroll(int msecs) const;
+  QString messageWidgetUrl() const;
+  void setMessageWidgetUrl(const QString url);
   RDAirPlayConf::StartMode startMode(int lognum) const;
   void setStartMode(int lognum,RDAirPlayConf::StartMode mode) const;
   bool autoRestart(int lognum) const;
@@ -176,6 +178,7 @@ class RDAirPlayConf
   void SetRow(const QString &param,int value) const;
   void SetRow(const QString &param,unsigned value) const;
   void SetRow(const QString &param,const QString &value) const;
+  void SetRowNull(const QString &param) const;
   QString air_station;
   unsigned air_id;
   QString air_tablename;

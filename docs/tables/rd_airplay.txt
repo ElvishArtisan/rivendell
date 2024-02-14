@@ -35,3 +35,4 @@ TITLE_TEMPLATE         varchar(64)
 ARTIST_TEMPLATE        varchar(64)
 OUTCUE_TEMPLATE        varchar(64)
 DESCRIPTION_TEMPLATE   varchar(64)
+MESSAGE_WIDGET_URL     text
