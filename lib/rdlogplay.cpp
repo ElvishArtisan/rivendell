@@ -3317,12 +3317,20 @@ QString RDLogPlay::GetPadJson(const QString &name,RDLogLine *ll,
     }
     ret+=RDJsonField("lineNumber",line,4+padding);
     ret+=RDJsonField("lineId",ll->id(),4+padding);
-    ret+=RDJsonField("cartNumber",ll->cartNumber(),4+padding);
-    ret+=RDJsonField("cartType",RDCart::typeText(ll->cartType()),4+padding);
-    if(ll->cartType()==RDCart::Audio) {
-      ret+=RDJsonField("cutNumber",ll->cutNumber(),4+padding);
+    ret+=RDJsonField("eventType",RDLogLine::typeText(ll->type()),4+padding);
+    if(ll->type()==RDLogLine::Cart) {
+      ret+=RDJsonField("cartNumber",ll->cartNumber(),4+padding);
+      ret+=RDJsonField("cartType",RDCart::typeText(ll->cartType()),4+padding);
+      if(ll->cartType()==RDCart::Audio) {
+	ret+=RDJsonField("cutNumber",ll->cutNumber(),4+padding);
+      }
+      else {
+	ret+=RDJsonNullField("cutNumber",4+padding);
+      }
     }
     else {
+      ret+=RDJsonNullField("cartNumber",4+padding);
+      ret+=RDJsonNullField("cartType",4+padding);
       ret+=RDJsonNullField("cutNumber",4+padding);
     }
     if(ll->useEventLength()) {

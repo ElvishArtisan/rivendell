@@ -24601,3 +24601,5 @@
 2024-02-18 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdairplay(1) that caused invalid PAD JSON
 	to be emitted when processing a Chain event.
+2024-02-18 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'eventType' field to the PAD JSON schema.
