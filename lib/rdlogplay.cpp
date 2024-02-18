@@ -3224,7 +3224,7 @@ void RDLogPlay::SendNowNext()
     play_pad_socket[i]->
       write(GetPadJson("next",logline[1],
 		       next_datetime,nextLine(),8,(i==0)||
-		       ((1+nextLine())==lineCount())||(nextLine()<0)).toUtf8());
+		       ((1+nextLine())>=lineCount())||(nextLine()<0)).toUtf8());
 
     if(nextLine()>=0) {
       //
