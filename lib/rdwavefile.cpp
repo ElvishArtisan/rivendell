@@ -369,17 +369,21 @@ bool RDWaveFile::openWave(RDWaveData *data)
 	
 	wave_data->setMetadataFound(true);
 	
-	if(tags->name)
+	if(tags->name) {
 	  wave_data->setTitle(tags->name);
-	if(tags->artist)
+	}
+	if(tags->artist) {
 	  wave_data->setArtist(tags->artist);
-	if(tags->composer)
+	}
+	if(tags->composer) {
 	  wave_data->setComposer(tags->composer);
-	if(tags->album)
+	}
+	if(tags->album) {
 	  wave_data->setAlbum(tags->album);
+	}
 
 	dlmp4.MP4TagsFree(tags);
-
+	wave_data->validateMarkers(ext_time_length);
       }
 
       dlmp4.MP4Close(f, 0);
@@ -480,6 +484,10 @@ bool RDWaveFile::openWave(RDWaveData *data)
     break;
   }
   lseek(wave_file.handle(),data_start,SEEK_SET);
+
+  if(wave_data) {
+    wave_data->validateMarkers(ext_time_length);
+  }
 
   return true;
 }

@@ -24674,3 +24674,6 @@
 	and update loaded URLs using the 'file:' schema.
 2024-02-14 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to v4.1.3int1.
+2024-03-08 Fred Gleason <fredg@paravelsystems.com>
+	* Added a check to the audio importation system to validate metadata
+	cue point positions relative to the actual audio duration.
