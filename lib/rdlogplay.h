@@ -22,6 +22,9 @@
 #define RDLOGPLAY_H
 
 #include <QDateTime>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonValue>
 #include <QObject>
 #include <QSignalMapper>
 #include <QTimer>
@@ -198,9 +201,8 @@ class RDLogPlay : public RDLogModel
   bool ClearBlock(int start_line);
   void SendNowNext();
   void UpdateRestartData();
-  QString GetPadJson(const QString &name,RDLogLine *ll,
-		     const QDateTime &start_datetime,int line,int padding,
-		     bool final=false) const;
+  QJsonValue GetPadJson(const QString &name,RDLogLine *ll,
+			const QDateTime &start_datetime,int line) const;
   void LogTraffic(RDLogLine *logline,RDLogLine::PlaySource src,
 		  RDAirPlayConf::TrafficAction action,bool onair_flag) const;
   void DumpToSyslog(int prio_lvl,const QString &hdr) const;

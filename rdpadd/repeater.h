@@ -2,7 +2,7 @@
 //
 // Rivendell PAD Data Repeater
 //
-//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -42,6 +42,8 @@ class MetadataSource
 
  private:
   QByteArray meta_buffer;
+  int meta_curly_count;
+  bool meta_quoted;
   bool meta_committed;
   QTcpSocket *meta_socket;
 };

@@ -957,7 +957,7 @@ class Receiver(object):
                 if c[0]==10:
                     linebytes=line.decode('utf-8','replace')
                     msg+=linebytes
-                    if linebytes=='\r\n':
+                    if linebytes=='\n':
                         jdata=json.loads(msg)
                         if (not self.__active_now_groups and not self.__active_next_groups) or (jdata['padUpdate'] is not None and jdata['padUpdate']['now'] is not None and jdata['padUpdate']['now']['groupName'] in self.__active_now_groups) or (jdata['padUpdate'] is not None and jdata['padUpdate']['next'] is not None and jdata['padUpdate']['next']['groupName'] in self.__active_next_groups):
                             self.__pypad_Process(Update(jdata,self.__config_parser,rd_config))

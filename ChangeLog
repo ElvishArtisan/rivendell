@@ -24684,3 +24684,7 @@
 	to be emitted when processing a Chain event.
 2024-04-02 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'eventType' field to the PAD JSON schema.
+2024-04-02 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the PAD subsystem that caused meta-events to be
+	included in the update events.
+	* Refactored the PAD subsystem to use native Qt JSON methods.

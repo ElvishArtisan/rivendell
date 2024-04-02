@@ -3114,9 +3114,12 @@ void RDLogPlay::SendNowNext()
   if(nextLine()>=0) {
     for(int i=nextLine();i<lineCount();i++) {
       if((ll=logLine(i))!=NULL) {
-	if((ll->status()==RDLogLine::Scheduled)&&(!logLine(i)->asyncronous())) {
-	  logline[1]=logLine(i);
-	  i=lineCount();
+	if((ll->type()==RDLogLine::Cart)||(ll->type()==RDLogLine::Macro)) {
+	  if((ll->status()==RDLogLine::Scheduled)&&
+	     (!logLine(i)->asyncronous())) {
+	    logline[1]=logLine(i);
+	    i=lineCount();
+	  }
 	}
       }
     }
@@ -3170,50 +3173,55 @@ void RDLogPlay::SendNowNext()
   int next_num=1;
 
   for(int i=0;i<2;i++) {
-    play_pad_socket[i]->write(QString("{\r\n").toUtf8());
-    play_pad_socket[i]->write(QString("    \"padUpdate\": {\r\n").toUtf8());
-    play_pad_socket[i]->
-      write(RDJsonField("dateTime",QDateTime::currentDateTime(),8).toUtf8());
-    play_pad_socket[i]->
-      write(RDJsonField("hostName",rda->station()->name(),8).toUtf8());
-    play_pad_socket[i]->
-      write(RDJsonField("shortHostName",rda->station()->shortName(),8).toUtf8());
-    play_pad_socket[i]->write(RDJsonField("machine",play_id+1,8).toUtf8());
-    play_pad_socket[i]->write(RDJsonField("onairFlag",play_onair_flag,8).toUtf8());
-    play_pad_socket[i]->
-      write(RDJsonField("mode",RDAirPlayConf::logModeText(play_op_mode),8).toUtf8());
+
+    //
+    // Header Fields
+    //
+    QJsonObject jo0;
+    jo0.insert("dateTime",QDateTime::currentDateTime().toString(Qt::ISODate));
+    jo0.insert("hostName",rda->station()->name());
+    jo0.insert("shortHostName",rda->station()->shortName());
+    jo0.insert("machine",1+play_id);
+    jo0.insert("onairFlag",play_onair_flag);
+    jo0.insert("mode",RDAirPlayConf::logModeText(play_op_mode));
 
     //
     // Service
     //
+    QJsonObject jo1;
     if(svcname.isEmpty()) {
-      play_pad_socket[i]->write(RDJsonNullField("service",8).toUtf8());
+      jo1.insert("service",QJsonValue());
     }
     else {
-      RDSvc *svc=new RDSvc(svcname,rda->station(),rda->config(),this);
-      play_pad_socket[i]->write(QString("        \"service\": {\r\n").toUtf8());
-      play_pad_socket[i]->write(RDJsonField("name",svcname,12).toUtf8());
-      play_pad_socket[i]->
-	write(RDJsonField("description",svc->description(),12).toUtf8());
-      play_pad_socket[i]->
-	write(RDJsonField("programCode",svc->programCode(),12,true).toUtf8());
-      play_pad_socket[i]->write(QString("        },\r\n").toUtf8());
-      delete svc;
+      QString sql=QString("select ")+
+	"`DESCRIPTION`,"+   // 00
+	"`PROGRAM_CODE` "+  // 01
+	"from `SERVICES` where "+
+	"`NAME`='"+RDEscapeString(svcname)+"'";
+      RDSqlQuery *q=new RDSqlQuery(sql);
+      if(q->first()) {
+	jo1.insert("description",q->value(0).toString());
+	jo1.insert("programCode",q->value(1).toString());
+      }
+      else {
+	jo1.insert("description",QJsonValue());
+	jo1.insert("programCode",QJsonValue());
+      }
+      delete q;
     }
+    jo0.insert("service",jo1);
 
     //
     // Log
     //
-    play_pad_socket[i]->write(QString("        \"log\": {\r\n").toUtf8());
-    play_pad_socket[i]->write(RDJsonField("name",logName(),12,true).toUtf8());
-    play_pad_socket[i]->write(QString("        },\r\n").toUtf8());
+    QJsonObject jo2;
+    jo2.insert("name",logName());
+    jo0.insert("log",jo2);
 
     //
     // Now
     //
-    play_pad_socket[i]->
-      write(GetPadJson("now",logline[0],next_datetime,now_line,8,false).
-	    toUtf8());
+    jo0.insert("now",GetPadJson("now",logline[0],next_datetime,now_line));
 
     //
     // Next
@@ -3221,25 +3229,24 @@ void RDLogPlay::SendNowNext()
     if((mode()==RDAirPlayConf::Auto)&&(logline[0]!=NULL)) {
       next_datetime=next_datetime.addSecs(logline[0]->forcedLength()/1000);
     }
-    play_pad_socket[i]->
-      write(GetPadJson("next",logline[1],
-		       next_datetime,nextLine(),8,(i==0)||
-		       ((1+nextLine())>=lineCount())||(nextLine()<0)).toUtf8());
+    jo0.insert("next",GetPadJson("next",logline[1],next_datetime,nextLine()));
 
+    //
+    // Extended Events
+    //
     if(nextLine()>=0) {
-      //
-      // Extended Events
-      //
       if((i>0)&&(nextLine()>=0)) {
 	for(int j=nextLine()+1;j<lineCount();j++) {
 	  if((ll=logLine(j))!=NULL) {
-	    if((ll->status()==RDLogLine::Scheduled)&&
-	       (!logLine(i)->asyncronous())) {
-	      next_datetime=next_datetime.addSecs(ll->forcedLength()/1000);
-	      play_pad_socket[i]->
-		write(GetPadJson(QString::asprintf("next%d",next_num++),
-				 ll,next_datetime,j,8,(1+j)==lineCount()).
-		      toUtf8());
+	    if((ll->type()==RDLogLine::Cart)||(ll->type()==RDLogLine::Macro)) {
+	      if((ll->status()==RDLogLine::Scheduled)&&
+		 (!logLine(i)->asyncronous())) {
+		next_datetime=next_datetime.addSecs(ll->forcedLength()/1000);
+		jo0.insert(QString::asprintf("next%d",next_num),
+			   GetPadJson(QString::asprintf("next%d",next_num),ll,
+				      next_datetime,j));
+		next_num++;
+	      }
 	    }
 	  }
 	}
@@ -3249,8 +3256,11 @@ void RDLogPlay::SendNowNext()
     //
     // Commit the update
     //
-    play_pad_socket[i]->write(QString("    }\r\n").toUtf8());
-    play_pad_socket[i]->write(QString("}\r\n\r\n").toUtf8());
+    QJsonObject jo3;
+    jo3.insert("padUpdate",jo0);
+    QJsonDocument jdoc;
+    jdoc.setObject(jo3);
+    play_pad_socket[i]->write(jdoc.toJson().trimmed());
   }
 
   //
@@ -3298,83 +3308,70 @@ void RDLogPlay::UpdateRestartData()
 }
 
 
-QString RDLogPlay::GetPadJson(const QString &name,RDLogLine *ll,
-			      const QDateTime &start_datetime,int line,
-			      int padding,bool final) const
+QJsonValue RDLogPlay::GetPadJson(const QString &name,RDLogLine *ll,
+				  const QDateTime &start_datetime,int line) 
+  const
 {
-  QString ret;
+  QJsonObject jo0;
 
   if(ll==NULL) {
-    ret=RDJsonNullField(name,padding,final);
-  }
-  else {
-    ret+=RDJsonPadding(padding)+"\""+name+"\": {\r\n";
-    if(start_datetime.isValid()) {
-      ret+=RDJsonField("startDateTime",start_datetime,4+padding);
-    }
-    else {
-      ret+=RDJsonNullField("startDateTime",4+padding);
-    }
-    ret+=RDJsonField("lineNumber",line,4+padding);
-    ret+=RDJsonField("lineId",ll->id(),4+padding);
-    ret+=RDJsonField("eventType",RDLogLine::typeText(ll->type()),4+padding);
-    if(ll->type()==RDLogLine::Cart) {
-      ret+=RDJsonField("cartNumber",ll->cartNumber(),4+padding);
-      ret+=RDJsonField("cartType",RDCart::typeText(ll->cartType()),4+padding);
-      if(ll->cartType()==RDCart::Audio) {
-	ret+=RDJsonField("cutNumber",ll->cutNumber(),4+padding);
-      }
-      else {
-	ret+=RDJsonNullField("cutNumber",4+padding);
-      }
-    }
-    else {
-      ret+=RDJsonNullField("cartNumber",4+padding);
-      ret+=RDJsonNullField("cartType",4+padding);
-      ret+=RDJsonNullField("cutNumber",4+padding);
-    }
-    if(ll->useEventLength()) {
-      ret+=RDJsonField("length",ll->eventLength(),4+padding);
-    }
-    else {
-      ret+=RDJsonField("length",ll->forcedLength(),4+padding);
-    }
-    if(ll->year().isValid()) {
-      ret+=RDJsonField("year",ll->year().year(),4+padding);
-    }
-    else {
-      ret+=RDJsonNullField("year",4+padding);
-    }
-    ret+=RDJsonField("groupName",ll->groupName(),4+padding);
-    ret+=RDJsonField("title",ll->title(),4+padding);
-    ret+=RDJsonField("artist",ll->artist(),4+padding);
-    ret+=RDJsonField("publisher",ll->publisher(),4+padding);
-    ret+=RDJsonField("composer",ll->composer(),4+padding);
-    ret+=RDJsonField("album",ll->album(),4+padding);
-    ret+=RDJsonField("label",ll->label(),4+padding);
-    ret+=RDJsonField("client",ll->client(),4+padding);
-    ret+=RDJsonField("agency",ll->agency(),4+padding);
-    ret+=RDJsonField("conductor",ll->conductor(),4+padding);
-    ret+=RDJsonField("userDefined",ll->userDefined(),4+padding);
-    ret+=RDJsonField("songId",ll->songId(),4+padding);
-    ret+=RDJsonField("outcue",ll->outcue(),4+padding);
-    ret+=RDJsonField("description",ll->description(),4+padding);
-    ret+=RDJsonField("isrc",ll->isrc(),4+padding);
-    ret+=RDJsonField("isci",ll->isci(),4+padding);
-    ret+=RDJsonField("recordingMbId",ll->recordingMbId(),4+padding);
-    ret+=RDJsonField("releaseMbId",ll->releaseMbId(),4+padding);
-    ret+=RDJsonField("externalEventId",ll->extEventId(),4+padding);
-    ret+=RDJsonField("externalData",ll->extData(),4+padding);
-    ret+=RDJsonField("externalAnncType",ll->extAnncType(),4+padding,true);
-    if(final) {
-      ret+=RDJsonPadding(padding)+"}\r\n";
-    }
-    else {
-      ret+=RDJsonPadding(padding)+"},\r\n";
-    }
+    return QJsonValue();
   }
 
-  return ret;
+  jo0.insert("startDateTime",start_datetime.toString(Qt::ISODate));
+  jo0.insert("lineNumber",line);
+  jo0.insert("lineId",ll->id());
+  jo0.insert("eventType",RDLogLine::typeText(ll->type()));
+  if((ll->type()==RDLogLine::Cart)||(ll->type()==RDLogLine::Macro)) {
+    jo0.insert("cartNumber",(int)ll->cartNumber());
+    jo0.insert("cartType",RDCart::typeText(ll->cartType()));
+    if(ll->cartType()==RDCart::Audio) {
+      jo0.insert("cutNumber",ll->cutNumber());
+    }
+    else {
+      jo0.insert("cutNumber",QJsonValue());
+    }
+  }
+  else {
+    jo0.insert("cartNumber",QJsonValue());
+    jo0.insert("cartType",QJsonValue());
+    jo0.insert("cutNumber",QJsonValue());
+  }
+  if(ll->useEventLength()) {
+    jo0.insert("length",ll->eventLength());
+  }
+  else {
+    jo0.insert("length",(qint64)ll->forcedLength());
+  }
+  if(ll->year().isValid()) {
+    jo0.insert("year",ll->year().year());
+  }
+  else {
+    jo0.insert("year",QJsonValue());
+  }
+  jo0.insert("groupName",ll->groupName());
+  jo0.insert("title",ll->title());
+  jo0.insert("artist",ll->artist());
+  jo0.insert("publisher",ll->publisher());
+  jo0.insert("composer",ll->composer());
+  jo0.insert("album",ll->album());
+  jo0.insert("label",ll->label());
+  jo0.insert("client",ll->client());
+  jo0.insert("agency",ll->agency());
+  jo0.insert("conductor",ll->conductor());
+  jo0.insert("userDefined",ll->userDefined());
+  jo0.insert("songId",ll->songId());
+  jo0.insert("outcue",ll->outcue());
+  jo0.insert("description",ll->description());
+  jo0.insert("isrc",ll->isrc());
+  jo0.insert("isci",ll->isci());
+  jo0.insert("recordingMbId",ll->recordingMbId());
+  jo0.insert("releaseMbId",ll->releaseMbId());
+  jo0.insert("externalEventId",ll->extEventId());
+  jo0.insert("externalData",ll->extData());
+  jo0.insert("externalAnncType",ll->extAnncType());
+
+  return jo0;
 }
 
 

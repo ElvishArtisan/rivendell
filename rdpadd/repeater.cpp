@@ -30,6 +30,8 @@
 MetadataSource::MetadataSource(QTcpSocket *sock)
 {
   meta_socket=sock;
+  meta_curly_count=0;
+  meta_quoted=false;
   meta_committed=true;
 }
 
@@ -46,7 +48,24 @@ bool MetadataSource::appendBuffer(const QByteArray &data)
     meta_buffer.clear();
   }
   meta_buffer+=data;
-  meta_committed=meta_buffer.endsWith("\r\n\r\n");
+
+  for(int i=0;i<data.size();i++) {
+    if(data.at(i)=='"') {
+      meta_quoted=!meta_quoted;
+    }
+    if(!meta_quoted) {
+      if(data.at(i)=='{') {
+	meta_curly_count++;
+      }
+      if(data.at(i)=='}') {
+	meta_curly_count--;
+      }
+    }
+  }
+  meta_committed=(meta_curly_count==0);
+  if(meta_committed) {
+    meta_buffer+="\n\n";
+  }
 
   return meta_committed;
 }
@@ -195,7 +214,7 @@ void Repeater::SendState(int id)
 {
   for(QMap<int,MetadataSource *>::const_iterator it=pad_sources.begin();
       it!=pad_sources.end();it++) {
-    if(it.value()->isCommitted()) {
+    if(it.value()->isCommitted()&&(!it.value()->buffer().trimmed().isEmpty())) {
       pad_client_sockets.value(id)->write(it.value()->buffer());
     }
   }
