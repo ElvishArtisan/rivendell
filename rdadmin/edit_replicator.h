@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Replicator
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,12 +21,12 @@
 #ifndef EDIT_REPLICATOR_H
 #define EDIT_REPLICATOR_H
 
-#include <qcheckbox.h>
-#include <qcombobox.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-#include <qpushbutton.h>
-#include <qspinbox.h>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QSpinBox>
 
 #include <rdlistselector.h>
 #include <rddialog.h>
@@ -54,6 +54,7 @@ class EditReplicator : public RDDialog
   RDReplicator *repl_replicator;
   QLineEdit *repl_name_edit;
   QLineEdit *repl_description_edit;
+  QLineEdit *repl_program_code_edit;
   QComboBox *repl_type_box;
   QComboBox *repl_station_box;
   RDStationListModel *repl_station_model;

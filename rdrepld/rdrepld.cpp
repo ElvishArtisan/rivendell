@@ -2,7 +2,7 @@
 //
 // The Rivendell Replicator Daemon
 //
-//   (C) Copyright 2010-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -37,6 +37,7 @@
 #include "citadelxds.h"
 #include "rdrepld.h"
 #include "ww1ipump.h"
+#include "xdscue.h"
 
 void SigHandler(int signum)
 {
@@ -216,7 +217,8 @@ void MainObject::LoadReplicators()
     "`URL_USERNAME`,"+         // 08
     "`URL_PASSWORD`,"+         // 09
     "`ENABLE_METADATA`,"+      // 10
-    "`NORMALIZATION_LEVEL` "+  // 11
+    "`NORMALIZATION_LEVEL`,"+  // 11
+    "`PROGRAM_CODE` "+         // 12
     "from `REPLICATORS` where "+
     "`STATION_NAME`='"+RDEscapeString(rda->config()->stationName())+"'";
   q=new RDSqlQuery(sql);
@@ -235,6 +237,7 @@ void MainObject::LoadReplicators()
       setUrlPassword(QByteArray::fromBase64(q->value(9).toString().toUtf8()));
     config->setEnableMetadata(RDBool(q->value(10).toString()));
     config->setNormalizeLevel(q->value(11).toInt());
+    config->setProgramCode(q->value(12).toString());
     switch(config->type()) {
     case RDReplicator::TypeCitadelXds:
       repl_replicators.push_back(new CitadelXds(config));
@@ -242,6 +245,10 @@ void MainObject::LoadReplicators()
 
     case RDReplicator::TypeWw1Ipump:
       repl_replicators.push_back(new Ww1Ipump(config));
+      break;
+
+    case RDReplicator::TypeXdsCue:
+      repl_replicators.push_back(new XdsCue(config));
       break;
 
     case RDReplicator::TypeLast:

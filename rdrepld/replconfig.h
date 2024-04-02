@@ -36,6 +36,8 @@ class ReplConfig
   void setName(const QString &str);
   QString stationName() const;
   void setStationName(const QString &str);
+  QString programCode() const;
+  void setProgramCode(const QString &str);
   QString description() const;
   void setDescription(const QString &str);
   RDSettings::Format format() const;
@@ -64,6 +66,7 @@ class ReplConfig
   QString repl_name;
   RDReplicator::Type repl_type;
   QString repl_station_name;
+  QString repl_program_code;
   QString repl_description;
   RDSettings::Format repl_format;
   unsigned repl_channels;

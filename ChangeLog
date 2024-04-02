@@ -24596,10 +24596,91 @@
 2023-12-27 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdcatchd(8) that caused recordings to MPEG
 	Layer II to fail.
-2024-01-13 Fred Gleason <fredg@paravelsystems.com>
+2024-01-12 Fred Gleason <fredg@paravelsystems.com>
+	* Documented the meaning of the 'RDLogLine::StartTimeType' enum
+	in 'lib/rdlog_line.h'.
+	* Changed the default value of the 'RDLogLine::Imported' start time
+	from '00:00:00' to NULL.
+	* Fixed a regression in rdairplay(1) that caused the 'Sch. Time'
+	column to be removed from the Full Log lists.
+2024-01-12 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the recommended base branch for PRs from 'master' to 'v4'
+	in the 'CONTRIBUTING CHANGES' section of 'CODINGSTYLE'.
+2024-01-12 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the screenshot of the Full Log widget in the 'Running Logs
+	with RDAirPlay' chapter of the Operations Guide.
+2024-01-12 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the build system to DEB packages to support environments
+	with no HPI support.
+2024-01-16 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.1.2int0.
+2024-01-24 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.1.3.
+2024-02-05 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'REPLICATORS.PROGRAM_CODE' field to the database.
+	* Incremented the database version to 372.
+	* Added 'RDReplicator::programCode()' and
+	'RDReplicator::setProgramCode()' methods.
+	* Added a 'Program Code' control to the 'Rivendell Replicators'
+	dialog in rdadmin(1).
+	* Renamed the 'Citadel X-Digital Portal' replicator to
+	'X-Digital National ISCI Model'.
+	* Added a 'X-Digital Cue Model' replicator.
+2024-02-06 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'rdrepld/Makefile.am' that broke the
+	'make rpm' target.
+2024-02-06 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.1.3int0.
+2024-02-06 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the 'AUDIO_CARDS.NAME' database field from 'varchar(64)'
+	to 'text'.
+	* Incremented the database version to 373.
+2024-02-06 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdairplay(1) that could cause the space bar
+	to fail to start the next main log event.
+2024-02-06 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdlogmanager(1) that caused clock titles
+	to fail to be centered in the pie wedge display in the
+	'Edit Clock' dialog.
+2024-02-07 Fred Gleason <fredg@paravelsystems.com>
+	* Added the option to provision users from an existing RSS feed
+	to the 'Add RSS Feed' dialog in rdadmin(1).
+2024-02-08 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDTimeEdit::Mode' enumeration.
+	* Added 'RDTimeEdit::mode()', 'RDTimeEdit::setMode()',
+	'RDTimeEdit::length()' and 'RDTimeEdit::setLength()' methods.
+	* Fixed a regression in rdlibrary(1) that caused the 'Forced Length'
+	control in the 'Edit Cart' dialog to be misformatted when the
+	system was configured to use 12 hour time format.
+2024-02-08 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented the 'Load Message" ['LM'] RML.
+2024-02-09 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'RDEventFilter' class.
+	* Fixed bugs in rdairplay(1) that caused scroll bars to appear when
+	loading web content into the message widget.
+2024-02-14 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdlogmanager(1) that could throw SQL
+	'column out of range' errors when importing traffic logs.
+	* Fixed a bug in rdlogmanager(1) that threw SQL errors when processing
+	log GUIDs containing apostrophes.
+2024-02-14 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'RDAIRPLAY.MESSAGE_WIDGET_URL' field to the database.
+	* Incremented the database version to 374.
+	* Added 'RDAirPlayConf::messageWidgetUrl()' and
+	'RDAirPlayConf::setMessageWidgetUrl()' methods.
+	* Modified rdairplay(1) to make the Message Widget retain the loaded
+	URL across instances.
+	* Modified rdairplay(1) to make the Message Widget continually poll
+	and update loaded URLs using the 'file:' schema.
+2024-02-14 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to v4.1.3int1.
+2024-03-08 Fred Gleason <fredg@paravelsystems.com>
+	* Added a check to the audio importation system to validate metadata
+	cue point positions relative to the actual audio duration.
+2024-04-02 Fred Gleason <fredg@paravelsystems.com>
 	* Added an extended event PAD output at TCP port 34290.
-2024-02-18 Fred Gleason <fredg@paravelsystems.com>
+2024-04-02 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdairplay(1) that caused invalid PAD JSON
 	to be emitted when processing a Chain event.
-2024-02-18 Fred Gleason <fredg@paravelsystems.com>
+2024-04-02 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'eventType' field to the PAD JSON schema.

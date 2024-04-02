@@ -27,12 +27,22 @@ VoiceTracker::VoiceTracker(QWidget *parent)
   : RDWidget(parent)
 {
   d_tracker_widget=new RDTrackerWidget(&d_import_path,this);
+  if(rda->airplayConf()->barAction()==RDAirPlayConf::StartNext) {
+    d_tracker_widget->setFocusPolicy(Qt::NoFocus);
+  }
+  else {
+    d_tracker_widget->setFocusPolicy(Qt::StrongFocus);
+  }
 
   d_load_button=new QPushButton(tr("Load\nLog"),this);
   d_load_button->setFont(bigButtonFont());
+  d_load_button->setFocusPolicy(Qt::NoFocus);
+
   connect(d_load_button,SIGNAL(clicked()),this,SLOT(loadData()));
   connect(d_tracker_widget,SIGNAL(activeChanged(bool)),
 	  d_load_button,SLOT(setDisabled(bool)));
+
+  setFocusPolicy(Qt::NoFocus);
 }
 
 

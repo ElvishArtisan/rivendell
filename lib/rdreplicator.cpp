@@ -59,6 +59,18 @@ void RDReplicator::setStationName(const QString &str)
 }
 
 
+QString RDReplicator::programCode() const
+{
+  return GetValue("PROGRAM_CODE").toString();
+}
+
+
+void RDReplicator::setProgramCode(const QString &str)
+{
+  SetRow("PROGRAM_CODE",str);
+}
+
+
 QString RDReplicator::description() const
 {
   return GetValue("DESCRIPTION").toString();
@@ -202,11 +214,15 @@ QString RDReplicator::typeString(RDReplicator::Type type)
   QString ret="Unknown type";
   switch(type) {
   case RDReplicator::TypeCitadelXds:
-    ret="Citadel X-Digital Portal";
+    ret="X-Digital National ISCI Model";
     break;
 
   case RDReplicator::TypeWw1Ipump:
     ret="Westwood One Wegener Portal";
+    break;
+
+  case RDReplicator::TypeXdsCue:
+    ret="X-Digital Cue Model";
     break;
 
   case RDReplicator::TypeLast:

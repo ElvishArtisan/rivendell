@@ -1227,6 +1227,33 @@
     </para>
   </sect2>
 
+  <sect2 xml:id="sect.rml.load_message__lm_">
+    <title>Load Message [LM]</title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>rdairplay</command><manvolnum>1</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>LM</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Load a webpage into RDAirPlay's Message Area.
+    </para>
+    <para>
+      <userinput>LM
+      <replaceable>url</replaceable>!</userinput>
+    </para>
+    <para>
+      Display the web page specified by <replaceable>url</replaceable> in the
+      message widget.
+    </para>
+  </sect2>
+
   <sect2 xml:id="sect.load_panel__pe_">
     <title>Load Panel [PE]</title>
     <para>

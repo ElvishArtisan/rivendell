@@ -26,6 +26,8 @@
 ModeDisplay::ModeDisplay(QWidget *parent)
   : RDPushButton(parent)
 {
+  setFocusPolicy(Qt::NoFocus);
+
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
     mode_mode[i]=RDAirPlayConf::Previous;
   }

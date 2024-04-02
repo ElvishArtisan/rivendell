@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Cart
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -181,8 +181,9 @@ EditCart::EditCart(const QList<unsigned> &cartnums,QString *path,bool new_cart,
   // Cart Forced Length
   //
   rdcart_controls.forced_length_edit=new RDTimeEdit(this);
-  rdcart_controls.forced_length_edit->setGeometry(530,36,85,21);
   rdcart_controls.forced_length_edit->setShowTenths(true);
+  rdcart_controls.forced_length_edit->setMode(RDTimeEdit::LengthMode);
+  rdcart_controls.forced_length_edit->setGeometry(530,36,85,21);
   rdcart_forced_length_ledit=new QLineEdit(this);
   rdcart_forced_length_ledit->setGeometry(535,36,80,21);
   rdcart_forced_length_ledit->hide();
@@ -581,8 +582,7 @@ EditCart::EditCart(const QList<unsigned> &cartnums,QString *path,bool new_cart,
       rdcart_average_length_edit->
 	setText(RDGetTimeLength(rdcart_cart->averageLength()));
     }
-    rdcart_controls.forced_length_edit->
-      setTime(QTime(0,0,0).addMSecs(rdcart_cart->forcedLength()));
+    rdcart_controls.forced_length_edit->setLength(rdcart_cart->forcedLength());
     rdcart_forced_length_ledit->
       setText(rdcart_controls.forced_length_edit->time().toString("hh:mm:ss"));
     rdcart_controls.title_edit->setText(rdcart_cart->title());
@@ -792,13 +792,12 @@ void EditCart::okData()
     rdcart_cart->calculateAverageLength(&rdcart_length_deviation);
     rdcart_cart->setLengthDeviation(rdcart_length_deviation);
     rdcart_cart->updateLength(rdcart_controls.enforce_length_box->isChecked(),
-			      QTime(0,0,0).msecsTo(rdcart_controls.
-					      forced_length_edit->time()));
+			      rdcart_controls.forced_length_edit->length());
     rdcart_cart->
       setAverageLength(RDSetTimeLength(rdcart_average_length_edit->text()));
     if(rdcart_controls.enforce_length_box->isChecked()) {
       rdcart_cart->
-	setForcedLength(QTime(0,0,0).msecsTo(rdcart_controls.forced_length_edit->time()));
+	setForcedLength(rdcart_controls.forced_length_edit->length());
       rdcart_cart->setEnforceLength(true);
     }
     else {
@@ -825,8 +824,6 @@ void EditCart::okData()
     rdcart_cart->setConductor(rdcart_controls.conductor_edit->text());
     rdcart_cart->setComposer(rdcart_controls.composer_edit->text());
     rdcart_cart->setUserDefined(rdcart_controls.user_defined_edit->text());
-    //    rdcart_cart->
-    //      setUsageCode((RDCart::UsageCode)rdcart_usage_box->currentIndex());
     rdcart_cart->
       setUsageCode((RDCart::UsageCode)rdcart_usage_box->
 		   itemData(rdcart_usage_box->currentIndex()).toInt());
@@ -910,8 +907,7 @@ void EditCart::cancelData()
       rdcart_cart->setForcedLength(len);
     }
     rdcart_cart->updateLength(rdcart_controls.enforce_length_box->isChecked(),
-			      QTime(0,0,0).msecsTo(rdcart_controls.
-					      forced_length_edit->time()));
+			      rdcart_controls.forced_length_edit->length());
   }
   done(false);
 }
@@ -923,8 +919,7 @@ void EditCart::forcedLengthData(bool state)
   rdcart_controls.forced_length_edit->setEnabled(state);
   if(state) {
     rdcart_controls.forced_length_edit->
-      setTime(QTime(0,0,0).
-	      addMSecs(RDSetTimeLength(rdcart_average_length_edit->text())));
+      setLength(RDSetTimeLength(rdcart_average_length_edit->text()));
   }
 }
 
@@ -958,8 +953,8 @@ void EditCart::closeEvent(QCloseEvent *e)
 
 bool EditCart::ValidateLengths()
 {
-  return rdcart_cart->validateLengths(QTime(0,0,0).
-		     msecsTo(rdcart_controls.forced_length_edit->time()));
+  return rdcart_cart->
+    validateLengths(rdcart_controls.forced_length_edit->length());
 }
 
 

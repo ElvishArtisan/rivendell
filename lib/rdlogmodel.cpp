@@ -1546,20 +1546,21 @@ QStringList RDLogModel::headerTexts() const
 {
   QStringList ret;
 
-  ret.push_back(tr("Start Time"));
-  ret.push_back(tr("Trans"));
-  ret.push_back(tr("Cart"));
-  ret.push_back(tr("Group"));
-  ret.push_back(tr("Length"));
-  ret.push_back(tr("Title"));
-  ret.push_back(tr("Artist"));
-  ret.push_back(tr("Client"));
-  ret.push_back(tr("Agency"));
-  ret.push_back(tr("Label"));
-  ret.push_back(tr("Source"));
-  ret.push_back(tr("Ext Data"));
-  ret.push_back(tr("Line ID"));
-  ret.push_back(tr("Count"));
+  ret.push_back(tr("Est. Time"));  // 00
+  ret.push_back(tr("Trans"));      // 01
+  ret.push_back(tr("Cart"));       // 02
+  ret.push_back(tr("Group"));      // 03
+  ret.push_back(tr("Length"));     // 04
+  ret.push_back(tr("Title"));      // 05
+  ret.push_back(tr("Artist"));     // 06
+  ret.push_back(tr("Sch. Time"));  // 07
+  ret.push_back(tr("Client"));     // 08
+  ret.push_back(tr("Agency"));     // 09
+  ret.push_back(tr("Label"));      // 10
+  ret.push_back(tr("Source"));     // 11
+  ret.push_back(tr("Ext Data"));   // 12
+  ret.push_back(tr("Line ID"));    // 13
+  ret.push_back(tr("Count"));      // 14
 
   return ret;
 }
@@ -1572,13 +1573,14 @@ QList<int> RDLogModel::columnAlignments() const
   int center=Qt::AlignCenter;
   int right=Qt::AlignRight|Qt::AlignVCenter;
 
-  ret.push_back(right);   // Start Time
+  ret.push_back(right);   // Estimated Time
   ret.push_back(center);  // Trans
   ret.push_back(center);  // Cart
   ret.push_back(center);  // Group
   ret.push_back(right);   // Length
   ret.push_back(left);    // Title
   ret.push_back(left);    // Artist
+  ret.push_back(right);   // Scheduled Time
   ret.push_back(left);    // Client
   ret.push_back(left);    // Agency
   ret.push_back(left);    // Label
@@ -1624,19 +1626,22 @@ QString RDLogModel::cellText(int col,int line,RDLogLine *ll) const
   case 6:  // Artist
     return ll->artist();
 
-  case 7:  // Client
+  case 7:  // Scheduled Time
+    return rda->timeString(ll->startTime(RDLogLine::Imported));
+
+  case 8:  // Client
     return ll->client();
 
-  case 8:  // Agency
+  case 9:  // Agency
     return ll->agency();
 
-  case 9:  // Label
+  case 10:  // Label
     return ll->markerLabel();
 
-  case 10:  // Source
+  case 11:  // Source
     return RDLogLine::sourceText(ll->source());
 
-  case 11:  // Ext Data
+  case 12:  // Ext Data
     switch(ll->type()) {
     case RDLogLine::MusicLink:
     case RDLogLine::TrafficLink:
@@ -1654,10 +1659,10 @@ QString RDLogModel::cellText(int col,int line,RDLogLine *ll) const
     }
     break;
 
-  case 12:  // Line ID
+  case 13:  // Line ID
     return QString::asprintf("%d",ll->id());
 
-  case 13:  // Count
+  case 14:  // Count
     return QString::asprintf("%d",line);
   }
   return QString();

@@ -2,7 +2,7 @@
 //
 // Revert Rivendell DB schema
 //
-//   (C) Copyright 2018-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -41,6 +41,41 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // NEW SCHEMA REVERSIONS GO HERE...
 
   //
+  // Revert 374
+  //
+  if((cur_schema == 374) && (set_schema < cur_schema))
+  {
+    DropColumn("RDAIRPLAY","MESSAGE_WIDGET_URL");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
+  // Revert 373
+  //
+  if((cur_schema == 373) && (set_schema < cur_schema))
+  {
+    sql=QString("alter table `AUDIO_CARDS` ")+
+      "modify column `NAME` varchar(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
+  // Revert 372
+  //
+  if((cur_schema == 372) && (set_schema < cur_schema))
+  {
+    DropIndex("ISCI_XREFERENCE","FILENAME_IDX");
+    DropColumn("REPLICATORS", "PROGRAM_CODE");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 371
   //
   if((cur_schema == 371) && (set_schema < cur_schema))
@@ -49,7 +84,6 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
     WriteSchemaVersion(--cur_schema);
   }
-
 
   //
   // Revert 370

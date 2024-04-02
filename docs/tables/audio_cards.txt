@@ -9,7 +9,7 @@ ID                   int(10) unsigned  Primary key, auto increment
 STATION_NAME	     varchar(64)
 CARD_NUMBER	     int(11) signed
 DRIVER               int(11) signed
-NAME                 varchar(64)
+NAME                 text
 INPUTS               int(11) signed
 OUTPUTS              int(11) signed
 CLOCK_SOURCE         int(11) signed    0 = Internal, 1 = AES/EBU, 

@@ -2,7 +2,7 @@
 //
 // Top row of indicator widgets for rdairplay(1)
 //
-//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,10 +22,12 @@
 #define TOPSTRIP_H
 
 #include <QLabel>
+#include <QWebView>
 
 #include <rdmeterstrip.h>
 #include <rdwidget.h>
 
+#include "messagewidget.h"
 #include "mode_display.h"
 #include "wall_clock.h"
 
@@ -40,8 +42,7 @@ class TopStrip : public RDWidget
   WallClock *wallClockWidget() const;
   ModeDisplay *modeDisplayWidget() const;
   RDMeterStrip *meterWidget();
-  QLabel *messageWidget() const;
-
+  MessageWidget *messageWidget() const;
  public slots:
   void setOnairFlag(bool state);   
 
@@ -50,10 +51,11 @@ class TopStrip : public RDWidget
   void paintEvent(QPaintEvent *e);
   
  private:
+  //  QFont MessageFont(QString str) const;
   WallClock *d_wall_clock_widget;
   ModeDisplay *d_mode_display_widget;
   RDMeterStrip *d_meter_widget;
-  QLabel *d_message_widget;
+  MessageWidget *d_message_widget;
   QLabel *d_logo;
   bool d_onair_flag;
 };

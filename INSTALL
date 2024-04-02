@@ -275,26 +275,26 @@ DISTRO-SPECIFIC NOTES
 ---------------------
 1) RedHat Enterprise Linux 7
 
-Required build packages: git gcc-c++ automake autoconf libtool qt5-qtbase-devel qt5-qtbase-mysql qt5-linguist libcurl-devel cdparanoia-devel hpklinux-devel alsa-lib-devel jack-audio-connection-kit-devel libsamplerate-devel libsndfile-devel id3lib-devel libvorbis-devel flac-devel pam-devel soundtouch-devel twolame-devel libmad-devel lame-devel rpm-build createrepo fop docbook5-style-xsl libxslt kernel-devel rpm-sign man-pages openssl-devel taglib-devel libmusicbrainz5-devel libdiscid-devel libcoverart libcoverart-devel ImageMagick-c++-devel
+Required build packages: git gcc-c++ automake autoconf libtool qt5-qtbase-devel qt5-qtbase-mysql qt5-linguist qt5-qtwebkit-devel libcurl-devel cdparanoia-devel hpklinux-devel alsa-lib-devel jack-audio-connection-kit-devel libsamplerate-devel libsndfile-devel id3lib-devel libvorbis-devel flac-devel pam-devel soundtouch-devel twolame-devel libmad-devel lame-devel rpm-build createrepo fop docbook5-style-xsl libxslt kernel-devel rpm-sign man-pages openssl-devel taglib-devel libmusicbrainz5-devel libdiscid-devel libcoverart libcoverart-devel ImageMagick-c++-devel
 
 Configure script invocation: ./configure --prefix=/usr --libdir=/usr/lib64 --libexecdir=/var/www/rd-bin --sysconfdir=/etc/httpd/conf.d
 
 
 2) RedHat Enterprise Linux 8
-Required build packages: git gcc-c++ automake autoconf libtool qt5-qtbase-devel qt5-linguist qt5-qtbase-mysql libcurl-devel cdparanoia-devel alsa-lib-devel libsamplerate-devel libsndfile-devel libvorbis-devel flac-devel pam-devel soundtouch-devel twolame-devel libmad-devel lame-devel rpm-build createrepo libxslt kernel-devel rpm-sign man-pages openssl-devel taglib-devel libmusicbrainz5-devel id3lib-devel libdiscid-devel libcoverart libcoverart-devel jack-audio-connection-kit-devel docbook5-style-xsl ImageMagick-c++-devel fop-static hpklinux-devel
+Required build packages: git gcc-c++ automake autoconf libtool qt5-qtbase-devel qt5-linguist qt5-qtbase-mysql qt5-qtwebkit-devel libcurl-devel cdparanoia-devel alsa-lib-devel libsamplerate-devel libsndfile-devel libvorbis-devel flac-devel pam-devel soundtouch-devel twolame-devel libmad-devel lame-devel rpm-build createrepo libxslt kernel-devel rpm-sign man-pages openssl-devel taglib-devel libmusicbrainz5-devel id3lib-devel libdiscid-devel libcoverart libcoverart-devel jack-audio-connection-kit-devel docbook5-style-xsl ImageMagick-c++-devel fop-static hpklinux-devel
 
 Configure script invocation: ./configure --prefix=/usr --libdir=/usr/lib64 --libexecdir=/var/www/rd-bin --sysconfdir=/etc/httpd/conf.d
 
 
 3) RedHat Enterprise Linux 9
-Required build packages: git gcc-c++ automake autoconf libtool qt5-qtbase-devel qt5-linguist qt5-qtbase-mysql libcurl-devel cdparanoia-devel alsa-lib-devel libsamplerate-devel libsndfile-devel libvorbis-devel flac-devel pam-devel soundtouch-devel twolame-devel libmad-devel lame-devel rpm-build createrepo libxslt kernel-devel rpm-sign man-pages openssl-devel taglib-devel libmusicbrainz5-devel id3lib-devel libdiscid-devel libcoverart libcoverart-devel pipewire-jack-audio-connection-kit-devel docbook5-style-xsl ImageMagick-c++-devel fop-static hpklinux-devel
+Required build packages: git gcc-c++ automake autoconf libtool qt5-qtbase-devel qt5-linguist qt5-qtbase-mysql qt5-qtwebkit-devel libcurl-devel cdparanoia-devel alsa-lib-devel libsamplerate-devel libsndfile-devel libvorbis-devel flac-devel pam-devel soundtouch-devel twolame-devel libmad-devel lame-devel rpm-build createrepo libxslt kernel-devel rpm-sign man-pages openssl-devel taglib-devel libmusicbrainz5-devel id3lib-devel libdiscid-devel libcoverart libcoverart-devel pipewire-jack-audio-connection-kit-devel docbook5-style-xsl ImageMagick-c++-devel fop-static hpklinux-devel
 
 Configure script invocation: ./configure --prefix=/usr --libdir=/usr/lib64 --libexecdir=/var/www/rd-bin --sysconfdir=/etc/httpd/conf.d
 
 
 4) Ubuntu 20.04 LTS
 
-Required build packages: apache2 libexpat1-dev libexpat1 libid3-dev libcurl4-gnutls-dev libcoverart-dev libdiscid-dev libmusicbrainz5-dev libcdparanoia-dev libsndfile1-dev libpam0g-dev libvorbis-dev python3 python3-pycurl python3-pymysql python3-serial python3-requests libsamplerate0-dev qtbase5-dev libqt5sql5-mysql libsoundtouch-dev libsystemd-dev libjack-jackd2-dev libasound2-dev libflac-dev libflac++-dev libmp3lame-dev libmad0-dev libtwolame-dev docbook5-xml libxml2-utils docbook-xsl-ns xsltproc fop make g++ libltdl-dev autoconf automake libssl-dev libtag1-dev qttools5-dev-tools debhelper openssh-server autoconf-archive gnupg pbuilder ubuntu-dev-tools apt-file
+Required build packages: apache2 libexpat1-dev libexpat1 libid3-dev libcurl4-gnutls-dev libcoverart-dev libdiscid-dev libmusicbrainz5-dev libcdparanoia-dev libsndfile1-dev libpam0g-dev libvorbis-dev python3 python3-pycurl python3-pymysql python3-serial python3-requests libsamplerate0-dev qtbase5-dev libqt5sql5-mysql libqt5webkit5-dev libsoundtouch-dev libsystemd-dev libjack-jackd2-dev libasound2-dev libflac-dev libflac++-dev libmp3lame-dev libmad0-dev libtwolame-dev docbook5-xml libxml2-utils docbook-xsl-ns xsltproc fop make g++ libltdl-dev autoconf automake libssl-dev libtag1-dev qttools5-dev-tools debhelper openssh-server autoconf-archive gnupg pbuilder ubuntu-dev-tools apt-file
 
 Configure script invocation: ./configure --prefix=/usr --libdir=/usr/lib --libexecdir=/var/www/rd-bin --sysconfdir=/etc/apache2/conf-enabled --enable-rdxport-debug MUSICBRAINZ_LIBS="-ldiscid -lmusicbrainz5cc -lcoverartcc"
 
@@ -310,7 +310,7 @@ be done by means of the following commands:
 
 5) Ubuntu 22.04 LTS
 
-Required build packages: apache2 libexpat1-dev libexpat1 libid3-dev libcurl4-gnutls-dev libcoverart-dev libdiscid-dev libmusicbrainz5-dev libcdparanoia-dev libsndfile1-dev libpam0g-dev libvorbis-dev python3 python3-pycurl python3-pymysql python3-serial python3-requests libsamplerate0-dev qtbase5-dev libqt5sql5-mysql libsoundtouch-dev libsystemd-dev libjack-jackd2-dev libasound2-dev libflac-dev libflac++-dev libmp3lame-dev libmad0-dev libtwolame-dev docbook5-xml libxml2-utils docbook-xsl-ns xsltproc fop make g++ libltdl-dev autoconf automake libssl-dev libtag1-dev qttools5-dev-tools debhelper openssh-server autoconf-archive gnupg pbuilder ubuntu-dev-tools apt-file hpklinux-dev libmagick++-dev
+Required build packages: apache2 libexpat1-dev libexpat1 libid3-dev libcurl4-gnutls-dev libcoverart-dev libdiscid-dev libmusicbrainz5-dev libcdparanoia-dev libsndfile1-dev libpam0g-dev libvorbis-dev python3 python3-pycurl python3-pymysql python3-serial python3-requests libsamplerate0-dev qtbase5-dev libqt5sql5-mysql libqt5webkit5-dev libsoundtouch-dev libsystemd-dev libjack-jackd2-dev libasound2-dev libflac-dev libflac++-dev libmp3lame-dev libmad0-dev libtwolame-dev docbook5-xml libxml2-utils docbook-xsl-ns xsltproc fop make g++ libltdl-dev autoconf automake libssl-dev libtag1-dev qttools5-dev-tools debhelper openssh-server autoconf-archive gnupg pbuilder ubuntu-dev-tools apt-file hpklinux-dev libmagick++-dev
 
 Configure script invocation: ./configure --prefix=/usr --libdir=/usr/lib --libexecdir=/var/www/rd-bin --sysconfdir=/etc/apache2/conf-enabled --enable-rdxport-debug MUSICBRAINZ_LIBS="-ldiscid -lmusicbrainz5cc -lcoverartcc"
 

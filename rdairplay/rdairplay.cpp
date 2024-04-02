@@ -2,7 +2,7 @@
 //
 // The On Air Playout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -133,15 +133,6 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   // Initialize the Random Number Generator
   //
   srandom(QTime::currentTime().msec());
-
-  //
-  // Generate Fonts
-  //
-  for(unsigned i=0;i<AIR_MESSAGE_FONT_QUANTITY;i++) {
-    air_message_fonts[i]=QFont(font().family(),12+2*i,QFont::Normal);
-    air_message_fonts[i].setPixelSize(12+2*i);
-    air_message_metrics[i]=new QFontMetrics(air_message_fonts[i]);
-  }
 
   //
   // Create And Set Icon

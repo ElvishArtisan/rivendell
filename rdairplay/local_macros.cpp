@@ -2,7 +2,7 @@
 //
 // Local RML Macros for the Rivendell's RDAirPlay
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -58,13 +58,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
 	str+=(rml->arg(i)+" ");
       }
       str+=rml->arg(rml->argQuantity()-1);
-      pal=air_top_strip->messageWidget()->palette();
-      pal.setColor(QPalette::Active,QPalette::Foreground,QColor(Qt::black));
-      pal.setColor(QPalette::Inactive,QPalette::Foreground,
-		   QColor(Qt::black));
-      air_top_strip->messageWidget()->setPalette(pal);
-      air_top_strip->messageWidget()->setFont(MessageFont(str));
-      air_top_strip->messageWidget()->setText(str);
+      air_top_strip->messageWidget()->setText(str,QColor(Qt::black));
     }
     if(rml->echoRequested()) {
       rml->acknowledge(true);
@@ -85,15 +79,26 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
 	str+=(rml->arg(i)+" ");
       }
       str+=rml->arg(rml->argQuantity()-1);
-      pal=air_top_strip->messageWidget()->palette();
-      pal.setColor(QPalette::Active,QPalette::Foreground,color);
-      pal.setColor(QPalette::Inactive,QPalette::Foreground,color);
-      air_top_strip->messageWidget()->setPalette(pal);
-      air_top_strip->messageWidget()->setFont(MessageFont(str));
-      air_top_strip->messageWidget()->setText(str);
+      air_top_strip->messageWidget()->setText(str,color);
     }
     if(rml->echoRequested()) {
       rml->acknowledge(true);
+      rda->ripc()->sendRml(rml);
+    }   
+    break;
+
+  case RDMacro::LM:     // Load Message Widget
+    if(rml->argQuantity()==0) {
+      air_top_strip->messageWidget()->clear();
+    }
+    else {
+      for(int i=0;i<(rml->argQuantity());i++) {
+	str+=(rml->arg(i)+" ");
+      }
+      ok=air_top_strip->messageWidget()->setUrl(str.trimmed());
+    }
+    if(rml->echoRequested()) {
+      rml->acknowledge(ok);
       rda->ripc()->sendRml(rml);
     }   
     break;
@@ -957,17 +962,6 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
   default:
     break;
   }
-}
-
-
-QFont MainWidget::MessageFont(QString str)
-{
-  for(int i=(AIR_MESSAGE_FONT_QUANTITY-1);i>=0;i--) {
-    if(air_message_metrics[i]->width(str)<MESSAGE_WIDGET_WIDTH) {
-      return air_message_fonts[i];
-    }
-  }
-  return air_message_fonts[0];
 }
 
 

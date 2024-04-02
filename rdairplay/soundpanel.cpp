@@ -27,6 +27,8 @@ SoundPanel::SoundPanel(RDEventPlayer *player,RDCartDialog *cart_dialog,
 		       bool dump_panel_updates,QWidget *parent)
   : RDWidget(parent)
 {
+  setFocusPolicy(Qt::NoFocus);
+
   d_panel=
     new RDSoundPanel(rda->airplayConf()->panels(RDAirPlayConf::StationPanel),
 		     rda->airplayConf()->panels(RDAirPlayConf::UserPanel),

@@ -2,7 +2,7 @@
 //
 // The On Air Playout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -42,11 +42,9 @@
 #define AIR_LOG_PORTS 2
 #define AIR_PANEL_PORTS 1
 #define AIR_TOTAL_PORTS 3
-#define AIR_MESSAGE_FONT_QUANTITY 8
 #define AIR_CHANNEL_LOCKOUT_INTERVAL 1000
 #define METER_INTERVAL 20
 #define MASTER_TIMER_INTERVAL 100
-#define MESSAGE_WIDGET_WIDTH 410
 #define RDAIRPLAY_USAGE "[OPTIONS]\n"
 
 class MainWidget : public RDMainWindow
@@ -99,7 +97,6 @@ class MainWidget : public RDMainWindow
   void SetLiveAssistMode(int mach);
   void SetActionMode(StartButton::Mode mode);
   bool GetPanel(QString str,RDAirPlayConf::PanelType *type,int *panel);
-  QFont MessageFont(QString str);
   bool AssertChannelLock(int dir,int card,int port);
   bool AssertChannelLock(int dir,int achan);
   int AudioChannel(int card,int port) const;
@@ -150,8 +147,6 @@ class MainWidget : public RDMainWindow
   RDAirPlayConf::ExitCode rdairplay_previous_exit_code;
   QDateTime air_startup_datetime;
   QPixmap *air_refresh_pixmap;
-  QFont air_message_fonts[AIR_MESSAGE_FONT_QUANTITY];
-  QFontMetrics *air_message_metrics[AIR_MESSAGE_FONT_QUANTITY];
   int air_audio_channels[RDAirPlayConf::LastChannel];
   int air_start_gpi_matrices[RDAirPlayConf::LastChannel];
   int air_start_gpi_lines[RDAirPlayConf::LastChannel];

@@ -2,7 +2,7 @@
 //
 // Rivendell Voice Tracker
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -70,6 +70,7 @@ class RDTrackerWidget : public RDWidget
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   bool isActive() const;
+  void setFocusPolicy(Qt::FocusPolicy pol);
 
  signals:
   void activeChanged(bool state);
@@ -219,7 +220,6 @@ class RDTrackerWidget : public RDWidget
   QPushButton *d_next_button;
   QPushButton *d_insert_button;
   QPushButton *d_delete_button;
-  //  QPushButton *d_close_button;
   RDEventPlayer *d_event_player;
   unsigned d_tracks;
   int d_time_remaining;
@@ -273,7 +273,7 @@ class RDTrackerWidget : public RDWidget
   QLabel *d_tracks_remaining_label_label;
   QLabel *d_time_remaining_label_label;
   QLabel *d_time_label;
-
+  Qt::FocusPolicy d_focus_policy;
   bool d_active;
 };
 
