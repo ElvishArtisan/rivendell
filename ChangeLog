@@ -24690,3 +24690,5 @@
 	* Refactored the PAD subsystem to use native Qt JSON methods.
 2024-04-02 Fred Gleason <fredg@paravelsystems.com>
 	* Modified the Sound Panel classes to use native Qt JSON methods.
+2024-04-02 Fred Gleason <fredg@paravelsystems.com>
+	* Removed JSON generation methods.

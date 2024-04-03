@@ -3,7 +3,7 @@
 // Functions for interfacing with web components using the
 // Common Gateway Interface (CGI) Standard 
 //
-//   (C) Copyright 1996-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 1996-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -53,20 +53,6 @@ extern QString RDXmlField(const QString &tag,const QTime &value,
 extern QString RDXmlField(const QString &tag);
 extern QString RDXmlEscape(const QString &str);
 extern QString RDXmlUnescape(const QString &str);
-extern QString RDJsonPadding(int padding);
-extern QString RDJsonEscape(const QString &str);
-extern QString RDJsonNullField(const QString &name,int padding=0,
-			       bool final=false);
-extern QString RDJsonField(const QString &name,bool value,int padding=0,
-			   bool final=false);
-extern QString RDJsonField(const QString &name,int value,int padding=0,
-			   bool final=false);
-extern QString RDJsonField(const QString &name,unsigned value,int padding=0,
-			   bool final=false);
-extern QString RDJsonField(const QString &name,const QString &value,
-			   int padding=0,bool final=false);
-extern QString RDJsonField(const QString &name,const QDateTime &value,
-			   int padding=0,bool final=false);
 extern QString RDUrlEscape(const QString &str);
 extern QString RDUrlUnescape(const QString &str);
 
