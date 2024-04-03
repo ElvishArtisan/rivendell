@@ -96,6 +96,16 @@
 }]]>
 	</programlisting>
       </para>
+      <sect3 xml:id="sect.pad.the_json_interface.the_extended_json_interface">
+	<title>The Extended JSON Interface</title>
+	<para>
+	  An &quot;extended&quot; version of the above PAD feed that contains
+	  additional <code>next</code> objects is optionally available at
+	  TCP port 34290. See the <userinput>ExtendedNextPadEvents=</userinput>
+	  directive in the <userinput>[Tuning]</userinput> section of the
+	  <command>rd.conf</command><manvolnum>5</manvolnum> man page.
+	</para>
+      </sect3>
     </sect2>
 
     <sect2 xml:id="sect.pad.pypad">

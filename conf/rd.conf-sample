@@ -188,6 +188,13 @@ TranscodingDelay=0
 ; bootup.
 ;ServiceStartupDelay=5 
 
+; Maximum number of extended next PAD events, available at TCP port 34290.
+; Setting this to '-1' causes 'next' clauses for the entire runtime horizon
+; of the log to be sent, while setting it to '0' disables the extended next
+; PAD events feature entirely.
+;ExtendedNextPadEvents=4
+
+
 [Hacks]
 ; As implied by the name, directives in this section are generally for use
 ; in troubleshooting or maintenance situations. Do *NOT* change these on

@@ -634,6 +634,11 @@
 #define RD_DEFAULT_SERVICE_TIMEOUT 30
 
 /*
+ * Default 'ExtendedNextPadEvents=' value is rd.conf(5)
+ */
+#define RD_DEFAULT_EXTENDED_NEXT_PAD_EVENTS 4
+
+/*
  * Default 'ServiceStartupDelay=' value in rd.conf(5) [seconds]
  */
 #define RD_DEFAULT_SERVICE_STARTUP_DELAY 5

@@ -24,6 +24,8 @@
 #include <QList>
 #include <QObject>
 
+#include <rdconfig.h>
+
 #include "repeater.h"
 
 #define RDPADD_USAGE "\n\n"
@@ -36,6 +38,7 @@ class MainObject : public QObject
 
  private:
   QList<Repeater *> d_repeaters;
+  RDConfig *d_config;
 };
 
 

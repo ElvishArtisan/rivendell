@@ -717,6 +717,27 @@
        <variablelist>
 	 <varlistentry>
 	   <term>
+	     <userinput>ExtendedNextPadEvents = <replaceable>num</replaceable></userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       Instruct the PAD subsystem to provide an &quot;extended&quot;
+	       interface at TCP port <computeroutput>34290</computeroutput>,
+	       appending <replaceable>num</replaceable> &quot;next&quot;
+	       objects in addition to the standard &quot;next&quot; object.
+	     </para>
+	     <para>
+	       Setting <replaceable>num</replaceable> to
+	       <userinput>-1</userinput> will cause &quot;next&quot; objects
+	       for <emphasis>all</emphasis> upcoming events to be generated;
+	       while setting <replaceable>num</replaceable> to
+	       <userinput>0</userinput> will disable the extended PAD
+	       interface entirely.
+	     </para>
+	   </listitem>
+	 </varlistentry>
+	 <varlistentry>
+	   <term>
 	     <userinput>ServiceStartDelay = <replaceable>secs</replaceable></userinput>
 	   </term>
 	   <listitem>

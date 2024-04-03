@@ -74,7 +74,11 @@ RDLogPlay::RDLogPlay(int id,RDEventPlayer *player,bool enable_cue,QObject *paren
   //
   // PAD Server Connection
   //
-  for(int i=0;i<2;i++) {
+  int extended_next=2;
+  if(rda->config()->extendedNextPadEvents()==0) {
+    extended_next=1;
+  }
+  for(int i=0;i<extended_next;i++) {
     play_pad_socket[i]=new RDUnixSocket(this);
     if(!play_pad_socket[i]->
        connectToAbstract(QString::asprintf("%s-%d",
@@ -3172,7 +3176,11 @@ void RDLogPlay::SendNowNext()
   }
   int next_num=1;
 
-  for(int i=0;i<2;i++) {
+  int extended_next=2;
+  if(rda->config()->extendedNextPadEvents()==0) {
+    extended_next=1;
+  }
+  for(int i=0;i<extended_next;i++) {
 
     //
     // Header Fields
@@ -3234,18 +3242,24 @@ void RDLogPlay::SendNowNext()
     //
     // Extended Events
     //
-    if(nextLine()>=0) {
-      if((i>0)&&(nextLine()>=0)) {
-	for(int j=nextLine()+1;j<lineCount();j++) {
-	  if((ll=logLine(j))!=NULL) {
-	    if((ll->type()==RDLogLine::Cart)||(ll->type()==RDLogLine::Macro)) {
-	      if((ll->status()==RDLogLine::Scheduled)&&
-		 (!logLine(i)->asyncronous())) {
-		next_datetime=next_datetime.addSecs(ll->forcedLength()/1000);
-		jo0.insert(QString::asprintf("next%d",next_num),
-			   GetPadJson(QString::asprintf("next%d",next_num),ll,
-				      next_datetime,j));
-		next_num++;
+    if(rda->config()->extendedNextPadEvents()!=0) {
+      int limit=lineCount();
+      if(rda->config()->extendedNextPadEvents()>0) {
+	limit=nextLine()+1+rda->config()->extendedNextPadEvents();
+      }
+      if(nextLine()>=0) {
+	if((i>0)&&(nextLine()>=0)) {
+	  for(int j=nextLine()+1;j<limit;j++) {
+	    if((ll=logLine(j))!=NULL) {
+	      if((ll->type()==RDLogLine::Cart)||(ll->type()==RDLogLine::Macro)) {
+		if((ll->status()==RDLogLine::Scheduled)&&
+		   (!logLine(i)->asyncronous())) {
+		  next_datetime=next_datetime.addSecs(ll->forcedLength()/1000);
+		  jo0.insert(QString::asprintf("next%d",next_num),
+			     GetPadJson(QString::asprintf("next%d",next_num),ll,
+					next_datetime,j));
+		  next_num++;
+		}
 	      }
 	    }
 	  }

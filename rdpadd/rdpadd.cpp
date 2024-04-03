@@ -27,7 +27,14 @@
 MainObject::MainObject()
   : QObject()
 {
-  for(int i=0;i<2;i++) {
+  d_config=new RDConfig();
+  d_config->load();
+
+  int extended_next=2;
+  if(d_config->extendedNextPadEvents()==0) {
+    extended_next=1;
+  }
+  for(int i=0;i<extended_next;i++) {
     d_repeaters.push_back(new Repeater(QString::asprintf("%s-%d",
 				       RD_PAD_SOURCE_UNIX_BASE_ADDRESS,i),
 				       RD_PAD_CLIENT_TCP_PORT+i,this));

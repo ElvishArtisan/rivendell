@@ -126,6 +126,7 @@ class RDConfig
   int serviceTimeout() const;
   QString tempDirectory();
   int serviceStartupDelay() const;
+  int extendedNextPadEvents() const;
   QString sasStation() const;
   int sasMatrix() const;
   unsigned sasBaseCart() const;
@@ -214,6 +215,7 @@ class RDConfig
   int conf_service_timeout;
   QString conf_temp_directory;
   int conf_service_startup_delay;
+  int conf_extended_next_pad_events;
   QString conf_sas_station;
   int conf_sas_matrix;
   unsigned conf_sas_base_cart;

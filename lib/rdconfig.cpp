@@ -538,6 +538,12 @@ int RDConfig::serviceStartupDelay() const
 }
 
 
+int RDConfig::extendedNextPadEvents() const
+{
+  return conf_extended_next_pad_events;
+}
+
+
 QString RDConfig::sasStation() const
 {
   return conf_sas_station;
@@ -729,6 +735,9 @@ bool RDConfig::load()
   conf_temp_directory=profile->stringValue("Tuning","TempDirectory","");
   conf_service_startup_delay=profile->intValue("Tuning","ServiceStartupDelay",
 					     RD_DEFAULT_SERVICE_STARTUP_DELAY);
+  conf_extended_next_pad_events=
+    profile->intValue("Tuning","ExtendedNextPadEvents",
+		      RD_DEFAULT_EXTENDED_NEXT_PAD_EVENTS);
   conf_sas_station=profile->stringValue("SASFilter","Station","");
   conf_sas_matrix=profile->intValue("SASFilter","Matrix",0);
   conf_sas_base_cart=profile->intValue("SASFilter","BaseCart",0);
