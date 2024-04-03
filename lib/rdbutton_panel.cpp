@@ -2,7 +2,7 @@
 //
 // Component class for sound panel widgets
 //
-//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,15 +19,19 @@
 //
 
 #include <QColor>
+#include <QJsonArray>
+#include <QJsonObject>
 
 #include "rdbutton_dialog.h"
 #include "rdbutton_panel.h"
 
 RDButtonPanel::RDButtonPanel(RDAirPlayConf::PanelType type,int number,
-			     QWidget *parent)
+			     const QString &title,QWidget *parent)
   : RDWidget(parent)
 {
+  panel_type=type;
   panel_number=number;
+  panel_title=title;
 
   panel_button_mapper=new QSignalMapper(this);
   connect(panel_button_mapper,SIGNAL(mapped(int)),
@@ -161,25 +165,23 @@ void RDButtonPanel::setActionMode(RDAirPlayConf::ActionMode mode)
 
       default:
 	for(int i=0;i<PANEL_MAX_BUTTON_ROWS;i++) {
-	for(int j=0;j<PANEL_MAX_BUTTON_COLUMNS;j++) {
-//	    if(panel_button[i][j]->cart()!=0) {
-	      if(panel_button[i][j]->playDeck()!=NULL) {
-                if(panel_button[i][j]->playDeck()->state()==RDPlayDeck::Paused) {
-		  panel_button[i][j]->setColor(RDPANEL_PAUSED_BACKGROUND_COLOR);
-                  }
-                else {
-                  panel_button[i][j]->setColor(RDPANEL_PLAY_BACKGROUND_COLOR);
-                  }
-	        }
+	  for(int j=0;j<PANEL_MAX_BUTTON_COLUMNS;j++) {
+	    if(panel_button[i][j]->playDeck()!=NULL) {
+	      if(panel_button[i][j]->playDeck()->state()==RDPlayDeck::Paused) {
+		panel_button[i][j]->setColor(RDPANEL_PAUSED_BACKGROUND_COLOR);
+	      }
 	      else {
-                if(panel_button[i][j]->state()) {
-		    panel_button[i][j]->setColor(RDPANEL_PAUSED_BACKGROUND_COLOR);
-                    }
-                  else {
-		    panel_button[i][j]->reset();
-                  }
-                }
-//	    }
+		panel_button[i][j]->setColor(RDPANEL_PLAY_BACKGROUND_COLOR);
+	      }
+	    }
+	    else {
+	      if(panel_button[i][j]->state()) {
+		panel_button[i][j]->setColor(RDPANEL_PAUSED_BACKGROUND_COLOR);
+	      }
+	      else {
+		panel_button[i][j]->reset();
+	      }
+	    }
 	  }
 	}
 	break;
@@ -217,41 +219,33 @@ void RDButtonPanel::clear()
 }
 
 
-QString RDButtonPanel::json(int padding,bool final) const
+QJsonValue RDButtonPanel::json() const
 {
-  QString ret;
-
-  //
-  // Get Button Count
-  //
-  int count=0;
-  for(int i=0;i<PANEL_MAX_BUTTON_ROWS;i++) {
-    for(int j=0;j<PANEL_MAX_BUTTON_COLUMNS;j++) {
-      if(!panel_button[i][j]->isEmpty()) {
-	count++;
-      }
-    }
-  }
-
-  ret+=RDJsonPadding(padding)+"\"panel\": {\r\n";
-  ret+=RDJsonField("number",panel_number,4+padding);
-  ret+=RDJsonField("title",panel_title,4+padding,count==0);
+  QJsonArray ja0;
 
   for(int i=0;i<PANEL_MAX_BUTTON_ROWS;i++) {
     for(int j=0;j<PANEL_MAX_BUTTON_COLUMNS;j++) {
       if(!panel_button[i][j]->isEmpty()) {
-	count--;
-	ret+=panel_button[i][j]->json(4+padding,count==0);
+	ja0.insert(ja0.count(),panel_button[i][j]->json());
       }
     }
   }
-  ret+=RDJsonPadding(padding)+"}";
-  if(!final) {
-    ret+=",";
+  QJsonObject jo0;
+  if(panel_type==RDAirPlayConf::UserPanel) {
+    jo0.insert("owner",rda->user()->name());
   }
-  ret+="\r\n";
+  else {
+    jo0.insert("owner",QJsonValue());
+  }
+  if(panel_title.isEmpty()) {
+    jo0.insert("title",QJsonValue());
+  }
+  else {
+    jo0.insert("title",panel_title);
+  }
+  jo0.insert("buttons",ja0);
 
-  return ret;
+  return jo0;
 }
 
 

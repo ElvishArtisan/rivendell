@@ -2,7 +2,7 @@
 //
 // Component class for sound panel widgets.
 //
-//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,6 +19,7 @@
 //
 
 #include <QDrag>
+#include <QJsonObject>
 #include <QPainter>
 
 #include <rdcartdrag.h>
@@ -348,39 +349,29 @@ bool RDPanelButton::isActive() const
 }
 
 
-QString RDPanelButton::json(int padding,bool final)
+QJsonValue RDPanelButton::json() const
 {
-  QString ret;
+  QJsonObject jo0;
 
-  ret+=RDJsonPadding(padding)+"\"button\": {\r\n";
-  ret+=RDJsonField("column",button_col,4+padding);
-  ret+=RDJsonField("row",button_row,4+padding);
+  jo0.insert("column",button_col);
+  jo0.insert("row",button_row);
   if(isEmpty()) {
-    ret+=RDJsonNullField("cart",4+padding);
-    ret+=RDJsonNullField("defaultColor",4+padding);
-    ret+=RDJsonNullField("length",4+padding);
-    ret+=RDJsonNullField("hookLength",4+padding);
-    ret+=RDJsonNullField("label",4+padding,true);
+    jo0.insert("cart",QJsonValue());
+    jo0.insert("defaultColor",QJsonValue());
+    jo0.insert("length",QJsonValue());
+    jo0.insert("hookLength",QJsonValue());
+    jo0.insert("label",QJsonValue());
   }
   else {
-    ret+=RDJsonField("cart",button_cart,4+padding);
-    ret+=RDJsonField("defaultColor",button_default_color.name(),4+padding);
-    ret+=RDJsonField("length",RDGetTimeLength(button_length[0],true,false),
-		     4+padding);
-    ret+=RDJsonField("hookLength",RDGetTimeLength(button_length[1],true,false),
-		     4+padding);
-    ret+=RDJsonField("label",button_text,4+padding,true);
+    jo0.insert("cart",(int)button_cart);
+    jo0.insert("defaultColor",button_default_color.name());
+    jo0.insert("length",RDGetTimeLength(button_length[0],true,false));
+    jo0.insert("hookLength",RDGetTimeLength(button_length[1],true,false));
+    jo0.insert("label",button_text);
   }
-  ret+=RDJsonPadding(padding)+"}";
-  if(!final) {
-    ret+=",";
-  }
-  ret+="\r\n";
 
-  return ret;
+  return jo0;
 }
-
-
 
 
 void RDPanelButton::setVisible(bool state)

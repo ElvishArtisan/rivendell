@@ -2,7 +2,7 @@
 //
 // Component class for sound panel widgets.
 //
-//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,7 +23,6 @@
 
 #include <rdplay_deck.h>
 #include <rdpushbutton.h>
-#include <rdweb.h>
 
 //
 // Widget Settings
@@ -79,7 +78,7 @@ class RDPanelButton : public RDPushButton
   void resetCounter();
   bool isEmpty() const;
   bool isActive() const;
-  QString json(int padding=0,bool final=false);
+  QJsonValue json() const;
   void setVisible(bool state);
 
  signals:

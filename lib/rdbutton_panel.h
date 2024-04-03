@@ -2,7 +2,7 @@
 //
 // Component class for sound panel widgets
 //
-//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,6 +22,7 @@
 #define RDBUTTON_PANEL_H
 
 #include <QDateTime>
+#include <QJsonValue>
 #include <QLabel>
 #include <QSignalMapper>
 
@@ -30,7 +31,6 @@
 #include <rduser.h>
 #include <rdpanel_button.h>
 #include <rdbutton_dialog.h>
-#include <rdweb.h>
 #include <rdwidget.h>
 
 //
@@ -43,7 +43,8 @@ class RDButtonPanel : public RDWidget
 {
   Q_OBJECT;
  public:
-  RDButtonPanel(RDAirPlayConf::PanelType type,int number,QWidget *parent);
+  RDButtonPanel(RDAirPlayConf::PanelType type,int number,const QString &title,
+		QWidget *parent);
   ~RDButtonPanel();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -55,7 +56,7 @@ class RDButtonPanel : public RDWidget
   void setAllowDrags(bool state);
   void setAcceptDrops(bool state);
   void clear();
-  QString json(int padding=0,bool final=false) const;
+  QJsonValue json() const;
 
  public slots:
   void setVisible(bool state);
@@ -75,6 +76,7 @@ class RDButtonPanel : public RDWidget
   QString panel_title;
   QSignalMapper *panel_button_mapper;
   RDPanelButton *panel_button[PANEL_MAX_BUTTON_ROWS][PANEL_MAX_BUTTON_COLUMNS];
+  RDAirPlayConf::PanelType panel_type;
 };
 
 #endif  // RDBUTTON_PANEL_H

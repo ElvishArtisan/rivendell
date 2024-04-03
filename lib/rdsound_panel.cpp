@@ -1,8 +1,8 @@
 // rdsound_panel.cpp
 //
-// The sound panel widget for RDAirPlay
+// The sound panel widget.
 //
-//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,6 +18,10 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
+
 #include "rdapplication.h"
 #include "rdbutton_dialog.h"
 #include "rdcut.h"
@@ -28,7 +32,6 @@
 #include "rdlog_line.h"
 #include "rdmacro.h"
 #include "rdsound_panel.h"
-#include "rdweb.h"
 
 RDSoundPanel::RDSoundPanel(int station_panels,int user_panels,bool flash,
 			   const QString &caption,const QString &label_template,
@@ -164,8 +167,8 @@ RDSoundPanel::RDSoundPanel(int station_panels,int user_panels,bool flash,
   //
   QString sql;
   sql=QString("select ")+
-    "`PANEL_NO`,"+
-    "`NAME` "+
+    "`PANEL_NO`,"+  // 00
+    "`NAME` "+      // 01
     "from "+panel_name_tablename+" where "+
     QString::asprintf("(`TYPE`=%d)&&",RDAirPlayConf::StationPanel)+
     "(`OWNER`='"+RDEscapeString(rda->station()->name())+"') "+
@@ -470,42 +473,25 @@ RDAirPlayConf::PanelType RDSoundPanel::currentType() const
 }
 
 
-QString RDSoundPanel::json(const QString &owner,int padding,bool final) const
+QByteArray RDSoundPanel::json(const QString &owner) const
 {
-  QString ret;
-  QList<RDButtonPanel *> panels=panel_arrays.value(owner);
+  QJsonArray ja0;
 
-  ret+=RDJsonPadding(padding)+"\"array\": {\r\n";
-  ret+=RDJsonField("owner",owner,4+padding);
-
-  for(int i=0;i<(panels.size()-1);i++) {
-    ret+=panels.at(i)->json(4+padding);
+  QList<RDButtonPanel *> panels=panel_arrays.value("");
+  for(int i=0;i<panels.size();i++) {
+    ja0.insert(ja0.count(),panels.at(i)->json());
   }
-  if(panels.size()>0) {
-    ret+=panels.last()->json(4+padding,true);
+  panels=panel_arrays.value(rda->user()->name());
+  for(int i=0;i<panels.size();i++) {
+    ja0.insert(ja0.count(),panels.at(i)->json());
   }
+  QJsonObject jo0;
+  jo0.insert("panels",ja0);
 
-  ret+=RDJsonPadding(padding)+"}";
-  if(!final) {
-    ret+=",";
-  }
-  ret+="\r\n";
+  QJsonDocument jdoc;
+  jdoc.setObject(jo0);
 
-  return ret;
-}
-
-
-QString RDSoundPanel::json(int padding) const
-{
-  QString ret;
-
-  int count=0;
-  for(QMap<QString,QList<RDButtonPanel *> >::const_iterator it=panel_arrays.
-	begin();it!=panel_arrays.end();it++) {
-    ret+=json(it.key(),4,++count==panel_arrays.size());
-  }
-
-  return ret;
+  return jdoc.toJson();
 }
 
 
@@ -592,7 +578,8 @@ void RDSoundPanel::changeUser()
   panel_config_panels=rda->user()->configPanels();
   UpdatePanels(rda->user()->name());
   if(panel_dump_panel_updates) {
-    printf("{\r\n%s}\r\n",json(4).toUtf8().constData());
+    printf("%s\n",json(rda->user()->name()).constData());
+    //    printf("{\r\n%s}\r\n",json(4).toUtf8().constData());
   }
 
   //
@@ -1349,7 +1336,7 @@ void RDSoundPanel::UpdatePanels(const QString &username)
       list=panel_arrays.value(username);
     }
     for(int i=panel_arrays.value(username).size();i<max_panels;i++) {
-      RDButtonPanel *panel=new RDButtonPanel(type,i,this);
+      RDButtonPanel *panel=new RDButtonPanel(type,i,PanelName(type,i),this);
       panel->setGeometry(0,0,size().width()-5,size().height()-60);
       connect(panel,SIGNAL(buttonClicked(int,int,int)),
 	      this,SLOT(buttonClickedData(int,int,int)));
@@ -1776,6 +1763,34 @@ QString RDSoundPanel::PanelOwner(RDAirPlayConf::PanelType type)
     return rda->user()->name();
   }
   return QString();
+}
+
+
+QString RDSoundPanel::PanelName(RDAirPlayConf::PanelType type,int panel_num)
+{
+  QString ret;
+
+  QString sql=QString("select ")+
+    "`NAME` "+  // 00
+    "from "+panel_name_tablename+" where "+
+    QString::asprintf("`TYPE`=%u && ",type)+
+    QString::asprintf("`PANEL_NO`=%d ",panel_num);
+  switch(type) {
+  case RDAirPlayConf::StationPanel:
+    sql+="&& `OWNER`='"+RDEscapeString(rda->station()->name())+"' ";
+    break;
+
+  case RDAirPlayConf::UserPanel:
+    sql+="&& `OWNER`='"+RDEscapeString(rda->user()->name())+"' ";
+    break;
+  }
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    ret=q->value(0).toString();
+  }
+  delete q;
+
+  return ret;
 }
 
 

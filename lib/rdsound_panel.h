@@ -2,7 +2,7 @@
 //
 // The sound panel widget
 //
-//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,6 +21,7 @@
 #ifndef RDSOUND_PANEL_H
 #define RDSOUND_PANEL_H
 
+#include <QByteArray>
 #include <QDateTime>
 #include <QLabel>
 #include <QList>
@@ -86,8 +87,7 @@ class RDSoundPanel : public RDWidget
   void setPauseEnabled(bool state);
   int currentNumber() const;
   RDAirPlayConf::PanelType currentType() const;
-  QString json(const QString &owner,int padding=0,bool final=false) const;
-  QString json(int padding=0) const;
+  QByteArray json(const QString &owner) const;
 
  public slots:
   void setButton(RDAirPlayConf::PanelType type,int panel,int row,int col,
@@ -152,6 +152,7 @@ class RDSoundPanel : public RDWidget
   void ClearReset();
   QString PanelTag(int index);
   QString PanelOwner(RDAirPlayConf::PanelType type);
+  QString PanelName(RDAirPlayConf::PanelType type,int panel_num);
   RDPanelButton *GetVisibleButton(int row,int col) const;
   QString ButtonSqlFields() const;
   void ApplyButtonFields(RDPanelButton *button,RDSqlQuery *q);
