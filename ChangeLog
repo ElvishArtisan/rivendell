@@ -24694,3 +24694,5 @@
 	* Removed JSON generation methods.
 2024-04-03 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'ExtendedNextPadEvents=' directive to rd.conf(5).
+2024-04-04 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the URL for Python version formatting rules.

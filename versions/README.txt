@@ -28,5 +28,6 @@ RIVWEBCAPI_AGE
       then set 'RIVWEBCAPI_AGE' to 0.
 
 PYTHONAPI_VERSION - Version string for the Python components beneath '/apis/'.
-		    See PEP 440 [https://www.python.org/dev/peps/pep-0440/]
-		    for formatting rules.
+		    See the Python Packaging User Guide - Version specifiers
+		    for formatting rules, at:
+		    https://www.python.org/dev/peps/pep-0440/
