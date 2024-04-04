@@ -24696,3 +24696,6 @@
 	* Added an 'ExtendedNextPadEvents=' directive to rd.conf(5).
 2024-04-04 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the URL for Python version formatting rules.
+2024-04-04 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.1.3int2.
+	* Incremented the Python API version to 4.1.3+int2.

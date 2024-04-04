@@ -1,9 +1,14 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v4.1.3int1 -- 14 February 2024
+v4.1.3int2 -- 4 April 2024
 
 Changes:
+   PAD Data System. Added an additional XML data feed at TCP port 34290
+   containing extended 'next' data objects. See the 'ExtendedNextPadEvents'
+   directive in the '[Tuning]' section of the rd.conf(5) man page for more
+   information.
+
    Podcasting System. Added the ability to provision users for a new
    RSS feed on the basis of the membership of an existing feed.
 
