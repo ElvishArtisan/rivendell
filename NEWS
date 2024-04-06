@@ -1,7 +1,7 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v4.1.3int2 -- 4 April 2024
+v4.2.0 -- 6 April 2024
 
 Changes:
    PAD Data System. Added an additional XML data feed at TCP port 34290

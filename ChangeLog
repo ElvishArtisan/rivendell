@@ -24699,3 +24699,6 @@
 2024-04-04 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.1.3int2.
 	* Incremented the Python API version to 4.1.3+int2.
+2024-04-06 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.2.0
+	* Incremented the Python API version to 4.2.0.
