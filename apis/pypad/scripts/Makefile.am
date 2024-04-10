@@ -2,7 +2,7 @@
 ##
 ## Makefile.am for Rivendell pypad/examples
 ##
-##   (C) Copyright 2018-2023 Fred Gleason <fredg@paravelsystems.com>
+##   (C) Copyright 2018-2024 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License as
@@ -42,6 +42,8 @@ install-exec-am:
 	cp pypad_nautel.exemplar $(DESTDIR)/usr/lib/rivendell/pypad/pypad_nautel.exemplar
 	../../../helpers/install_python.sh pypad_serial.py $(DESTDIR)/usr/lib/rivendell/pypad/pypad_serial.py
 	cp pypad_serial.exemplar $(DESTDIR)/usr/lib/rivendell/pypad/pypad_serial.exemplar
+	../../../helpers/install_python.sh pypad_sftpwrite.py $(DESTDIR)/usr/lib/rivendell/pypad/pypad_sftpwrite.py
+	cp pypad_sftpwrite.exemplar $(DESTDIR)/usr/lib/rivendell/pypad/pypad_sftpwrite.exemplar
 	../../../helpers/install_python.sh pypad_shoutcast1.py $(DESTDIR)/usr/lib/rivendell/pypad/pypad_shoutcast1.py
 	cp pypad_shoutcast1.exemplar $(DESTDIR)/usr/lib/rivendell/pypad/pypad_shoutcast1.exemplar
 	../../../helpers/install_python.sh pypad_spinitron.py $(DESTDIR)/usr/lib/rivendell/pypad/pypad_spinitron.py
@@ -84,6 +86,8 @@ uninstall-local:
 	rm -f $(DESTDIR)/usr/lib/rivendell/pypad/pypad_nautel.py
 	rm -f $(DESTDIR)/usr/lib/rivendell/pypad/pypad_serial.exemplar
 	rm -f $(DESTDIR)/usr/lib/rivendell/pypad/pypad_serial.py
+	rm -f $(DESTDIR)/usr/lib/rivendell/pypad/pypad_sftpwrite.exemplar
+	rm -f $(DESTDIR)/usr/lib/rivendell/pypad/pypad_sftpwrite.py
 	rm -f $(DESTDIR)/usr/lib/rivendell/pypad/pypad_shoutcast1.exemplar
 	rm -f $(DESTDIR)/usr/lib/rivendell/pypad/pypad_shoutcast1.py
 	rm -f $(DESTDIR)/usr/lib/rivendell/pypad/pypad_spinitron.exemplar
@@ -125,6 +129,8 @@ EXTRA_DIST = pypad_ando.exemplar\
              pypad_nautel.py\
              pypad_serial.exemplar\
              pypad_serial.py\
+             pypad_sftpwrite.exemplar\
+             pypad_sftpwrite.py\
              pypad_shoutcast1.exemplar\
              pypad_shoutcast1.py\
              pypad_spinitron.exemplar\
