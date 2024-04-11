@@ -163,6 +163,7 @@ tests/sas_switch_torture
 tests/sas_torture
 tests/sendmail_test
 tests/stringcode_test
+tests/tempdir_test
 tests/test_hash
 tests/test_pam
 tests/timeengine_test

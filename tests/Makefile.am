@@ -52,6 +52,7 @@ noinst_PROGRAMS = audio_convert_test\
                   rml_torture_test\
                   sendmail_test\
                   stringcode_test\
+                  tempdir_test\
                   test_hash\
                   test_pam\
                   timer_test\
@@ -145,6 +146,9 @@ sendmail_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@ @IM
 
 dist_stringcode_test_SOURCES = stringcode_test.cpp stringcode_test.h
 stringcode_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@ @IMAGEMAGICK_LIBS@
+
+dist_tempdir_test_SOURCES = tempdir_test.cpp tempdir_test.h
+tempdir_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@ @IMAGEMAGICK_LIBS@
 
 dist_test_hash_SOURCES = test_hash.cpp test_hash.h
 test_hash_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@ @IMAGEMAGICK_LIBS@

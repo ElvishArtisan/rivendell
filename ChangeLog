@@ -24705,3 +24705,5 @@
 2024-04-11 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'RDTempDirectory' that failed to remove a temporary
 	directory after use.
+2024-04-11 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'tempdir_test' test harness.
