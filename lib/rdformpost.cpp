@@ -105,6 +105,7 @@ RDFormPost::RDFormPost(RDFormPost::Encoding encoding,bool auto_delete)
 
   if((s=read(0,first,1))<=0) {
     post_error=RDFormPost::ErrorMalformedData;
+    delete post_tempdir;
     return;
   }
   post_bytes_downloaded+=1;

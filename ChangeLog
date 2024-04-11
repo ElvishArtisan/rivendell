@@ -24702,3 +24702,6 @@
 2024-04-06 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.2.0
 	* Incremented the Python API version to 4.2.0.
+2024-04-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'RDTempDirectory' that failed to remove a temporary
+	directory after use.
