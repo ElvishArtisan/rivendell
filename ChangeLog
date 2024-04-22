@@ -24707,3 +24707,5 @@
 	directory after use.
 2024-04-11 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'tempdir_test' test harness.
+2024-04-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'Ubuntu 24.04 LTS' section to 'INSTALL'.
