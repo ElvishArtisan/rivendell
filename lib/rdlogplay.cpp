@@ -20,6 +20,7 @@
 
 #include "rdapplication.h"
 #include "rdconf.h"
+#include "rddatetime.h"
 #include "rddb.h"
 #include "rddebug.h"
 #include "rdescape_string.h"
@@ -3186,7 +3187,7 @@ void RDLogPlay::SendNowNext()
     // Header Fields
     //
     QJsonObject jo0;
-    jo0.insert("dateTime",QDateTime::currentDateTime().toString(Qt::ISODate));
+    jo0.insert("dateTime",RDWriteXmlDateTime(QDateTime::currentDateTime()));
     jo0.insert("hostName",rda->station()->name());
     jo0.insert("shortHostName",rda->station()->shortName());
     jo0.insert("machine",1+play_id);
@@ -3332,7 +3333,12 @@ QJsonValue RDLogPlay::GetPadJson(const QString &name,RDLogLine *ll,
     return QJsonValue();
   }
 
-  jo0.insert("startDateTime",start_datetime.toString(Qt::ISODate));
+  if(start_datetime.isNull()) {
+    jo0.insert("startDateTime",QJsonValue());
+  }
+  else {
+    jo0.insert("startDateTime",RDWriteXmlDateTime(start_datetime));
+  }
   jo0.insert("lineNumber",line);
   jo0.insert("lineId",ll->id());
   jo0.insert("eventType",RDLogLine::typeText(ll->type()));

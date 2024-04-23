@@ -90,6 +90,8 @@ class Update(object):
 
     def __fromIso8601(self,string):
         try:
+            if len(string)==0:
+                return datetime.datetime()
             return datetime.datetime.strptime(string.strip()[:19],'%Y-%m-%dT%H:%M:%S')
         except AttributeError:
             return ''
