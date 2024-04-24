@@ -24709,6 +24709,6 @@
 	* Added a 'tempdir_test' test harness.
 2024-04-22 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'Ubuntu 24.04 LTS' section to 'INSTALL'.
-2024-04-24 Fred Gleason <fredg@paravelsystems.com>
+2024-04-23 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in the PyPAD subsystem that broke null datetime
 	handling.
