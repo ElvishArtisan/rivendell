@@ -1,6 +1,20 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
+v4.2.1 -- 24 April 2024
+
+Changes:
+   PAD Data System. Fixed a code regression that could cause plug-ins
+   to crash when handling null datetime values.
+
+Database Update:
+   This version of Rivendell uses database schema version 374, and will
+   automatically upgrade any earlier versions. To see the current schema
+   version prior to upgrade, do 'sudo rddbmgr'.
+
+   Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
+   to allow any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
 v4.2.0 -- 6 April 2024
 
 Changes:

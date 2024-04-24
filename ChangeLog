@@ -24712,3 +24712,6 @@
 2024-04-23 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in the PyPAD subsystem that broke null datetime
 	handling.
+2024-04-24 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.2.1
+	* Incremented the Python API version to 4.2.1.
