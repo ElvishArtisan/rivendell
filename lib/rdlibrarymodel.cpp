@@ -2,7 +2,7 @@
 //
 // Data model for the Rivendell cart library
 //
-//   (C) Copyright 2021-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -556,6 +556,12 @@ int RDLibraryModel::cartLimit() const
 }
 
 
+QString RDLibraryModel::orderBySql() const
+{
+  return d_order_by_sql;
+}
+
+
 void RDLibraryModel::setShowNotes(int state)
 {
   d_show_notes=state;
@@ -564,19 +570,20 @@ void RDLibraryModel::setShowNotes(int state)
 
 void RDLibraryModel::setFilterSql(const QString &sql,int cart_limit)
 {
-  //  printf("FILTER SQL: %s\n",sql.toUtf8().constData());
   d_filter_sql=sql;
   d_cart_limit=cart_limit;
+  d_order_by_sql="";
   QString fsql=sql;
 
   if(d_sort_column<0) {  // Use "natural" sort order
-    fsql+=" order by `CART`.`NUMBER` asc ";
+    d_order_by_sql+=" order by `CART`.`NUMBER` asc ";
   }
   else {
-    fsql+=" order by "+d_order_columns.at(d_sort_column)+" "+
+    d_order_by_sql+=" order by "+d_order_columns.at(d_sort_column)+" "+
       d_sort_clauses.value(d_sort_order);
   }
-  fsql+=", `CUTS`.`PLAY_ORDER` asc ";
+  d_order_by_sql+=", `CUTS`.`PLAY_ORDER` asc ";
+  fsql+=d_order_by_sql;
   d_filter_set=true;
 
   updateModel(fsql);

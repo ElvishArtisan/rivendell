@@ -24722,3 +24722,7 @@
 	* Fixed a bug in the build system that failed to package
 	'Appendix I. Library Text Searches' in the HTML version of the
 	Operations Guide.
+2024-04-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdlibrary(1) that caused output of the Cart
+	Report to not reflect the current filter and sorting state of the
+	library list.

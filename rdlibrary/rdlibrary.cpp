@@ -2,7 +2,7 @@
 //
 // The Library Utility for Rivendell.
 //
-//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -584,7 +584,9 @@ void MainWidget::reportsData()
   ListReports *lr=
     new ListReports(lib_cart_filter->filterText(),
 		    lib_cart_filter->selectedGroup(),
-		    lib_cart_filter->filterSql(),this);
+		    lib_cart_filter->filterSql()+" "+
+		    lib_cart_model->orderBySql(),
+		    lib_cart_model->cartLimit(),this);
 
   lr->exec();
   delete lr;

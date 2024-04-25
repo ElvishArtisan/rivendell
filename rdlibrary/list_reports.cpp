@@ -2,7 +2,7 @@
 //
 // List RDLibrary Reports
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,11 +29,13 @@
 #include "list_reports.h"
 
 ListReports::ListReports(const QString &filter,const QString &grpname,
-			 const QString &filter_sql,QWidget *parent)
+			 const QString &filter_sql,int cart_limit,
+			 QWidget *parent)
 {
   list_filter=filter;
   list_group=grpname;
   list_filter_sql=filter_sql;
+  list_cart_limit=cart_limit;
 
   setWindowTitle("RDLibrary - "+tr("Select Report"));
 
@@ -190,11 +192,13 @@ void ListReports::GenerateCartReport(QString *report)
     "left join `CUTS` on `CART`.`NUMBER`=`CUTS`.`CART_NUMBER` ";
   sql+=list_filter_sql;
   unsigned prev_cartnum=0;
+  int cart_count=list_cart_limit;
   q=new RDSqlQuery(sql);
-  while(q->next()) {
+  while(q->next()&&(cart_count>0)) {
     if(q->value(1).toUInt()!=prev_cartnum) { // So we don't show duplicates 
       prev_cartnum=q->value(1).toUInt();
-      
+      cart_count--;
+
       //
       // Cart Type
       //

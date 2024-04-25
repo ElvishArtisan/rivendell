@@ -2,7 +2,7 @@
 //
 // List and Generate RDLibrary Reports
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -32,7 +32,7 @@ class ListReports : public RDDialog
   Q_OBJECT
  public:
   ListReports(const QString &filter,const QString &grpname,
-	      const QString &filter_sql,QWidget *parent);
+	      const QString &filter_sql,int cart_limit,QWidget *parent);
   ~ListReports();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -54,8 +54,8 @@ class ListReports : public RDDialog
   QString list_type_filter;
   QString list_group;
   QString list_schedcode;
-
   QString list_filter_sql;
+  int list_cart_limit;
 };
 
 

@@ -2,7 +2,7 @@
 //
 // Data model for the Rivendell cart library
 //
-//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -67,6 +67,7 @@ class RDLibraryModel : public QAbstractItemModel
   QModelIndex refreshCart(unsigned cartnum);
   bool showNotes() const;
   int cartLimit() const;
+  QString orderBySql() const;
 
  signals:
   void rowCountChanged(int rows);
@@ -88,6 +89,7 @@ class RDLibraryModel : public QAbstractItemModel
   QByteArray DumpIndex(const QModelIndex &index,const QString &caption="") const;
   bool d_show_notes;
   QString d_filter_sql;
+  QString d_order_by_sql;
   int d_cart_limit;
   int d_sort_column;
   Qt::SortOrder d_sort_order;
