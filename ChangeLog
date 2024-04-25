@@ -24715,3 +24715,6 @@
 2024-04-24 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.2.1
 	* Incremented the Python API version to 4.2.1.
+2024-04-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlibrary(1) that could cause segfaults when
+	deleting cut entries from a cart.

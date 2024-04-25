@@ -68,6 +68,7 @@ class RDCutListModel : public QAbstractTableModel
   RDCart::Validity ValidateCut(RDSqlQuery *q,unsigned offset,
 			       RDCart::Validity prev_validity,
 			       const QDateTime &datetime);
+  void DumpIndex(const QString &str) const;
   QPalette d_palette;
   QFont d_font;
   QList<QVariant> d_headers;

@@ -194,11 +194,11 @@ QModelIndex RDCutListModel::addCut(const QString &name)
 void RDCutListModel::removeCut(const QModelIndex &row)
 {
   beginResetModel();
-  d_texts.removeAt(d_row_index.at(row.row()));
-  d_colors.removeAt(d_row_index.at(row.row()));
+  d_texts.removeAt(row.row());
+  d_colors.removeAt(row.row());
   d_row_index.removeAt(row.row());
   for(int i=0;i<d_row_index.size();i++) {
-    if(d_row_index.at(i)>row.row()) {
+    if(d_row_index.at(i)>=row.row()) {
       d_row_index[i]--;
     }
   }
@@ -541,4 +541,17 @@ RDCart::Validity RDCutListModel::ValidateCut(RDSqlQuery *q,unsigned offset,
   }
 
   return RDCart::AlwaysValid;
+}
+
+
+void RDCutListModel::DumpIndex(const QString &str) const
+{
+  printf("* %s ****************\n",str.toUtf8().constData());
+  printf("SIZE: %d\n",d_row_index.size());
+  for(int i=0;i<d_row_index.size();i++) {
+    printf("%s - %d => %d\n",
+	   d_texts.at(i).at(12).toString().toUtf8().constData(),
+	   i,d_row_index.at(i));
+  }
+  printf("*****************\n");
 }
