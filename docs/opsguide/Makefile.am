@@ -23,6 +23,7 @@ OPSGUIDE_HTML = appendix.filepath_wildcards.html\
                 appendix.gfdl.html\
                 appendix.gpio_switcher_devices.html\
                 appendix.gplv2.html\
+                appendix.library_searches.html\
                 appendix.metadata_wildcards.html\
                 appendix.rivendell_filter.html\
                 appendix.wings_filter.html\
