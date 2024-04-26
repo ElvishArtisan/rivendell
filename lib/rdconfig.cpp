@@ -2,7 +2,7 @@
 //
 // A container class for a Rivendell Base Configuration
 //
-//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -435,6 +435,12 @@ bool RDConfig::logSqlQueries() const
 }
 
 
+bool RDConfig::killPypadAfterJsonError() const
+{
+  return conf_kill_pypad_after_json_error;
+}
+
+
 int RDConfig::logSqlQueriesLevel() const
 {
   return conf_log_sql_queries_level;
@@ -696,6 +702,8 @@ bool RDConfig::load()
   conf_log_sql_queries_level=
     SyslogPriorityLevel(profile->stringValue("Debugging","LogSqlQueries",""),
 			&conf_log_sql_queries);
+  conf_kill_pypad_after_json_error=
+    profile->boolValue("Debugging","KillPypadAfterJsonError");
   conf_meter_base_port=
     profile->intValue("Hacks","MeterPortBaseNumber",RD_DEFAULT_METER_SOCKET_BASE_UDP_PORT);
   conf_meter_port_range=
@@ -838,6 +846,7 @@ void RDConfig::clear()
   conf_log_log_refresh_level=LOG_DEBUG;
   conf_log_sql_queries=false;
   conf_log_sql_queries_level=LOG_DEBUG;
+  conf_kill_pypad_after_json_error=false;
   conf_lock_rdairplay_memory=false;
   conf_meter_base_port=RD_DEFAULT_METER_SOCKET_BASE_UDP_PORT;
   conf_meter_port_range=RD_METER_SOCKET_PORT_RANGE;

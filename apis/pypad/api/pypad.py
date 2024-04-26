@@ -929,7 +929,7 @@ class Receiver(object):
 
         # Open the syslog
         pypad_name=sys.argv[0].split('/')[-1]
-        syslog.openlog(pypad_name,logoption=syslog.LOG_PID,facility=int(rd_config.get('Identity','SyslogFacility',fallback=syslog.LOG_USER)))
+        syslog.openlog(pypad_name,logoption=syslog.LOG_PID|syslog.LOG_PERROR,facility=int(rd_config.get('Identity','SyslogFacility',fallback=syslog.LOG_USER)))
 
         # Connect to the PAD feed
         sock=socket.socket(socket.AF_INET)
@@ -960,9 +960,18 @@ class Receiver(object):
                     linebytes=line.decode('utf-8','replace')
                     msg+=linebytes
                     if linebytes=='\n':
-                        jdata=json.loads(msg)
-                        if (not self.__active_now_groups and not self.__active_next_groups) or (jdata['padUpdate'] is not None and jdata['padUpdate']['now'] is not None and jdata['padUpdate']['now']['groupName'] in self.__active_now_groups) or (jdata['padUpdate'] is not None and jdata['padUpdate']['next'] is not None and jdata['padUpdate']['next']['groupName'] in self.__active_next_groups):
-                            self.__pypad_Process(Update(jdata,self.__config_parser,rd_config))
+                        ok=False
+                        try:
+                            jdata=json.loads(msg)
+                            ok=True
+                        except:
+                            priority=syslog.LOG_WARNING|(int(rd_config.get('Identity','SyslogFacility',fallback=syslog.LOG_USER))<<3)
+                            syslog.syslog(priority,'error parsing JSON: "'+msg+'"')
+                            if rd_config.get('Debugging','KillPypadAfterJsonError',fallback='no').lower()=='yes':
+                                sys.exit(1)
+                        if ok:
+                            if (not self.__active_now_groups and not self.__active_next_groups) or (jdata['padUpdate'] is not None and jdata['padUpdate']['now'] is not None and jdata['padUpdate']['now']['groupName'] in self.__active_now_groups) or (jdata['padUpdate'] is not None and jdata['padUpdate']['next'] is not None and jdata['padUpdate']['next']['groupName'] in self.__active_next_groups):
+                                self.__pypad_Process(Update(jdata,self.__config_parser,rd_config))
                         msg=""
                     line=bytes()
                 if self.__timer_interval!=None:

@@ -901,6 +901,93 @@
      </listitem>
    </varlistentry>
  </variablelist>
+
+ <variablelist>
+   <varlistentry>
+     <term>
+       <userinput>[Debugging]</userinput>
+     </term>
+     <listitem>
+       <para>
+	 The directives in this section can send large amounts of data to the
+	 syslog. These directives should be enabled for debugging purposes
+	 only!
+       </para>
+       <variablelist>
+	 <varlistentry>
+	   <term>
+	     <userinput>LogSearchString = <replaceable>level</replaceable></userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       Log all cart filter search strings to the syslog, at the
+	       <replaceable>level</replaceable>  priority level.
+	     </para>
+	     <para>
+	       See the 'level' parameter in the syslog(3) man page for the
+	       set of available priority levels. An empty argument disables
+	       logging. 
+	     </para>
+	   </listitem>
+	 </varlistentry>
+       </variablelist>
+       <variablelist>
+	 <varlistentry>
+	   <term>
+	     <userinput>LogLogRefresh = <replaceable>level</replaceable></userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       Send detailed debugging information to the syslog at priority
+	       <replaceable>level</replaceable> whenever a log refresh
+	       is performed in
+	       <command>rdairplay</command><manvolnum>1</manvolnum> or
+	       <command>rdvairplayd</command><manvolnum>8</manvolnum>.
+	     </para>
+	     <para>
+	       See the 'level' parameter in the syslog(3) man page for the
+	       set of available priority levels. An empty argument disables
+	       logging. 
+	     </para>
+	   </listitem>
+	 </varlistentry>
+       </variablelist>
+       <variablelist>
+	 <varlistentry>
+	   <term>
+	     <userinput>LogSqlQueries = <replaceable>level</replaceable></userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       Send all SQL queries (including 'select' queries) to the
+	       syslog at the <replaceable>level</replaceable> priority
+	       level.
+	     </para>
+	     <para>
+	       See the 'level' parameter in the syslog(3) man page for the
+	       set of available priority levels. An empty argument disables
+	       logging. 
+	     </para>
+	   </listitem>
+	 </varlistentry>
+       </variablelist>
+       <variablelist>
+	 <varlistentry>
+	   <term>
+	     <userinput>KillPypadAfterJsonError = Yes</userinput>|<userinput>No</userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       Kill a PyPAD script if it encounters a JSON parsing error.
+	       This should generate a useful error message in
+	       RDAdmin->ManageHosts->PyPADInstances->ErrorLog.
+	     </para>
+	   </listitem>
+	 </varlistentry>
+       </variablelist>
+     </listitem>
+   </varlistentry>
+ </variablelist>
 </refsect1>
 
 <refsect1 id='bugs'><title>Bugs</title>

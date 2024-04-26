@@ -276,3 +276,8 @@ LogLogRefresh=
 ; priority levels. An empty argument disables logging. 
 ; LogSqlQueries=LOG_DEBUG
 LogSqlQueries=
+
+; Kill a PyPAD script if it encounters a JSON parsing error. This should
+; generate a useful error message in
+; RDAdmin->ManageHosts->PyPADInstances->ErrorLog.
+KillPypadAfterJsonError=No

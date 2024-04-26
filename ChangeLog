@@ -24726,3 +24726,7 @@
 	* Fixed a regression in rdlibrary(1) that caused output of the Cart
 	Report to not reflect the current filter and sorting state of the
 	library list.
+2024-04-26 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'KillPypadAfterError=' directive to the '[Debugging]'
+	section of rd.conf(5).
+	* Documented the '[Debugging]' section in the rd.conf(5) man page.
