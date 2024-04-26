@@ -24730,3 +24730,5 @@
 	* Added a 'KillPypadAfterError=' directive to the '[Debugging]'
 	section of rd.conf(5).
 	* Documented the '[Debugging]' section in the rd.conf(5) man page.
+2024-04-26 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.2.1int0
