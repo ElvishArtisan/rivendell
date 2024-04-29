@@ -163,6 +163,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdimport_audio.cpp rdimport_audio.h\
                         rdinstancelock.cpp rdinstancelock.h\
                         rdjackclientlistmodel.cpp rdjackclientlistmodel.h\
+                        rdjsonframer.cpp rdjsonframer.h\
                         rdkernelgpio.cpp rdkernelgpio.h\
                         rdlibrary_conf.cpp rdlibrary_conf.h\
                         rdlibrarymodel.cpp rdlibrarymodel.h\
@@ -363,6 +364,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdimagepickermodel.cpp\
                           moc_rdimport_audio.cpp\
                           moc_rdjackclientlistmodel.cpp\
+                          moc_rdjsonframer.cpp\
                           moc_rdkernelgpio.cpp\
                           moc_rdlibrarymodel.cpp\
                           moc_rdlineedit.cpp\

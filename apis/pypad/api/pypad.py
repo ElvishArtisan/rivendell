@@ -941,9 +941,12 @@ class Receiver(object):
         sel=selectors.DefaultSelector()
         sel.register(sock,selectors.EVENT_READ)
         c=bytes()
-        line=bytes()
-        msg=""
+        msg=bytearray()
 
+        # Process updates
+        bracket_count=0
+        escaped=False
+        quoted=False
         while 1<2:
             if len(sel.select(timeout))==0:
                 now=datetime.datetime.now()
@@ -955,28 +958,34 @@ class Receiver(object):
                     timeout=(deadline-now).total_seconds()
             else:
                 c=sock.recv(1)
-                line+=c
-                if c[0]==10:
-                    linebytes=line.decode('utf-8','replace')
-                    msg+=linebytes
-                    if linebytes=='\n':
-                        ok=False
-                        try:
-                            jdata=json.loads(msg)
-                            ok=True
-                        except:
-                            priority=syslog.LOG_WARNING|(int(rd_config.get('Identity','SyslogFacility',fallback=syslog.LOG_USER))<<3)
-                            syslog.syslog(priority,'error parsing JSON: "'+msg+'"')
-                            if rd_config.get('Debugging','KillPypadAfterJsonError',fallback='no').lower()=='yes':
-                                sys.exit(1)
-                        if ok:
-                            if (not self.__active_now_groups and not self.__active_next_groups) or (jdata['padUpdate'] is not None and jdata['padUpdate']['now'] is not None and jdata['padUpdate']['now']['groupName'] in self.__active_now_groups) or (jdata['padUpdate'] is not None and jdata['padUpdate']['next'] is not None and jdata['padUpdate']['next']['groupName'] in self.__active_next_groups):
-                                self.__pypad_Process(Update(jdata,self.__config_parser,rd_config))
-                        msg=""
-                    line=bytes()
-                if self.__timer_interval!=None:
-                    timeout=(deadline-datetime.datetime.now()).total_seconds()
-
+                msg.append(c[0])
+                if (c[0]==92)and(not escaped):   # Matches '\'
+                    escaped=True
+                else:
+                    if (c[0]==34)and(not escaped):   # Matches '"'
+                        quoted=not quoted
+                    else:
+                        if (c[0]==123)and(not quoted):  # Matches '{'
+                            bracket_count+=1
+                        if (c[0]==125)and(not quoted):  # Matches '}'
+                            bracket_count-=1
+                            if bracket_count==0:
+                                ok=False
+                                try:
+                                    jdata=json.loads(msg)
+                                    ok=True
+                                except:
+                                    priority=syslog.LOG_WARNING|(int(rd_config.get('Identity','SyslogFacility',fallback=syslog.LOG_USER))<<3)
+                                    syslog.syslog(priority,'error parsing JSON: "'+msg.decode('utf-8','replace')+'"')
+                                    if rd_config.get('Debugging','KillPypadAfterJsonError',fallback='no').lower()=='yes':
+                                        sys.exit(1)
+                                if ok:
+                                    if (not self.__active_now_groups and not self.__active_next_groups) or (jdata['padUpdate'] is not None and jdata['padUpdate']['now'] is not None and jdata['padUpdate']['now']['groupName'] in self.__active_now_groups) or (jdata['padUpdate'] is not None and jdata['padUpdate']['next'] is not None and jdata['padUpdate']['next']['groupName'] in self.__active_next_groups):
+                                                self.__pypad_Process(Update(jdata,self.__config_parser,rd_config))
+                                msg=bytearray()
+                        if self.__timer_interval!=None:
+                            timeout=(deadline-datetime.datetime.now()).total_seconds()
+                    escaped=False
 
 def SigHandler(signo,stack):
     sys.exit(0)

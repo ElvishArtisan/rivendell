@@ -27,29 +27,10 @@
 #include <QTcpServer>
 #include <QTcpSocket>
 
+#include <rdjsonframer.h>
 #include <rdunixserver.h>
 
 #include "repeater.h"
-
-class MetadataSource
-{
- public:
-  MetadataSource(QTcpSocket *sock);
-  QByteArray buffer() const;
-  bool appendBuffer(const QByteArray &data);
-  bool isCommitted() const;
-  QTcpSocket *socket() const;
-
- private:
-  QByteArray meta_buffer;
-  int meta_curly_count;
-  bool meta_quoted;
-  bool meta_committed;
-  QTcpSocket *meta_socket;
-};
-
-
-
 
 class Repeater : public QObject
 {
@@ -63,20 +44,18 @@ class Repeater : public QObject
   void newClientConnectionData();
   void clientDisconnected(int id);
   void newSourceConnectionData();
-  void sourceReadyReadData(int id);
   void sourceDisconnected(int id);
+  void sendUpdate(const QByteArray &jdoc);
 
  private:
-  void SendState(int id);
   uint16_t pad_server_port;
   QString pad_source_unix_address;
   QSignalMapper *pad_client_disconnect_mapper;
   QTcpServer *pad_client_server;
   QMap<int,QTcpSocket *> pad_client_sockets;
-  QSignalMapper *pad_source_ready_mapper;
   QSignalMapper *pad_source_disconnect_mapper;
   RDUnixServer *pad_source_server;
-  QMap<int,MetadataSource *> pad_sources;
+  QMap<int,RDJsonFramer *> pad_framers;
 };
 
 

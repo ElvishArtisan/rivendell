@@ -27,64 +27,6 @@
 
 #include "repeater.h"
 
-MetadataSource::MetadataSource(QTcpSocket *sock)
-{
-  meta_socket=sock;
-  meta_curly_count=0;
-  meta_quoted=false;
-  meta_committed=true;
-}
-
-
-QByteArray MetadataSource::buffer() const
-{
-  return meta_buffer;
-}
-
-
-bool MetadataSource::appendBuffer(const QByteArray &data)
-{
-  if(meta_committed) {
-    meta_buffer.clear();
-  }
-  meta_buffer+=data;
-
-  for(int i=0;i<data.size();i++) {
-    if(data.at(i)=='"') {
-      meta_quoted=!meta_quoted;
-    }
-    if(!meta_quoted) {
-      if(data.at(i)=='{') {
-	meta_curly_count++;
-      }
-      if(data.at(i)=='}') {
-	meta_curly_count--;
-      }
-    }
-  }
-  meta_committed=(meta_curly_count==0);
-  if(meta_committed) {
-    meta_buffer+="\n\n";
-  }
-
-  return meta_committed;
-}
-
-
-bool MetadataSource::isCommitted() const
-{
-  return meta_committed;
-}
-
-
-QTcpSocket *MetadataSource::socket() const
-{
-  return meta_socket;
-}
-
-
-
-
 Repeater::Repeater(const QString &src_unix_addr,uint16_t serv_port,
 		   QObject *parent)
   : QObject(parent)
@@ -110,10 +52,6 @@ Repeater::Repeater(const QString &src_unix_addr,uint16_t serv_port,
   //
   // Source Server
   //
-  pad_source_ready_mapper=new QSignalMapper(this);
-  connect(pad_source_ready_mapper,SIGNAL(mapped(int)),
-	  this,SLOT(sourceReadyReadData(int)));
-
   pad_source_disconnect_mapper=new QSignalMapper(this);
   connect(pad_source_disconnect_mapper,SIGNAL(mapped(int)),
 	  this,SLOT(sourceDisconnected(int)));
@@ -148,7 +86,10 @@ void Repeater::newClientConnectionData()
   pad_client_disconnect_mapper->setMapping(sock,sock->socketDescriptor());
   pad_client_sockets[sock->socketDescriptor()]=sock;
 
-  SendState(sock->socketDescriptor());
+  for(QMap<int,RDJsonFramer *>::const_iterator it=pad_framers.begin();
+      it!=pad_framers.end();it++) {
+    sock->write(it.value()->currentDocument());
+  }
 }
 
 
@@ -174,35 +115,21 @@ void Repeater::newSourceConnectionData()
 	    (const char *)pad_source_server->errorString().toUtf8());
     exit(1);
   }
-  connect(sock,SIGNAL(readyRead()),pad_source_ready_mapper,SLOT(map()));
-  pad_source_ready_mapper->setMapping(sock,sock->socketDescriptor());
-
   connect(sock,SIGNAL(disconnected()),pad_source_disconnect_mapper,SLOT(map()));
   pad_source_disconnect_mapper->setMapping(sock,sock->socketDescriptor());
 
-  pad_sources[sock->socketDescriptor()]=new MetadataSource(sock);
-}
-
-
-void Repeater::sourceReadyReadData(int id)
-{
-  if(pad_sources[id]!=NULL) {
-    if(pad_sources[id]->appendBuffer(pad_sources[id]->socket()->readAll())) {
-      for(QMap<int,QTcpSocket *>::const_iterator it=pad_client_sockets.begin();
-	  it!=pad_client_sockets.end();it++) {
-	it.value()->write(pad_sources[id]->buffer());
-      }
-    }
-  }
+  RDJsonFramer *framer=new RDJsonFramer(sock,this);
+  connect(framer,SIGNAL(documentReceived(const QByteArray &)),
+	  this,SLOT(sendUpdate(const QByteArray &)));
+  pad_framers[sock->socketDescriptor()]=framer;
 }
 
 
 void Repeater::sourceDisconnected(int id)
 {
-  if(pad_sources.value(id)!=NULL) {
-    pad_sources.value(id)->socket()->deleteLater();
-    delete pad_sources.value(id);
-    pad_sources.remove(id);
+  if(pad_framers.value(id)!=NULL) {
+    pad_framers.value(id)->deleteLater();
+    pad_framers.remove(id);
   }
   else {
     fprintf(stderr,"unknown source connection %d attempted to close\n",id);
@@ -210,12 +137,10 @@ void Repeater::sourceDisconnected(int id)
 }
 
 
-void Repeater::SendState(int id)
+void Repeater::sendUpdate(const QByteArray &jdoc)
 {
-  for(QMap<int,MetadataSource *>::const_iterator it=pad_sources.begin();
-      it!=pad_sources.end();it++) {
-    if(it.value()->isCommitted()&&(!it.value()->buffer().trimmed().isEmpty())) {
-      pad_client_sockets.value(id)->write(it.value()->buffer());
-    }
+  for(QMap<int,QTcpSocket *>::const_iterator it=pad_client_sockets.begin();
+      it!=pad_client_sockets.end();it++) {
+    it.value()->write(jdoc);
   }
 }

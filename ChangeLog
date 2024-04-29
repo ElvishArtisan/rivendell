@@ -24732,3 +24732,6 @@
 	* Documented the '[Debugging]' section in the rd.conf(5) man page.
 2024-04-26 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.2.1int0
+2024-04-29 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a race condition in the PAD XML feed that could cause corrupt
+	updates.
