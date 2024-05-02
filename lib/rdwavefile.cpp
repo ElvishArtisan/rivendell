@@ -2966,9 +2966,11 @@ bool RDWaveFile::GetScot(int fd)
 {
   unsigned chunk_size;
   int start_day;
+  int start_year;
   int start_month;
   int start_hour;
   int end_day;
+  int end_year;
   int end_month;
   int end_hour;
   unsigned cartnum;
@@ -2986,24 +2988,24 @@ bool RDWaveFile::GetScot(int fd)
   scot_etc=cutString((char *)scot_chunk_data,301,33);
   scot_year=cutString((char *)scot_chunk_data,338,4).toInt();
   scot_intro_length=cutString((char *)scot_chunk_data,335,2).toInt()*1000;
-  //start_year=cutString((char *)scot_chunk_data,69,2).toInt()+2000;
+  start_year=cutString((char *)scot_chunk_data,69,2).toInt()+2000;
   start_month=cutString((char *)scot_chunk_data,65,2).toInt();
   start_day=cutString((char *)scot_chunk_data,67,2).toInt();
   cartnum=cutString((char *)scot_chunk_data,47,4).toUInt();
   segue_start=(0xFF&scot_chunk_data[88])+((0xFF&scot_chunk_data[89])<<8);
-  if((start_month>0)&&(start_month<13)&&(start_month>0)&&(start_day<32)) {
-    scot_start_date=QDate(start_day,start_month,start_day);
+  if((start_month>0)&&(start_month<13)&&(start_day>0)&&(start_day<32)) {
+    scot_start_date=QDate(start_year,start_month,start_day);
   }
   start_hour=cutString((char *)scot_chunk_data,77,2).toInt();
   if((start_hour>=129)&&(start_hour<=151)) {
     scot_start_time=QTime(start_hour-128,0,0);
   }
-  //end_year=cutString((char *)scot_chunk_data,75,2).toInt()+2000;
+  end_year=cutString((char *)scot_chunk_data,75,2).toInt()+2000;
   end_month=cutString((char *)scot_chunk_data,71,2).toInt();
   end_day=cutString((char *)scot_chunk_data,73,2).toInt();
   if((end_month>0)&&(end_month<13)&&(end_day>0)&&(end_day<32)&&
     scot_start_date.isValid()) {
-    scot_end_date=QDate(end_day,end_month,end_day);
+    scot_end_date=QDate(end_year,end_month,end_day);
   }
   else {
     scot_start_date=QDate();

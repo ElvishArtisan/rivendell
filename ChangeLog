@@ -24740,3 +24740,6 @@
 2024-04-30 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the WebGet service that caused stale temp files to
 	be left behind after processing.
+2024-05-02 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'RDWaveFile' that broke reading of start and
+	end dates in files containing a 'scot' chunk.
