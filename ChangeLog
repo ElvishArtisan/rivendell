@@ -24743,3 +24743,6 @@
 2024-05-02 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in 'RDWaveFile' that broke reading of start and
 	end dates in files containing a 'scot' chunk.
+2024-05-02 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.2.2
+	* Incremented the Python API version to 4.2.2
