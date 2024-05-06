@@ -24746,3 +24746,8 @@
 2024-05-02 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.2.2
 	* Incremented the Python API version to 4.2.2
+2024-05-06 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'post-test-pypi' target to 'apits/Makefile.am'.
+	* Added 'python3-venv', 'python3-virtualenv',  'python3-build' and
+	'twine' packages to the list of required build packages for
+	Ubuntu 22.04 LTS and Ubuntu 24.04 LTS in 'INSTALL'.

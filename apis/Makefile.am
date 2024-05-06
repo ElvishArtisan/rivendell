@@ -43,6 +43,9 @@ pypi:
 post-pypi:	
 	python3 -m twine upload --repository pypi *.tar.gz *.whl
 
+post-test-pypi:	
+	python3 -m twine upload --repository testpypi *.tar.gz *.whl
+
 EXTRA_DIST = pyproject.toml\
              setup.cfg.in
 
