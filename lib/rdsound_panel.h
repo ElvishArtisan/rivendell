@@ -188,7 +188,6 @@ class RDSoundPanel : public RDWidget
   bool panel_flash_state;
   QString panel_logfile;
   bool panel_timescaling_supported[RD_SOUNDPANEL_MAX_OUTPUTS];
-  bool panel_config_panels;
   RDEventPlayer *panel_event_player;
   QString panel_svcname;
   RDAirPlayConf::ActionMode panel_action_mode;

@@ -24756,3 +24756,8 @@
 2024-05-07 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in the 'Edit Audio' dialog that caused it to
 	ignore the state of the 'Edit Audio' user privilege.
+2024-05-07 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the SoundPanel that caused button color highlighting
+	for addition/move/delete operations to fail to be displayed for User
+	panels when the	user didn't have the 'Configure System Panels'
+	privilege.

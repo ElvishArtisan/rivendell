@@ -48,6 +48,7 @@ class RDButtonPanel : public RDWidget
   ~RDButtonPanel();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
+  RDAirPlayConf::PanelType panelType() const;
   int number() const;
   QString title() const;
   void setTitle(const QString &str);

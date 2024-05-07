@@ -88,6 +88,12 @@ QSizePolicy RDButtonPanel::sizePolicy() const
 }
 
 
+RDAirPlayConf::PanelType RDButtonPanel::panelType() const
+{
+  return panel_type;
+}
+
+
 int RDButtonPanel::number() const
 {
   return panel_number;

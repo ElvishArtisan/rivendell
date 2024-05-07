@@ -71,7 +71,6 @@ RDSoundPanel::RDSoundPanel(int station_panels,int user_panels,bool flash,
   panel_flash=flash;
   panel_flash_count=0;
   panel_flash_state=false;
-  panel_config_panels=false;
   panel_pause_enabled=false;
   for(unsigned i=0;i<RD_SOUNDPANEL_MAX_OUTPUTS;i++) {
     panel_card[i]=-1;
@@ -429,9 +428,8 @@ void RDSoundPanel::setActionMode(RDAirPlayConf::ActionMode mode)
     panel_setup_button->setEnabled(panel_action_mode==RDAirPlayConf::Normal);
     for(QMap<QString,QList<RDButtonPanel *> >::const_iterator it=panel_arrays.begin();it!=panel_arrays.end();it++) {
       for(int i=0;i<it.value().size();i++) {
-	if(i<panel_station_panels &&
-	   (!panel_config_panels) &&   
-	   (mode==RDAirPlayConf::AddTo || mode==RDAirPlayConf::CopyTo || mode==RDAirPlayConf::DeleteFrom)) {
+	if((it.value().at(i)->panelType()==RDAirPlayConf::StationPanel)&&
+	   (!rda->user()->configPanels())) {
 	  it.value().at(i)->setActionMode(RDAirPlayConf::Normal);
         }
 	else {
@@ -575,11 +573,9 @@ void RDSoundPanel::acceptCartDrop(int row,int col,unsigned cartnum,
 
 void RDSoundPanel::changeUser()
 {
-  panel_config_panels=rda->user()->configPanels();
   UpdatePanels(rda->user()->name());
   if(panel_dump_panel_updates) {
     printf("%s\n",json(rda->user()->name()).constData());
-    //    printf("{\r\n%s}\r\n",json(4).toUtf8().constData());
   }
 
   //
@@ -754,7 +750,7 @@ void RDSoundPanel::buttonClickedData(int pnum,int col,int row)
   case RDAirPlayConf::CopyTo:
     if(button->playDeck()==NULL
        && ((panel_type==RDAirPlayConf::UserPanel) || 
-    	   panel_config_panels)) { 
+	   rda->user()->configPanels())) { 
       emit selectClicked(0,button->row(),button->column());
     }
     break;
@@ -762,7 +758,7 @@ void RDSoundPanel::buttonClickedData(int pnum,int col,int row)
   case RDAirPlayConf::AddTo:
     if(button->playDeck()==NULL
        && ((panel_type==RDAirPlayConf::UserPanel) || 
-	   panel_config_panels)) { 
+	   rda->user()->configPanels())) { 
       emit selectClicked(0,button->row(),button->column());
     }
     break;
@@ -770,7 +766,7 @@ void RDSoundPanel::buttonClickedData(int pnum,int col,int row)
   case RDAirPlayConf::DeleteFrom:
     if(button->playDeck()==NULL
        && ((panel_type==RDAirPlayConf::UserPanel) || 
-	   panel_config_panels)) { 
+	   rda->user()->configPanels())) { 
       emit selectClicked(0,button->row(),button->column());
     }
     break;
@@ -781,7 +777,7 @@ void RDSoundPanel::buttonClickedData(int pnum,int col,int row)
 	return;
       }
       if((panel_type==RDAirPlayConf::StationPanel)&&
-	 (!panel_config_panels)) {
+	 (!rda->user()->configPanels())) {
 	ClearReset();
 	return;
       }
