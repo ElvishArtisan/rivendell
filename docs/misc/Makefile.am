@@ -2,7 +2,7 @@
 ##
 ## docs/misc/Makefile.am for Rivendell
 ##
-## (C) Copyright 2017 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2017-2024 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -25,6 +25,7 @@ EXTRA_DIST = ALSA.txt\
              PODCASTING.txt\
              RDMONITOR.txt\
              reports.txt\
+             rivendell_release_checklist.txt\
              SAGE_ENDEC.txt\
              scheduler_formats.ods
 

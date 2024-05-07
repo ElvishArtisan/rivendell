@@ -24751,3 +24751,5 @@
 	* Added 'python3-venv', 'python3-virtualenv',  'python3-build' and
 	'twine' packages to the list of required build packages for
 	Ubuntu 22.04 LTS and Ubuntu 24.04 LTS in 'INSTALL'.
+2024-05-06 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'docs/misc/rivendell_release_checklist.txt'.

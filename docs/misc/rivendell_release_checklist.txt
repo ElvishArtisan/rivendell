@@ -1,0 +1,44 @@
+                        Rivendell Release Checklist
+
+1) Test package builds
+
+  ( ) RHEL 7 (CentOS 7)
+
+  ( ) RHEL 8 (Rocky 8)
+
+  ( ) Ubuntu 22.04 LTS
+
+  ( ) Ubuntu 24.04 LTS
+
+
+2) Generate release
+
+  ( ) Prepare 'NEWS' entry.
+
+  ( ) Increment version strings in 'versions/' and make 'ChangeLog' entry.
+
+  ( ) Commit and tag in Git repo.
+
+
+3) Announce release
+
+  ( ) Draft and publish release at GitHub.
+
+  ( ) Update https://www.rivendellaudio.org.
+
+  ( ) Post announcement to https://Groups.io/g/Rivendell
+
+
+4) Generate and post packages
+
+  ( ) RHEL 7 (CentOS 7)
+
+  ( ) RHEL 8 (Rocky 8)
+
+  ( ) Ubuntu 22.04 LTS
+
+  ( ) Ubuntu 24.04 LTS
+
+  ( ) PyPI
+
+  ( ) Update documentation at https://opsguide.rivendellaudio.org.
