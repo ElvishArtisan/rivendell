@@ -30,6 +30,7 @@ RDMarkerPlayer::RDMarkerPlayer(int card,int port,QWidget *parent)
   d_cae_serial=0;
   d_is_playing=false;
   d_looping=false;
+  d_read_only=false;
 
   //
   // CAE
@@ -225,6 +226,23 @@ QSize RDMarkerPlayer::sizeHint() const
 QSizePolicy RDMarkerPlayer::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+}
+
+
+bool RDMarkerPlayer::isReadOnly() const
+{
+  return d_read_only;
+}
+
+
+void RDMarkerPlayer::setReadOnly(bool state)
+{
+  if(state!=d_read_only) {
+    d_no_segue_fade_check->setDisabled(state);
+    d_play_gain_spin->setDisabled(state);
+    d_read_only=state;
+    trimThresholdChanged(d_play_gain_spin->value());
+  }
 }
 
 
@@ -568,8 +586,8 @@ void RDMarkerPlayer::caePositionData(unsigned serial,unsigned msec)
 
 void RDMarkerPlayer::trimThresholdChanged(int dbfs)
 {
-  d_trim_start_button->setDisabled(dbfs==0);
-  d_trim_end_button->setDisabled(dbfs==0);
+  d_trim_start_button->setDisabled((dbfs==0)||d_read_only);
+  d_trim_end_button->setDisabled((dbfs==0)||d_read_only);
 }
 
 

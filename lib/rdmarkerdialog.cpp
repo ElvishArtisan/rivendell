@@ -142,7 +142,7 @@ QSize RDMarkerDialog::sizeHint() const
 }
 
 
-int RDMarkerDialog::exec(unsigned cartnum,int cutnum)
+int RDMarkerDialog::exec(unsigned cartnum,int cutnum,bool read_only)
 {
   QString err_msg;
 
@@ -160,12 +160,15 @@ int RDMarkerDialog::exec(unsigned cartnum,int cutnum)
 			  tr("Unable to open cut in audio player!"));
     return false;
   }
+  d_player->setReadOnly(read_only);
+  d_marker_view->setReadOnly(read_only);
   d_marker_view->
     setSelectedMarkers(RDMarkerHandle::CutStart,RDMarkerHandle::CutEnd);
   d_time_fullin_button->setEnabled(d_marker_view->canShrinkTime());
   d_time_in_button->setEnabled(d_marker_view->canShrinkTime());
   d_time_out_button->setEnabled(d_marker_view->canGrowTime());
   d_time_fullout_button->setEnabled(d_marker_view->canGrowTime());
+  d_ok_button->setDisabled(read_only);
 
   return QDialog::exec();
 }

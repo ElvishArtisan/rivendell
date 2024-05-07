@@ -74,7 +74,8 @@ void CatchTableView::editAudioMenuData()
   RDCart *rdcart=new RDCart(RDCut::cartNumber(cutname));
 
   if(d_marker_dialog->
-     exec(RDCut::cartNumber(cutname),RDCut::cutNumber(cutname))) {
+     exec(RDCut::cartNumber(cutname),RDCut::cutNumber(cutname),
+	  !rda->user()->editAudio())) {
     rdcart->updateLength();
     mod->refresh(mod->index(d_mouse_row,0));
     SendNotification(RDNotification::ModifyAction,

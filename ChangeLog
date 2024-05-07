@@ -24753,3 +24753,6 @@
 	Ubuntu 22.04 LTS and Ubuntu 24.04 LTS in 'INSTALL'.
 2024-05-06 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'docs/misc/rivendell_release_checklist.txt'.
+2024-05-07 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the 'Edit Audio' dialog that caused it to
+	ignore the state of the 'Edit Audio' user privilege.

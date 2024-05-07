@@ -50,6 +50,8 @@ class RDMarkerHandle : public QGraphicsPolygonItem
   PointerRole role() const;
   void setMinimum(int pos,int ptr);
   void setMaximum(int pos,int ptr);
+  bool isReadOnly() const;
+  void setReadOnly(bool state);
   bool isSelected() const;
   void setSelected(bool state);
   static QString pointerRoleText(PointerRole role);
@@ -66,6 +68,7 @@ class RDMarkerHandle : public QGraphicsPolygonItem
  private:
   QString d_name;
   PointerRole d_role;
+  bool d_read_only;
   bool d_is_selected;
   QList<QGraphicsItem *> d_peers;
   void *d_marker_view;
@@ -87,6 +90,8 @@ class RDMarkerView : public RDWidget
   ~RDMarkerView();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
+  bool isReadOnly() const;
+  void setReadOnly( bool state);
   int audioGain() const;
   unsigned sampleRate() const;
   int shrinkFactor() const;
@@ -160,6 +165,7 @@ class RDMarkerView : public RDWidget
   void SetReferenceLines();
   QGraphicsView *d_view;
   QGraphicsScene *d_scene;
+bool d_read_only;
   unsigned d_cart_number;
   int d_cut_number;
   int d_width;

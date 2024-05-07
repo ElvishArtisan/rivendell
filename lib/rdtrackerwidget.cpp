@@ -1104,7 +1104,8 @@ void RDTrackerWidget::editAudioData()
 
   if(d_marker_dialog->
      exec(RDCut::cartNumber(d_loglines[d_rightclick_track]->cutName()),
-	  RDCut::cutNumber(d_loglines[d_rightclick_track]->cutName()))) {
+	  RDCut::cutNumber(d_loglines[d_rightclick_track]->cutName()),
+	  !rda->user()->editAudio())) {
     rdcart->updateLength();
     d_loglines[d_rightclick_track]->refreshPointers();
     if(d_loglines[d_rightclick_track]->fadeupPoint()<

@@ -48,7 +48,7 @@ class RDMarkerDialog : public RDDialog
   QSize sizeHint() const;
 
  public slots:
-  int exec(unsigned cartnum,int cutnum);
+   int exec(unsigned cartnum,int cutnum,bool read_only);
    
  private slots:
   void amplitudeUpData();

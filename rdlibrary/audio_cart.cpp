@@ -400,7 +400,9 @@ void AudioCart::editCutData()
                             tr("No audio is present in the cut!"));
     return;
   }
-  if(rdcart_marker_dialog->exec(RDCut::cartNumber(cutname),RDCut::cutNumber(cutname))) {
+  if(rdcart_marker_dialog->
+     exec(RDCut::cartNumber(cutname),RDCut::cutNumber(cutname),
+	  !rda->user()->editAudio())) {
     emit cartDataChanged();
     rdcart_cart->updateLength(rdcart_controls->enforce_length_box->isChecked(),
 			      QTime(0,0,0).msecsTo(rdcart_controls->

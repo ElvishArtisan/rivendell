@@ -43,6 +43,8 @@ class RDMarkerPlayer : public RDWidget
   ~RDMarkerPlayer();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
+  bool isReadOnly() const;
+  void setReadOnly(bool state);
   bool setCut(unsigned cartnum,int cutnum);
   void clearCut();
   int cursorPosition() const;
@@ -131,6 +133,7 @@ class RDMarkerPlayer : public RDWidget
   int d_loop_start_msec;
   int d_loop_start_length;
   int d_cursor_position;
+  bool d_read_only;
 };
 
 

@@ -90,6 +90,18 @@ void RDMarkerHandle::setMaximum(int pos,int ptr)
 }
 
 
+bool RDMarkerHandle::isReadOnly() const
+{
+  return d_read_only;
+}
+
+
+void RDMarkerHandle::setReadOnly(bool state)
+{
+  d_read_only=state;
+}
+
+
 bool RDMarkerHandle::isSelected() const
 {
   return d_is_selected;
@@ -112,9 +124,10 @@ void RDMarkerHandle::setSelected(bool state)
 
 void RDMarkerHandle::hoverEnterEvent(QGraphicsSceneHoverEvent *e)
 {
-  RDMarkerView *view=static_cast<RDMarkerView *>(d_marker_view);
-
-  view->setCursor(Qt::PointingHandCursor);
+  if(!d_read_only) {
+    RDMarkerView *view=static_cast<RDMarkerView *>(d_marker_view);
+    view->setCursor(Qt::PointingHandCursor);
+  }
 }
 
 
@@ -130,70 +143,80 @@ void RDMarkerHandle::mousePressEvent(QGraphicsSceneMouseEvent *e)
 {
   RDMarkerView *view=static_cast<RDMarkerView *>(d_marker_view);
 
-  if(e->button()==Qt::LeftButton) {
-    e->accept();
-    d_x_diff=pos().x()-e->scenePos().x();
-    if(d_peers.size()==0) {
-      QGraphicsScene *s=scene();
-      QList<QGraphicsItem *> items=s->items();
-      for(int i=0;i<items.size();i++) {
-	if(items.at(i)->toolTip()==toolTip()) {
-	  d_peers.push_back(items.at(i));
+  if(d_read_only) {
+    e->ignore();
+    if(e->button()==Qt::RightButton) {
+      view->processRightClick(d_role,e->screenPos());
+    }
+  }
+  else {
+    if(e->button()==Qt::LeftButton) {
+      e->accept();
+      d_x_diff=pos().x()-e->scenePos().x();
+      if(d_peers.size()==0) {
+	QGraphicsScene *s=scene();
+	QList<QGraphicsItem *> items=s->items();
+	for(int i=0;i<items.size();i++) {
+	  if(items.at(i)->toolTip()==toolTip()) {
+	    d_peers.push_back(items.at(i));
+	  }
 	}
       }
+      view->setSelectedMarkers(d_role,RDMarkerHandle::LastRole);
     }
-    view->setSelectedMarkers(d_role,RDMarkerHandle::LastRole);
-  }
 
-  if(e->button()==Qt::RightButton) {
-    e->ignore();
-    view->processRightClick(d_role,e->screenPos());
+    if(e->button()==Qt::RightButton) {
+      e->ignore();
+      view->processRightClick(d_role,e->screenPos());
+    }
   }
 }
 
 
 void RDMarkerHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
 {
-  RDMarkerView *view=static_cast<RDMarkerView *>(d_marker_view);
+  if(!d_read_only) {
+    RDMarkerView *view=static_cast<RDMarkerView *>(d_marker_view);
 
-  //
-  // Check Limit Stops
-  //
-  int limit_ptr=-1;
-  int x=e->scenePos().x()+d_x_diff-LEFT_MARGIN;
+    //
+    // Check Limit Stops
+    //
+    int limit_ptr=-1;
+    int x=e->scenePos().x()+d_x_diff-LEFT_MARGIN;
 
-  if((d_minimum_pos>=0)&&(x<d_minimum_pos)) {
-    d_x_diff=d_minimum_pos-e->scenePos().x()+LEFT_MARGIN;
-    x=d_minimum_pos;
-    limit_ptr=d_minimum_ptr;
-  }
-  else {
-    if((d_maximum_pos>=0)&&(x>d_maximum_pos)) {
-      d_x_diff=d_maximum_pos-e->scenePos().x()+LEFT_MARGIN;
-      x=d_maximum_pos;
-      limit_ptr=d_maximum_ptr;
+    if((d_minimum_pos>=0)&&(x<d_minimum_pos)) {
+      d_x_diff=d_minimum_pos-e->scenePos().x()+LEFT_MARGIN;
+      x=d_minimum_pos;
+      limit_ptr=d_minimum_ptr;
     }
-  }
+    else {
+      if((d_maximum_pos>=0)&&(x>d_maximum_pos)) {
+	d_x_diff=d_maximum_pos-e->scenePos().x()+LEFT_MARGIN;
+	x=d_maximum_pos;
+	limit_ptr=d_maximum_ptr;
+      }
+    }
 
-  //
-  // Update Marker Graphic
-  //
-  for(int i=0;i<d_peers.size();i++) {
-    QGraphicsItem *peer=d_peers.at(i);
-    peer->setPos(e->scenePos().x()+d_x_diff,peer->pos().y());
-  }
+    //
+    // Update Marker Graphic
+    //
+    for(int i=0;i<d_peers.size();i++) {
+      QGraphicsItem *peer=d_peers.at(i);
+      peer->setPos(e->scenePos().x()+d_x_diff,peer->pos().y());
+    }
 
-  if(limit_ptr<0) {  // Generate new pointer value
-    int64_t pframes=(int64_t)(1152*x*view->shrinkFactor());
-    view->updatePosition(d_role,(int)((int64_t)1000*pframes/
-				      (int64_t)view->sampleRate()));
-  }
-  //
-  // We're against a limit stop, so use the pointer value of the stop
-  // rather than generating a new one as not to risk losing precision.
-  //
-  else {
-    view->updatePosition(d_role,limit_ptr);
+    if(limit_ptr<0) {  // Generate new pointer value
+      int64_t pframes=(int64_t)(1152*x*view->shrinkFactor());
+      view->updatePosition(d_role,(int)((int64_t)1000*pframes/
+					(int64_t)view->sampleRate()));
+    }
+    //
+    // We're against a limit stop, so use the pointer value of the stop
+    // rather than generating a new one as not to risk losing precision.
+    //
+    else {
+      view->updatePosition(d_role,limit_ptr);
+    }
   }
 }
 
@@ -362,6 +385,7 @@ RDMarkerHandle::PointerType RDMarkerHandle::pointerType(RDMarkerHandle::PointerR
 RDMarkerView::RDMarkerView(int width,int height,QWidget *parent)
   : RDWidget(parent)
 {
+  d_read_only=false;
   d_width=width;
   d_height=height;
   d_scene=NULL;
@@ -435,6 +459,27 @@ QSizePolicy RDMarkerView::sizePolicy() const
 }
 
 
+bool RDMarkerView::isReadOnly() const
+{
+  return d_read_only;
+}
+
+
+void RDMarkerView::setReadOnly(bool state)
+{
+  if(state!=d_read_only) {
+    for(int i=0;i<RDMarkerHandle::LastRole;i++) {
+      for(int j=0;j<2;j++) {
+	if(d_handles[i][j]!=NULL) {
+	  d_handles[i][j]->setReadOnly(state);
+	}
+      }
+    }
+    d_read_only=state;
+  }
+}
+
+
 int RDMarkerView::audioGain() const
 {
   return d_audio_gain;
@@ -498,18 +543,20 @@ bool RDMarkerView::hasUnsavedChanges() const
 void RDMarkerView::processRightClick(RDMarkerHandle::PointerRole role,
 				     const QPointF &pos)
 {
-  d_deleting_roles.clear();
+  if(!d_read_only) {
+    d_deleting_roles.clear();
 
-  d_deleting_roles.push_back(role);
-  if((role==RDMarkerHandle::SegueStart)||
-     (role==RDMarkerHandle::TalkStart)||
-     (role==RDMarkerHandle::HookStart)) {
-    d_deleting_roles.push_back((RDMarkerHandle::PointerRole)(role+1));
-  }
-  if((role==RDMarkerHandle::SegueEnd)||
-     (role==RDMarkerHandle::TalkEnd)||
-     (role==RDMarkerHandle::HookEnd)) {
-    d_deleting_roles.push_back((RDMarkerHandle::PointerRole)(role-1));
+    d_deleting_roles.push_back(role);
+    if((role==RDMarkerHandle::SegueStart)||
+       (role==RDMarkerHandle::TalkStart)||
+       (role==RDMarkerHandle::HookStart)) {
+      d_deleting_roles.push_back((RDMarkerHandle::PointerRole)(role+1));
+    }
+    if((role==RDMarkerHandle::SegueEnd)||
+       (role==RDMarkerHandle::TalkEnd)||
+       (role==RDMarkerHandle::HookEnd)) {
+      d_deleting_roles.push_back((RDMarkerHandle::PointerRole)(role-1));
+    }
   }
   d_marker_menu_used=true;
   d_main_menu->setGeometry(pos.x(),pos.y(),
@@ -831,14 +878,14 @@ void RDMarkerView::clear()
 
 void RDMarkerView::updateMenuData()
 {
-  bool can_add=
-    (d_deleting_roles.size()==0)&&
-    (d_msec_pos>=d_pointers[RDMarkerHandle::CutStart])&&
-    (d_msec_pos<d_pointers[RDMarkerHandle::CutEnd]);
-  bool can_delete=
-    d_marker_menu_used&&
-    (!d_deleting_roles.contains(RDMarkerHandle::CutStart))&&
-    (!d_deleting_roles.contains(RDMarkerHandle::CutEnd));
+  bool can_add=(!d_read_only)&&
+    ((d_deleting_roles.size()==0)&&
+     (d_msec_pos>=d_pointers[RDMarkerHandle::CutStart])&&
+     (d_msec_pos<d_pointers[RDMarkerHandle::CutEnd]));
+  bool can_delete=(!d_read_only)&&
+    (d_marker_menu_used&&
+     (!d_deleting_roles.contains(RDMarkerHandle::CutStart))&&
+     (!d_deleting_roles.contains(RDMarkerHandle::CutEnd)));
 
   d_delete_marker_action->setEnabled(can_delete);
   d_add_fadedown_action->
@@ -1111,7 +1158,7 @@ void RDMarkerView::mousePressEvent(QMouseEvent *e)
     return;
   }
   d_mouse_pos=e->x()-LEFT_MARGIN;
-
+  
   if(d_marker_menu_used) {
     d_marker_menu_used=false;
     return;
@@ -1129,10 +1176,10 @@ void RDMarkerView::mousePressEvent(QMouseEvent *e)
 
   case Qt::RightButton:
     d_deleting_roles.clear();
-
+      
     d_main_menu->setGeometry(e->globalX(),e->globalY(),
-			d_main_menu->sizeHint().width(),
-			d_main_menu->sizeHint().height());
+			     d_main_menu->sizeHint().width(),
+			     d_main_menu->sizeHint().height());
     d_main_menu->exec();
     break;
 
@@ -1313,6 +1360,7 @@ void RDMarkerView::DrawMarker(RDMarkerHandle::PointerType type,
     l_item->setPos(LEFT_MARGIN+Frame(d_pointers[role]),0);
 
     m_item=new RDMarkerHandle(role,type,this);
+    m_item->setReadOnly(d_read_only);
     d_scene->addItem(m_item);
     m_item->setPos(LEFT_MARGIN+Frame(d_pointers[role]),handle_pos-12);
     d_handles[role][0]=m_item;
@@ -1320,6 +1368,7 @@ void RDMarkerView::DrawMarker(RDMarkerHandle::PointerType type,
       setSelected((d_selected_markers[0]==role)||(d_selected_markers[1]==role));
 
     m_item=new RDMarkerHandle(role,type,this);
+    m_item->setReadOnly(d_read_only);
     d_scene->addItem(m_item);
     m_item->setPos(LEFT_MARGIN+Frame(d_pointers[role]),d_height-handle_pos-8);
     d_handles[role][1]=m_item;
