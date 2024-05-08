@@ -286,7 +286,7 @@ bool RDClock::generateLog(int hour,const QString &logname,
     eventline.setStartTime(QTime(0,0,0).addMSecs(q->value(1).toInt()).
 			   addSecs(3600*hour));
     eventline.setLength(q->value(2).toInt());
-    eventline.generateLog(logname,svc_name,errors,clock_name);
+    eventline.generateLog(logname,svc_name,clock_name,errors);
     eventline.clear();
   }
   delete q;

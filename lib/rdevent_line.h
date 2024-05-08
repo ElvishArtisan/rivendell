@@ -29,6 +29,20 @@
 #include <rdlog_line.h>
 #include <rdstation.h>
 
+class __RDEventLine_GeneratorState
+{
+ public:
+  QTime start_time;
+  int length;
+  int count;
+  RDLogLine::TransType trans_type;
+  RDLogLine::TimeType time_type;
+  RDLogLine::Type link_type;
+  int grace_time;
+  int link_id;
+};
+
+
 class RDEventLine
 {
  public:
@@ -77,8 +91,8 @@ class RDEventLine
   bool load();
   bool loadBypass();
   bool save(RDConfig *config);
-  bool generateLog(QString logname,const QString &svcname,
-		   QString *errors,QString clockname);
+  bool generateLog(const QString &logname,const QString &svcname,
+		   const QString &clockname,QString *report);
   void linkLog(RDLogModel *e,RDLog *log,const QString &svcname,
 	       RDLogLine *link_logline,const QString &track_str,
 	       const QString &label_cart,const QString &track_cart,
@@ -93,6 +107,9 @@ class RDEventLine
 				bool inline_tfc);
   
  private:
+  void GenerateMusicSchedEvent(__RDEventLine_GeneratorState *state,
+			       const QString &logname,const QString &svcname,
+			       const QString &clockname,QString *report);
   int GetLength(unsigned cartnum,int def_length=0);
   QString event_name;
   bool event_using_bypass;

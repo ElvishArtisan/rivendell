@@ -24761,3 +24761,7 @@
 	for addition/move/delete operations to fail to be displayed for User
 	panels when the	user didn't have the 'Configure System Panels'
 	privilege.
+2024-05-08 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the 'RDEventLine::generateLog()' method to isolate
+	music selector code into the 'RDEventLine::GenerateMusicSchedEvent()'
+	method.

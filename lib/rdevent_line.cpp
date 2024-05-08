@@ -458,22 +458,22 @@ bool RDEventLine::save(RDConfig *config)
 }
 
 
-bool RDEventLine::generateLog(QString logname,const QString &svcname,
-			      QString *report, QString clockname)
+bool RDEventLine::generateLog(const QString &logname,const QString &svcname,
+			      const QString &clockname,QString *report)
 {
   QString sql;
   RDSqlQuery *q;
-  RDSqlQuery *q1;
-  QTime time=event_start_time;
   QTime fill_start_time;
-  int count=0;
   QString import_table;
-  int postimport_length=0;
-  RDLogLine::TransType trans_type=event_first_transtype;
-  RDLogLine::TimeType time_type=event_time_type;
-  RDLogLine::Type link_type=RDLogLine::MusicLink;
-  int grace_time=event_grace_time;
-  int link_id=0;
+  __RDEventLine_GeneratorState *state=new __RDEventLine_GeneratorState();
+  state->start_time=event_start_time;
+  state->length=0;
+  state->count=0;
+  state->trans_type=event_first_transtype;
+  state->time_type=event_time_type;
+  state->link_type=RDLogLine::MusicLink;
+  state->grace_time=event_grace_time;
+  state->link_id=0;
 
   //
   // Get Current Count and Link ID
@@ -483,7 +483,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
     "order by `COUNT` desc";
   q=new RDSqlQuery(sql);
   if(q->first()) {
-    count=q->value(0).toInt()+1;
+    state->count=q->value(0).toInt()+1;
   }
   delete q;
 
@@ -493,7 +493,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
     "order by `LINK_ID` desc";
   q=new RDSqlQuery(sql);
   if(q->first()) {
-    link_id=q->value(0).toInt()+1;
+    state->link_id=q->value(0).toInt()+1;
   }
   delete q;
 
@@ -501,42 +501,42 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
   // Override Default Parameters if Preposition Set
   //
   if(event_preposition>=0) {
-    time_type=RDLogLine::Hard;
-    grace_time=-1;
-    if(QTime(0,0,0).msecsTo(time)>event_preposition) {
-      time=time.addMSecs(-event_preposition);
+    state->time_type=RDLogLine::Hard;
+    state->grace_time=-1;
+    if(QTime(0,0,0).msecsTo(state->start_time)>event_preposition) {
+      state->start_time=state->start_time.addMSecs(-event_preposition);
     }
     else {
-      time=QTime();
+      state->start_time=QTime();
     }
   }
 
   //
   // Pre-Import Carts
   //
-  postimport_length=0;
+  state->length=0;
   for(int i=0;i<event_preimport_list->size()-1;i++) {
     RDEventImportItem *i_item=event_preimport_list->item(i);
     sql=QString("insert into `LOG_LINES` set ")+
       "`LOG_NAME`='"+RDEscapeString(logname)+"',"+
-      QString::asprintf("`LINE_ID`=%d,",count)+
-      QString::asprintf("`COUNT`=%d,",count)+
+      QString::asprintf("`LINE_ID`=%d,",state->count)+
+      QString::asprintf("`COUNT`=%d,",state->count)+
       QString::asprintf("`TYPE`=%d,",i_item->eventType())+
       QString::asprintf("`SOURCE`=%d,",RDLogLine::Template)+
-      QString::asprintf("`START_TIME`=%d,",QTime(0,0,0).msecsTo(time))+
-      QString::asprintf("`GRACE_TIME`=%d,",grace_time)+
+      QString::asprintf("`START_TIME`=%d,",QTime(0,0,0).msecsTo(state->start_time))+
+      QString::asprintf("`GRACE_TIME`=%d,",state->grace_time)+
       QString::asprintf("`CART_NUMBER`=%u,",i_item->cartNumber())+
-      QString::asprintf("`TIME_TYPE`=%d,",time_type)+
+      QString::asprintf("`TIME_TYPE`=%d,",state->time_type)+
       QString::asprintf("`TRANS_TYPE`=%d,",i_item->transType())+
       "`COMMENT`='"+RDEscapeString(i_item->markerComment())+"',"+
       QString::asprintf("`EVENT_LENGTH`=%d",event_length);
     RDSqlQuery::apply(sql);
-    count++;
-    trans_type=event_default_transtype;
-    time_type=RDLogLine::Relative;
-    grace_time=-1;
+    state->count++;
+    state->trans_type=event_default_transtype;
+    state->time_type=RDLogLine::Relative;
+    state->grace_time=-1;
 
-    postimport_length+=GetLength(i_item->cartNumber());
+    state->length+=GetLength(i_item->cartNumber());
   }
 
   //
@@ -545,11 +545,11 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
   if(event_import_source==RDEventLine::Traffic || event_import_source==RDEventLine::Music) {
     switch(event_import_source) {
     case RDEventLine::Traffic:
-      link_type=RDLogLine::TrafficLink;
+      state->link_type=RDLogLine::TrafficLink;
       break;
 	  
     case RDEventLine::Music:
-      link_type=RDLogLine::MusicLink;
+      state->link_type=RDLogLine::MusicLink;
       break;
 	  
     default:
@@ -559,371 +559,37 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 
     sql=QString("insert into `LOG_LINES` set ")+
       "`LOG_NAME`='"+RDEscapeString(logname)+"',"+
-      QString::asprintf("`LINE_ID`=%d,",count)+
-      QString::asprintf("`COUNT`=%d,",count)+
-      QString::asprintf("`TYPE`=%d,",link_type)+
+      QString::asprintf("`LINE_ID`=%d,",state->count)+
+      QString::asprintf("`COUNT`=%d,",state->count)+
+      QString::asprintf("`TYPE`=%d,",state->link_type)+
       QString::asprintf("`SOURCE`=%d,",RDLogLine::Template)+
-      QString::asprintf("`START_TIME`=%d,",QTime(0,0,0).msecsTo(time))+
-      QString::asprintf("`GRACE_TIME`=%d,",grace_time)+
-      QString::asprintf("`TIME_TYPE`=%d,",time_type)+
-      QString::asprintf("`TRANS_TYPE`=%d,",trans_type)+
+      QString::asprintf("`START_TIME`=%d,",QTime(0,0,0).msecsTo(state->start_time))+
+      QString::asprintf("`GRACE_TIME`=%d,",state->grace_time)+
+      QString::asprintf("`TIME_TYPE`=%d,",state->time_type)+
+      QString::asprintf("`TRANS_TYPE`=%d,",state->trans_type)+
       "`LINK_EVENT_NAME`='"+RDEscapeString(event_name)+"',"+
       QString::asprintf("`LINK_START_TIME`=%d,",
 			QTime(0,0,0).msecsTo(event_start_time))+
       QString::asprintf("`LINK_LENGTH`=%d,",
 			event_start_time.msecsTo(end_start_time))+
-      QString::asprintf("`LINK_ID`=%d,",link_id)+
+      QString::asprintf("`LINK_ID`=%d,",state->link_id)+
       QString::asprintf("`LINK_START_SLOP`=%d,",event_start_slop)+
       QString::asprintf("`LINK_END_SLOP`=%d,",event_end_slop)+
       QString::asprintf("`EVENT_LENGTH`=%d",event_length);
     q=new RDSqlQuery(sql);
     delete q;
-    count++;
-    time=time.addMSecs(event_length);
-    trans_type=event_default_transtype;
-    time_type=RDLogLine::Relative;
-    grace_time=-1;
+    state->count++;
+    state->start_time=state->start_time.addMSecs(event_length);
+    state->trans_type=event_default_transtype;
+    state->time_type=RDLogLine::Relative;
+    state->grace_time=-1;
   }
 
-  // Scheduler 
-
+  //
+  // Music Scheduler 
+  //
   if(event_import_source == RDEventLine::Scheduler) {
-    int artistsep;
-    int titlesep;
-    int stackid;
-    int counter;   		
-    RDLogLine::Source source=RDLogLine::Music;
-    
-    QString svcname_rp = svcname;
-    svcname_rp.replace(" ","_");
-    
-    time=time.addMSecs(postimport_length);
-
-    if(event_artist_sep>=-1 && event_artist_sep<=50000) {
-      artistsep = event_artist_sep;
-    }
-    else {
-      artistsep = 15;
-    }
-
-    if(event_title_sep>=-1 && event_title_sep<=50000) {
-      titlesep = event_title_sep;
-    }
-    else {
-      titlesep = 100;
-    }
-
-    //
-    // Get next stack id from the stack
-    //
-    sql=QString("select ")+
-      "MAX(`SCHED_STACK_ID`) "+
-      "from `STACK_LINES` where "+
-      "`SERVICE_NAME`='"+RDEscapeString(svcname)+"'";
-    q=new RDSqlQuery(sql);
-    if (q->next()) { 
-      stackid=q->value(0).toUInt();
-    }
-    else { 
-      stackid=0;
-    }
-    stackid++;    
-    delete q;
-      
-    //
-    // Load all carts in requested group into schedCL
-    //
-    sql=QString("select `NUMBER`,`ARTIST`,`TITLE`,")+
-      "CONCAT(GROUP_CONCAT(RPAD(`SC`.`SCHED_CODE`,11,'|') separator ''),'.') as `SCHED_CODES`"+
-      " from `CART` LEFT JOIN `CART_SCHED_CODES` AS `SC` on (`NUMBER`=`SC`.`CART_NUMBER`)"+
-      " where `GROUP_NAME`='"+RDEscapeString(schedGroup())+"'"+
-      " group by `NUMBER`";
-    RDSchedCartList *schedCL=new RDSchedCartList();
-    q=new RDSqlQuery(sql);
-    while(q->next()) {
-      QStringList codes=q->value(3).toString().split("|",QString::SkipEmptyParts);
-      if((codes.size()>0)&&(codes.last()==".")) {
-	codes.removeLast();
-      }
-      schedCL->
-	insertItem(q->value(0).toUInt(),0,0,q->value(1).toString(),q->value(2).toString(),codes);
-    }
-    delete q;
-
-    //////////////////////////////////
-    //                              //
-    // Add deconflicting rules here //
-    //                              //
-    //////////////////////////////////
-
-    // Reduce schedCL to match requested scheduler code
-    if(event_have_code!=""||event_have_code2!="") {
-      QStringList codes;
-      if(event_have_code!="") {
-        codes << event_have_code;
-      }
-      if(event_have_code2!="") {
-        codes << event_have_code2;
-      }
-      for(counter=0;counter<schedCL->getNumberOfItems();counter++) { 
-        if(!schedCL->itemHasCodes(counter,codes)) {
-          schedCL->removeItem(counter);
-          counter--;
-        }
-      }
-    }
-
-    if(schedCL->getNumberOfItems()) {
-      //
-      // Title separation
-      //
-      // Iterate through schedCL and remove carts from schedCL that
-      // match title on the stack.
-      //
-      if(titlesep>=0) {
-        schedCL->save();		  
-        sql=QString("select `TITLE` from `STACK_LINES` where ")+
-          "`SERVICE_NAME`='"+RDEscapeString(svcname)+"' && "+
-          QString::asprintf("`SCHED_STACK_ID` >= %d",stackid-titlesep);
-        q=new RDSqlQuery(sql);
-        while (q->next()) {
-          for(counter=0;counter<schedCL->getNumberOfItems();counter++) { 
-            if(q->value(0).toString()==schedCL->getItemTitle(counter)) {
-              schedCL->removeItem(counter);
-              counter--;
-            }
-          }
-        }
-        delete q;
-        if(schedCL->getNumberOfItems()==0) {
-          *report+=rda->timeString(time)+" "+
-            QObject::tr("Rule broken: Title separation");
-          if(!HaveCode().isEmpty()) {
-            *report+=QObject::tr(" with sched code(s): ")+HaveCode()+" "+HaveCode2();
-          }
-          *report+="\n";
-          schedCL->restore();
-        }
-      }
-      
-      //
-      // Artist separation
-      //
-      // Iterate through schedCL and remove carts from schedCL that
-      // match artist on the stack.
-      //
-      if(artistsep>=0) {
-        schedCL->save();		  
-        sql=QString("select `ARTIST` from `STACK_LINES` where ")+
-          "`SERVICE_NAME`='"+RDEscapeString(svcname)+"' && "+
-          QString::asprintf("`SCHED_STACK_ID` >= %d",stackid-artistsep);
-        q=new RDSqlQuery(sql);
-        while (q->next()) {
-          for(counter=0;counter<schedCL->getNumberOfItems();counter++) { 
-            if(q->value(0).toString()==schedCL->getItemArtist(counter)) {
-              schedCL->removeItem(counter);
-              counter--;
-            }
-          }
-        }          
-        delete q;
-        if(schedCL->getNumberOfItems()==0) {
-          *report+=rda->timeString(time)+" "+
-            QObject::tr("Rule broken: Artist separation");
-          if(!HaveCode().isEmpty()) {
-            *report+=QObject::tr(" with sched code(s): ")+HaveCode()+" "+HaveCode2();
-          }
-          *report+="\n";
-          schedCL->restore();
-        }
-      }
-      
-      // Clock Scheduler Rules
-      sql=QString("select ")+
-	"`CODE`,"+         // 00
-	"`MAX_ROW`,"+      // 01
-	"`MIN_WAIT`,"+     // 02
-	"`NOT_AFTER`,"+    // 03
-	"`OR_AFTER`,"+     // 04
-	"`OR_AFTER_II` "+  // 05
-	"from `RULE_LINES` where "+
-	"`CLOCK_NAME`='"+RDEscapeString(clockname)+"'";
-      q=new RDSqlQuery(sql);
-      while (q->next()) {
-	// max in a row, min wait
-	schedCL->save();	
-	int range=q->value(1).toInt()+q->value(2).toInt(); 
-	int allowed=q->value(1).toInt();
-	QString wstr=q->value(0).toString();
-	wstr+="          ";
-	wstr=wstr.left(11);
-	sql=QString("select `STACK_LINES`.`CART` ")+
-	  "from `STACK_LINES` left join `STACK_SCHED_CODES` "+
-	  "on `STACK_LINES`.`ID`=`STACK_SCHED_CODES`.`STACK_LINES_ID` where "+
-	  "`STACK_LINES`.`SERVICE_NAME`='"+RDEscapeString(svcname)+"' && "+
-	  QString::asprintf("`STACK_LINES`.`SCHED_STACK_ID` > %d && ",
-			    stackid-range)+
-	  "`STACK_SCHED_CODES`.`SCHED_CODE`='"+RDEscapeString(wstr)+"'";
-	q1=new RDSqlQuery(sql);
-	if(q1->size()>=allowed || allowed==0) {
-	  for(counter=0;counter<schedCL->getNumberOfItems();counter++) {
-	    if(schedCL->removeIfCode(counter,q->value(0).toString())) {
-	      counter--;
-	    }
-	  }
-	}
-	delete q1;
-	if(schedCL->getNumberOfItems()==0) {
-	  *report+=rda->timeString(time)+" "+
-	    QObject::tr("Rule broken: Max. in a Row/Min. Wait for ")+
-	    q->value(0).toString()+"\n";
-	  schedCL->restore();
-	}
-
-	// do not play after
-	if(q->value(3).toString()!="") {
-	  schedCL->save();	
-	  QString wstr=q->value(3).toString();
-	  wstr+="          ";
-	  wstr=wstr.left(11);
-	  sql=QString("select `STACK_LINES`.`CART` ")+
-	    "from `STACK_LINES` left join `STACK_SCHED_CODES` "+
-	    "on `STACK_LINES`.`ID`=`STACK_SCHED_CODES`.`STACK_LINES_ID` where "+
-	    "`STACK_LINES`.`SERVICE_NAME`='"+RDEscapeString(svcname)+"' && "+
-	    QString::asprintf("`STACK_LINES`.`SCHED_STACK_ID`=%d && ",stackid-1)+
-	    "`STACK_SCHED_CODES`.`SCHED_CODE`='"+RDEscapeString(wstr)+"'";
-	  q1=new RDSqlQuery(sql);
-	  if(q1->size()>0) {
-	    for(counter=0;counter<schedCL->getNumberOfItems();counter++) {
-	      if(schedCL->removeIfCode(counter,q->value(0).toString())) {
-		counter--;
-	      }
-	    }
-	  }
-	  delete q1;
-	  if(schedCL->getNumberOfItems()==0) {
-	    *report+=rda->timeString(time)+" "+
-	      QObject::tr("Rule broken: Do not schedule ")+
-	      q->value(0).toString()+" "+QObject::tr("after")+" "+
-	      q->value(3).toString()+"\n";
-	    schedCL->restore();
-	  }
-	}
-	// or after
-	if (q->value(4).toString()!="") {
-	  schedCL->save();
-	  QString wstr=q->value(4).toString();
-	  wstr+="          ";
-	  wstr=wstr.left(11);
-	  sql=QString("select `STACK_LINES`.`CART` ")+
-	    "from `STACK_LINES` left join `STACK_SCHED_CODES` "+
-	    "on `STACK_LINES`.`ID`=`STACK_SCHED_CODES`.`STACK_LINES_ID` where "+
-	    QString::asprintf("`STACK_LINES`.`SCHED_STACK_ID`=%d && ",stackid-1)+
-	    "`STACK_SCHED_CODES`.`SCHED_CODE`='"+RDEscapeString(wstr)+"'";
-	  q1=new RDSqlQuery(sql);
-	  if(q1->size()>0) {	
-	    for(counter=0;counter<schedCL->getNumberOfItems();counter++) {
-	      if(schedCL->removeIfCode(counter,q->value(0).toString())) {
-		counter--;
-	      }
-	    }
-	  }
-	  delete q1;
-	  if(schedCL->getNumberOfItems()==0) {
-	    *report+=rda->timeString(time)+" "+
-	      QObject::tr("Rule broken: Do not schedule")+" "+
-	      q->value(0).toString()+" "+QObject::tr("after")+" "+
-	      q->value(4).toString()+"\n";
-	    schedCL->restore();
-	  }
-	}
-	// or after II
-	if (q->value(5).toString()!="") {
-	  schedCL->save();
-	  QString wstr=q->value(5).toString();
-	  wstr+="          ";
-	  wstr=wstr.left(11);
-	  sql=QString("select `STACK_LINES`.`CART` ")+
-	    "from `STACK_LINES` left join `STACK_SCHED_CODES` "+
-	    "on `STACK_LINES`.`ID`=`STACK_SCHED_CODES`.`STACK_LINES_ID` where "+
-	    QString::asprintf("`STACK_LINES`.`SCHED_STACK_ID`=%d && ",stackid-1)+
-	    "`STACK_SCHED_CODES`.`SCHED_CODE`='"+RDEscapeString(wstr)+"'";
-	  q1=new RDSqlQuery(sql);
-	  if(q1->size()>0) {
-	    for(counter=0;counter<schedCL->getNumberOfItems();counter++) {
-	      if(schedCL->removeIfCode(counter,q->value(0).toString())) {
-		counter--;
-	      }
-	    }
-	  }
-	  delete q1;
-	  if(schedCL->getNumberOfItems()==0) {
-	    *report+=rda->timeString(time)+" "+
-	      QObject::tr("Rule broken: Do not schedule")+" "+
-	      q->value(0).toString()+" "+QObject::tr("after")+" "+
-	      q->value(5).toString()+"\n";
-	    schedCL->restore();
-	  }
-	}
-      }
-      delete q;
-
-      ////////////////////////////////
-      //                            //
-      // End of deconflicting rules //
-      //                            //
-      ////////////////////////////////
-      
-      //
-      // Pick a random cart from those that are remaining.
-      //
-      int schedpos=rand()%schedCL->getNumberOfItems();
-      sql=QString("insert into `LOG_LINES` set ")+
-	"`LOG_NAME`=\""+RDEscapeString(logname)+"\","+
-	QString::asprintf("`LINE_ID`=%d,",count)+
-	QString::asprintf("`COUNT`=%d,",count)+
-	QString::asprintf("`TYPE`=%d,",RDLogLine::Cart)+
-	QString::asprintf("`SOURCE`=%d,",source)+
-	QString::asprintf("`START_TIME`=%d,",QTime(0,0,0).msecsTo(time))+
-	QString::asprintf("`GRACE_TIME`=%d,",grace_time)+
-	QString::asprintf("`CART_NUMBER`=%u,",schedCL->getItemCartNumber(schedpos))+
-	QString::asprintf("`TIME_TYPE`=%d,",time_type)+
-	QString::asprintf("`TRANS_TYPE`=%d,",trans_type)+
-	"`EXT_START_TIME`="+RDCheckDateTime(time,"hh:mm:ss")+","+
-	QString::asprintf("`EVENT_LENGTH`=%d",event_length);
-      q=new RDSqlQuery(sql);
-      delete q;
-
-      count++;
-
-      sql=QString("insert into `STACK_LINES` set ")+
-	"`SERVICE_NAME`='"+RDEscapeString(svcname)+"',"+
-	"`SCHEDULED_AT`=now(),"+
-	QString::asprintf("`SCHED_STACK_ID`=%u,",stackid)+
-	QString::asprintf("`CART`=%u,",schedCL->getItemCartNumber(schedpos))+
-	"`ARTIST`='"+RDEscapeString(schedCL->getItemArtist(schedpos))+"',"+
-	"`TITLE`='"+RDEscapeString(schedCL->getItemTitle(schedpos))+"'";
-      unsigned line_id=RDSqlQuery::run(sql).toUInt();
-      QStringList codes=schedCL->getItemSchedCodes(schedpos);
-      for(int i=0;i<codes.size();i++) {
-	sql=QString("insert into `STACK_SCHED_CODES` set ")+
-	  QString::asprintf("`STACK_LINES_ID`=%u,",line_id)+
-	  "`SCHED_CODE`='"+RDEscapeString(codes.at(i))+"'";
-	RDSqlQuery::apply(sql);
-      }
-      delete schedCL;
-    }
-    else {
-      // We don't have any carts to work with
-      *report+=rda->timeString(time)+
-        " "+QObject::tr("No carts found in group")+" "+schedGroup();
-      if(!HaveCode().isEmpty()) {
-        *report+=QObject::tr(" with sched code(s): ")+HaveCode()+" "+HaveCode2();
-      }
-      *report+="\n";
-
-      delete schedCL;
-    }
+    GenerateMusicSchedEvent(state,logname,svcname,clockname,report);
   }
 
   //
@@ -933,24 +599,26 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
     RDEventImportItem *i_item=event_postimport_list->item(i);
     sql=QString("insert into `LOG_LINES` set ")+
       "`LOG_NAME`='"+RDEscapeString(logname)+"',"+
-      QString::asprintf("`LINE_ID`=%d,",count)+
-      QString::asprintf("`COUNT`=%d,",count)+
+      QString::asprintf("`LINE_ID`=%d,",state->count)+
+      QString::asprintf("`COUNT`=%d,",state->count)+
       QString::asprintf("`TYPE`=%d,",i_item->eventType())+
       QString::asprintf("`SOURCE`=%d,",RDLogLine::Template)+
-      QString::asprintf("`START_TIME`=%d,",QTime(0,0,0).msecsTo(time))+
-      QString::asprintf("`GRACE_TIME`=%d,",grace_time)+
+      QString::asprintf("`START_TIME`=%d,",QTime(0,0,0).msecsTo(state->start_time))+
+      QString::asprintf("`GRACE_TIME`=%d,",state->grace_time)+
       QString::asprintf("`CART_NUMBER`=%u,",i_item->cartNumber())+
-      QString::asprintf("`TIME_TYPE`=%d,",time_type)+
+      QString::asprintf("`TIME_TYPE`=%d,",state->time_type)+
       QString::asprintf("`TRANS_TYPE`=%d,",i_item->transType())+
       "`COMMENT`='"+RDEscapeString(i_item->markerComment())+"',"+
       QString::asprintf("`EVENT_LENGTH`=%d",event_length);
     RDSqlQuery::apply(sql);
-    count++;
-    time=time.addMSecs(GetLength(i_item->cartNumber()));
-    time_type=RDLogLine::Relative;
-    trans_type=event_default_transtype;
-    grace_time=-1;
+    state->count++;
+    state->start_time=state->start_time.addMSecs(GetLength(i_item->cartNumber()));
+    state->time_type=RDLogLine::Relative;
+    state->trans_type=event_default_transtype;
+    state->grace_time=-1;
   }
+
+  delete state;
 
   return true;
 }
@@ -1386,6 +1054,351 @@ QString RDEventLine::propertiesText(int prepos_msec,
   }
 
   return ret.left(ret.length()-2);
+}
+
+
+void RDEventLine::GenerateMusicSchedEvent(__RDEventLine_GeneratorState *state,
+					  const QString &logname,
+					  const QString &svcname,
+					  const QString &clockname,
+					  QString *report)
+{
+  QString sql;
+  RDSqlQuery *q=NULL;
+  RDSqlQuery *q1=NULL;
+  int artistsep;
+  int titlesep;
+  int stackid;
+  int counter;   		
+  RDLogLine::Source source=RDLogLine::Music;
+    
+  state->start_time=state->start_time.addMSecs(state->length);
+
+  if(event_artist_sep>=-1 && event_artist_sep<=50000) {
+    artistsep = event_artist_sep;
+  }
+  else {
+    artistsep = 15;
+  }
+
+  if(event_title_sep>=-1 && event_title_sep<=50000) {
+    titlesep = event_title_sep;
+  }
+  else {
+    titlesep = 100;
+  }
+
+  //
+  // Get next stack id from the stack
+  //
+  sql=QString("select ")+
+    "MAX(`SCHED_STACK_ID`) "+
+    "from `STACK_LINES` where "+
+    "`SERVICE_NAME`='"+RDEscapeString(svcname)+"'";
+  q=new RDSqlQuery(sql);
+  if (q->next()) { 
+    stackid=q->value(0).toUInt();
+  }
+  else { 
+    stackid=0;
+  }
+  stackid++;    
+  delete q;
+      
+  //
+  // Load all carts in requested group into schedCL
+  //
+  sql=QString("select `NUMBER`,`ARTIST`,`TITLE`,")+
+    "CONCAT(GROUP_CONCAT(RPAD(`SC`.`SCHED_CODE`,11,'|') separator ''),'.') as `SCHED_CODES`"+
+    " from `CART` LEFT JOIN `CART_SCHED_CODES` AS `SC` on (`NUMBER`=`SC`.`CART_NUMBER`)"+
+    " where `GROUP_NAME`='"+RDEscapeString(schedGroup())+"'"+
+    " group by `NUMBER`";
+  RDSchedCartList *schedCL=new RDSchedCartList();
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    QStringList codes=q->value(3).toString().split("|",QString::SkipEmptyParts);
+    if((codes.size()>0)&&(codes.last()==".")) {
+      codes.removeLast();
+    }
+    schedCL->
+      insertItem(q->value(0).toUInt(),0,0,q->value(1).toString(),q->value(2).toString(),codes);
+  }
+  delete q;
+
+  //////////////////////////////////
+  //                              //
+  // Add deconflicting rules here //
+  //                              //
+  //////////////////////////////////
+
+  // Reduce schedCL to match requested scheduler code
+  if(event_have_code!=""||event_have_code2!="") {
+    QStringList codes;
+    if(event_have_code!="") {
+      codes << event_have_code;
+    }
+    if(event_have_code2!="") {
+      codes << event_have_code2;
+    }
+    for(counter=0;counter<schedCL->getNumberOfItems();counter++) { 
+      if(!schedCL->itemHasCodes(counter,codes)) {
+	schedCL->removeItem(counter);
+	counter--;
+      }
+    }
+  }
+
+  if(schedCL->getNumberOfItems()) {
+    //
+    // Title separation
+    //
+    // Iterate through schedCL and remove carts from schedCL that
+    // match title on the stack.
+    //
+    if(titlesep>=0) {
+      schedCL->save();		  
+      sql=QString("select `TITLE` from `STACK_LINES` where ")+
+	"`SERVICE_NAME`='"+RDEscapeString(svcname)+"' && "+
+	QString::asprintf("`SCHED_STACK_ID` >= %d",stackid-titlesep);
+      q=new RDSqlQuery(sql);
+      while (q->next()) {
+	for(counter=0;counter<schedCL->getNumberOfItems();counter++) { 
+	  if(q->value(0).toString()==schedCL->getItemTitle(counter)) {
+	    schedCL->removeItem(counter);
+	    counter--;
+	  }
+	}
+      }
+      delete q;
+      if(schedCL->getNumberOfItems()==0) {
+	*report+=rda->timeString(state->start_time)+" "+
+	  QObject::tr("Rule broken: Title separation");
+	if(!HaveCode().isEmpty()) {
+	  *report+=QObject::tr(" with sched code(s): ")+HaveCode()+" "+HaveCode2();
+	}
+	*report+="\n";
+	schedCL->restore();
+      }
+    }
+      
+    //
+    // Artist separation
+    //
+    // Iterate through schedCL and remove carts from schedCL that
+    // match artist on the stack.
+    //
+    if(artistsep>=0) {
+      schedCL->save();		  
+      sql=QString("select `ARTIST` from `STACK_LINES` where ")+
+	"`SERVICE_NAME`='"+RDEscapeString(svcname)+"' && "+
+	QString::asprintf("`SCHED_STACK_ID` >= %d",stackid-artistsep);
+      q=new RDSqlQuery(sql);
+      while (q->next()) {
+	for(counter=0;counter<schedCL->getNumberOfItems();counter++) { 
+	  if(q->value(0).toString()==schedCL->getItemArtist(counter)) {
+	    schedCL->removeItem(counter);
+	    counter--;
+	  }
+	}
+      }          
+      delete q;
+      if(schedCL->getNumberOfItems()==0) {
+	*report+=rda->timeString(state->start_time)+" "+
+	  QObject::tr("Rule broken: Artist separation");
+	if(!HaveCode().isEmpty()) {
+	  *report+=QObject::tr(" with sched code(s): ")+HaveCode()+" "+HaveCode2();
+	}
+	*report+="\n";
+	schedCL->restore();
+      }
+    }
+      
+    // Clock Scheduler Rules
+    sql=QString("select ")+
+      "`CODE`,"+         // 00
+      "`MAX_ROW`,"+      // 01
+      "`MIN_WAIT`,"+     // 02
+      "`NOT_AFTER`,"+    // 03
+      "`OR_AFTER`,"+     // 04
+      "`OR_AFTER_II` "+  // 05
+      "from `RULE_LINES` where "+
+      "`CLOCK_NAME`='"+RDEscapeString(clockname)+"'";
+    q=new RDSqlQuery(sql);
+    while (q->next()) {
+      // max in a row, min wait
+      schedCL->save();	
+      int range=q->value(1).toInt()+q->value(2).toInt(); 
+      int allowed=q->value(1).toInt();
+      QString wstr=q->value(0).toString();
+      wstr+="          ";
+      wstr=wstr.left(11);
+      sql=QString("select `STACK_LINES`.`CART` ")+
+	"from `STACK_LINES` left join `STACK_SCHED_CODES` "+
+	"on `STACK_LINES`.`ID`=`STACK_SCHED_CODES`.`STACK_LINES_ID` where "+
+	"`STACK_LINES`.`SERVICE_NAME`='"+RDEscapeString(svcname)+"' && "+
+	QString::asprintf("`STACK_LINES`.`SCHED_STACK_ID` > %d && ",
+			  stackid-range)+
+	"`STACK_SCHED_CODES`.`SCHED_CODE`='"+RDEscapeString(wstr)+"'";
+      q1=new RDSqlQuery(sql);
+      if(q1->size()>=allowed || allowed==0) {
+	for(counter=0;counter<schedCL->getNumberOfItems();counter++) {
+	  if(schedCL->removeIfCode(counter,q->value(0).toString())) {
+	    counter--;
+	  }
+	}
+      }
+      delete q1;
+      if(schedCL->getNumberOfItems()==0) {
+	*report+=rda->timeString(state->start_time)+" "+
+	  QObject::tr("Rule broken: Max. in a Row/Min. Wait for ")+
+	  q->value(0).toString()+"\n";
+	schedCL->restore();
+      }
+
+      // do not play after
+      if(q->value(3).toString()!="") {
+	schedCL->save();	
+	QString wstr=q->value(3).toString();
+	wstr+="          ";
+	wstr=wstr.left(11);
+	sql=QString("select `STACK_LINES`.`CART` ")+
+	  "from `STACK_LINES` left join `STACK_SCHED_CODES` "+
+	  "on `STACK_LINES`.`ID`=`STACK_SCHED_CODES`.`STACK_LINES_ID` where "+
+	  "`STACK_LINES`.`SERVICE_NAME`='"+RDEscapeString(svcname)+"' && "+
+	  QString::asprintf("`STACK_LINES`.`SCHED_STACK_ID`=%d && ",stackid-1)+
+	  "`STACK_SCHED_CODES`.`SCHED_CODE`='"+RDEscapeString(wstr)+"'";
+	q1=new RDSqlQuery(sql);
+	if(q1->size()>0) {
+	  for(counter=0;counter<schedCL->getNumberOfItems();counter++) {
+	    if(schedCL->removeIfCode(counter,q->value(0).toString())) {
+	      counter--;
+	    }
+	  }
+	}
+	delete q1;
+	if(schedCL->getNumberOfItems()==0) {
+	  *report+=rda->timeString(state->start_time)+" "+
+	    QObject::tr("Rule broken: Do not schedule ")+
+	    q->value(0).toString()+" "+QObject::tr("after")+" "+
+	    q->value(3).toString()+"\n";
+	  schedCL->restore();
+	}
+      }
+      // or after
+      if (q->value(4).toString()!="") {
+	schedCL->save();
+	QString wstr=q->value(4).toString();
+	wstr+="          ";
+	wstr=wstr.left(11);
+	sql=QString("select `STACK_LINES`.`CART` ")+
+	  "from `STACK_LINES` left join `STACK_SCHED_CODES` "+
+	  "on `STACK_LINES`.`ID`=`STACK_SCHED_CODES`.`STACK_LINES_ID` where "+
+	  QString::asprintf("`STACK_LINES`.`SCHED_STACK_ID`=%d && ",stackid-1)+
+	  "`STACK_SCHED_CODES`.`SCHED_CODE`='"+RDEscapeString(wstr)+"'";
+	q1=new RDSqlQuery(sql);
+	if(q1->size()>0) {	
+	  for(counter=0;counter<schedCL->getNumberOfItems();counter++) {
+	    if(schedCL->removeIfCode(counter,q->value(0).toString())) {
+	      counter--;
+	    }
+	  }
+	}
+	delete q1;
+	if(schedCL->getNumberOfItems()==0) {
+	  *report+=rda->timeString(state->start_time)+" "+
+	    QObject::tr("Rule broken: Do not schedule")+" "+
+	    q->value(0).toString()+" "+QObject::tr("after")+" "+
+	    q->value(4).toString()+"\n";
+	  schedCL->restore();
+	}
+      }
+      // or after II
+      if (q->value(5).toString()!="") {
+	schedCL->save();
+	QString wstr=q->value(5).toString();
+	wstr+="          ";
+	wstr=wstr.left(11);
+	sql=QString("select `STACK_LINES`.`CART` ")+
+	  "from `STACK_LINES` left join `STACK_SCHED_CODES` "+
+	  "on `STACK_LINES`.`ID`=`STACK_SCHED_CODES`.`STACK_LINES_ID` where "+
+	  QString::asprintf("`STACK_LINES`.`SCHED_STACK_ID`=%d && ",stackid-1)+
+	  "`STACK_SCHED_CODES`.`SCHED_CODE`='"+RDEscapeString(wstr)+"'";
+	q1=new RDSqlQuery(sql);
+	if(q1->size()>0) {
+	  for(counter=0;counter<schedCL->getNumberOfItems();counter++) {
+	    if(schedCL->removeIfCode(counter,q->value(0).toString())) {
+	      counter--;
+	    }
+	  }
+	}
+	delete q1;
+	if(schedCL->getNumberOfItems()==0) {
+	  *report+=rda->timeString(state->start_time)+" "+
+	    QObject::tr("Rule broken: Do not schedule")+" "+
+	    q->value(0).toString()+" "+QObject::tr("after")+" "+
+	    q->value(5).toString()+"\n";
+	  schedCL->restore();
+	}
+      }
+    }
+    delete q;
+
+    ////////////////////////////////
+    //                            //
+    // End of deconflicting rules //
+    //                            //
+    ////////////////////////////////
+      
+    //
+    // Pick a random cart from those that are remaining.
+    //
+    int schedpos=rand()%schedCL->getNumberOfItems();
+    sql=QString("insert into `LOG_LINES` set ")+
+      "`LOG_NAME`=\""+RDEscapeString(logname)+"\","+
+      QString::asprintf("`LINE_ID`=%d,",state->count)+
+      QString::asprintf("`COUNT`=%d,",state->count)+
+      QString::asprintf("`TYPE`=%d,",RDLogLine::Cart)+
+      QString::asprintf("`SOURCE`=%d,",source)+
+      QString::asprintf("`START_TIME`=%d,",QTime(0,0,0).msecsTo(state->start_time))+
+      QString::asprintf("`GRACE_TIME`=%d,",state->grace_time)+
+      QString::asprintf("`CART_NUMBER`=%u,",schedCL->getItemCartNumber(schedpos))+
+      QString::asprintf("`TIME_TYPE`=%d,",state->time_type)+
+      QString::asprintf("`TRANS_TYPE`=%d,",state->trans_type)+
+      "`EXT_START_TIME`="+RDCheckDateTime(state->start_time,"hh:mm:ss")+","+
+      QString::asprintf("`EVENT_LENGTH`=%d",event_length);
+    q=new RDSqlQuery(sql);
+    delete q;
+
+    state->count++;
+
+    sql=QString("insert into `STACK_LINES` set ")+
+      "`SERVICE_NAME`='"+RDEscapeString(svcname)+"',"+
+      "`SCHEDULED_AT`=now(),"+
+      QString::asprintf("`SCHED_STACK_ID`=%u,",stackid)+
+      QString::asprintf("`CART`=%u,",schedCL->getItemCartNumber(schedpos))+
+      "`ARTIST`='"+RDEscapeString(schedCL->getItemArtist(schedpos))+"',"+
+      "`TITLE`='"+RDEscapeString(schedCL->getItemTitle(schedpos))+"'";
+    unsigned line_id=RDSqlQuery::run(sql).toUInt();
+    QStringList codes=schedCL->getItemSchedCodes(schedpos);
+    for(int i=0;i<codes.size();i++) {
+      sql=QString("insert into `STACK_SCHED_CODES` set ")+
+	QString::asprintf("`STACK_LINES_ID`=%u,",line_id)+
+	"`SCHED_CODE`='"+RDEscapeString(codes.at(i))+"'";
+      RDSqlQuery::apply(sql);
+    }
+    delete schedCL;
+  }
+  else {
+    // We don't have any carts to work with
+    *report+=rda->timeString(state->start_time)+
+      " "+QObject::tr("No carts found in group")+" "+schedGroup();
+    if(!HaveCode().isEmpty()) {
+      *report+=QObject::tr(" with sched code(s): ")+HaveCode()+" "+HaveCode2();
+    }
+    *report+="\n";
+    
+    delete schedCL;
+  }
 }
 
 
