@@ -114,7 +114,9 @@ class LogLineBox : public RDWidget
   QPalette line_changed_stop_palette;
   QPalette line_changed_play_palette;
   QPalette line_time_palette;
+  QString line_time_style_sheet;
   QPalette line_hard_palette;
+  QString line_hard_style_sheet;
   QPalette line_timescale_palette;
   QPalette line_transition_palette;
   QPalette line_text_palette;

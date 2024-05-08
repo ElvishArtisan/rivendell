@@ -136,11 +136,13 @@ LogLineBox::LogLineBox(RDAirPlayConf *conf,QWidget *parent)
 			     QColor(Qt::black));
   line_time_palette.setColor(QPalette::Inactive,QPalette::Foreground,
 			     QColor(Qt::black));
+  line_time_style_sheet="";
   line_hard_palette=QGuiApplication::palette();
   line_hard_palette.setColor(QPalette::Active,QPalette::Foreground,
 			     QColor(LOG_HARDTIME_TEXT_COLOR));
   line_hard_palette.setColor(QPalette::Inactive,QPalette::Foreground,
 			     QColor(LOG_HARDTIME_TEXT_COLOR));
+  line_hard_style_sheet="color: "+QColor(LOG_HARDTIME_TEXT_COLOR).name();
 
   line_timescale_palette=QGuiApplication::palette();
   line_timescale_palette.setColor(QPalette::Active,QPalette::Foreground,
@@ -252,6 +254,7 @@ LogLineBox::LogLineBox(RDAirPlayConf *conf,QWidget *parent)
   line_time_label->setFont(line_font);
   line_time_label->setAlignment(Qt::AlignRight);
   line_time_label->setPalette(line_time_palette);
+  line_time_label->setStyleSheet(line_time_style_sheet);
 
   //
   // Talk Time
@@ -556,9 +559,11 @@ void LogLineBox::setEvent(int line,RDLogLine::TransType next_type,
 				  false,false));
 	if(line_logline->timescalingActive()) {
 	  line_length_label->setPalette(line_hard_palette);
+	  line_length_label->setStyleSheet(line_hard_style_sheet);
 	}
 	else {
 	  line_length_label->setPalette(line_time_palette);
+	  line_length_label->setStyleSheet(line_time_style_sheet);
 	}
 	if((line_logline->source()!=RDLogLine::Tracker)||
 	   line_logline->originUser().isEmpty()||
@@ -975,6 +980,7 @@ void LogLineBox::PrintTime()
 					      startTime(RDLogLine::Logged)));
 	}
 	line_time_label->setPalette(line_hard_palette);
+	line_time_label->setStyleSheet(line_hard_style_sheet);
 	break;
 
       default:
@@ -988,6 +994,7 @@ void LogLineBox::PrintTime()
 	  line_time_label->setText("");
 	}
 	line_time_label->setPalette(line_time_palette);
+	line_time_label->setStyleSheet(line_time_style_sheet);
 	break;
   }
 }
