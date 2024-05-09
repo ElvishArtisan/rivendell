@@ -24765,3 +24765,7 @@
 	* Fixed a regression in rdairplay(1) that caused the start time
 	indicators in the button log to display the incorrect color for
 	hard time events.
+2024-05-08 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the 'RDEventLine::generateLog()' method to isolate
+	music selector code into the 'RDEventLine::GenerateMusicSchedEvent()'
+	method.
