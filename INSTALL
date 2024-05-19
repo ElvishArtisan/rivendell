@@ -346,7 +346,16 @@ be done by means of the following commands:
 
 7) Debian 11 "Bullseye"
 
-Required build packages: autoconf automake libtool g++ qtbase5-dev libqt5sql5-mysql qttools5-dev-tools libexpat1 libexpat1-dev libssl-dev libsamplerate-dev libsndfile-dev libcdparanoia-dev libcoverart-dev libdiscid-dev libmusicbrainz5-dev libid3-dev libtag1-dev libcurl4-gnutls-dev libpam0g-dev libsoundtouch-dev docbook5-xml libxml2-utils docbook-xsl-ns xsltproc fop make libsystemd-dev libjack-jackd2-dev libasound2-dev libflac-dev libflac++-dev libmp3lame-dev libmad0-dev libtwolame-dev python3 python3-pycurl python3-pymysql python3-serial python3-requests libmagick++-dev debhelper
+Required build packages: autoconf automake libtool g++ qtbase5-dev libqt5sql5-mysql libqt5webkit5-dev qttools5-dev-tools libexpat1 libexpat1-dev libssl-dev libsamplerate-dev libsndfile-dev libcdparanoia-dev libcoverart-dev libdiscid-dev libmusicbrainz5-dev libid3-dev libtag1-dev libcurl4-gnutls-dev libpam0g-dev libsoundtouch-dev docbook5-xml libxml2-utils docbook-xsl-ns xsltproc fop make libsystemd-dev libjack-jackd2-dev libasound2-dev libflac-dev libflac++-dev libmp3lame-dev libmad0-dev libtwolame-dev python3 python3-pycurl python3-pymysql python3-serial python3-requests libmagick++-dev debhelper
+
+Configure script invocation: ./configure --prefix=/usr --libdir=/usr/lib --libexecdir=/var/www/rd-bin --sysconfdir=/etc/apache2/conf-enabled --enable-rdxport-debug MUSICBRAINZ_LIBS="-ldiscid -lmusicbrainz5cc -lcoverartcc"
+
+Environmental variables: DOCBOOK_STYLESHEETS=/usr/share/xml/docbook/stylesheet/docbook-xsl-ns
+
+
+8) Debian 12 "Bookworm"
+
+Required build packages: autoconf automake libtool g++ qtbase5-dev libqt5sql5-mysql  libqt5webkit5-dev qttools5-dev-tools libexpat1 libexpat1-dev libssl-dev libsamplerate-dev libsndfile-dev libcdparanoia-dev libcoverart-dev libdiscid-dev libmusicbrainz5-dev libid3-dev libtag1-dev libcurl4-gnutls-dev libpam0g-dev libsoundtouch-dev docbook5-xml libxml2-utils docbook-xsl-ns xsltproc fop make libsystemd-dev libjack-jackd2-dev libasound2-dev libflac-dev libflac++-dev libmp3lame-dev libmad0-dev libtwolame-dev python3 python3-pycurl python3-pymysql python3-serial python3-requests libmagick++-dev debhelper
 
 Configure script invocation: ./configure --prefix=/usr --libdir=/usr/lib --libexecdir=/var/www/rd-bin --sysconfdir=/etc/apache2/conf-enabled --enable-rdxport-debug MUSICBRAINZ_LIBS="-ldiscid -lmusicbrainz5cc -lcoverartcc"
 
