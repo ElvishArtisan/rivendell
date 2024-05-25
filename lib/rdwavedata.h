@@ -2,7 +2,7 @@
 //
 //   A Container Class for Audio Meta Data.
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -202,6 +202,7 @@ class RDWaveData
   static QString endTypeText(EndType type);
   static QString cartTypeText(CartType type);
   static QString usageText(UsageCode code);
+  static QString dump(const QString &label,RDWaveData *data);
 
  private:
   bool data_metadata_found;

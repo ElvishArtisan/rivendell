@@ -2,7 +2,7 @@
 //
 //   A Container Class for Audio Meta Data.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -1428,6 +1428,21 @@ QString RDWaveData::usageText(UsageCode code)
 
   case UsageLast:
     break;
+  }
+
+  return ret;
+}
+
+
+QString RDWaveData::dump(const QString &label,RDWaveData *data)
+{
+  QString ret=label+": ";
+
+  if(data==NULL) {
+    ret+="[NULL]";
+  }
+  else {
+    ret+=data->dump();
   }
 
   return ret;

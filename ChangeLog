@@ -24771,3 +24771,7 @@
 	method.
 2024-05-19 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'Debian 12 "Bookworm"' section to the 'INSTALL' file.
+2024-05-25 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDWaveData::dump()' static method.
+	* Fixed a regression in the audio importation system that could
+	cause the detected length of an MPEG file to be '0'.

@@ -1120,7 +1120,12 @@ void RDCut::setMetadata(RDWaveData *data) const
     sql+=QString::asprintf("`START_POINT`=%d,",data->startPos());
   }
   if(data->endPos()>=0) {
-    sql+=QString::asprintf("`END_POINT`=%d,",data->endPos());
+    if(data->endPos()>length()) {
+      sql+=QString::asprintf("`END_POINT`=%d,",length());
+    }
+    else {
+      sql+=QString::asprintf("`END_POINT`=%d,",data->endPos());
+    }
   }
   if((data->talkStartPos()==data->startPos())&&
      (data->talkEndPos()==data->endPos())) {

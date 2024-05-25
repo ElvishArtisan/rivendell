@@ -316,6 +316,7 @@ bool RDWaveFile::openWave(RDWaveData *data)
     }
     data_start=id3v2_offset[0];
     sample_length=1152*(data_length/mpeg_frame_size);
+    ext_time_length=1000*((uint64_t)sample_length)/((uint64_t)samples_per_sec);
     data_chunk=true;
     lseek(wave_file.handle(),data_start,SEEK_SET);
     format_chunk=true;
