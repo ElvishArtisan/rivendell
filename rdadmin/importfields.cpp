@@ -333,7 +333,7 @@ ImportFields::ImportFields(RDSvc::ImportSource src,QWidget *parent)
   //
   event_id_length_spin=new QSpinBox(this);
   event_id_length_spin->setGeometry(285,190,50,19);
-  event_id_length_spin->setRange(0,8);
+  event_id_length_spin->setRange(0,32);
   label=new QLabel(tr("Length:"),this);
   label->setGeometry(230,190,50,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);

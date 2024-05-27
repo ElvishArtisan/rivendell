@@ -41,6 +41,29 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // NEW SCHEMA REVERSIONS GO HERE...
 
   //
+  // Revert 375
+  //
+  if((cur_schema == 375) && (set_schema < cur_schema))
+  {
+    //
+    // So we don't get truncation errors when modifying the column width
+    //
+    sql=QString("update `ELR_LINES` ")+
+      "set `EXT_EVENT_ID`=substr(`EXT_EVENT_ID`,1,8)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table `ELR_LINES` ")+
+      "modify column `EXT_EVENT_ID` varchar(8)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 374
   //
   if((cur_schema == 374) && (set_schema < cur_schema))

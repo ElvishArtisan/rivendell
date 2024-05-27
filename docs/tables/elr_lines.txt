@@ -38,5 +38,5 @@ EXT_START_TIME       time               Scheduler Start Time
 EXT_LENGTH           int(11)            Scheduler Length
 EXT_CART_NAME        varchar(32)        Scheduler Cart Name
 EXT_DATA             varchar(32)        Scheduler Data
-EXT_EVENT_ID         varchar(8)         Scheduler Event ID
+EXT_EVENT_ID         varchar(32)        Scheduler Event ID
 EXT_ANNC_TYPE        varchar(8)         External Scheduler Announcement Type

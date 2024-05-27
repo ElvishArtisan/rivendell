@@ -24775,3 +24775,10 @@
 	* Added an 'RDWaveData::dump()' static method.
 	* Fixed a regression in the audio importation system that could
 	cause the detected length of an MPEG file to be '0'.
+2024-05-27 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the 'ELR_LINES.EXT_EVENT_ID' database field from
+	'varchar(8)' to	'varchar(32)'.
+	* Incremented the database version to 375.
+	* Fixed a bug in the 'Edit Service' dialog in rdadmin(1) that made
+	it impossible to use a field width of greater than 8 for the
+	'Event ID' log import field.
