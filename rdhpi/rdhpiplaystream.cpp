@@ -496,8 +496,7 @@ bool RDHPIPlayStream::play()
     }
 #endif
   }
-  bool restart_timer=false;
-   if(!is_paused) {
+  if(!is_paused) {
     memset(pdata,0,fragment_size);
     left_to_write=getDataLength()-seekWave(0,SEEK_CUR);
     if(left_to_write<fragment_size) {
@@ -530,8 +529,8 @@ bool RDHPIPlayStream::play()
       emit played();
       emit stateChanged(card_number,stream_number,(int)stream_state);
     }
-  }
-  if((!playing)&(is_paused|repositioned)) {
+   }
+  if((!playing)&&(is_paused|repositioned)) {
     LogHpi(HPI_OutStreamStart(NULL,hpi_stream),__LINE__);
     clock->start(FRAGMENT_TIME);
     playing=true;
@@ -543,9 +542,8 @@ bool RDHPIPlayStream::play()
       emit played();
       emit stateChanged(card_number,stream_number,(int)stream_state);
     }
-    restart_timer=true;
   }      
-  if((play_length>0)&&restart_timer) {
+  if(play_length>0) {
     play_timer->start(play_length);
     start_time=QTime::currentTime();
   }

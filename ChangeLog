@@ -24782,3 +24782,6 @@
 	* Fixed a bug in the 'Edit Service' dialog in rdadmin(1) that made
 	it impossible to use a field width of greater than 8 for the
 	'Event ID' log import field.
+2024-05-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the 'RDHPIPlayStream::play()' method that
+	the 'play_length' setting to be ignored.
