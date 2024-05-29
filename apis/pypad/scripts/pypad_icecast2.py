@@ -4,7 +4,7 @@
 #
 # Send PAD updates to Icecast2 mountpoint
 #
-#   (C) Copyright 2018-2022 Fred Gleason <fredg@paravelsystems.com>
+#   (C) Copyright 2018-2024 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as
@@ -25,8 +25,10 @@ import sys
 import socket
 import requests
 from requests.auth import HTTPBasicAuth
+from requests import Session, Request
 import xml.etree.ElementTree as ET
 import syslog
+from urllib.parse import quote
 try:
     from rivendellaudio import pypad
 except ModuleNotFoundError:
@@ -35,6 +37,10 @@ import configparser
 
 def eprint(*args,**kwargs):
     print(*args,file=sys.stderr,**kwargs)
+
+def IcecastQuote(string):
+    string=quote(string,safe=' ',encoding='ISO-8859-1',errors='replace')
+    return string
 
 def ProcessPad(update):
     if update.hasPadType(pypad.TYPE_NOW):
@@ -47,7 +53,6 @@ def ProcessPad(update):
             try:
                 values={}
                 values['mount']=update.config().get(section,'Mountpoint')
-                values['song']=update.resolvePadFields(update.config().get(section,'FormatString'),pypad.ESCAPE_NONE)
                 values['mode']='updinfo'
                 hostname=update.config().get(section,'Hostname')
                 tcpport=update.config().get(section,'Tcpport')
@@ -64,9 +69,13 @@ def ProcessPad(update):
             #
             if update.shouldBeProcessed(section):
                 try:
-                    response=requests.get(url,auth=HTTPBasicAuth(username,password),params=values)
+                    req=Request('GET',url,auth=HTTPBasicAuth(username,password),params=values)
+                    prep=req.prepare()
+                    song=update.resolvePadFields(update.config().get(section,'FormatString'),pypad.ESCAPE_NONE)
+                    prep.url=prep.url+'&song='+IcecastQuote(song)
+                    response=sess.send(prep)
                     response.raise_for_status()
-                    update.syslog(syslog.LOG_INFO,'Updating '+hostname+': song='+values['song'])
+                    update.syslog(syslog.LOG_INFO,'Updating http://'+hostname+values['mount']+': song='+song)
                 except requests.exceptions.RequestException as e:
                     update.syslog(syslog.LOG_WARNING,str(e))
             n=n+1
@@ -91,4 +100,5 @@ except IndexError:
     eprint('pypad_icecast2: USAGE: cmd <hostname> <port> <config>')
     sys.exit(1)
 rcvr.setPadCallback(ProcessPad)
+sess=Session()
 rcvr.start(sys.argv[1],int(sys.argv[2]))

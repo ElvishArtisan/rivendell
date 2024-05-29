@@ -24791,3 +24791,6 @@
 	* Removed the resynchronization code from the 'RDJsonFramer' class.
 	* Fixed a bug in rdpadd(8) that could cause corruption when processing
 	JSON updates.
+2024-05-29 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'pypad_icecast2.py PyPAD script that caused
+	mojibake when sending ISO-8859-1 characters with code points >= 0x80.
