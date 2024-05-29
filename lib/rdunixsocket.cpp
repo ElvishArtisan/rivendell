@@ -43,7 +43,7 @@ bool RDUnixSocket::connectToAbstract(const QString &addr,
   int sock;
   struct sockaddr_un sa;
 
-  if((sock=::socket(AF_UNIX,SOCK_STREAM,0))<0) {
+  if((sock=::socket(AF_UNIX,SOCK_SEQPACKET,0))<0) {
     return false;
   }
   memset(&sa,0,sizeof(sa));

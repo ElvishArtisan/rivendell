@@ -46,10 +46,6 @@ class RDJsonFramer : public QObject
   void readyReadData();
 
  private:
-  QByteArray d_data;
-  bool d_escaped;
-  bool d_quoted;
-  int d_level;
   QByteArray d_current_document;
   QTcpSocket *d_socket;
 };

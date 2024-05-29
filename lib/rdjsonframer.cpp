@@ -23,9 +23,6 @@
 RDJsonFramer::RDJsonFramer(QTcpSocket *in_sock,QObject *parent)
   : QObject(parent)
 {
-  d_escaped=false;
-  d_quoted=false;
-  d_level=0;
   d_socket=in_sock;
   connect(d_socket,SIGNAL(readyRead()),this,SLOT(readyReadData()));
 }
@@ -34,9 +31,6 @@ RDJsonFramer::RDJsonFramer(QTcpSocket *in_sock,QObject *parent)
 RDJsonFramer::RDJsonFramer(QObject *parent)
   : QObject(parent)
 {
-  d_escaped=false;
-  d_quoted=false;
-  d_level=0;
   d_socket=NULL;
 }
 
@@ -57,54 +51,13 @@ QByteArray RDJsonFramer::currentDocument() const
 
 void RDJsonFramer::write(const QByteArray &data)
 {
-  for(int i=0;i<data.size();i++) {
-    QChar c=data.at(i);
-
-    d_data+=c;
-
-    if((c.cell()=='\\')&&(!d_escaped)) {
-      d_escaped=true;
-    }
-    else {
-      switch(c.cell()) {
-      case '{':
-	if(!d_quoted) {
-	  d_level++;
-	}
-	break;
-
-      case '}':
-	if(!d_quoted) {
-	  if(--d_level==0) {
-	    d_current_document=d_data+"\n";
-	    d_escaped=false;
-	    d_quoted=false;
-	    d_level=0;
-	    d_data.clear();
-	    emit documentReceived(d_current_document);
-	  }
-	}
-	break;
-
-      case '"':
-	if(!d_escaped) {
-	  d_quoted=!d_quoted;
-	}
-	break;
-      }
-      d_escaped=false;
-    }
-  }
+  d_current_document=data;
+  emit documentReceived(d_current_document);
 }
 
 
 void RDJsonFramer::reset()
 {
-  d_escaped=false;
-  d_quoted=false;
-  d_level=0;
-  d_data.clear();
-
   emit documentReset();  
 }
 

@@ -24785,3 +24785,9 @@
 2024-05-27 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in the 'RDHPIPlayStream::play()' method that
 	the 'play_length' setting to be ignored.
+2024-05-29 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the socket type from SOCK_STREAM to SOCK_SEQPACKET in
+	the 'RDUnixServer' and 'RDUnixSocket' classes.
+	* Removed the resynchronization code from the 'RDJsonFramer' class.
+	* Fixed a bug in rdpadd(8) that could cause corruption when processing
+	JSON updates.

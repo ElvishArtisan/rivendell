@@ -77,7 +77,7 @@ bool RDUnixServer::listenToPathname(const QString &pathname)
 {
   struct sockaddr_un sa;
 
-  if((unix_socket=socket(AF_UNIX,SOCK_STREAM,0))<0) {
+  if((unix_socket=socket(AF_UNIX,SOCK_SEQPACKET,0))<0) {
     unix_error_string=QString("unable to create socket")+" ["+
       QString(strerror(errno))+"]";
     return false;
@@ -108,7 +108,7 @@ bool RDUnixServer::listenToAbstract(const QString &addr)
 {
   struct sockaddr_un sa;
 
-  if((unix_socket=socket(AF_UNIX,SOCK_STREAM,0))<0) {
+  if((unix_socket=socket(AF_UNIX,SOCK_SEQPACKET,0))<0) {
     unix_error_string=QString("unable to create socket")+" ["+
       QString(strerror(errno))+"]";
     return false;
