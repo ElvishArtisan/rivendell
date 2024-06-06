@@ -23,9 +23,14 @@
 install-exec-local:	
 	mkdir -p $(DESTDIR)/etc/X11/xinit/xinitrc.d
 	cp start-rdmonitor.sh $(DESTDIR)/etc/X11/xinit/xinitrc.d/
+	mkdir -p $(DESTDIR)/usr/share/rivendell
+	cp rd_backup_system.sh $(DESTDIR)/usr/share/rivendell/
+	cp rd_restore_system.sh $(DESTDIR)/usr/share/rivendell/
 
 uninstall-local:	
 	rm -f $(DESTDIR)/etc/X11/xinit/xinitrc.d/start-rdmonitor.sh
+	rm -f $(DESTDIR)/usr/share/rivendell/rd_backup_system.sh
+	rm -f $(DESTDIR)/usr/share/rivendell/rd_restore_system.sh
 
 bin_SCRIPTS = crc-unity4k.sh\
               rd_audio_sync\

@@ -24796,3 +24796,6 @@
 	mojibake when sending ISO-8859-1 characters with code points >= 0x80.
 2024-06-03 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version 4.2.2int0.
+2024-06-06 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'scripts/rivendell/rd_backup_system.sh' and
+	'rivendell/rd_restore_system.sh' to '/usr/share/rivendell/'.
