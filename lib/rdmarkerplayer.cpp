@@ -578,6 +578,11 @@ void RDMarkerPlayer::caePositionData(unsigned serial,unsigned msec)
     d_position_edit->
       setText(RDGetTimeLength(msec-d_pointers[RDMarkerHandle::CutStart],
 			      true,true));
+    if((d_active_play_button==d_play_to_button)&&
+       (msec>=(unsigned)d_pointers[d_selected_markers[1]])) {
+      buttonStopData();
+      setCursorPosition(d_loop_start_msec);
+    }
     d_cursor_position=msec;
     emit cursorPositionChanged(msec);
   }

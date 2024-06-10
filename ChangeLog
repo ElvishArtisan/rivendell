@@ -24802,3 +24802,7 @@
 2024-06-10 Fred Gleason <fredg@paravelsystems.com>
 	* Reverted the changes made to the 'RDHPIPlayStream::play()' method
 	that were made on 2024-05-27.
+2024-06-10 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the 'Edit Audio' dialog in rdlibrary(1) that
+	caused play-out to fail to stop at the end marker when using the
+	'Play To' feature.
