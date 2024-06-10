@@ -24799,3 +24799,6 @@
 2024-06-06 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'scripts/rivendell/rd_backup_system.sh' and
 	'rivendell/rd_restore_system.sh' to '/usr/share/rivendell/'.
+2024-06-10 Fred Gleason <fredg@paravelsystems.com>
+	* Reverted the changes made to the 'RDHPIPlayStream::play()' method
+	that were made on 2024-05-27.

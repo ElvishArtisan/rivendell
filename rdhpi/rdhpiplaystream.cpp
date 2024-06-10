@@ -496,7 +496,8 @@ bool RDHPIPlayStream::play()
     }
 #endif
   }
-  if(!is_paused) {
+  bool restart_timer=false;
+   if(!is_paused) {
     memset(pdata,0,fragment_size);
     left_to_write=getDataLength()-seekWave(0,SEEK_CUR);
     if(left_to_write<fragment_size) {
@@ -542,8 +543,9 @@ bool RDHPIPlayStream::play()
       emit played();
       emit stateChanged(card_number,stream_number,(int)stream_state);
     }
+    restart_timer=true;
   }      
-  if(play_length>0) {
+  if((play_length>0)&&restart_timer) {
     play_timer->start(play_length);
     start_time=QTime::currentTime();
   }
