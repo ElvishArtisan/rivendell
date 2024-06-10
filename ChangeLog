@@ -24806,3 +24806,5 @@
 	* Fixed a regression in the 'Edit Audio' dialog in rdlibrary(1) that
 	caused play-out to fail to stop at the end marker when using the
 	'Play To' feature.
+2024-06-10 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Wants=' rule from the 'rivendell' Systemd service.
