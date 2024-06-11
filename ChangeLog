@@ -24808,3 +24808,5 @@
 	'Play To' feature.
 2024-06-10 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'Wants=' rule from the 'rivendell' Systemd service.
+2024-06-11 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version 4.2.2int1.
