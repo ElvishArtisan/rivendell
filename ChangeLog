@@ -24810,3 +24810,6 @@
 	* Removed the 'Wants=' rule from the 'rivendell' Systemd service.
 2024-06-11 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version 4.2.2int1.
+2024-06-25 Fred Gleason <fredg@paravelsystems.com>
+	* Removed 'rd_backup_system.sh' and 'rd_restore_system.sh' from
+	'/usr/share/rivendell/'.

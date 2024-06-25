@@ -2,7 +2,7 @@
 ##
 ## Scripts Directory Makefile.am for Rivendell
 ##
-## (C) Copyright 2002-2012,2016 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2002-2024 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -24,13 +24,9 @@ install-exec-local:
 	mkdir -p $(DESTDIR)/etc/X11/xinit/xinitrc.d
 	cp start-rdmonitor.sh $(DESTDIR)/etc/X11/xinit/xinitrc.d/
 	mkdir -p $(DESTDIR)/usr/share/rivendell
-	cp rd_backup_system.sh $(DESTDIR)/usr/share/rivendell/
-	cp rd_restore_system.sh $(DESTDIR)/usr/share/rivendell/
 
 uninstall-local:	
 	rm -f $(DESTDIR)/etc/X11/xinit/xinitrc.d/start-rdmonitor.sh
-	rm -f $(DESTDIR)/usr/share/rivendell/rd_backup_system.sh
-	rm -f $(DESTDIR)/usr/share/rivendell/rd_restore_system.sh
 
 bin_SCRIPTS = crc-unity4k.sh\
               rd_audio_sync\
