@@ -8004,42 +8004,6 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       return false;
     }
 
-    sql=QString("select `KEY_NAME` from `FEEDS`");
-    q=new RDSqlQuery(sql,false);
-    while(q->next()) {
-      QString tablename=q->value(0).toString()+"_FLG";
-      tablename.replace(" ","_");
-      if(!TableExists(tablename)) {
-	fprintf(stderr,"rddbmgr: missing FLG table for feed '%s'\n",
-		(const char *)q->value(0).toString().toUtf8());
-      }
-      else {
-	sql=QString("select ")+
-	  "`CAST_ID`,"+       // 00
-	  "`ACCESS_DATE`,"+   // 01
-	  "`ACCESS_COUNT` "+  // 02
-	  "from `"+tablename+"` "+
-	  "order by `ACCESS_DATE`";
-	q1=new RDSqlQuery(sql,false);
-	while(q1->next()) {
-	  sql=QString("insert into `CAST_DOWNLOADS` set ")+
-	    "`FEED_KEY_NAME`='"+RDEscapeString(q->value(0).toString())+"',"+
-	    QString::asprintf("`CAST_ID`=%u,",q1->value(0).toUInt())+
-	    "`ACCESS_DATE`='"+
-	    RDEscapeString(q1->value(1).toDate().toString("yyyy-MM-dd"))+"',"+
-	    QString::asprintf("`ACCESS_COUNT`=%u",q1->value(2).toUInt());
-	  if(!RDSqlQuery::apply(sql,err_msg)) {
-	    return false;
-	  }
-	}
-	delete q1;
-	if(!DropTable(tablename,err_msg)) {
-	  return false;
-	}
-      }
-    }
-    delete q;
-
     WriteSchemaVersion(++cur_schema);
   }
 

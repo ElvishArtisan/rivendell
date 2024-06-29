@@ -24818,3 +24818,5 @@
 	* Incremented the Python API version to 4.3.0
 2024-06-29 Fred Gleason <fredg@paravelsystems.com>
 	* Added a step to 'docs/misc/rivendell_release_checklist.txt'.
+2024-06-29 Fred Gleason <fredg@paravelsystems.com>
+	* Modified rddbmgr(8) to make the 293=>294 schema update a no-op.
