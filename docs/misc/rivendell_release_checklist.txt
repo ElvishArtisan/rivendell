@@ -26,6 +26,8 @@
 
   ( ) Update https://www.rivendellaudio.org.
 
+  ( ) Update 'rivendell-opsguide' package at 'opsguide.rivendellaudio.org'.
+
   ( ) Post announcement to https://Groups.io/g/Rivendell
 
 

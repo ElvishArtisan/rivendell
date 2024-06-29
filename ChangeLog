@@ -24816,3 +24816,5 @@
 2024-06-26 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.3.0.
 	* Incremented the Python API version to 4.3.0
+2024-06-29 Fred Gleason <fredg@paravelsystems.com>
+	* Added a step to 'docs/misc/rivendell_release_checklist.txt'.
