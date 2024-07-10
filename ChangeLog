@@ -24825,3 +24825,6 @@
 	End marker position.
 2024-07-10 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.3.0int0.
+2024-07-10 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a race in the voice tracker that could cause play-out to stop
+	in the middle of a segue.

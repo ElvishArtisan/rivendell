@@ -723,6 +723,7 @@ void RDPlayDeck::pointTimerData(int point)
 
 void RDPlayDeck::endData()
 {
+  printf("RDPlayDeck::endData()\n");
   play_position_timer->stop();
   play_start_time=QTime();
   StopTimers();
@@ -810,6 +811,8 @@ void RDPlayDeck::StartTimers(int offset)
   
   int audio_point;
 
+  play_end_timer->stop();
+  
   for(int i=0;i<RDPlayDeck::SizeOf;i++) {
     printf("play_point_value[%d][0]: %d\n",i,play_point_value[i][0]);
     printf("play_point_value[%d][1]: %d\n",i,play_point_value[i][1]);
