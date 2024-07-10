@@ -24823,3 +24823,5 @@
 2024-07-10 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdairplay(1) that caused play-out to ignore
 	End marker position.
+2024-07-10 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.3.0int0.
