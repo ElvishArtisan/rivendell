@@ -24820,3 +24820,6 @@
 	* Added a step to 'docs/misc/rivendell_release_checklist.txt'.
 2024-06-29 Fred Gleason <fredg@paravelsystems.com>
 	* Modified rddbmgr(8) to make the 293=>294 schema update a no-op.
+2024-07-10 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdairplay(1) that caused play-out to ignore
+	End marker position.

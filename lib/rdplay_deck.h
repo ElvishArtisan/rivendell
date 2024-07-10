@@ -89,6 +89,9 @@ class RDPlayDeck : public QObject
   void playingData(unsigned serial);
   void playStoppedData(unsigned serial); 
   void pointTimerData(int);
+
+  void endData();
+
   void positionTimerData();
   void fadeTimerData();
   void duckTimerData();
@@ -105,6 +108,9 @@ class RDPlayDeck : public QObject
   QTimer *play_stop_timer;
   QTimer *play_fade_timer;
   QTimer *play_duck_timer;
+
+  QTimer *play_end_timer;
+
   bool play_duck_down_state;
   bool play_fade_down_state;
   int play_segue_interval;
