@@ -24830,3 +24830,6 @@
 	in the middle of a segue.
 2024-07-10 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.3.0int1.
+2024-08-07 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdimport(1) that caused filename corruption when
+	processing input filenames containing the '[' character.
