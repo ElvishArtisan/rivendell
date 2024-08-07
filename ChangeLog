@@ -24833,3 +24833,6 @@
 2024-08-07 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdimport(1) that caused filename corruption when
 	processing input filenames containing the '[' character.
+2024-08-07 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdimport(1) that could cause a double-decode
+	of glob wildcards when in dropbox mode.

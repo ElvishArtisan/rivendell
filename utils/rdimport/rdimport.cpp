@@ -1057,45 +1057,34 @@ void MainObject::ProcessFileEntry(const QString &entry)
     import_stdin_specified=true;
     return;
   }
-  globbuf.gl_offs=RDIMPORT_GLOB_SIZE;
-  while((globbuf.gl_pathc==RDIMPORT_GLOB_SIZE)||(gflags==GLOB_MARK)) {
-    glob(entry.toUtf8(),gflags,NULL,&globbuf);
-    if((globbuf.gl_pathc==0)&&(gflags==GLOB_MARK)&&(!import_drop_box)) {
-      Log(LOG_WARNING,QString::asprintf(" Unable to open \"%s\", skipping...\n",
-					entry.toUtf8().constData()));
-      globfree(&globbuf);
-    }
-    for(size_t i=0;i<globbuf.gl_pathc;i++) {
-      if(globbuf.gl_pathv[i][strlen(globbuf.gl_pathv[i])-1]!='/') {
-	if(!import_single_cart) {
-	  import_cart_number=0;
-	}
-	if(import_drop_box) {
-	  VerifyFile(QString::fromUtf8(globbuf.gl_pathv[i]),&import_cart_number);
-	}
-	else {
-	  switch(ImportFile(QString::fromUtf8(globbuf.gl_pathv[i]),&import_cart_number)) {
-	    case MainObject::Success:
-	      break;
-	      
- 	    case MainObject::DuplicateTitle:
-	      break;
-
-	    case MainObject::FileBad:
-	      break;
-	      
-	    case MainObject::NoCart:
-	      break;
-
-	    case MainObject::NoCut:
-	      break;
+  if(import_drop_box) {  // Assume No Shell Preprocessing
+    globbuf.gl_offs=RDIMPORT_GLOB_SIZE;
+    while((globbuf.gl_pathc==RDIMPORT_GLOB_SIZE)||(gflags==GLOB_MARK)) {
+      glob(entry.toUtf8(),gflags,NULL,&globbuf);
+      if((globbuf.gl_pathc==0)&&(gflags==GLOB_MARK)&&(!import_drop_box)) {
+	Log(LOG_WARNING,QString::asprintf(" Unable to open \"%s\", skipping...\n",
+					  entry.toUtf8().constData()));
+	globfree(&globbuf);
+      }
+      for(size_t i=0;i<globbuf.gl_pathc;i++) {
+	if(globbuf.gl_pathv[i][strlen(globbuf.gl_pathv[i])-1]!='/') {
+	  if(!import_single_cart) {
+	    import_cart_number=0;
 	  }
+	  VerifyFile(QString::fromUtf8(globbuf.gl_pathv[i]),
+		     &import_cart_number);
 	}
       }
+      gflags=GLOB_MARK|GLOB_APPEND;
     }
-    gflags=GLOB_MARK|GLOB_APPEND;
+    globfree(&globbuf);
   }
-  globfree(&globbuf);
+  else {  // Assume Shell Preprocessing
+    if(!import_single_cart) {
+      import_cart_number=0;
+    }
+    ImportFile(entry,&import_cart_number);
+  }
 }
 
 
