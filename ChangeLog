@@ -24836,3 +24836,5 @@
 2024-08-07 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdimport(1) that could cause a double-decode
 	of glob wildcards when in dropbox mode.
+2024-08-07 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.3.0int2.
