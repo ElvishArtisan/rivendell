@@ -24838,3 +24838,5 @@
 	of glob wildcards when in dropbox mode.
 2024-08-07 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.3.0int2.
+2024-08-08 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'NULL POINTERS' section to 'CODINGSTYLE'.

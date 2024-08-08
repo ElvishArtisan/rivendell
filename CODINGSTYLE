@@ -175,6 +175,23 @@ all, followed by an underscore. For example, the class 'MyClass' might use
 single word.
 
 
+NULL POINTERS
+Null pointers should always be represented by using the 'NULL' keyword,
+rather than 0.
+
+Good:
+  int *foo=NULL;
+  if(foo==NULL) {
+    printf("The foo variable is null!\n");
+  }
+
+Bad:
+  int *foo=0;
+  if(foo==0) {
+    printf("The foo variable is null!\n");
+  }
+
+
 SQL STATEMENTS:
 When embedding SQL statements in code, the following guidelines should be
 followed:
