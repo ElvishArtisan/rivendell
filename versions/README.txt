@@ -30,4 +30,4 @@ RIVWEBCAPI_AGE
 PYTHONAPI_VERSION - Version string for the Python components beneath '/apis/'.
 		    See the Python Packaging User Guide - Version specifiers
 		    for formatting rules, at:
-		    https://www.python.org/dev/peps/pep-0440/
+		    https://packaging.python.org/en/latest/specifications/version-specifiers/
