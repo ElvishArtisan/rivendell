@@ -818,7 +818,7 @@ class Receiver(object):
 
     def __getDbCredentials(self):
         config=configparser.ConfigParser()
-        config.readfp(open('/etc/rd.conf'))
+        config.read_file(open('/etc/rd.conf'))
         return (config.get('mySQL','Loginname'),config.get('mySQL','Password'),
                 config.get('mySQL','Hostname'),config.get('mySQL','Database'))
 
@@ -925,7 +925,7 @@ class Receiver(object):
 
         # Open rd.conf(5)
         rd_config=configparser.ConfigParser(interpolation=None)
-        rd_config.readfp(open('/etc/rd.conf'))
+        rd_config.read_file(open('/etc/rd.conf'))
 
         # Open the syslog
         pypad_name=sys.argv[0].split('/')[-1]
