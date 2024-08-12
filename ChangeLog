@@ -24849,3 +24849,6 @@
 2024-08-12 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'python3-virtualenv' to the lists of required build packages
 	for Debian and Ubuntu in 'INSTALL'.
+2024-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.3.0int3.
+	* Incremented the python api version to 4.3.0.post3.
