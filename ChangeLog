@@ -24846,3 +24846,6 @@
 2024-08-09 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the URL for the Python Packaging User Guide in
 	'versions/README.txt'.
+2024-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'python3-virtualenv' to the lists of required build packages
+	for Debian and Ubuntu in 'INSTALL'.
