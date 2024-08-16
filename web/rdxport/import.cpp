@@ -102,15 +102,21 @@ void Xport::Import()
   //
   // Verify User Perms
   //
-  if(RDCart::exists(cartnum)) {
-    if(!rda->user()->cartAuthorized(cartnum)) {
-      XmlExit("No such cart",404,"import.cpp",LINE_NUMBER);
+  if(create&&(cartnum==0)&&(cutnum==0)) {
+    if(!rda->user()->groupAuthorized(group_name)) {
+      XmlExit("No such group",404,"import.cpp",LINE_NUMBER);
     }
   }
   else {
-    if(create) {
-      if(!rda->user()->groupAuthorized(group_name)) {
-	XmlExit("No such group",404,"import.cpp",LINE_NUMBER);
+    if(cartnum==0) {
+      XmlExit("No such cart",404,"import.cpp",LINE_NUMBER);
+    }
+    if(cutnum==0) {
+      XmlExit("No such cut",404,"import.cpp",LINE_NUMBER);
+    }
+    if(RDCart::exists(cartnum)) {
+      if(!rda->user()->cartAuthorized(cartnum)) {
+	XmlExit("No such cart",404,"import.cpp",LINE_NUMBER);
       }
     }
     else {

@@ -24852,3 +24852,6 @@
 2024-08-12 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.3.0int3.
 	* Incremented the python api version to 4.3.0.post3.
+2024-08-16 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the RDXport service that couldcause the IMPORT call
+	to return a 'no such cart' error when trying to create a new cart.
