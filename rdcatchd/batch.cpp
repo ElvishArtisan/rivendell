@@ -244,12 +244,6 @@ bool MainObject::RunDownload(CatchEvent *evt,QString *err_msg)
   // Execute Import
   //
   bool imported=Import(evt,err_msg);
-  if(imported) {
-    rda->syslog(LOG_NOTICE,"HERE1!");
-  }
-  else {
-    rda->syslog(LOG_NOTICE,"HERE2!");
-  }
   rda->syslog(LOG_INFO,"deleting file %s, id=%d",
 	      evt->tempName().toUtf8().constData(),evt->id());
   unlink(evt->tempName().toUtf8());
@@ -437,6 +431,7 @@ bool MainObject::Import(CatchEvent *evt,QString *err_msg)
     delete cut;
     return false;
   }
+
   RDWaveFile *wave=new RDWaveFile(evt->tempName());
   if(!wave->openWave()) {
     rda->syslog(LOG_ERR,"unknown file format: %s, id: %d",

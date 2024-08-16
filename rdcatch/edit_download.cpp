@@ -309,8 +309,8 @@ void EditDownload::urlChangedData(const QString &str)
 {
   QUrl url(str);
   QString scheme=url.scheme();
-  if((scheme=="ftp")||(scheme=="ftps")||(scheme=="http")||(scheme=="file")||
-     (scheme=="scp")||(scheme=="sftp")) {
+  if((scheme=="ftp")||(scheme=="ftps")||(scheme=="http")||(scheme=="https")||
+     (scheme=="file")||(scheme=="scp")||(scheme=="sftp")) {
     edit_username_label->setEnabled(true);
     edit_username_edit->setEnabled(true);
     edit_password_label->setEnabled(true);

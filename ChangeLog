@@ -24855,3 +24855,7 @@
 2024-08-16 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the RDXport service that couldcause the IMPORT call
 	to return a 'no such cart' error when trying to create a new cart.
+2024-08-16 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'Edit Download' dialog in rdcatch(1) that
+	caused the 'Username' and 'Password' controls to be disabled when
+	entering a URL scheme of 'https'.
