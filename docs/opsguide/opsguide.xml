@@ -27,6 +27,7 @@
   <!ENTITY wings_filter SYSTEM "wings_filter.xml">
   <!ENTITY ssh_keys SYSTEM "ssh_keys.xml">
   <!ENTITY library_searches SYSTEM "library_searches.xml">
+  <!ENTITY file_metadata SYSTEM "file_metadata.xml">
 ]>
 
 <book xmlns="http://docbook.org/ns/docbook" version="5.0">
@@ -63,6 +64,7 @@
     &wings_filter;
     &ssh_keys;
     &library_searches;
+    &file_metadata;
   </part>
 </book>
 

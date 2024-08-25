@@ -1,0 +1,856 @@
+<appendix xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="appendix.file_metadata">
+  <title>File Metadata</title>
+  <sect2 xml:id="sect.file_metadata.introduction">
+    <title>Introduction</title>
+    <para>
+      The existing schemes for encoding metadata into audio files are
+      extremely diverse. There are formally designed ones; some explicitly
+      intended for
+      use in professional broadcast settings (--e.g. CartChunk), others for
+      general purpose &quot;consumer&quot; use (--e.g. ID3). Still others
+      fall into a broad class that one may term &quot;informal&quot;,
+      based not on any recognized public standard but typically designed
+      around a specific product or group of products. These informal
+      schemes tend to be closely bound to the overall design and organization
+      their native environment (--e.g. Rivendell's RDXL).
+    </para>
+    <para>
+      This appendix is an attempt to document the various file metadata
+      schemes that are recognized by Rivendell, taking note of how
+      each scheme maps to Rivendell's foundational RDXL schema while also
+      describing any known quirks or limitations in Rivendell's
+      implementation thereof. It's worth noting that, especially with regard
+      to the informal schemes, Rivendell's implementation can be a
+      moving target; one that is updated and extended as more information is
+      gleaned about a given scheme by Rivendell's developers. One basic rule
+      with regard to such informal schemes in Rivendell is that, in keeping
+      with
+      <link xlink:href="http://catb.org/jargon/html/P/Postels-Prescription.html">
+	Postel's Prescription</link>, support is generally read-only.
+    </para>
+  </sect2>
+
+  <sect2 xml:id="sect.file_metadata.supported_metadata_schemes">
+    <title>Supported Metadata Schemes</title>
+    <para>
+      <table xml:id="table.appendix.file_metadata.supported_metadata_schemes" frame="all">
+	<title>Supported Metadata Schemes</title>
+	<tgroup cols="5" align="left" colsep="1" rowsep="1">
+	  <colspec colname="Type" colwidth="1.5*"/>
+	  <colspec colname="File Type" colwidth="2.0*"/>
+	  <colspec colname="Import" colwidth="1.0*"/>
+	  <colspec colname="Export" colwidth="1.0*"/>
+	  <colspec colname="Notes" colwidth="4.0*"/>
+	  <thead>
+	    <row>
+	      <entry>Type</entry>
+	      <entry>File Type</entry>
+	      <entry>Import</entry>
+	      <entry>Export</entry>
+	      <entry>Notes</entry>
+	    </row>
+	  </thead>
+	  <tbody>
+	    <row>
+	      <entry><link linkend="sect.file_metadata.supported_metadata_schemes.rdxl">RDXL</link></entry>
+	      <entry>*.mp2, *.mp3, *.wav</entry>
+	      <entry>Yes</entry>
+	      <entry>Yes</entry>
+	      <entry>Native Rivendell schema</entry>
+	    </row>
+	    <row>
+	      <entry>
+		<link linkend="sect.file_metadata.supported_metadata_schemes.cartchunk">CartChunk</link>
+	      </entry>
+	      <entry>*.wav</entry>
+	      <entry>Yes</entry>
+	      <entry>Yes</entry>
+	      <entry>Formally defined</entry>
+	    </row>
+	    <row>
+	      <entry>ID3</entry>
+	      <entry>*.mp2, *.mp3</entry>
+	      <entry>Yes</entry>
+	      <entry>Yes</entry>
+	      <entry>Formally defined</entry>
+	    </row>
+            <row>
+	      <entry>Scot Chunk</entry>
+	      <entry>*.wav</entry>
+	      <entry>Yes</entry>
+	      <entry>No</entry>
+	      <entry>Informal</entry>
+	    </row>
+            <row>
+	      <entry>Av10 Chunk</entry>
+	      <entry>*.wav</entry>
+	      <entry>Yes</entry>
+	      <entry>No</entry>
+	      <entry>Informal</entry>
+	    </row>
+	  </tbody>
+	</tgroup>
+      </table>
+    </para>
+    <sect3 xml:id="sect.file_metadata.supported_metadata_schemes.rdxl">
+      <title>RDXL</title>
+      <para>
+	RDXL is Rivendell's native audio schema. It uses UTF-8 character
+	encoding. Two levels of records are supported: &quot;cart&quot; data
+	(exactly one record per cart) and &quot;cut&quot; data (zero or more
+	records per cart).
+      </para>
+      <table xml:id="table.appendix.file_metadata.supported_metadata_schemes.rdxl.rdxl_cart_fields" frame="all">
+	<title>RDXL Cart Fields</title>
+	<tgroup cols="4" align="left" colsep="1" rowsep="1">
+	  <colspec colname="Field Name" colwidth="2.0*"/>
+	  <colspec colname="Data Type" colwidth="1.0*"/>
+	  <colspec colname="Max Width" colwidth="1.0*"/>
+	  <colspec colname="Notes" colwidth="4.0*"/>
+	  <thead>
+	    <row>
+	      <entry>Field Name</entry>
+	      <entry>Data Type</entry>
+	      <entry>Max Width</entry>
+	      <entry>Notes</entry>
+	    </row>
+	  </thead>
+	  <tbody>
+	    <row>
+	      <entry>Agency</entry>
+	      <entry>String</entry>
+	      <entry>64</entry>
+	      <entry></entry>
+	    </row>
+	    <row>
+	      <entry>Album</entry>
+	      <entry>String</entry>
+	      <entry>191</entry>
+	      <entry></entry>
+	    </row>
+	    <row>
+	      <entry>Artist</entry>
+	      <entry>String</entry>
+	      <entry>191</entry>
+	      <entry></entry>
+	    </row>
+	    <row>
+	      <entry>Asynchronous</entry>
+	      <entry>Boolean</entry>
+	      <entry>n/a</entry>
+	      <entry>Valid values are 'true' or 'false'</entry>
+	    </row>
+	    <row>
+	      <entry>Average Hook Length</entry>
+	      <entry>Integer</entry>
+	      <entry>191</entry>
+	      <entry>milliseconds</entry>
+	    </row>
+	    <row>
+	      <entry>Average Length</entry>
+	      <entry>Integer</entry>
+	      <entry>n/a</entry>
+	      <entry>milliseconds</entry>
+	    </row>
+	    <row>
+	      <entry>Average Segue Length</entry>
+	      <entry>Integer</entry>
+	      <entry>n/a</entry>
+	      <entry>milliseconds</entry>
+	    </row>
+	    <row>
+	      <entry>Client</entry>
+	      <entry>String</entry>
+	      <entry>64</entry>
+	      <entry></entry>
+	    </row>
+	    <row>
+	      <entry>Composer</entry>
+	      <entry>String</entry>
+	      <entry>64</entry>
+	      <entry></entry>
+	    </row>
+	    <row>
+	      <entry>Conductor</entry>
+	      <entry>String</entry>
+	      <entry>64</entry>
+	      <entry></entry>
+	    </row>
+	    <row>
+	      <entry>Cut Quantity</entry>
+	      <entry>Integer</entry>
+	      <entry>n/a</entry>
+	      <entry></entry>
+	    </row>
+	    <row>
+	      <entry>Enforce Length</entry>
+	      <entry>Boolean</entry>
+	      <entry>n/a</entry>
+	      <entry>Valid values are 'true' or 'false'</entry>
+	    </row>
+	    <row>
+	      <entry>Forced Length</entry>
+	      <entry>Integer</entry>
+	      <entry>n/a</entry>
+	      <entry>milliseconds</entry>
+	    </row>
+	    <row>
+	      <entry>Group Name</entry>
+	      <entry>String</entry>
+	      <entry>10</entry>
+	      <entry></entry>
+	    </row>
+	    <row>
+	      <entry>Label</entry>
+	      <entry>String</entry>
+	      <entry>64</entry>
+	      <entry></entry>
+	    </row>
+	    <row>
+	      <entry>Last Cut Played</entry>
+	      <entry>Integer</entry>
+	      <entry>n/a</entry>
+	      <entry></entry>
+	    </row>
+	    <row>
+	      <entry>Length Deviation</entry>
+	      <entry>Integer</entry>
+	      <entry>n/a</entry>
+	      <entry>milliseconds</entry>
+	    </row>
+	    <row>
+	      <entry>Macros</entry>
+	      <entry>String</entry>
+	      <entry>unlimited</entry>
+	      <entry></entry>
+	    </row>
+	    <row>
+	      <entry>Minimum Talk Length</entry>
+	      <entry>Integer</entry>
+	      <entry>n/a</entry>
+	      <entry>milliseconds</entry>
+	    </row>
+	    <row>
+	      <entry>Maximum Talk Length</entry>
+	      <entry>Integer</entry>
+	      <entry>n/a</entry>
+	      <entry>milliseconds</entry>
+	    </row>
+	    <row>
+	      <entry>Metadata Datetime</entry>
+	      <entry>DateTime</entry>
+	      <entry>n/a</entry>
+	      <entry></entry>
+	    </row>
+	    <row>
+	      <entry>Number</entry>
+	      <entry>Integer</entry>
+	      <entry>n/a</entry>
+	      <entry></entry>
+	    </row>
+	    <row>
+	      <entry>Owner</entry>
+	      <entry>String</entry>
+	      <entry>64</entry>
+	      <entry></entry>
+	    </row>
+	    <row>
+	      <entry>Publisher</entry>
+	      <entry>String</entry>
+	      <entry>64</entry>
+	      <entry></entry>
+	    </row>
+	    <row>
+	      <entry>Song ID</entry>
+	      <entry>String</entry>
+	      <entry>32</entry>
+	      <entry></entry>
+	    </row>
+	    <row>
+	      <entry>Title</entry>
+	      <entry>String</entry>
+	      <entry>191</entry>
+	      <entry></entry>
+	    </row>
+	    <row>
+	      <entry>Type</entry>
+	      <entry>String</entry>
+	      <entry>n/a</entry>
+	      <entry>Valid values are 'audio' or 'macro'</entry>
+	    </row>
+	    <row>
+	      <entry>Year</entry>
+	      <entry>Integer</entry>
+	      <entry>n/a</entry>
+	      <entry></entry>
+	    </row>
+	    <row>
+	      <entry>Usage Code</entry>
+	      <entry>integer</entry>
+	      <entry>n/a</entry>
+	      <entry>0=Feature, 1=Open, 2=Close, 3=Theme</entry>
+	    </row>
+	    <row>
+	      <entry>User Defined</entry>
+	      <entry>String</entry>
+	      <entry>191</entry>
+	      <entry></entry>
+	    </row>
+	  </tbody>
+	</tgroup>
+      </table>
+      <table xml:id="table.appendix.file_metadata.supported_metadata_schemes.rdxl.rdxl_cut_fields" frame="all">
+	<title>RDXL Cut Fields</title>
+	<tgroup cols="4" align="left" colsep="1" rowsep="1">
+	  <colspec colname="Field Name" colwidth="2.0*"/>
+	  <colspec colname="Data Type" colwidth="1.0*"/>
+	  <colspec colname="Max Width" colwidth="1.0*"/>
+	  <colspec colname="Notes" colwidth="4.0*"/>
+	  <thead>
+	    <row>
+	      <entry>Field Name</entry>
+	      <entry>Data Type</entry>
+	      <entry>Max Width</entry>
+	      <entry>Notes</entry>
+	    </row>
+	  </thead>
+	  <tbody>
+	    <row>
+	      <entry>Cut Name</entry>
+	      <entry>String</entry>
+	      <entry>12</entry>
+	      <entry></entry>
+	    </row>
+	    <row>
+	      <entry>Evergreen</entry>
+	      <entry>Booleans</entry>
+	      <entry>n/a</entry>
+	      <entry>Valid values are 'true' or 'false'</entry>
+	    </row>
+	    <row>
+	      <entry>Description</entry>
+	      <entry>String</entry>
+	      <entry>64</entry>
+	      <entry></entry>
+	    </row>
+	    <row>
+	      <entry>Outcue</entry>
+	      <entry>String</entry>
+	      <entry>64</entry>
+	      <entry></entry>
+	    </row>
+	    <row>
+	      <entry>Isrc</entry>
+	      <entry>String</entry>
+	      <entry>12</entry>
+	      <entry></entry>
+	    </row>
+	    <row>
+	      <entry>Isci</entry>
+	      <entry>String</entry>
+	      <entry>32</entry>
+	      <entry></entry>
+	    </row>
+	    <row>
+	      <entry>MusicBrainz Recording ID</entry>
+	      <entry>String</entry>
+	      <entry>40</entry>
+	      <entry></entry>
+	    </row>
+	    <row>
+	      <entry>MusicBrainz Release ID</entry>
+	      <entry>String</entry>
+	      <entry>40</entry>
+	      <entry></entry>
+	    </row>
+	    <row>
+	      <entry>Origin Date Time</entry>
+	      <entry>DateTime</entry>
+	      <entry>n/a</entry>
+	      <entry></entry>
+	    </row>
+	    <row>
+	      <entry>Start Date Time</entry>
+	      <entry>DateTime</entry>
+	      <entry>n/a</entry>
+	      <entry></entry>
+	    </row>
+	    <row>
+	      <entry>End Date Time</entry>
+	      <entry>DateTime</entry>
+	      <entry>n/a</entry>
+	      <entry></entry>
+	    </row>
+	    <row>
+	      <entry>Sunday</entry>
+	      <entry>Boolean</entry>
+	      <entry>n/a</entry>
+	      <entry>Valid values are 'true' or 'false'</entry>
+	    </row>
+	    <row>
+	      <entry>Monday</entry>
+	      <entry>Boolean</entry>
+	      <entry>n/a</entry>
+	      <entry>Valid values are 'true' or 'false'</entry>
+	    </row>
+	    <row>
+	      <entry>Tuesday</entry>
+	      <entry>Boolean</entry>
+	      <entry>n/a</entry>
+	      <entry>Valid values are 'true' or 'false'</entry>
+	    </row>
+	    <row>
+	      <entry>Wednesday</entry>
+	      <entry>Boolean</entry>
+	      <entry>n/a</entry>
+	      <entry>Valid values are 'true' or 'false'</entry>
+	    </row>
+	    <row>
+	      <entry>Thursday</entry>
+	      <entry>Boolean</entry>
+	      <entry>n/a</entry>
+	      <entry>Valid values are 'true' or 'false'</entry>
+	    </row>
+	    <row>
+	      <entry>Friday</entry>
+	      <entry>Boolean</entry>
+	      <entry>n/a</entry>
+	      <entry>Valid values are 'true' or 'false'</entry>
+	    </row>
+	    <row>
+	      <entry>Saturday</entry>
+	      <entry>Boolean</entry>
+	      <entry>n/a</entry>
+	      <entry>Valid values are 'true' or 'false'</entry>
+	    </row>
+	    <row>
+	      <entry>Start Daypart</entry>
+	      <entry>Time</entry>
+	      <entry>n/a</entry>
+	      <entry></entry>
+	    </row>
+	    <row>
+	      <entry>End Daypart</entry>
+	      <entry>Time</entry>
+	      <entry>n/a</entry>
+	      <entry></entry>
+	    </row>
+	    <row>
+	      <entry>Origin Name</entry>
+	      <entry>String</entry>
+	      <entry>64</entry>
+	      <entry></entry>
+	    </row>
+	    <row>
+	      <entry>Origin Login Name</entry>
+	      <entry>String</entry>
+	      <entry>191</entry>
+	      <entry></entry>
+	    </row>
+	    <row>
+	      <entry>Source Hostname</entry>
+	      <entry>String</entry>
+	      <entry>191</entry>
+	      <entry></entry>
+	    </row>
+	    <row>
+	      <entry>Origin Name</entry>
+	      <entry>String</entry>
+	      <entry>191</entry>
+	      <entry></entry>
+	    </row>
+	    <row>
+	      <entry>Weight</entry>
+	      <entry>Integer</entry>
+	      <entry>n/a</entry>
+	      <entry></entry>
+	    </row>
+	    <row>
+	      <entry>Last Play Datetime</entry>
+	      <entry>DateTime</entry>
+	      <entry>n/a</entry>
+	      <entry></entry>
+	    </row>
+	    <row>
+	      <entry>Play Counter</entry>
+	      <entry>Integer</entry>
+	      <entry>n/a</entry>
+	      <entry></entry>
+	    </row>
+	    <row>
+	      <entry>Coding Format</entry>
+	      <entry>Integer</entry>
+	      <entry>n/a</entry>
+	      <entry>0=PCM16, 2=MPEG Layer II, 3=MPEG Layer III, 4=PCM24</entry>
+	    </row>
+	    <row>
+	      <entry>Sample Rate</entry>
+	      <entry>Integer</entry>
+	      <entry>n/a</entry>
+	      <entry>samples/second</entry>
+	    </row>
+	    <row>
+	      <entry>Bit Rate</entry>
+	      <entry>Integer</entry>
+	      <entry>n/a</entry>
+	      <entry>bits/second</entry>
+	    </row>
+	    <row>
+	      <entry>Channels</entry>
+	      <entry>Integer</entry>
+	      <entry>n/a</entry>
+	      <entry></entry>
+	    </row>
+	    <row>
+	      <entry>Start Point</entry>
+	      <entry>Integer</entry>
+	      <entry>n/a</entry>
+	      <entry>milliseconds</entry>
+	    </row>
+	    <row>
+	      <entry>End Point</entry>
+	      <entry>Integer</entry>
+	      <entry>n/a</entry>
+	      <entry>milliseconds</entry>
+	    </row>
+	    <row>
+	      <entry>Fadeup Point</entry>
+	      <entry>Integer</entry>
+	      <entry>n/a</entry>
+	      <entry>milliseconds</entry>
+	    </row>
+	    <row>
+	      <entry>Fadedown Point</entry>
+	      <entry>Integer</entry>
+	      <entry>n/a</entry>
+	      <entry>milliseconds</entry>
+	    </row>
+	    <row>
+	      <entry>Segue Start Point</entry>
+	      <entry>Integer</entry>
+	      <entry>n/a</entry>
+	      <entry>milliseconds</entry>
+	    </row>
+	    <row>
+	      <entry>Segue End Point</entry>
+	      <entry>Integer</entry>
+	      <entry>n/a</entry>
+	      <entry>milliseconds</entry>
+	    </row>
+	    <row>
+	      <entry>Segue Gain</entry>
+	      <entry>Integer</entry>
+	      <entry>n/a</entry>
+	      <entry>1/100 dBFS</entry>
+	    </row>
+	    <row>
+	      <entry>Hook Start Point</entry>
+	      <entry>Integer</entry>
+	      <entry>n/a</entry>
+	      <entry>milliseconds</entry>
+	    </row>
+	    <row>
+	      <entry>Hook End Point</entry>
+	      <entry>Integer</entry>
+	      <entry>n/a</entry>
+	      <entry>milliseconds</entry>
+	    </row>
+	    <row>
+	      <entry>Talk Start Point</entry>
+	      <entry>Integer</entry>
+	      <entry>n/a</entry>
+	      <entry>milliseconds</entry>
+	    </row>
+	    <row>
+	      <entry>Talk End Point</entry>
+	      <entry>Integer</entry>
+	      <entry>n/a</entry>
+	      <entry>milliseconds</entry>
+	    </row>
+	  </tbody>
+	</tgroup>
+      </table>
+    </sect3>
+    <sect3 xml:id="sect.file_metadata.supported_metadata_schemes.cartchunk">
+      <title>CartChunk</title>
+      <para>
+	CartChunk is a WAV file chunk format designed to allow
+	the communication of basic radio traffic and continuity data between
+	systems	from diverse manufacturers and operating systems.
+	It is explicitly specified by the Audio Engineering Society as standard
+	<link xlink:href="https://aes2.org/publications/standards-store/?id=41">
+	  AES46-2002
+	</link>.
+      </para>
+      <para>
+	CartChunk is defined as an extension to the Broadcast Wave File
+	format, and as such is usable only with WAV files. When importing
+	metadata from a file containing valid CartChunk, CartChunk fields
+	will be mapped to Rivendell RDXL fields as follows:
+      </para>
+      <table xml:id="table.appendix.file_metadata.supported_metadata_schemes.cartchunk.field_mappings" frame="all">
+	<title>CartChunk to RDXL Field Mappings</title>
+	<tgroup cols="4" align="left" colsep="1" rowsep="1">
+	  <colspec colname="CartChunk Field Name" colwidth="2.0*"/>
+	  <colspec colname="RDXL Field Name" colwidth="2.0*"/>
+	  <colspec colname="Data Type" colwidth="1.0*"/>
+	  <colspec colname="Notes" colwidth="4.0*"/>
+	  <thead>
+	    <row>
+	      <entry>CartChunk Field Name</entry>
+	      <entry>RDXL Field Name</entry>
+	      <entry>Data Type</entry>
+	      <entry>Notes</entry>
+	    </row>
+	  </thead>
+	  <tbody>
+	    <row>
+	      <entry>Title</entry>
+	      <entry>Title</entry>
+	      <entry>String</entry>
+	      <entry>ASCII title of cart audio sequence</entry>
+	    </row>
+	    <row>
+	      <entry>Artist</entry>
+	      <entry>Artist</entry>
+	      <entry>String</entry>
+	      <entry>ASCII artist or creator name</entry>
+	    </row>
+	    <row>
+	      <entry>CutID</entry>
+	      <entry>Cart Number</entry>
+	      <entry>String</entry>
+	      <entry>ASCII cut number identification</entry>
+	    </row>
+	    <row>
+	      <entry>ClientID</entry>
+	      <entry>Client</entry>
+	      <entry>String</entry>
+	      <entry>ASCII client identification</entry>
+	    </row>
+	    <row>
+	      <entry>Category</entry>
+	      <entry>Group Name</entry>
+	      <entry>String</entry>
+	      <entry>ASCII category ID, PSA, NEWS, etc</entry>
+	    </row>
+	    <row>
+	      <entry>Classification</entry>
+	      <entry>[none]</entry>
+	      <entry>String</entry>
+	      <entry>ASCII classification or auxiliary key</entry>
+	    </row>
+	    <row>
+	      <entry>OutCue</entry>
+	      <entry>Outcue</entry>
+	      <entry>String</entry>
+	      <entry>ASCII outcue text</entry>
+	    </row>
+	    <row>
+	      <entry>StartDate</entry>
+	      <entry>Start Date Time</entry>
+	      <entry>Date</entry>
+	      <entry>Applied to the Date field of Start Date Time, interpreted as the local system time zone</entry>
+	    </row>
+	    <row>
+	      <entry>StartTime</entry>
+	      <entry>Start Date Time</entry>
+	      <entry>Time</entry>
+	      <entry>Applied to the Time field of Start Date Time, interpreted as the local system time zone</entry>
+	    </row>
+	    <row>
+	      <entry>EndDate</entry>
+	      <entry>End Date Time</entry>
+	      <entry>Date</entry>
+	      <entry>Applied to the Date field of End Date Time, interpreted as the local system time zone</entry>
+	    </row>
+	    <row>
+	      <entry>EndTime</entry>
+	      <entry>End Date Time</entry>
+	      <entry>Time</entry>
+	      <entry>Applied to the Time field End Date Time, interpreted as the local system time zone</entry>
+	    </row>
+	    <row>
+	      <entry>AUDs</entry>
+	      <entry>Start Point</entry>
+	      <entry>CartChunk PostTimer</entry>
+	      <entry>See AES46-2002 Table A.2</entry>
+	    </row>
+	    <row>
+	      <entry>AUDe</entry>
+	      <entry>End Point</entry>
+	      <entry>CartChunk PostTimer</entry>
+	      <entry>See AES46-2002 Table A.2</entry>
+	    </row>
+	    <row>
+	      <entry>SEGs</entry>
+	      <entry>Segue Start Point</entry>
+	      <entry>CartChunk PostTimer</entry>
+	      <entry>See AES46-2002 Table A.2</entry>
+	    </row>
+	    <row>
+	      <entry>SEGe</entry>
+	      <entry>Segue End Point</entry>
+	      <entry>CartChunk PostTimer</entry>
+	      <entry>See AES46-2002 Table A.2</entry>
+	    </row>
+	    <row>
+	      <entry>INTs</entry>
+	      <entry>Talk Start Point</entry>
+	      <entry>CartChunk PostTimer</entry>
+	      <entry>See AES46-2002 Table A.2</entry>
+	    </row>
+	    <row>
+	      <entry>INTe</entry>
+	      <entry>Talk End Point</entry>
+	      <entry>CartChunk PostTimer</entry>
+	      <entry>See AES46-2002 Table A.2</entry>
+	    </row>
+	    <row>
+	      <entry>INT</entry>
+	      <entry>Talk End Point</entry>
+	      <entry>CartChunk PostTimer</entry>
+	      <entry>Variant form. When importing, also sets Talk Start Point to be equal to Start Point. Rivendell does not write this form.
+	      Point</entry>
+	    </row>
+	  </tbody>
+	</tgroup>
+      </table>
+    </sect3>
+
+    <sect3 xml:id="sect.file_metadata.supported_metadata_schemes.id3">
+      <title>ID3</title>
+      <para>
+	ID3 is a metadata scheme intended for use with raw MPEG files. While
+	not backed by a formal standards organization, ID3 is defined in
+	a set of standards documents originally promulgated at http://id3.org/.
+      </para>
+      <para>
+	Rivendell supports both reading and writing ID3v2.3 tags. Each tag
+	consists of a series of frames, each of which contains a field of
+	metadata.
+      </para>
+      <table xml:id="table.appendix.file_metadata.supported_metadata_schemes.id3.frame_mappings" frame="all">
+	<title>ID3v2.3 Frame to RDXL Field Mappings</title>
+	<tgroup cols="4" align="left" colsep="1" rowsep="1">
+	  <colspec colname="ID3v2.3 Frame Name" colwidth="2.0*"/>
+	  <colspec colname="RDXL Field Name" colwidth="2.0*"/>
+	  <colspec colname="Data Type" colwidth="1.0*"/>
+	  <colspec colname="Notes" colwidth="4.0*"/>
+	  <thead>
+	    <row>
+	      <entry>ID3v2.3 Frame Name</entry>
+	      <entry>RDXL Field Name</entry>
+	      <entry>Data Type</entry>
+	      <entry>Notes</entry>
+	    </row>
+	  </thead>
+	  <tbody>
+	    <row>
+	      <entry>TIT2</entry>
+	      <entry>Title</entry>
+	      <entry>String</entry>
+	      <entry>Title/songname/content description</entry>
+	    </row>
+	    <row>
+	      <entry>ARTIST</entry>
+	      <entry>Artist</entry>
+	      <entry>String</entry>
+	      <entry>Non-standard frame</entry>
+	    </row>
+	    <row>
+	      <entry>TALB</entry>
+	      <entry>Artist</entry>
+	      <entry>String</entry>
+	      <entry>Album/Movie/Show title</entry>
+	    </row>
+	    <row>
+	      <entry>ALBUM</entry>
+	      <entry>Artist</entry>
+	      <entry>String</entry>
+	      <entry>Non-standard frame</entry>
+	    </row>
+	    <row>
+	      <entry>TCOM</entry>
+	      <entry>Composer</entry>
+	      <entry>String</entry>
+	      <entry>Composer</entry>
+	    </row>
+	    <row>
+	      <entry>COMPOSER</entry>
+	      <entry>Composer</entry>
+	      <entry>String</entry>
+	      <entry>Non-standard frame</entry>
+	    </row>
+	    <row>
+	      <entry>TPUB</entry>
+	      <entry>Label</entry>
+	      <entry>String</entry>
+	      <entry>Publisher</entry>
+	    </row>
+	    <row>
+	      <entry>LABEL</entry>
+	      <entry>Label</entry>
+	      <entry>String</entry>
+	      <entry>Non-standard frame</entry>
+	    </row>
+	    <row>
+	      <entry>TPE3</entry>
+	      <entry>Conductor</entry>
+	      <entry>String</entry>
+	      <entry>Conductor/performer refinement</entry>
+	    </row>
+	    <row>
+	      <entry>CONDUCTOR</entry>
+	      <entry>Conductor</entry>
+	      <entry>String</entry>
+	      <entry>Non-standard frame</entry>
+	    </row>
+	    <row>
+	      <entry>TYER</entry>
+	      <entry>Year</entry>
+	      <entry>Integer</entry>
+	      <entry>Year</entry>
+	    </row>
+	    <row>
+	      <entry>DATE</entry>
+	      <entry>Year</entry>
+	      <entry>Integer</entry>
+	      <entry>Non-standard frame</entry>
+	    </row>
+	    <row>
+	      <entry>YEAR</entry>
+	      <entry>Year</entry>
+	      <entry>Integer</entry>
+	      <entry>Non-standard frame</entry>
+	    </row>
+	    <row>
+	      <entry>ISRC</entry>
+	      <entry>Isrc</entry>
+	      <entry>String</entry>
+	      <entry>Non-standard frame</entry>
+	    </row>
+	    <row>
+	      <entry>TBPM</entry>
+	      <entry>Beats Per Minute</entry>
+	      <entry>String</entry>
+	      <entry>BPM (beats per minute)</entry>
+	    </row>
+	    <row>
+	      <entry>BPM</entry>
+	      <entry>Beats Per Minute</entry>
+	      <entry>String</entry>
+	      <entry>Non-standard frame</entry>
+	    </row>
+	    <row>
+	      <entry>PUBLISHER</entry>
+	      <entry>Publisher</entry>
+	      <entry>String</entry>
+	      <entry>Non-standard frame</entry>
+	    </row>
+	  </tbody>
+	</tgroup>
+      </table>
+    </sect3>
+  </sect2>
+</appendix>

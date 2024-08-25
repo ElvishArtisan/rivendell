@@ -24859,3 +24859,5 @@
 	* Fixed a bug in the 'Edit Download' dialog in rdcatch(1) that
 	caused the 'Username' and 'Password' controls to be disabled when
 	entering a URL scheme of 'https'.
+2024-08-25 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'File Metadata' appendix to the Operations Guide.
