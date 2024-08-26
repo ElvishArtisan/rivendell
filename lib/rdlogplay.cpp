@@ -1954,6 +1954,14 @@ bool RDLogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
   //
   running=runningEvents(lines);
   if(play_op_mode!=RDAirPlayConf::Manual) {
+
+    //
+    // Remove degenerate segue transitions
+    //
+    if((trans_type==RDLogLine::Segue)&&(trans_length<=0)) {
+      trans_type=RDLogLine::Play;
+    }
+
     switch(trans_type) {
     case RDLogLine::Play:
       for(int i=0;i<running;i++) {
@@ -2440,16 +2448,8 @@ void RDLogPlay::FinishEvent(int line)
       }
       if((play_op_mode==RDAirPlayConf::Auto)&&
 	 (logline->id()!=-1)&&(play_next_line<lineCount())) {
-	if(play_next_line>=0) {
-	  if(logline->transType()==RDLogLine::Play) {
-	    StartEvent(play_next_line,RDLogLine::Play,0,RDLogLine::StartPlay);
-  	    SetTransTimer(QTime(),prev_next_line==play_trans_line);
-	  }
-	  if(logline->transType()==RDLogLine::Segue) {
-	    StartEvent(play_next_line,RDLogLine::Segue,0,RDLogLine::StartPlay);
-  	    SetTransTimer(QTime(),prev_next_line==play_trans_line);
-	  }
-	}
+	StartEvent(play_next_line,RDLogLine::Play,0,RDLogLine::StartPlay);
+	SetTransTimer(QTime(),prev_next_line==play_trans_line);
       }
     }
   }

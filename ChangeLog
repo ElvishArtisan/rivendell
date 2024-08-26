@@ -24861,3 +24861,7 @@
 	entering a URL scheme of 'https'.
 2024-08-25 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'File Metadata' appendix to the Operations Guide.
+2024-08-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdairplay(1) that could cause events with Segue
+	transitions to clip off the end of the previous event if the previous
+	event did not have a segue marker set.
