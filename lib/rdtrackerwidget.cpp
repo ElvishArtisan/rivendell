@@ -455,6 +455,20 @@ bool RDTrackerWidget::load(const QString &logname)
   QHostAddress addr;
   
   //
+  // Attempt to get a log lock
+  //
+  d_log_lock=new RDLogLock(logname,rda->user(),rda->station(),this);
+  if(!d_log_lock->tryLock(&username,&stationname,&addr)) {
+    QMessageBox::warning(this,"RDLogEdit - "+tr("Log Locked"),
+			 tr("Log already being edited by")+" "+
+			 username+"@"+stationname+" ["+
+			 addr.toString()+"].");
+    delete d_log_lock;
+    d_log_lock=NULL;
+    return false;
+  }
+  
+  //
   // Voicetrack Group
   //
   d_log=new RDLog(logname);
@@ -464,32 +478,6 @@ bool RDTrackerWidget::load(const QString &logname)
   d_log_model->setLogName(logname);
   d_log_model->setServiceName(d_log->service());
   d_log_model->load(true);
-
-  //
-  // Log Data Structures
-  //
-  d_log_lock=new RDLogLock(d_log->name(),rda->user(),rda->station(),this);
-  if(!d_log_lock->tryLock(&username,&stationname,&addr)) {
-    QMessageBox::warning(this,"RDLogEdit - "+tr("Log Locked"),
-			 tr("Log already being edited by")+" "+
-			 username+"@"+stationname+" ["+
-			 addr.toString()+"].");
-    delete d_log_lock;
-    d_log_lock=NULL;
-    
-    delete d_group;
-    d_group=NULL;
-    
-    delete d_svc;
-    d_svc=NULL;
-    
-    delete d_log;
-    d_log=NULL;
-    
-    d_tracks=0;
-    
-    return false;
-  }
 
   //
   // Select first track

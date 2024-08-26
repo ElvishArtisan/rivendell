@@ -24869,3 +24869,6 @@
 	* Removed extraneous debugging statements from 'lib/rdplay_deck.cpp'.
 2024-08-25 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.3.0int4.
+2024-08-26 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdairplay(1) that caused the voice tracker to be
+	left in an undefined state after attempting to load a locked log.
