@@ -37,10 +37,13 @@ class RDListLogs : public RDDialog
 {
   Q_OBJECT
  public:
-  RDListLogs(QString *logname,RDLogFilter::FilterMode mode,
-	     const QString &caption,QWidget *parent=0);
+  RDListLogs(RDLogFilter::FilterMode mode,const QString &caption,
+	     QWidget *parent);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
+
+ public slots:
+  int exec(QString *logname);
 
  private slots:
   void doubleClickedData(const QModelIndex &index);

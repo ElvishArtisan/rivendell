@@ -2,7 +2,7 @@
 //
 // Filter widget for picking Rivendell logs.
 //
-//   (C) Copyright 2017-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -184,18 +184,22 @@ QString RDLogFilter::limitSql() const
 void RDLogFilter::changeUser()
 {
   if(filter_filter_mode==RDLogFilter::UserFilter) {
-    filter_service_box->clear();
-    filter_service_box->insertItem(filter_service_box->count(),tr("ALL"));
-    QString sql=QString("select `SERVICE_NAME` from `USER_SERVICE_PERMS` where ")+
-      "`USER_NAME`='"+RDEscapeString(rda->user()->name())+"' "+
-      "order by `SERVICE_NAME`";
-    RDSqlQuery *q=new RDSqlQuery(sql);
-    while(q->next()) {
-      filter_service_box->
-	insertItem(filter_service_box->count(),rda->iconEngine()->serviceIcon(),
-		   q->value(0).toString());
+    if(filter_current_username!=rda->user()->name()) {
+      filter_service_box->clear();
+      filter_service_box->insertItem(filter_service_box->count(),tr("ALL"));
+      QString sql=
+	QString("select `SERVICE_NAME` from `USER_SERVICE_PERMS` where ")+
+	"`USER_NAME`='"+RDEscapeString(rda->user()->name())+"' "+
+	"order by `SERVICE_NAME`";
+      RDSqlQuery *q=new RDSqlQuery(sql);
+      while(q->next()) {
+	filter_service_box->insertItem(filter_service_box->count(),
+				       rda->iconEngine()->serviceIcon(),
+				       q->value(0).toString());
+      }
+      delete q;
+      filter_current_username=rda->user()->name();
     }
-    delete q;
   }
 }
 

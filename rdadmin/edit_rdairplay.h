@@ -31,6 +31,7 @@
 #include <rdairplay_conf.h>
 #include <rdcardselector.h>
 #include <rddialog.h>
+#include <rdlist_logs.h>
 #include <rdservicelistmodel.h>
 #include <rdstation.h>
 
@@ -150,6 +151,7 @@ class EditRDAirPlay : public RDDialog
   QComboBox *air_virtual_logstartmode_box;
   int air_virtual_logstartmachine;
   RDAirPlayConf::OpMode air_virtual_opmodes[RD_RDVAIRPLAY_LOG_QUAN];
+  RDListLogs *air_listlogs_dialog;
   RDServiceListModel *air_service_model;
 };
 

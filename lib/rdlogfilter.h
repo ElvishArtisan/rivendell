@@ -2,7 +2,7 @@
 //
 // Filter widget for picking Rivendell logs.
 //
-//   (C) Copyright 2017-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -69,6 +69,7 @@ class RDLogFilter : public QWidget
   QPushButton *filter_clear_button;
   QCheckBox *filter_recent_check;
   QLabel *filter_recent_label;
+  QString filter_current_username;
 };
 
 

@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Log Chain Entry
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,16 +21,16 @@
 #include <rdapplication.h>
 #include <rddb.h>
 #include <rdescape_string.h>
-#include <rdlist_logs.h>
 
-#include <edit_chain.h>
-
+#include "edit_chain.h"
 #include "globals.h"
 
 EditChain::EditChain(QWidget *parent)
   : EditEvent(parent)
 {
   setWindowTitle("RDLogEdit - "+tr("Edit Log Chain"));
+
+  edit_listlogs_dialog=new RDListLogs(RDLogFilter::UserFilter,"RDLogEdit",this);
 
   //
   // Fix the Window Size
@@ -92,15 +92,10 @@ void EditChain::selectLogData()
 {
   QString logname;
 
-  RDListLogs *d=
-    new RDListLogs(&logname,RDLogFilter::UserFilter,"RDLogEdit",this);
-  if(!d->exec()) {
-    delete d;
-    return;
+  if(edit_listlogs_dialog->exec(&logname)) {
+    edit_label_edit->setText(logname);
+    labelChangedData(logname);
   }
-  delete d;
-  edit_label_edit->setText(logname);
-  labelChangedData(logname);
 }
 
 

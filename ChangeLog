@@ -24872,3 +24872,11 @@
 2024-08-26 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdairplay(1) that caused the voice tracker to be
 	left in an undefined state after attempting to load a locked log.
+2024-08-26 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the 'Select Log' dialog in the voice tracker in
+	rdairplay(1) so as to retain previous service selection across
+	invocations.
+	* Modified the 'Podcast Item List' dialog in rdcastmanager(1) so as
+	to retain previous service selection across invocations.
+	* Modified the 'Edit Log Chain' dialog in rdlogedit(1) so as
+	to retain previous user group selection across invocations.

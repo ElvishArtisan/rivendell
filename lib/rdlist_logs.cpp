@@ -2,7 +2,7 @@
 //
 // Select a Rivendell Log
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,12 +23,10 @@
 #include "rdescape_string.h"
 #include "rdlist_logs.h"
 
-RDListLogs::RDListLogs(QString *logname,RDLogFilter::FilterMode mode,
-		       const QString &caption,QWidget *parent)
+RDListLogs::RDListLogs(RDLogFilter::FilterMode mode,const QString &caption,
+		       QWidget *parent)
   : RDDialog(parent)
 {
-  list_logname=logname;
-
   //
   // Fix the Window Size
   //
@@ -73,9 +71,6 @@ RDListLogs::RDListLogs(QString *logname,RDLogFilter::FilterMode mode,
   list_cancel_button->setText(tr("Cancel"));
   list_cancel_button->setDefault(true);
   connect(list_cancel_button,SIGNAL(clicked()),this,SLOT(cancelButtonData()));
-
-  list_log_model->setFilterSql(list_filter_widget->whereSql(),
-			       list_filter_widget->limitSql());
 }
 
 
@@ -88,6 +83,18 @@ QSize RDListLogs::sizeHint() const
 QSizePolicy RDListLogs::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+}
+
+
+int RDListLogs::exec(QString *logname)
+{
+  list_logname=logname;
+
+  list_filter_widget->changeUser();
+  list_log_model->setFilterSql(list_filter_widget->whereSql(),
+			       list_filter_widget->limitSql());
+
+  return QDialog::exec();
 }
 
 
@@ -114,7 +121,8 @@ void RDListLogs::okButtonData()
   if(list_log_view->selectionModel()->selectedRows().size()!=1) {
     return;
   }
-  *list_logname=list_log_model->logName(list_log_view->selectionModel()->selectedRows().at(0));
+  *list_logname=list_log_model->
+    logName(list_log_view->selectionModel()->selectedRows().at(0));
 
   done(true);
 }

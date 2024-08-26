@@ -18,14 +18,14 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <rdlist_logs.h>
-
 #include "colors.h"
 #include "voicetracker.h"
 
 VoiceTracker::VoiceTracker(QWidget *parent)
   : RDWidget(parent)
 {
+  d_listlogs_dialog=new RDListLogs(RDLogFilter::StationFilter,"RDAirPlay",this);
+
   d_tracker_widget=new RDTrackerWidget(&d_import_path,this);
   if(rda->airplayConf()->barAction()==RDAirPlayConf::StartNext) {
     d_tracker_widget->setFocusPolicy(Qt::NoFocus);
@@ -57,16 +57,15 @@ void VoiceTracker::loadData()
 {
   QString logname;
   
-  RDListLogs *d=new RDListLogs(&logname,RDLogFilter::StationFilter,"RDAirPlay",
-			       this);
-  if(d->exec()) {
+  printf("HERE1\n");
+  if(d_listlogs_dialog->exec(&logname)) {
+    printf("HERE2: %s\n",logname.toUtf8().constData());
     if(d_tracker_widget->load(logname)) {
       d_load_button->disconnect();
       connect(d_load_button,SIGNAL(clicked()),this,SLOT(unloadData()));
       d_load_button->setText(tr("Unload\nLog"));
     }
   }
-  delete d;
 }
 
 

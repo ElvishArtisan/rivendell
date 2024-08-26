@@ -2,7 +2,7 @@
 //
 // List Rivendell Casts
 //
-//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,7 +24,6 @@
 
 #include <rdconf.h>
 #include <rdescape_string.h>
-#include <rdlist_logs.h>
 #include <rdpodcast.h>
 
 #include "edit_cast.h"
@@ -54,6 +53,9 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
   //
   list_render_dialog=new RenderDialog(this);
 
+  list_listlogs_dialog=
+    new RDListLogs(RDLogFilter::UserFilter,"RDCastManager",this);
+  
   list_cut_dialog=new RDCutDialog(&cast_filter,&cast_group,&cast_schedcode,
 				  false,false,false,"RDCastManager",false,this);
   list_progress_dialog=
@@ -242,9 +244,7 @@ void ListCasts::addLogData()
   QString err_msg;
   unsigned cast_id=0;
 
-  RDListLogs *lld=
-    new RDListLogs(&logname,RDLogFilter::UserFilter,"RDCastManager",this);
-  if(lld->exec()) {
+  if(list_listlogs_dialog->exec(&logname)) {
     RDLogModel *model=new RDLogModel(logname,true,this);
     model->load();
     QTime start_time;
@@ -272,17 +272,13 @@ void ListCasts::addLogData()
       else {
 	QMessageBox::warning(this,"RDCastManager - "+tr("Posting Error"),
 			     err_msg);
-	delete lld;
 	delete model;
 	return;
       }
 
       delete model;
     }
-    else {  // Render dialog was canceled!
-    }
   }
-  delete lld;
 }
 
 

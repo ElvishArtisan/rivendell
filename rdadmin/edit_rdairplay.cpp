@@ -2,7 +2,7 @@
 //
 // Edit an RDAirPlay Configuration
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,11 +26,9 @@
 #include <rd.h>
 #include <rddb.h>
 #include <rdescape_string.h>
-#include <rdlist_logs.h>
 #include <rdtextvalidator.h>
 
 #include "edit_rdairplay.h"
-//#include "edit_hotkeys.h"
 #include "edit_channelgpios.h"
 #include "globals.h"
 
@@ -50,7 +48,8 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   setMaximumSize(sizeHint());
 
   air_conf=new RDAirPlayConf(station->name(),"RDAIRPLAY");
-
+  air_listlogs_dialog=new RDListLogs(RDLogFilter::NoFilter,"RDAdmin",this);
+  
   //
   // Text Validator
   //
@@ -1179,23 +1178,11 @@ void EditRDAirPlay::selectData()
 {
   QString logname=air_startlog_edit->text();
 
-  RDListLogs *ll=new RDListLogs(&logname,RDLogFilter::NoFilter,"RDAdmin",this);
-  if(ll->exec()) {
+  if(air_listlogs_dialog->exec(&logname)) {
     air_startlog_edit->setText(logname);
   }
-  delete ll;
 }
 
-/*
-void EditRDAirPlay::editHotKeys()
-{
-  QString module_name = QString("airplay");
-  EditHotkeys *edit_hotkeys=
-    new EditHotkeys(air_conf->station(),(const char *)module_name,this);
-  edit_hotkeys->exec();
-  delete edit_hotkeys;
-}
-*/
 
 void EditRDAirPlay::selectSkinData()
 {

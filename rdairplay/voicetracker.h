@@ -24,6 +24,7 @@
 #include <QLabel>
 #include <QPushButton>
 
+#include <rdlist_logs.h>
 #include <rdtrackerwidget.h>
 #include <rdwidget.h>
 
@@ -43,6 +44,7 @@ class VoiceTracker : public RDWidget
   void paintEvent(QPaintEvent *e);
 
  private:
+  RDListLogs *d_listlogs_dialog;
   RDTrackerWidget *d_tracker_widget;
   QPushButton *d_load_button;
   QString d_import_path;

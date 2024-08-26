@@ -22,6 +22,7 @@
 #define EDIT_CHAIN_H
 
 #include <rddialog.h>
+#include <rdlist_logs.h>
 #include <rdlog_line.h>
 #include <rdtimeedit.h>
 
@@ -52,6 +53,7 @@ class EditChain : public EditEvent
   QLabel *edit_label_label;
   QLineEdit *edit_label_edit;
   QPushButton *edit_select_button;
+  RDListLogs *edit_listlogs_dialog;
 };
 
 
