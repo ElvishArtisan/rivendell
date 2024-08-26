@@ -24867,3 +24867,5 @@
 	event did not have a segue marker set.
 2024-08-25 Fred Gleason <fredg@paravelsystems.com>
 	* Removed extraneous debugging statements from 'lib/rdplay_deck.cpp'.
+2024-08-25 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.3.0int4.
