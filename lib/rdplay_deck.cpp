@@ -807,15 +807,11 @@ void RDPlayDeck::duckTimerData()
 
 void RDPlayDeck::StartTimers(int offset)
 {
-  printf("StartTimers(%d)\n",offset);
-  
   int audio_point;
 
   play_end_timer->stop();
   
   for(int i=0;i<RDPlayDeck::SizeOf;i++) {
-    printf("play_point_value[%d][0]: %d\n",i,play_point_value[i][0]);
-    printf("play_point_value[%d][1]: %d\n",i,play_point_value[i][1]);
     play_point_state[i]=false;
     if((i==RDPlayDeck::Segue)||((play_point_value[i][0]!=-1)&&
 	(play_point_value[i][0]!=play_point_value[i][1]))) {
@@ -839,7 +835,6 @@ void RDPlayDeck::StartTimers(int offset)
 				   rda->config()->padSegueOverlaps());;
       }
     }
-    printf("play_point_timer[%d]: %d  active: %u\n",i,play_point_timer[i]->interval(),play_point_timer[i]->isActive());
   }
   if((play_fade_point[1]!=-1)&&(offset<play_fade_point[1])&&
      ((play_fade_down=play_audio_point[1]-play_fade_point[1])>0)) {
