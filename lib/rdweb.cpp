@@ -805,7 +805,7 @@ bool RDParsePost(std::map<QString,QString> *vars)
   // Get message parts
   //
   while((n=getline(&data,(size_t *)&n,f))>0) {
-    if(QString(data).stripWhiteSpace().contains(sep)>0) {  // End of part
+    if(QString(data).stripWhiteSpace().contains(sep)) {  // End of part
       if(fd>=0) {
 	ftruncate(fd,lseek(fd,0,SEEK_CUR)-2);  // Remove extraneous final CR/LF
 	::close(fd);

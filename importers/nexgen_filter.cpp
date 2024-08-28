@@ -641,7 +641,7 @@ QDateTime MainObject::GetDateTime(const QString &str) const
 QString MainObject::SwapCase(const QString &str) const
 {
   QStringList parts=str.split(".");
-  if(parts[parts.size()-1].contains(QRegExp("*[a-z]*",true,true))>0) {
+  if(parts[parts.size()-1].contains(QRegExp("*[a-z]*",true,true))) {
     parts[parts.size()-1]=parts[parts.size()-1].upper();
   }
   else {

@@ -20996,3 +20996,5 @@
 	processing RMLs.
 2023-11-20 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.6.8.
+2024-08-28 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed bugs that broke the build on Ubuntu 22.04.

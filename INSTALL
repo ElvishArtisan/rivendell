@@ -261,3 +261,23 @@ Finally, start up the Rivendell service by doing (as root):
 
 You should now be able to run the various Rivendell components from the
 Applications menu.
+
+
+5) Ubuntu 22.04 LTS
+
+Required build packages: apache2 libexpat1-dev libexpat1 libid3-dev libcurl4-gnutls-dev libcoverart-dev libdiscid-dev libmusicbrainz5-dev libcdparanoia-dev libsndfile1-dev libpam0g-dev libvorbis-dev python3 python3-pycurl python3-pymysql python3-serial python3-requests python3-venv python3-virtualenv python3-build python3-virtualenv twine libsamplerate0-dev libsoundtouch-dev libsystemd-dev libjack-jackd2-dev libasound2-dev libflac-dev libflac++-dev libmp3lame-dev libmad0-dev libtwolame-dev docbook5-xml libxml2-utils docbook-xsl-ns xsltproc fop make g++ libltdl-dev autoconf automake libssl-dev libtag1-dev debhelper openssh-server autoconf-archive gnupg pbuilder ubuntu-dev-tools apt-file hpklinux-dev libmagick++-dev libqt4-dev
+
+Configure script invocation: ./configure --prefix=/usr --libdir=/usr/lib --libexecdir=/var/www/rd-bin --sysconfdir=/etc/apache2/conf-enabled --enable-rdxport-debug MUSICBRAINZ_LIBS="-ldiscid -lmusicbrainz5cc -lcoverartcc"
+
+Environmental variables:
+  DOCBOOK_STYLESHEETS=/usr/share/xml/docbook/stylesheet/docbook-xsl-ns
+  DEBUILD_MAKE_ARGS=<optional-gcc-flags>
+
+Apache Web Server Configuration: CGI processing must be enabled. This can
+be done by means of the following commands:
+
+   sudo ln -sf ../mods-available/cgid.conf /etc/apache2/mods-enabled/cgid.conf
+   sudo ln -sf ../mods-available/cgid.load /etc/apache2/mods-enabled/cgid.load
+   sudo systemctl restart apache2
+
+
