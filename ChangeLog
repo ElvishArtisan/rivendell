@@ -24880,3 +24880,6 @@
 	to retain previous service selection across invocations.
 	* Modified the 'Edit Log Chain' dialog in rdlogedit(1) so as
 	to retain previous user group selection across invocations.
+2024-08-29 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdairplay(1) that caused STOP transitions
+	to be treated as PLAYs.

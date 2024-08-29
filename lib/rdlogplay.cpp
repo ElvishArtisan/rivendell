@@ -2448,8 +2448,10 @@ void RDLogPlay::FinishEvent(int line)
       }
       if((play_op_mode==RDAirPlayConf::Auto)&&
 	 (logline->id()!=-1)&&(play_next_line<lineCount())) {
-	StartEvent(play_next_line,RDLogLine::Play,0,RDLogLine::StartPlay);
-	SetTransTimer(QTime(),prev_next_line==play_trans_line);
+	if(logline->transType()!=RDLogLine::Stop) {
+	  StartEvent(play_next_line,RDLogLine::Play,0,RDLogLine::StartPlay);
+	  SetTransTimer(QTime(),prev_next_line==play_trans_line);
+	}
       }
     }
   }
