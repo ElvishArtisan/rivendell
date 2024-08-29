@@ -24883,3 +24883,5 @@
 2024-08-29 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdairplay(1) that caused STOP transitions
 	to be treated as PLAYs.
+2024-08-29 Fred Gleason <fredg@paravelsystems.com>
+	* Removed various debugging statements.

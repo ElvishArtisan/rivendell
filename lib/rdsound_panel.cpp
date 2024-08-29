@@ -918,8 +918,6 @@ void RDSoundPanel::onairFlagChangedData(bool state)
 
 void RDSoundPanel::notificationReceivedData(RDNotification *notify)
 {
-  printf("notificationReceivedData()\n");
-
   RDPanelButton *button=NULL;
   QString sql;
   RDSqlQuery *q=NULL;

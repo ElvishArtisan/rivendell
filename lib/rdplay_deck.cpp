@@ -674,8 +674,6 @@ void RDPlayDeck::playStoppedData(unsigned serial)
 
 void RDPlayDeck::pointTimerData(int point)
 {
-  printf("pointTimerData(%d)\n",point);
-  
   switch(point) {
       case RDPlayDeck::Segue:
 	if(play_point_state[point]) {
@@ -687,7 +685,6 @@ void RDPlayDeck::pointTimerData(int point)
 	  play_point_state[point]=true;
 	  play_point_timer[point]->
 	    start(play_point_value[point][1]-play_point_value[point][0]);
-	  printf("segueStart: %s\n",QTime::currentTime().toString("hh:mm:ss.zzz").toUtf8().constData());
 	  emit segueStart(play_id);
 	}
 	break;
