@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Playback Deck
 //
-//   (C) Copyright 2003-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2003-2024 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -456,12 +456,8 @@ void RDPlayDeck::play(unsigned pos,int segue_start,int segue_end,
   if(play_serial==0) {
     return;
   }
-  if(segue_start>=0) {
-    play_point_value[RDPlayDeck::Segue][0]=segue_start;
-  }
-  if(segue_end>=0) {
-    play_point_value[RDPlayDeck::Segue][1]=segue_end;
-  }
+  play_point_value[RDPlayDeck::Segue][0]=segue_start;
+  play_point_value[RDPlayDeck::Segue][1]=segue_end;
   play_start_position=pos;
   play_current_position=pos;
   play_last_start_position=play_start_position;
@@ -512,13 +508,6 @@ void RDPlayDeck::play(unsigned pos,int segue_start,int segue_end,
   play_cae->
     play(play_serial,len,play_timescale_speed,false);
   play_end_timer->start(len);
-  /*
-  play_cae->
-    play(play_serial,
-	 (int)(100000.0*(double)(play_audio_point[1]-play_audio_point[0]-pos)/
-	 (double)play_timescale_speed),
-	 play_timescale_speed,false);
-  */
   play_start_time=QTime::currentTime();
   StartTimers(pos);
   play_state=RDPlayDeck::Playing;
@@ -678,7 +667,7 @@ void RDPlayDeck::pointTimerData(int point)
       case RDPlayDeck::Segue:
 	if(play_point_state[point]) {
 	  play_point_state[point]=false;
-	  printf("  segueEnd: %s\n",QTime::currentTime().toString("hh:mm:ss.zzz").toUtf8().constData());
+	  rda->cae()->stopPlay(play_serial);
 	  emit segueEnd(play_id);
 	}
 	else {
@@ -807,11 +796,50 @@ void RDPlayDeck::StartTimers(int offset)
   int audio_point;
 
   play_end_timer->stop();
-  
-  for(int i=0;i<RDPlayDeck::SizeOf;i++) {
+
+  //
+  // Initialize Segue Timers
+  //
+  play_point_state[RDPlayDeck::Segue]=false;
+  audio_point=(int)
+    (RD_TIMESCALE_DIVISOR*(double)play_audio_point[0]/
+     (double)play_timescale_speed);
+  if((play_point_value[RDPlayDeck::Segue][0]>=0)&&
+     (play_point_value[RDPlayDeck::Segue][1]>=0)&&
+     (play_point_value[RDPlayDeck::Segue][1]>
+      play_point_value[RDPlayDeck::Segue][0])) {
+    // Setup Full Segue
+    if((play_point_value[RDPlayDeck::Segue][0]-audio_point-offset)>=0) {
+      play_point_timer[RDPlayDeck::Segue]->
+	start(play_point_value[RDPlayDeck::Segue][0]-audio_point-offset);
+    }
+    else {
+      if((play_point_value[RDPlayDeck::Segue][1]-audio_point-offset)>=0) {
+	play_point_state[RDPlayDeck::Segue]=true;
+	play_point_timer[RDPlayDeck::Segue]->
+	  start(play_point_value[RDPlayDeck::Segue][1]-audio_point-offset);
+      }
+    }
+    if(rda->config()->padSegueOverlaps()>0) {
+      play_point_timer[RDPlayDeck::Segue]->stop();
+      play_point_timer[RDPlayDeck::Segue]->
+	start(play_point_timer[RDPlayDeck::Segue]->interval()+
+	      rda->config()->padSegueOverlaps());;
+    }
+  }
+  else {
+    // Setup "Play Style" Segue
+    play_point_timer[RDPlayDeck::Segue]->
+      start(play_audio_point[1]-play_audio_point[0]+100);
+  }
+
+  //
+  // Initialize Hook and Talk Timers
+  //
+  for(int i=RDPlayDeck::Hook;i<RDPlayDeck::SizeOf;i++) {
     play_point_state[i]=false;
-    if((i==RDPlayDeck::Segue)||((play_point_value[i][0]!=-1)&&
-	(play_point_value[i][0]!=play_point_value[i][1]))) {
+    if((play_point_value[i][0]!=-1)&&
+	(play_point_value[i][0]!=play_point_value[i][1])) {
       audio_point=(int)
 	(RD_TIMESCALE_DIVISOR*(double)play_audio_point[0]/
 	 (double)play_timescale_speed);
@@ -826,13 +854,12 @@ void RDPlayDeck::StartTimers(int offset)
 	    start(play_point_value[i][1]-audio_point-offset);
 	}
       }
-      if((i==0)&&(rda->config()->padSegueOverlaps()>0)) {
-	play_point_timer[0]->stop();
-	play_point_timer[0]->start(play_point_timer[0]->interval()+
-				   rda->config()->padSegueOverlaps());;
-      }
     }
   }
+
+  //
+  // Setup FadeUp and FadeDown Timers
+  //
   if((play_fade_point[1]!=-1)&&(offset<play_fade_point[1])&&
      ((play_fade_down=play_audio_point[1]-play_fade_point[1])>0)) {
     play_fade_timer->start(play_fade_point[1]-play_audio_point[0]-offset);

@@ -24885,3 +24885,7 @@
 	to be treated as PLAYs.
 2024-08-29 Fred Gleason <fredg@paravelsystems.com>
 	* Removed various debugging statements.
+2024-08-30 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'RDLogPlay::setSegueLength()' method.
+	* Fixed regressions in rdairplay(1) that could cause the end of
+	play-outs to be clipped.

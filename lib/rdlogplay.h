@@ -66,7 +66,6 @@ class RDLogPlay : public RDLogModel
   void setLogName(QString name);
   void setChannels(int cards[2],int ports[2],QString labels[2],
 		   const QString start_rml[2],const QString stop_rml[2]);
-  void setSegueLength(int len);
   void setNowCart(unsigned cartnum);
   void setNextCart(unsigned cartnum);
   void auditionHead(int line);
@@ -209,7 +208,6 @@ class RDLogPlay : public RDLogModel
   RDCae *play_cae;
   RDAirPlayConf::OpMode play_op_mode;
   int play_slot_id[LOGPLAY_MAX_PLAYS];
-  int play_segue_length;
   int play_trans_length;
   int play_next_line;
   int play_line_counter;

@@ -45,7 +45,6 @@ RDLogPlay::RDLogPlay(int id,RDEventPlayer *player,bool enable_cue,QObject *paren
   play_id=id;
   play_event_player=player;
   play_onair_flag=false;
-  play_segue_length=rda->airplayConf()->segueLength()+1;
   play_trans_length=rda->airplayConf()->transLength()+1;
   play_duck_volume_port1=0;
   play_duck_volume_port2=0;
@@ -261,12 +260,6 @@ void RDLogPlay::setChannels(int cards[2],int ports[2],QString labels[2],
 }
 
 
-void RDLogPlay::setSegueLength(int len)
-{
-  play_segue_length=len;
-}
-
-
 void RDLogPlay::setNowCart(unsigned cartnum)
 {
   play_now_cartnum=cartnum;
@@ -373,11 +366,11 @@ bool RDLogPlay::play(int line,RDLogLine::StartSource src,
   }
 
   bool ret = false;
-  if(play_segue_length==0) {
-    ret = StartEvent(line,RDLogLine::Play,0,src,mport);
-  } else {
-    ret = StartEvent(line,RDLogLine::Segue,play_segue_length,src,mport);
+  int segue_length=0;
+  if(src==RDLogLine::StartManual) {
+    rda->airplayConf()->segueLength();
   }
+  ret = StartEvent(line,RDLogLine::Segue,segue_length,src,mport);
   SetTransTimer(current_time);
   return ret;
 }
@@ -573,7 +566,6 @@ void RDLogPlay::load()
   delete log;
   play_line_counter=0;
   play_next_line=0;
-  //  UpdateStartTimes(0);
   UpdateStartTimes();
   emit reloaded();
   SetTransTimer();
@@ -1954,14 +1946,6 @@ bool RDLogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
   //
   running=runningEvents(lines);
   if(play_op_mode!=RDAirPlayConf::Manual) {
-
-    //
-    // Remove degenerate segue transitions
-    //
-    if((trans_type==RDLogLine::Segue)&&(trans_length<=0)) {
-      trans_type=RDLogLine::Play;
-    }
-
     switch(trans_type) {
     case RDLogLine::Play:
       for(int i=0;i<running;i++) {
