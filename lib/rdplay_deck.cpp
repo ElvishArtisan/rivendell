@@ -456,8 +456,6 @@ void RDPlayDeck::play(unsigned pos,int segue_start,int segue_end,
   if(play_serial==0) {
     return;
   }
-  play_point_value[RDPlayDeck::Segue][0]=segue_start;
-  play_point_value[RDPlayDeck::Segue][1]=segue_end;
   play_start_position=pos;
   play_current_position=pos;
   play_last_start_position=play_start_position;
@@ -709,7 +707,7 @@ void RDPlayDeck::pointTimerData(int point)
 
 void RDPlayDeck::endData()
 {
-  printf("RDPlayDeck::endData()\n");
+  printf("RDPlayDeck::endData()\n"); 
   play_position_timer->stop();
   play_start_time=QTime();
   StopTimers();
@@ -865,9 +863,6 @@ void RDPlayDeck::StartTimers(int offset)
     play_point_state[i]=false;
     if((play_point_value[i][0]!=-1)&&
 	(play_point_value[i][0]!=play_point_value[i][1])) {
-      //      scaled_audio_point[0]=(int)
-      //	(RD_TIMESCALE_DIVISOR*(double)play_audio_point[0]/
-      //	 (double)play_timescale_speed);
       if((play_point_value[i][0]-play_audio_point[0]-offset)>=0) {
 	play_point_timer[i]->
 	  start(scaled_point_value[i][0]-scaled_audio_point[0]-offset);

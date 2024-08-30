@@ -24892,3 +24892,5 @@
 2024-08-30 Fred Gleason <fredg@paravelsystems.com>
 	* Modified log machine logic in rdairplay(1) to properly timescale
 	event transitions.
+2024-08-30 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdairplay(1) that broke segue transitions.
