@@ -183,8 +183,8 @@ bool RDPlayDeck::setCart(RDLogLine *logline,bool rotate)
   if(play_timescale_active) {
     play_timescale_speed=
       (int)(RD_TIMESCALE_DIVISOR*(double)(play_audio_point[1]-
-					  play_audio_point[0])/
-      (double)play_forced_length);
+    					  play_audio_point[0])/
+	    (double)play_forced_length);
     if((((double)play_timescale_speed)<
 	(RD_TIMESCALE_DIVISOR*RD_TIMESCALE_MIN))||
        (((double)play_timescale_speed)>
@@ -793,31 +793,56 @@ void RDPlayDeck::duckTimerData()
 
 void RDPlayDeck::StartTimers(int offset)
 {
-  int audio_point;
+  //
+  // Calculate Time-Scaled Points
+  //
+  int scaled_audio_point[2];
+  int scaled_fade_point[2];
+  for(int i=0;i<2;i++) {
+    scaled_audio_point[i]=
+      (int)(RD_TIMESCALE_DIVISOR*(double)play_audio_point[i]/
+	    (double)play_timescale_speed);
+    scaled_fade_point[i]=
+      (int)(RD_TIMESCALE_DIVISOR*(double)play_fade_point[i]/
+	    (double)play_timescale_speed);
+  }
 
+  int scaled_point_value[RDPlayDeck::SizeOf][2];
+  for(int i=0;i<RDPlayDeck::SizeOf;i++) {
+    for(int j=0;j<2;j++) {
+      scaled_point_value[i][j]=
+	(int)(RD_TIMESCALE_DIVISOR*(double)play_point_value[i][j]/
+	      (double)play_timescale_speed);
+    }
+  }
+
+  int scaled_duck_up_point=
+    (int)(RD_TIMESCALE_DIVISOR*(double)play_duck_up_point/
+	  (double)play_timescale_speed);
+    
   play_end_timer->stop();
 
   //
   // Initialize Segue Timers
   //
   play_point_state[RDPlayDeck::Segue]=false;
-  audio_point=(int)
-    (RD_TIMESCALE_DIVISOR*(double)play_audio_point[0]/
-     (double)play_timescale_speed);
   if((play_point_value[RDPlayDeck::Segue][0]>=0)&&
      (play_point_value[RDPlayDeck::Segue][1]>=0)&&
      (play_point_value[RDPlayDeck::Segue][1]>
       play_point_value[RDPlayDeck::Segue][0])) {
     // Setup Full Segue
-    if((play_point_value[RDPlayDeck::Segue][0]-audio_point-offset)>=0) {
+    if((play_point_value[RDPlayDeck::Segue][0]-play_audio_point[0]-offset)>=0) {
       play_point_timer[RDPlayDeck::Segue]->
-	start(play_point_value[RDPlayDeck::Segue][0]-audio_point-offset);
+	start(scaled_point_value[RDPlayDeck::Segue][0]-scaled_audio_point[0]-
+	      offset);
     }
     else {
-      if((play_point_value[RDPlayDeck::Segue][1]-audio_point-offset)>=0) {
+      if((play_point_value[RDPlayDeck::Segue][1]-play_audio_point[0]-
+	  offset)>=0) {
 	play_point_state[RDPlayDeck::Segue]=true;
 	play_point_timer[RDPlayDeck::Segue]->
-	  start(play_point_value[RDPlayDeck::Segue][1]-audio_point-offset);
+	  start(scaled_point_value[RDPlayDeck::Segue][1]-scaled_audio_point[0]-
+		offset);
       }
     }
     if(rda->config()->padSegueOverlaps()>0) {
@@ -830,7 +855,7 @@ void RDPlayDeck::StartTimers(int offset)
   else {
     // Setup "Play Style" Segue
     play_point_timer[RDPlayDeck::Segue]->
-      start(play_audio_point[1]-play_audio_point[0]+100);
+      start(scaled_audio_point[1]-scaled_audio_point[0]+100);
   }
 
   //
@@ -840,18 +865,18 @@ void RDPlayDeck::StartTimers(int offset)
     play_point_state[i]=false;
     if((play_point_value[i][0]!=-1)&&
 	(play_point_value[i][0]!=play_point_value[i][1])) {
-      audio_point=(int)
-	(RD_TIMESCALE_DIVISOR*(double)play_audio_point[0]/
-	 (double)play_timescale_speed);
-      if((play_point_value[i][0]-audio_point-offset)>=0) {
+      //      scaled_audio_point[0]=(int)
+      //	(RD_TIMESCALE_DIVISOR*(double)play_audio_point[0]/
+      //	 (double)play_timescale_speed);
+      if((play_point_value[i][0]-play_audio_point[0]-offset)>=0) {
 	play_point_timer[i]->
-	  start(play_point_value[i][0]-audio_point-offset);
+	  start(scaled_point_value[i][0]-scaled_audio_point[0]-offset);
       }
       else {
-	if((play_point_value[i][1]-audio_point-offset)>=0) {
+	if((play_point_value[i][1]-play_audio_point[0]-offset)>=0) {
 	  play_point_state[i]=true;
 	  play_point_timer[i]->
-	    start(play_point_value[i][1]-audio_point-offset);
+	    start(scaled_point_value[i][1]-scaled_audio_point[0]-offset);
 	}
       }
     }
@@ -862,10 +887,10 @@ void RDPlayDeck::StartTimers(int offset)
   //
   if((play_fade_point[1]!=-1)&&(offset<play_fade_point[1])&&
      ((play_fade_down=play_audio_point[1]-play_fade_point[1])>0)) {
-    play_fade_timer->start(play_fade_point[1]-play_audio_point[0]-offset);
+    play_fade_timer->start(scaled_fade_point[1]-scaled_audio_point[0]-offset);
   }
   if(offset<play_duck_up_point){
-    play_duck_timer->start(play_duck_up_point-offset);
+    play_duck_timer->start(scaled_duck_up_point-offset);
   }
 }
 

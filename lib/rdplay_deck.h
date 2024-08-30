@@ -115,7 +115,7 @@ class RDPlayDeck : public QObject
   bool play_fade_down_state;
   int play_segue_interval;
   bool play_point_state[3];
-  int play_point_value[3][2];
+  int play_point_value[RDPlayDeck::SizeOf][2];
   int play_point_gain;
   int play_audio_point[2];
   int play_audio_length;
