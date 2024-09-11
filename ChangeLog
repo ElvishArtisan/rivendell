@@ -24896,3 +24896,6 @@
 	* Fixed a regression in rdairplay(1) that broke segue transitions.
 2024-08-30 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.3.0int5.
+2024-09-11 Dennis Graiani <dennis.graiani@gmail.com>
+	* Reversed logic in rdstatus to return true when local audio store
+	is mounted.
