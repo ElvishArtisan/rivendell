@@ -24903,3 +24903,5 @@
 2024-10-08 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdautoback(8) that caused an error to be generated
 	if the destination drive was already mounted.
+2024-10-08 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'rdautoback(8) man page.
