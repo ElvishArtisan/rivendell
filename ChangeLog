@@ -24900,3 +24900,6 @@
 	* Added an rdautoback.py(8) utility.
 2024-10-08 Fred Gleason <fredg@paravelsystems.com>
 	* Changed the name of rdautoback.py(8) to rdautoback(8).
+2024-10-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdautoback(8) that caused an error to be generated
+	if the destination drive was already mounted.
