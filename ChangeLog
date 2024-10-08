@@ -24898,3 +24898,5 @@
 	* Incremented the package version to 4.3.0int5.
 2024-10-07 Fred Gleason <fredg@paravelsystems.com>
 	* Added an rdautoback.py(8) utility.
+2024-10-08 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the name of rdautoback.py(8) to rdautoback(8).

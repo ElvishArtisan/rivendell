@@ -22,11 +22,10 @@
 
 install-exec-local:	
 	mkdir -p $(DESTDIR)/usr/sbin
-	cp rdautoback.py $(DESTDIR)/usr/sbin/rdautoback.py
-	../../helpers/install_python.sh rdautoback.py $(DESTDIR)/usr/sbin/rdautoback.py
+	../../helpers/install_python.sh rdautoback.py $(DESTDIR)/usr/sbin/rdautoback
 
 uninstall-local:	
-	rm -f $(DESTDIR)/usr/sbin/rdautoback.py
+	rm -f $(DESTDIR)/usr/sbin/rdautoback
 
 bin_SCRIPTS = rdautoback.py
 
