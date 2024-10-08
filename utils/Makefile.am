@@ -25,6 +25,7 @@ if ALSA_RD_AM
 endif
 SUBDIRS = $(ALSACONFIG_RD_OPT)\
           rdautoback\
+          rdautorest\
           rdcheckcuts\
           rdcleandirs\
           rdclilogedit\
