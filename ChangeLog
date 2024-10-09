@@ -24907,3 +24907,5 @@
 	* Added a rdautoback(8) man page.
 2024-10-08 Fred Gleason <fredg@paravelsystems.com>
 	* Added an rdautorest(8) utility.
+2024-10-09 Fred Gleason <fredg@paravelsystems.com>
+	* Added an rdautorest(8) man page.

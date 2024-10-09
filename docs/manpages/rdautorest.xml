@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry id="stdin" xmlns="http://docbook.org/ns/docbook" version="5.0">
+  <!--
+      Header
+  -->
+  <refmeta>
+    <refentrytitle>rdautorest</refentrytitle>
+    <manvolnum>8</manvolnum>
+    <refmiscinfo class='source'>October 2024</refmiscinfo>
+    <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>rdautorest</refname>
+    <refpurpose>
+      Tool for restoring Rivendell backups produced by
+      <command>rdautoback</command><manvolnum>8</manvolnum>
+    </refpurpose>
+  </refnamediv>
+  <info>
+    <author>
+      <personname>
+	<firstname>Fred</firstname>
+	<surname>Gleason</surname>
+	<email>fredg@paravelsystems.com</email>
+      </personname>
+      <contrib>Application Author</contrib>
+    </author>
+  </info>
+
+  <!--
+      Body
+  -->
+  <refsynopsisdiv id='synopsis'>
+    <cmdsynopsis>
+      <command>rdautorest</command>
+      <arg choice='opt'>--yes</arg>
+      <arg choice='req'><replaceable>mount-pt</replaceable></arg>
+      <sbr/>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <refsect1 id='description'><title>Description</title>
+  <para>
+    <command>rdautorest</command><manvolnum>8</manvolnum> is a command-line
+    tool used for restoring backups of the data for the Rivendell Radio
+    Automation System produced by
+    <command>rdautoback</command><manvolnum>8</manvolnum>.
+  </para>
+  <para>
+    <command>rdautorest</command><manvolnum>8</manvolnum> takes one required
+    argument: the name of a storage mount point that has been configured
+    in <command>fstab</command><manvolnum>5</manvolnum>. Upon startup,
+    <command>rdautorest</command><manvolnum>8</manvolnum> will attempt to
+    mount the specified mount point and restore the following data elements:
+  </para>
+  <itemizedlist mark="opencircle">
+    <listitem>
+      <para>
+	The Rivendell database specified by the current
+	<command>rd.conf</command><manvolnum>5</manvolnum>
+	configuration file.
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+	The contents of the Rivendell audiostore, located at
+	<computeroutput>/var/snd</computeroutput>.
+      </para>
+    </listitem>
+  </itemizedlist>
+  <para>
+    Any Rivendell data that is already present on the target system
+    will be incrementally updated so as to be a precise copy of the
+    backed-up data. After completing the restoration,
+    <command>rdautorest</command><manvolnum>8</manvolnum> will automatically
+    unmount the backup device and remove its mount point.
+  </para>
+  <para>
+    By default <command>rdautorest</command><manvolnum>8</manvolnum> will
+    print a warning and require confirmation before proceeding with the
+    restoration. This prompt can be bypassed by providing the
+    <userinput>--yes</userinput> option.
+  </para>
+  </refsect1>
+  
+  <refsect1 id='see_also'><title>See Also</title>
+  <para>
+  <citerefentry>
+    <refentrytitle>fstab</refentrytitle><manvolnum>5</manvolnum>
+  </citerefentry>
+  ,
+  <citerefentry>
+    <refentrytitle>rd.conf</refentrytitle><manvolnum>5</manvolnum>
+  </citerefentry>
+  </para>
+  </refsect1>
+
+
+</refentry>
+

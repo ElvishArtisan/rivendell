@@ -57,6 +57,9 @@ all-local:	rdadmin.1\
                 rdautoback.8\
                 rdautoback.html\
                 rdautoback.pdf\
+                rdautorest.8\
+                rdautorest.html\
+                rdautorest.pdf\
                 rdclilogedit.1\
                 rdclilogedit.html\
                 rdclilogedit.pdf\
@@ -110,6 +113,7 @@ man_MANS = rdadmin.1\
            rdairplay.1\
            rdalsaconfig.1\
            rdautoback.8\
+           rdautorest.8\
            rdclilogedit.1\
            rd.conf.5\
            rdconvert.1\
@@ -144,6 +148,10 @@ EXTRA_DIST = exitcodes.xml\
              rdautoback.html\
              rdautoback.pdf\
              rdautoback.xml\
+             rdautorest.8\
+             rdautorest.html\
+             rdautorest.pdf\
+             rdautorest.xml\
              rdclilogedit.1\
              rdclilogedit.html\
              rdclilogedit.pdf\
