@@ -24909,3 +24909,5 @@
 	* Added an rdautorest(8) utility.
 2024-10-09 Fred Gleason <fredg@paravelsystems.com>
 	* Added an rdautorest(8) man page.
+2024-10-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed typos in rdautorest(8).

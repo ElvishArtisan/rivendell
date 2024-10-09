@@ -68,7 +68,7 @@ rd_config.read_file(open('/etc/rd.conf'))
 # Open the syslog
 #
 syslog.openlog('rdautorest.py',logoption=syslog.LOG_PID|syslog.LOG_PERROR,facility=int(rd_config.get('Identity','SyslogFacility',fallback=syslog.LOG_USER)))
-syslog.syslog(syslog.LOG_INFO,'Starting Rivendell backup to "'+mountpoint+'"')
+syslog.syslog(syslog.LOG_INFO,'Starting Rivendell restore from "'+mountpoint+'"')
 
     
 #
@@ -87,9 +87,9 @@ if(os.waitstatus_to_exitcode(result)!=0):
 # Stop Rivendell service
 #
 result=os.system(command='/bin/systemctl stop rivendell')
-if(os.waitstatus_to_exitcode(result)!=0):
-    syslog.syslog(syslog.LOG_ERR,'unable to stop Rivendell service')
-    exit(1)
+#if(os.waitstatus_to_exitcode(result)!=0):
+#    syslog.syslog(syslog.LOG_ERR,'unable to stop Rivendell service')
+#    exit(1)
 
 #
 # Create new database
@@ -115,9 +115,9 @@ os.system(command=cmd)
 # Start Rivendell service
 #
 result=os.system(command='/bin/systemctl restart rivendell')
-if(os.waitstatus_to_exitcode(result)!=0):
-    syslog.syslog(syslog.LOG_ERR,'unable to start Rivendell service')
-    exit(1)
+#if(os.waitstatus_to_exitcode(result)!=0):
+#    syslog.syslog(syslog.LOG_ERR,'unable to start Rivendell service')
+#    exit(1)
 
 #
 # Unmount backup device
