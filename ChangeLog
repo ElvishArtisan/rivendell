@@ -24911,3 +24911,6 @@
 	* Added an rdautorest(8) man page.
 2024-10-09 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed typos in rdautorest(8).
+2024-10-09 Fred Gleason <fredg@paravelsystems.com>
+	* Added code to rdautorest(8) to remove sandbox header from database
+	backups.

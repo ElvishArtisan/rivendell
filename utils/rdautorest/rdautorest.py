@@ -87,9 +87,6 @@ if(os.waitstatus_to_exitcode(result)!=0):
 # Stop Rivendell service
 #
 result=os.system(command='/bin/systemctl stop rivendell')
-#if(os.waitstatus_to_exitcode(result)!=0):
-#    syslog.syslog(syslog.LOG_ERR,'unable to stop Rivendell service')
-#    exit(1)
 
 #
 # Create new database
@@ -102,7 +99,7 @@ sql='create\ database\ '+rd_config.get('mySQL','Database')+'\;'
 cmd='echo '+sql+' | mysql -h '+rd_config.get('mySQL','Hostname')+' -u '+rd_config.get('mySQL','Loginname')+' -p'+rd_config.get('mySQL','Password')
 os.system(command=cmd)
 
-cmd='gzip -cd '+mountpoint+'/db.sql.gz | mysql -h '+rd_config.get('mySQL','Hostname')+' -u '+rd_config.get('mySQL','Loginname')+' -p'+rd_config.get('mySQL','Password')+' '+rd_config.get('mySQL','Database')
+cmd='gzip -cd '+mountpoint+'/db.sql.gz | sed \'1{/999999.*sandbox/d}\' | mysql -h '+rd_config.get('mySQL','Hostname')+' -u '+rd_config.get('mySQL','Loginname')+' -p'+rd_config.get('mySQL','Password')+' '+rd_config.get('mySQL','Database')
 os.system(command=cmd)
 
 #
@@ -115,9 +112,6 @@ os.system(command=cmd)
 # Start Rivendell service
 #
 result=os.system(command='/bin/systemctl restart rivendell')
-#if(os.waitstatus_to_exitcode(result)!=0):
-#    syslog.syslog(syslog.LOG_ERR,'unable to start Rivendell service')
-#    exit(1)
 
 #
 # Unmount backup device
