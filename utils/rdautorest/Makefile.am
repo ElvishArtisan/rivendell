@@ -27,7 +27,7 @@ install-exec-local:
 uninstall-local:	
 	rm -f $(DESTDIR)/usr/sbin/rdautorest
 
-bin_SCRIPTS = rdautorest.py
+noinst_SCRIPTS = rdautorest.py
 
 EXTRA_DIST = rdautorest.py
 

@@ -27,7 +27,7 @@ install-exec-local:
 uninstall-local:	
 	rm -f $(DESTDIR)/usr/sbin/rdautoback
 
-bin_SCRIPTS = rdautoback.py
+noinst_SCRIPTS = rdautoback.py
 
 EXTRA_DIST = rdautoback.py
 

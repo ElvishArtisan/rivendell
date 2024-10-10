@@ -24917,3 +24917,5 @@
 2024-10-09 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug that caused the 'rdautoback.py' and 'rdautorest.py'
 	files to be included in DEB packages.
+2024-10-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug that broke the 'make rpm' target.
