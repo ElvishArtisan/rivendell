@@ -161,7 +161,8 @@ binary:
 	mkdir -p debian/rivendell/usr/lib/rivendell/cdn
 	cp apis/cdn/scripts/aka_purge.sh debian/rivendell/usr/lib/rivendell/cdn/aka_purge.sh
 	cp apis/cdn/scripts/akamai_purge.cdn debian/rivendell/usr/lib/rivendell/cdn/akamai_purge.cdn
-
+	rm -f debian/rivendell/usr/bin/rdautoback.py
+	rm -f debian/rivendell/usr/bin/rdautorest.py
 
 	dh_strip_nondeterminism
 	dh_compress
