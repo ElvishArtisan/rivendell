@@ -24915,5 +24915,5 @@
 	* Added code to rdautorest(8) to remove sandbox header from database
 	backups.
 2024-10-09 Fred Gleason <fredg@paravelsystems.com>
-	* Fixed a bug thatcaused the 'rdautoback.py' and 'rdautorest.py'
+	* Fixed a bug that caused the 'rdautoback.py' and 'rdautorest.py'
 	files to be included in DEB packages.
