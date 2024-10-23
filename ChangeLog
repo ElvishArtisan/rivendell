@@ -24919,3 +24919,6 @@
 	files to be included in DEB packages.
 2024-10-09 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug that broke the 'make rpm' target.
+2024-10-23 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'CopyAudio' Web API service that failed to log the
+	correct	error message when the operation failed.

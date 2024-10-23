@@ -72,11 +72,17 @@ void Xport::CopyAudio()
   //
   // Make the copy
   //
+  rda->syslog(LOG_NOTICE,"creating hard link %s => %s",
+	      RDCut::pathName(source_cartnum,source_cutnum).toUtf8().constData(),
+	      RDCut::pathName(destination_cartnum,destination_cutnum).toUtf8().constData());
+
   unlink(RDCut::pathName(destination_cartnum,destination_cutnum).toUtf8());
   if(link(RDCut::pathName(source_cartnum,source_cutnum).toUtf8(),
 	 RDCut::pathName(destination_cartnum,destination_cutnum).toUtf8())!=0) {
-    XmlExit(strerror(errno),400,"copyaudio.cpp",LINE_NUMBER);
+    QString err_msg=strerror(errno);
+    XmlExit(err_msg,400,"copyaudio.cpp",LINE_NUMBER);
   }
+  
   SendNotification(RDNotification::CartType,RDNotification::ModifyAction,
 		   QVariant(destination_cartnum));
   XmlExit("OK",200,"copyaudio.cpp",LINE_NUMBER);
