@@ -149,6 +149,7 @@ tests/download_test
 tests/feed_image_test
 tests/getpids_test
 tests/gpio_fuzz_test
+tests/hpiplayout_test
 tests/log_unlink_test
 tests/mcast_recv_test
 tests/metadata_wildcard_test

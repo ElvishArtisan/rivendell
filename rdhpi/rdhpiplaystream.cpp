@@ -58,7 +58,8 @@ volatile static int stream_mutex[HPI_MAX_ADAPTERS][HPI_MAX_STREAMS]=
    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
 #endif
 
-RDHPIPlayStream::RDHPIPlayStream(RDHPISoundCard *card,QWidget *parent) 
+//RDHPIPlayStream::RDHPIPlayStream(RDHPISoundCard *card,QWidget *parent) 
+RDHPIPlayStream::RDHPIPlayStream(RDHPISoundCard *card,QObject *parent) 
   :QObject(parent),RDWaveFile()
 {  
   int quan;

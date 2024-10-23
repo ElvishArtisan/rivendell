@@ -24922,5 +24922,6 @@
 2024-10-23 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'CopyAudio' Web API service that failed to log the
 	correct	error message when the operation failed.
-2024-10-23 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.3.0int6.
+2024-10-23 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'hpiplayout_test' command in 'tests/'.

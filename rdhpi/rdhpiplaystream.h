@@ -26,7 +26,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <qobject.h>
-#include <qwidget.h>
+//#include <qwidget.h>
 #include <qstring.h>
 #include <qdatetime.h>
 #include <qtimer.h>
@@ -51,7 +51,8 @@ class RDHPIPlayStream : public QObject,public RDWaveFile
  public:
   enum State {Stopped=0,Playing=1,Paused=2};
   enum Error {Ok=0,NoFile=1,NoStream=2,AlreadyOpen=3};
-  RDHPIPlayStream(RDHPISoundCard *card,QWidget *parent=0);
+  //  RDHPIPlayStream(RDHPISoundCard *card,QWidget *parent=0);
+  RDHPIPlayStream(RDHPISoundCard *card,QObject *parent=0);
   ~RDHPIPlayStream();
   QString errorString(RDHPIPlayStream::Error err);
   bool formatSupported(RDWaveFile::Format format);
