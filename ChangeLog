@@ -24944,3 +24944,6 @@
 2024-12-13 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed regression in the build system that caused sections of the
 	HTML version of Operations Guide to be missing.
+2024-12-14 Chris Conkright <cconkrig@gmail.com>
+	* Fixed a bug where Voice Tracker widget's  'Est. Time' column would
+	show scheduled time instead of estimated time.	

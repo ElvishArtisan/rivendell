@@ -359,6 +359,7 @@ RDTrackerWidget::RDTrackerWidget(QString *import_path,QWidget *parent)
      SLOT(selectionChangedData(const QItemSelection &,const QItemSelection &)));
   connect(rda->ripc(),SIGNAL(notificationReceived(RDNotification *)),
 	  d_log_model,SLOT(processNotification(RDNotification *)));
+  d_log_model->setStartTimeStyle(RDLogModel::Estimated);
 
   //
   // Reset Button
