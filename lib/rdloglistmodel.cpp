@@ -280,11 +280,9 @@ void RDLogListModel::refresh(const QString &logname)
 void RDLogListModel::setFilterSql(const QString &where_sql,
 				  const QString &limit_sql)
 {
-  if((d_filter_where_sql!=where_sql)||(d_filter_limit_sql!=limit_sql)) {
     updateModel(where_sql,limit_sql);
     d_filter_where_sql=where_sql;
     d_filter_limit_sql=limit_sql;
-  }
 }
 
 

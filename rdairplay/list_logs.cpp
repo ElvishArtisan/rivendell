@@ -19,6 +19,7 @@
 //
 
 #include <QMessageBox>
+#include <QScrollBar>
 
 #include <rdadd_log.h>
 #include <rdapplication.h>
@@ -124,8 +125,10 @@ int ListLogs::exec(QString *logname,QString *svcname,RDLogLock **log_lock)
     services_list.push_back(q->value(0).toString());
   }
   delete q;
+  list_log_view->clearSelection();
   list_log_model->setFilterSql(list_filter_widget->whereSql(),
 			       list_filter_widget->limitSql());
+  list_log_view->verticalScrollBar()->setValue(0);
 
   return QDialog::exec();
 }
