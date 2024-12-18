@@ -7,3 +7,4 @@ Name=RDAirPlay
 GenericName=Rivendell On-Air Playout
 Exec=rdairplay
 Icon=rdairplay
+StartupWMClass=rdairplay

@@ -7,3 +7,4 @@ GenericName=Rivendell ALSA Configuration
 Exec=sudo rdalsaconfig --manage-daemons
 Icon=rivendell
 Type=Application
+StartupWMClass=rivendell

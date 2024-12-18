@@ -24944,3 +24944,6 @@
 2024-12-13 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed regression in the build system that caused sections of the
 	HTML version of Operations Guide to be missing.
+2024-12-17 Chris Conkright <cconkrig@gmail.com>
+	* Fixed dock icons in Ubuntu 24.04
+	

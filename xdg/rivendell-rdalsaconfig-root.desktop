@@ -8,3 +8,4 @@ Exec=rdalsaconfig-root --manage-daemons
 Icon=rivendell
 Type=Application
 Terminal=false
+StartupWMClass=rivendell

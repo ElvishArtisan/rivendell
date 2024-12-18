@@ -10,3 +10,4 @@ Type=Application
 Terminal=false
 X-KDE-SubstituteUID=true
 X-KDE-Username=root
+StartupWMClass=rdadmin

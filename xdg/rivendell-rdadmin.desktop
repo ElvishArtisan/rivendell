@@ -8,3 +8,4 @@ Exec=rdadmin
 Icon=rdadmin
 Type=Application
 Terminal=false
+StartupWMClass=rdadmin

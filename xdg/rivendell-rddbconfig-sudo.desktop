@@ -7,3 +7,4 @@ GenericName=Rivendell Database Management
 Exec=sudo rddbconfig
 Icon=rdadmin
 Type=Application
+StartupWMClass=rdadmin

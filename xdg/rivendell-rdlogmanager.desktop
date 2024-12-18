@@ -8,4 +8,4 @@ Exec=rdlogmanager
 Icon=rdlogmanager
 Type=Application
 Terminal=false
-
+StartupWMClass=rdlogmanager

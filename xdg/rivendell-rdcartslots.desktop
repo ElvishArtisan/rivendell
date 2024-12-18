@@ -8,4 +8,4 @@ Exec=rdcartslots
 Icon=rdcartslots
 Type=Application
 Terminal=false
-
+StartupWMClass=rdcartslots

@@ -8,4 +8,4 @@ Exec=rdlogin
 Icon=rivendell
 Type=Application
 Terminal=false
-
+StartupWMClass=rivendell

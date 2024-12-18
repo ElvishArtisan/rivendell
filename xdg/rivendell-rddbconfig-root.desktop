@@ -8,3 +8,4 @@ Exec=rddbconfig-root
 Icon=rdadmin
 Type=Application
 Terminal=false
+StartupWMClass=rdadmin
