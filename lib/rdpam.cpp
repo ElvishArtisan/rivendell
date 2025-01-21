@@ -40,6 +40,10 @@ int RDPamCallback(int num_msg, const struct pam_message **msg,
   pam->CleanupPam();
   *resp=new struct pam_response[num_msg];
   for(int i=0;i<num_msg;i++) {
+    if(resp[i]==NULL) {
+      rda->syslog(LOG_WARNING,"PAM callback supplied NULL context, ignoring");
+      break;
+    }
     resp[i]->resp=new char[256];
     memset(resp[i]->resp,0,256);
     switch(msg[i]->msg_style) {
