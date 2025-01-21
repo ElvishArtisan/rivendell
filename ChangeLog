@@ -24704,3 +24704,5 @@
 	* Incremented the Python API version to 4.2.0.
 2025-01-21 Fred Gleason <fredg@paravelsystems.com>
 	* Added code to the 'RDPam' processor to detection null contexts.
+2025-01-21 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 24.2.0pam0.
