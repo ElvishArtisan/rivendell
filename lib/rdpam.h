@@ -30,11 +30,12 @@ class RDPam
   bool authenticate(const QString &username,const QString &token);
 
  private:
-  void CleanupPam();
+  //  void CleanupPam();
   QString system_pam_service;
   QString system_token;
-  struct pam_response *system_pam_response;
-  int system_pam_response_count;
+  //  struct pam_response *system_pam_response;
+  //  int system_pam_response_count;
+  //  int cleanup_pass;
   friend int RDPamCallback(int num_msg, const struct pam_message **msg,
 			   struct pam_response **resp, void *appdata_ptr);
 };

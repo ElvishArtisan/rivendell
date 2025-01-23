@@ -2,7 +2,7 @@
 //
 // Authenticate a PAM name.
 //
-//   (C) Copyright 2010-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -36,19 +36,17 @@ int RDPamCallback(int num_msg, const struct pam_message **msg,
 		struct pam_response **resp, void *appdata_ptr)
 {
   RDPam *pam=(RDPam *)appdata_ptr;
-
-  pam->CleanupPam();
-  *resp=new struct pam_response[num_msg];
+  int ret=PAM_SUCCESS;
+  
+  *resp=(struct pam_response *)malloc(sizeof(struct pam_response)*num_msg);
+  memset(*resp,0,sizeof(struct pam_response)*num_msg);
   for(int i=0;i<num_msg;i++) {
-    resp[i]->resp=new char[256];
+    resp[i]->resp=(char *)malloc(256);
     memset(resp[i]->resp,0,256);
     switch(msg[i]->msg_style) {
     case PAM_PROMPT_ECHO_OFF:
-      strncpy(resp[i]->resp,pam->system_token.toUtf8(),255);
-      break;
-
     case PAM_PROMPT_ECHO_ON:
-      rda->syslog(LOG_WARNING,"unhandled PAM request: %s",msg[i]->msg);
+      strncpy(resp[i]->resp,pam->system_token.toUtf8(),255);
       break;
 
     case PAM_ERROR_MSG:
@@ -57,14 +55,12 @@ int RDPamCallback(int num_msg, const struct pam_message **msg,
       break;
     }
   }
-  return 0;
+  return ret;
 }
 
 
 RDPam::RDPam(const QString &pam_service)
 {
-  system_pam_response=NULL;
-  system_pam_response_count=0;
   system_pam_service=pam_service;
 }
 
@@ -82,30 +78,14 @@ bool RDPam::authenticate(const QString &username,const QString &token)
   if((err=pam_start(system_pam_service.toUtf8(),username.toUtf8(),&conv,&pamh))!=PAM_SUCCESS) {
     rda->syslog(LOG_WARNING,"PAM error [%s]",pam_strerror(pamh,err));
     pam_end(pamh,err);
-    CleanupPam();
     return false;
   }
   if((err=pam_authenticate(pamh,0))!=PAM_SUCCESS) {
     rda->syslog(LOG_WARNING,"PAM authentication failed [%s]",
 		pam_strerror(pamh,err));
     pam_end(pamh,err);
-    CleanupPam();
     return false;
   }
   pam_end(pamh,err);
-  CleanupPam();
   return true;
-}
-
-
-void RDPam::CleanupPam()
-{
-  if(system_pam_response==NULL) {
-    return;
-  }
-  for(int i=0;i<system_pam_response_count;i++) {
-    delete system_pam_response[i].resp;
-  }
-  delete system_pam_response;
-  system_pam_response=NULL;
 }
