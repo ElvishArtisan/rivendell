@@ -24498,3 +24498,5 @@
 2025-01-23 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'RDPam' that could cause a segfault when processing
 	an authentication.
+2025-01-23 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up dead entries in 'lib/rdpam.h'.

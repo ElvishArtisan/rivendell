@@ -2,7 +2,7 @@
 //
 // Authenticate a PAM name.
 //
-//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,12 +30,8 @@ class RDPam
   bool authenticate(const QString &username,const QString &token);
 
  private:
-  //  void CleanupPam();
   QString system_pam_service;
   QString system_token;
-  //  struct pam_response *system_pam_response;
-  //  int system_pam_response_count;
-  //  int cleanup_pass;
   friend int RDPamCallback(int num_msg, const struct pam_message **msg,
 			   struct pam_response **resp, void *appdata_ptr);
 };
