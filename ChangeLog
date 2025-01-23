@@ -24500,3 +24500,5 @@
 	an authentication.
 2025-01-23 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up dead entries in 'lib/rdpam.h'.
+2025-01-23 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.1.2pam0.
