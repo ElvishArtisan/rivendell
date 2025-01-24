@@ -111,7 +111,7 @@ MainObject::MainObject(QObject *parent)
   //
   // Generate Post
   //
-  webget_post=new RDFormPost(RDFormPost::AutoEncoded,false);
+  webget_post=new RDFormPost(RDFormPost::AutoEncoded,true);
   if(webget_post->error()!=RDFormPost::ErrorOk) {
     rda->syslog(LOG_WARNING,"post parsing error [%s]",
 		webget_post->errorString(webget_post->error()).

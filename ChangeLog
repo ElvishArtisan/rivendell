@@ -24506,3 +24506,6 @@
 	* Fixed a bug in the WebGet service that caused uploads to fail when
 	using an Apache package with 'PrivateTmp=true' set in it's Systemd
 	service definition.
+2025-01-24 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the WebGet service that caused stale temp files to
+	be left behind after processing.
