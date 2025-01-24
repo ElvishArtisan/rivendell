@@ -9,7 +9,8 @@ LimitNOFILE=4096
 Type=simple
 ExecStart=@prefix@/sbin/rdservice
 Environment=JACK_PROMISCUOUS_SERVER=audio
-PrivateTmp=false
+PrivateTmp=true
+JoinsNamespaceOf=@APACHE_PKG@
 Restart=always
 RestartSec=2
 StartLimitInterval=120

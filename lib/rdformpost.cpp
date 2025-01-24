@@ -96,6 +96,10 @@ RDFormPost::RDFormPost(RDFormPost::Encoding encoding,bool auto_delete)
     post_error=RDFormPost::ErrorNoTempDir;
     return;
   }
+  if(chmod(post_tempdir->path().toUtf8(),0755)!=0) {
+    post_error=RDFormPost::ErrorNoTempDir;
+    return;
+  }
 
   //
   // (Perhaps) autodetect the encoding type
@@ -745,7 +749,8 @@ bool RDFormPost::GetMimePart(QString *name,QString *value,bool *is_file,
 	    }
 	    if(f2[0]=="filename") {
 	      *value=post_tempdir->path()+"/"+f2[1].replace("\"","");
-	      fd=open(value->toUtf8(),O_WRONLY|O_CREAT,S_IRUSR|S_IWUSR);
+	      fd=open(value->toUtf8(),O_WRONLY|O_CREAT,
+		      S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH);
 	      *is_file=true;
 	    }
 	  }

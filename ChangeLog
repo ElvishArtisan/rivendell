@@ -24502,3 +24502,7 @@
 	* Cleaned up dead entries in 'lib/rdpam.h'.
 2025-01-23 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.1.2pam0.
+2025-01-24 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the WebGet service that caused uploads to fail when
+	using an Apache package with 'PrivateTmp=true' set in it's Systemd
+	service definition.
