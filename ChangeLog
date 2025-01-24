@@ -24509,3 +24509,5 @@
 2025-01-24 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the WebGet service that caused stale temp files to
 	be left behind after processing.
+2025-01-24 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.1.2pam1.

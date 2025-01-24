@@ -1,11 +1,15 @@
 The NEWS file for the Rivendell package.
 
+Changes:
 -------------------------------------------------------------------------------
-v4.1.2pam0 -- 23 January 2025
+v4.1.2pam1 -- 24 January 2025
 
 Changes:
    Fixed a bug in the PAM plug-ins that could cause a segfault when
    processing an authentication.
+
+   Fixed bugs in the WebGet service that broke uploads on Ubuntu. See the
+   ChangeLog for details.
 
 Database Update:
    This version of Rivendell uses database schema version 371, and will
