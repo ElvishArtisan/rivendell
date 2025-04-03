@@ -24970,3 +24970,6 @@
 2025-03-19 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the 'hpiplayout-test' test harness that caused the
 	build to fail when HPI support was disabled.
+2025-04-03 David Klann <dklann@broadcasttool.com>
+	* Restore RDLibrary cut list display and sorting behavior from
+	v3.x.

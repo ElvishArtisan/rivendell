@@ -28,6 +28,8 @@ RDCutListModel::RDCutListModel(bool use_weighting,QObject *parent)
 {
   d_cart_number=0;
   d_use_weighting=use_weighting;
+  d_sort_column=0;
+  d_sort_order=Qt::AscendingOrder;
 
   //
   // Column Attributes
@@ -39,50 +41,65 @@ RDCutListModel::RDCutListModel(bool use_weighting,QObject *parent)
   if(d_use_weighting) {                      // 00
     d_headers.push_back(tr("Wt"));
     d_alignments.push_back(right);
+    d_column_fields.push_back("`WEIGHT`");
   }
   else {
     d_headers.push_back(tr("Ord"));
     d_alignments.push_back(right);
+    d_column_fields.push_back("`PLAY_ORDER`");
   }
 
   d_headers.push_back(tr("Description"));   // 01
   d_alignments.push_back(left);
+  d_column_fields.push_back("`DESCRIPTION`");
 
   d_headers.push_back(tr("Length"));        // 02
   d_alignments.push_back(right);
+  d_column_fields.push_back("`LENGTH`");
 
   d_headers.push_back(tr("Last Played"));   // 03
   d_alignments.push_back(center);
+  d_column_fields.push_back("`LAST_PLAY_DATETIME`");
 
   d_headers.push_back(tr("# of Plays"));    // 04
   d_alignments.push_back(right);
+  d_column_fields.push_back("`PLAY_COUNTER`");
 
   d_headers.push_back(tr("Source"));        // 05
   d_alignments.push_back(left);
+  d_column_fields.push_back("`SOURCE_HOSTNAME`");
 
   d_headers.push_back(tr("Ingest"));        // 06
   d_alignments.push_back(left);
+  d_column_fields.push_back("`ORIGIN_DATETIME`");
 
   d_headers.push_back(tr("Outcue"));        // 07
   d_alignments.push_back(left);
+  d_column_fields.push_back("`OUTCUE`");
 
   d_headers.push_back(tr("Start Date"));    // 08
   d_alignments.push_back(center);
+  d_column_fields.push_back("`START_DATETIME`");
 
   d_headers.push_back(tr("End Date"));      // 09
   d_alignments.push_back(center);
+  d_column_fields.push_back("`END_DATETIME`");
 
   d_headers.push_back(tr("Daypart Start")); // 10
   d_alignments.push_back(left);
+  d_column_fields.push_back("`START_DAYPART`");
 
   d_headers.push_back(tr("Daypart End"));   // 11
   d_alignments.push_back(left);
+  d_column_fields.push_back("`END_DAYPART`");
 
   d_headers.push_back(tr("Name"));          // 12
   d_alignments.push_back(left);
+  d_column_fields.push_back("`CUT_NAME`");
 
   d_headers.push_back(tr("SHA1"));          // 13
   d_alignments.push_back(left);
+  d_column_fields.push_back("`SHA1_HASH`");
 }
 
 
@@ -137,6 +154,10 @@ QVariant RDCutListModel::data(const QModelIndex &index,int role) const
     case Qt::DisplayRole:
       return d_texts.at(d_row_index.at(row)).at(col);
 
+    case Qt::DecorationRole:
+      // Nothing to do!
+      break;
+
     case Qt::TextAlignmentRole:
       return d_alignments.at(col);
 
@@ -179,7 +200,7 @@ QModelIndex RDCutListModel::addCut(const QString &name)
   d_colors.push_back(d_palette.color(QPalette::Background));
   d_row_index.push_back(d_row_index.size());
   updateCutLine(d_texts.size()-1);
-  sortRows(d_use_weighting);
+  sortRows();
   endResetModel();
 
   for(int i=0;i<d_row_index.size();i++) {
@@ -202,7 +223,7 @@ void RDCutListModel::removeCut(const QModelIndex &row)
       d_row_index[i]--;
     }
   }
-  sortRows(d_use_weighting);
+  sortRows();
   endResetModel();
 }
 
@@ -223,7 +244,6 @@ QModelIndex RDCutListModel::refresh(const QModelIndex &row)
   updateCutLine(row.row());
   return row;
 }
-
 
 QModelIndex RDCutListModel::refresh(const QString &cutname)
 {
@@ -287,12 +307,14 @@ void RDCutListModel::setCartNumber(unsigned cartnum)
       text.push_back(QVariant());
     }
     QString sql=sqlFields()+QString::asprintf("where CART_NUMBER=%u ",cartnum);
+
     if(d_use_weighting) {
       sql+="order by CUT_NAME";
     }
     else {
       sql+="order by PLAY_ORDER";
     }
+
     RDSqlQuery *q=new RDSqlQuery(sql);
     int row=0;
     while(q->next()) {
@@ -319,14 +341,21 @@ void RDCutListModel::updateRow(int row,RDSqlQuery *q)
   //
   // Text Values
   //
+  // Weight or Play Order
   if(d_use_weighting) {
     d_texts[d_row_index.at(row)][0]=QString::asprintf("%d",q->value(1).toInt());
   }
   else {
     d_texts[d_row_index.at(row)][0]=QString::asprintf("%d",q->value(0).toInt());
   }
+
+  // Description
   d_texts[d_row_index.at(row)][1]=q->value(2);
+
+  // Length
   d_texts[d_row_index.at(row)][2]=RDGetTimeLength(q->value(3).toUInt());
+
+  // Last Played
   if(q->value(5).toUInt()>0) {
     d_texts[d_row_index.at(row)][3]=
       rda->shortDateString(q->value(4).toDateTime().date());
@@ -334,7 +363,11 @@ void RDCutListModel::updateRow(int row,RDSqlQuery *q)
   else {
     d_texts[d_row_index.at(row)][3]=tr("Never");
   }
+
+  // Play Count
   d_texts[d_row_index.at(row)][4]=q->value(5).toString();
+
+  // Source
   QString user=q->value(8).toString()+"@";
   if(q->value(8).toString().isEmpty()) {
     user="";
@@ -345,11 +378,17 @@ void RDCutListModel::updateRow(int row,RDSqlQuery *q)
   else {
     d_texts[d_row_index.at(row)][5]=user+q->value(9).toString();
   }
+
+  // Ingest
   if(!q->value(6).toDateTime().isNull()) {
     d_texts[d_row_index.at(row)][6]=q->value(7).toString()+" - "+
       rda->shortDateTimeString(q->value(6).toDateTime());
   }
+  
+  // Outcue
   d_texts[d_row_index.at(row)][7]=q->value(10).toString();
+
+  // Start Date
   if(!q->value(14).toDateTime().isNull()) {
     d_texts[d_row_index.at(row)][8]=
       rda->shortDateTimeString(q->value(14).toDateTime());
@@ -357,6 +396,8 @@ void RDCutListModel::updateRow(int row,RDSqlQuery *q)
   else {
     d_texts[d_row_index.at(row)][8]=tr("None");
   }
+
+  // End Date
   if(!q->value(15).toDateTime().isNull()) {
     d_texts[d_row_index.at(row)][9]=
       rda->shortDateTimeString(q->value(15).toDateTime());
@@ -364,6 +405,8 @@ void RDCutListModel::updateRow(int row,RDSqlQuery *q)
   else {
     d_texts[d_row_index.at(row)][9]=tr("None");
   }
+  
+  // Daypart Start and End
   if(!q->value(17).isNull()) {
     d_texts[d_row_index.at(row)][10]=rda->timeString(q->value(16).toTime());
     d_texts[d_row_index.at(row)][11]=rda->timeString(q->value(17).toTime());
@@ -372,7 +415,11 @@ void RDCutListModel::updateRow(int row,RDSqlQuery *q)
     d_texts[d_row_index.at(row)][10]=tr("None");
     d_texts[d_row_index.at(row)][11]=tr("None");
   }
+  
+  // Cut Name
   d_texts[d_row_index.at(row)][12]=q->value(11).toString();
+
+  // SHA1 Hash
   if(q->value(25).toString().isEmpty()) {
     d_texts[d_row_index.at(row)][13]="["+tr("not available")+"]";
   }
@@ -428,7 +475,7 @@ void RDCutListModel::updateCutLine(int line)
     if(q->first()) {
       beginResetModel();
       updateRow(line,q);
-      sortRows(d_use_weighting);
+      sortRows();
       endResetModel();
     }
   }
@@ -472,34 +519,63 @@ QString RDCutListModel::sqlFields() const
 }
 
 
-void RDCutListModel::sortRows(int use_weighting)
+void RDCutListModel::sortRows()
 {
-  if(use_weighting==1) {  // Sort by cutname
-    bool modified;
-    do {
-      modified=false;
-      for(int i=0;i<(d_row_index.size()-1);i++) {
-	if(d_texts.at(d_row_index.at(i)).at(12).toString()>
-	   d_texts.at(d_row_index.at(i+1)).at(12).toString()) {
-	  d_row_index.swap(i,i+1);
-	  modified=true;
-	}
+  bool modified;
+  do {
+    modified=false;
+    for(int i=0;i<(d_row_index.size()-1);i++) {
+      if(d_texts.at(d_row_index.at(i)).at(d_sort_column).toString()>
+        d_texts.at(d_row_index.at(i+1)).at(d_sort_column).toString()) {
+        d_row_index.swapItemsAt(i,i+1);
+        modified=true;
       }
-    } while(modified);
+     }
+  } while(modified);
+}
+
+
+void RDCutListModel::sort(int col,Qt::SortOrder order)
+{
+  if((col!=d_sort_column)||(order!=d_sort_order)) {
+    d_sort_column=col;
+    d_sort_order=order;
+    sortRows();
   }
-  else {  // Sort by play order
-    bool modified;
-    do {
-      modified=false;
-      for(int i=0;i<(d_row_index.size()-1);i++) {
-	if(d_texts.at(d_row_index.at(i)).at(0).toInt()>
-	   d_texts.at(d_row_index.at(i+1)).at(0).toInt()) {
-	  d_row_index.swap(i,i+1);
-	  modified=true;
-	}
-      }
-    } while(modified);
+  else {
+    d_sort_column=col;
+    d_sort_order=order;
   }
+  updateModel();
+}
+
+
+void RDCutListModel::updateModel()
+{
+  QList<QVariant> text;
+  for(int i=0;i<columnCount();i++) {
+    text.push_back(QVariant());
+  }
+  RDSqlQuery *q=NULL;
+  QString sql=sqlFields()+QString::asprintf("where CART_NUMBER=%u ",d_cart_number);
+  sql+="order by "+d_column_fields.at(d_sort_column);
+  if(d_sort_order==Qt::DescendingOrder) {
+    sql+=" desc";
+  }
+  beginResetModel();
+  d_texts.clear();
+  d_colors.clear();
+  d_row_index.clear();
+  q=new RDSqlQuery(sql);
+  int row=0;
+  while(q->next()) {
+   d_texts.push_back(text);
+   d_colors.push_back(d_palette.color(QPalette::Background));
+   d_row_index.push_back(row++);
+   updateRow(d_texts.size()-1,q);
+  }
+  delete q;
+  endResetModel();
 }
 
 

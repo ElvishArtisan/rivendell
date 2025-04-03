@@ -96,6 +96,8 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   rdcart_cut_view=new RDTableView(this);
   rdcart_cut_view->setSelectionMode(QAbstractItemView::ExtendedSelection);
   rdcart_cut_view->setGeometry(100,0,430,sizeHint().height());
+  rdcart_cut_view->setSortingEnabled(true);
+  rdcart_cut_view->sortByColumn(0,Qt::AscendingOrder);
   rdcart_cut_model=NULL;
   connect(rdcart_cut_view,SIGNAL(doubleClicked(const QModelIndex &)),
 	  this,SLOT(doubleClickedData(const QModelIndex &)));

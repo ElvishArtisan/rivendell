@@ -1205,7 +1205,7 @@ void RDCart::updateLength(bool enforce_length,unsigned length)
 	      if((!active_end_datetime.isNull())&&
 		 (q->value(17).toDateTime()>active_end_datetime)) {
 		active_end_datetime=q->value(17).toDateTime();
-		printf("NEW END: %s\n",active_end_datetime.toString("yyyy-MM-dd hh:mm:ss").toUtf8().constData());
+		// printf("NEW END: %s\n",active_end_datetime.toString("yyyy-MM-dd hh:mm:ss").toUtf8().constData());
 	      }
 	    }
 	    if(q->value(16).isNull()||(q->value(16).toDateTime()<=now)) {

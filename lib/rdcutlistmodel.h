@@ -44,6 +44,8 @@ class RDCutListModel : public QAbstractTableModel
   QVariant headerData(int section,Qt::Orientation orient,
 		      int role=Qt::DisplayRole) const;
   QVariant data(const QModelIndex &index,int role=Qt::DisplayRole) const;
+  void sort(int col,Qt::SortOrder order=Qt::AscendingOrder);
+  void updateModel();
   QString cutName(const QModelIndex &row) const;
   QModelIndex addCut(const QString &name);
   void removeCut(const QModelIndex &index);
@@ -62,7 +64,7 @@ class RDCutListModel : public QAbstractTableModel
   void updateRow(int row,RDSqlQuery *q);
   void updateCutLine(int line);
   QString sqlFields() const;
-  void sortRows(int use_weighting);
+  void sortRows();
 
  private:
   RDCart::Validity ValidateCut(RDSqlQuery *q,unsigned offset,
@@ -78,6 +80,9 @@ class RDCutListModel : public QAbstractTableModel
   QList<int> d_row_index;
   unsigned d_cart_number;
   bool d_use_weighting;
+  QStringList d_column_fields;
+  int d_sort_column;
+  Qt::SortOrder d_sort_order;
 };
 
 
