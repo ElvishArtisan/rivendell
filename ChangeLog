@@ -24970,6 +24970,11 @@
 2025-03-19 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the 'hpiplayout-test' test harness that caused the
 	build to fail when HPI support was disabled.
-2025-04-03 David Klann <dklann@broadcasttool.com>
+2025-04-07 Fred Gleason <fredg@paravelsystems.com>
+	* Dropped the 'RDAIRPLAY.INSTANCE' field from the database.
+	* Incremented the database version to 376.
+2025-04-07 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.3.0int8.
+2025-04-17 David Klann <dklann@broadcasttool.com>
 	* Restore RDLibrary cut list display and sorting behavior from
 	v3.x.
