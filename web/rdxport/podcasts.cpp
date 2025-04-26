@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal -- Podcast services
 //
-//   (C) Copyright 2010-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -917,7 +917,7 @@ void Xport::RemoveImage()  // Remove podcast image from the remote archive
 
 void Xport::RunCdnScript(const QString &cmd,const QStringList &args)
 {
-  QStringList f0=cmd.split("/",QString::KeepEmptyParts);
+  QStringList f0=cmd.split("/",Qt::KeepEmptyParts);
   f0.removeLast();
   QProcess *proc=new QProcess(this);
   QProcessEnvironment env=QProcessEnvironment::systemEnvironment();

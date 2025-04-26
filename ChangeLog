@@ -25026,3 +25026,5 @@
 	* Cleaned up compiler warnings in 'utils/rdsinglestart/'.
 2025-04-26 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up compiler warnings in 'utils/rdsoftkeys/'.
+2025-04-26 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up compiler warnings in 'web/rdxport/'.
