@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for systems using Software Authority Protocol
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -321,7 +321,7 @@ void SoftwareAuthority::DispatchCommand()
       RDSqlQuery::apply(sql);
       return;
     }
-    f0=line_in.split("\t",QString::KeepEmptyParts);
+    f0=line_in.split("\t",Qt::KeepEmptyParts);
 
     //
     // Insert null zero or more '[null]' entries to cover holes
@@ -378,7 +378,7 @@ void SoftwareAuthority::DispatchCommand()
       }
       return;
     }
-    f0=line_in.split("\t",QString::KeepEmptyParts);
+    f0=line_in.split("\t",Qt::KeepEmptyParts);
 
     //
     // Insert null zero or more '[null]' entries to cover holes

@@ -25006,3 +25006,5 @@
 	* Cleaned up compiler warnings in 'rdpanel/'.
 2025-04-26 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up compiler warnings in 'rdselect/'.
+2025-04-26 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up compiler warnings in 'ripcd/'.

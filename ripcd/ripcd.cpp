@@ -2,7 +2,7 @@
 //
 // Rivendell Interprocess Communication Daemon
 //
-//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -242,7 +242,7 @@ void MainObject::newConnectionData()
 void MainObject::notificationReceivedData(const QString &msg,
 					  const QHostAddress &addr)
 {
-  QStringList f0=msg.split(" ",QString::SkipEmptyParts);
+  QStringList f0=msg.split(" ",Qt::SkipEmptyParts);
   if(f0.at(0)=="NOTIFY") {
     RDNotification *notify=new RDNotification();
     if(!notify->read(msg)) {
@@ -494,7 +494,7 @@ bool MainObject::DispatchCommand(RipcdConnection *conn)
   QHostAddress addr;
 
   //printf("DispatchCommand(%s)\n",(const char *)conn->accum.toUtf8());
-  QStringList cmds=conn->accum.split(" ",QString::SkipEmptyParts);
+  QStringList cmds=conn->accum.split(" ",Qt::SkipEmptyParts);
 
   //
   // Common Commands
@@ -632,7 +632,7 @@ bool MainObject::DispatchCommand(RipcdConnection *conn)
       msg+=QString(cmds[i])+" ";
     }
     msg=msg.left(msg.length()-1);
-    QStringList f0=msg.split(" ",QString::SkipEmptyParts);
+    QStringList f0=msg.split(" ",Qt::SkipEmptyParts);
     if(f0.at(0)=="NOTIFY") {
       RDNotification *notify=new RDNotification();
       if(!notify->read(msg)) {
@@ -718,7 +718,7 @@ void MainObject::ReadRmlSocket(QUdpSocket *sock,RDMacro::Role role,
       if(macro.command()==RDMacro::AG) {
 	if(ripc_onair_flag) {
 	  QStringList f0=
-	    QString::fromUtf8(buffer).split(" ",QString::SkipEmptyParts);
+	    QString::fromUtf8(buffer).split(" ",Qt::SkipEmptyParts);
 	  f0.pop_front();
 	  QString rmlstr=f0.join(" ");
 	  macro=RDMacro::fromString(rmlstr);

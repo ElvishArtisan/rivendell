@@ -2,7 +2,7 @@
 //
 // Local RML Macros for the Rivendell Interprocess Communication Daemon
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -634,11 +634,11 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
 	  }
 	}
       }
-      if(system(QString().
-		sprintf("rdpopup -display %s %s %s",
-			rml.arg(0).toUtf8().constData(),
-			rml.arg(1).toUtf8().constData(),
-			RDEscapeString(rml.rollupArgs(2)).toUtf8().constData()).toUtf8().constData())<0) {
+      if(system(QString::asprintf("rdpopup -display %s %s %s",
+				  rml.arg(0).toUtf8().constData(),
+				  rml.arg(1).toUtf8().constData(),
+				  RDEscapeString(rml.rollupArgs(2)).toUtf8().
+				  constData()).toUtf8().constData())<0) {
 	rda->syslog(LOG_WARNING,"RDPopup returned an error");
       }
       exit(0);
