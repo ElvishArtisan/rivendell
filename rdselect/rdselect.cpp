@@ -2,7 +2,7 @@
 //
 // System Selector for Rivendell
 //
-//   (C) Copyright 2012-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -207,7 +207,7 @@ void MainWidget::okData()
   }
 
   QStringList f0=select_configs[rows.first().row()]->filename().
-    split("/",QString::SkipEmptyParts);
+    split("/",Qt::SkipEmptyParts);
   args.push_back(f0.last());
   proc=new QProcess(this);
   proc->start(QString(RD_PREFIX)+"/bin/rdselect_helper",args);
