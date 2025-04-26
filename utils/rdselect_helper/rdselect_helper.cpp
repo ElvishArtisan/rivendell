@@ -2,7 +2,7 @@
 //
 // SETUID helper script for rdselect(1)
 //
-//   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -258,8 +258,8 @@ bool MainObject::ProcessActive(const QStringList &cmds) const
     if(ok) {
       if((f=fopen((QString("/proc/")+dirs[i]+"/cmdline").toUtf8(),"r"))!=NULL) {
 	if(fgets(line,1024,f)!=NULL) {
-	  QStringList f1=QString(line).split(" ",QString::SkipEmptyParts);
-	  QStringList f2=f1[0].split("/",QString::SkipEmptyParts);
+	  QStringList f1=QString(line).split(" ",Qt::SkipEmptyParts);
+	  QStringList f2=f1[0].split("/",Qt::SkipEmptyParts);
 	  cmdline=f2[f2.size()-1];
 	  for(int j=0;j<cmds.size();j++) {
 	    if(cmdline==cmds[j]) {
