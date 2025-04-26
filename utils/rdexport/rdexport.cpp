@@ -2,7 +2,7 @@
 //
 // A Batch Exporter for Rivendell.
 //
-//   (C) Copyright 2016-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2016-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -485,7 +485,7 @@ void MainObject::ExportCut(RDCart *cart,RDCut *cut)
     printf("%s\n",(const char *)f0.at(f0.size()-1).toUtf8());
     if(export_xml) {
       FILE *f=NULL;
-      f0=conv->destinationFile().split(".",QString::KeepEmptyParts);
+      f0=conv->destinationFile().split(".",Qt::KeepEmptyParts);
       QString filename;
       for(int i=0;i<f0.size()-1;i++) {
 	filename+=f0[i]+".";
