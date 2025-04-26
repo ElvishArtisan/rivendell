@@ -2,7 +2,7 @@
 //
 // Edit Rivendell Log Clock
 //
-//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -603,7 +603,7 @@ void EditClock::UpdateClock(int line)
   // Title
   //
   p->drawText((CLOCK_EDGE-
-	       edit_title_metrics->width(edit_clocks_model->clockName()))/2,
+	       edit_title_metrics->horizontalAdvance(edit_clocks_model->clockName()))/2,
 	      50,edit_clocks_model->clockName());
 
   //

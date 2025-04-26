@@ -2,7 +2,7 @@
 //
 // Data model for Rivendell rdlogmanager(1) pre- and post-import event lists
 //
-//   (C) Copyright 2021-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -371,8 +371,8 @@ void ImportCartsModel::save(RDLogLine::TransType first_trans)
     switch(d_event_types.at(i)) {
     case RDLogLine::Cart:
     case RDLogLine::Macro:
-      sql+=QString().
-	sprintf("`CART_NUMBER`=%u,",d_texts.at(i).at(0).toString().toUInt())+
+      sql+=QString::asprintf("`CART_NUMBER`=%u,",
+			     d_texts.at(i).at(0).toString().toUInt())+
 	"`MARKER_COMMENT`=null";
       break;
 
@@ -449,12 +449,12 @@ bool ImportCartsModel::moveUp(const QModelIndex &row)
   if((row.row()==0)||(row.row()>=lineCount())) {
     return false;
   }
-  d_marker_comments.swap(row.row(),row.row()-1);
-  d_texts.swap(row.row(),row.row()-1);
-  d_icons.swap(row.row(),row.row()-1);
-  d_event_types.swap(row.row(),row.row()-1);
-  d_trans_types.swap(row.row(),row.row()-1);
-  d_lengths.swap(row.row(),row.row()-1);
+  d_marker_comments.swapItemsAt(row.row(),row.row()-1);
+  d_texts.swapItemsAt(row.row(),row.row()-1);
+  d_icons.swapItemsAt(row.row(),row.row()-1);
+  d_event_types.swapItemsAt(row.row(),row.row()-1);
+  d_trans_types.swapItemsAt(row.row(),row.row()-1);
+  d_lengths.swapItemsAt(row.row(),row.row()-1);
   //  normalizeTransitions();
   emit dataChanged(createIndex(row.row()-1,0),
 		   createIndex(row.row(),columnCount()-1));
@@ -468,12 +468,12 @@ bool ImportCartsModel::moveDown(const QModelIndex &row)
   if(row.row()>=(lineCount()-1)) {
     return false;
   }
-  d_marker_comments.swap(row.row(),row.row()+1);
-  d_texts.swap(row.row(),row.row()+1);
-  d_event_types.swap(row.row(),row.row()+1);
-  d_trans_types.swap(row.row(),row.row()+1);
-  d_lengths.swap(row.row(),row.row()+1);
-  d_icons.swap(row.row(),row.row()+1);
+  d_marker_comments.swapItemsAt(row.row(),row.row()+1);
+  d_texts.swapItemsAt(row.row(),row.row()+1);
+  d_event_types.swapItemsAt(row.row(),row.row()+1);
+  d_trans_types.swapItemsAt(row.row(),row.row()+1);
+  d_lengths.swapItemsAt(row.row(),row.row()+1);
+  d_icons.swapItemsAt(row.row(),row.row()+1);
   //  normalizeTransitions();
   emit dataChanged(createIndex(row.row(),0),
 		   createIndex(row.row()+1,columnCount()-1));

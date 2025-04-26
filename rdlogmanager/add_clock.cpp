@@ -2,7 +2,7 @@
 //
 // Add a Rivendell Clock
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -152,7 +152,7 @@ int AddClock::exec(QString *clk_name,QString *clk_code)
 
 void AddClock::clockNameChangedData(const QString &str)
 {
-  QStringList f0=str.split(" ",QString::SkipEmptyParts);
+  QStringList f0=str.split(" ",Qt::SkipEmptyParts);
   QString code;
 
   while(f0.size()>3) {

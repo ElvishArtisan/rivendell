@@ -2,7 +2,7 @@
 //
 // Edit Rivendell Log Grid
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -31,6 +31,7 @@
 EditGrid::EditGrid(QString servicename,QWidget *parent)
   : RDDialog(parent)
 {
+  QLocale locale;
   QString sql;
   edit_servicename=servicename;
 
@@ -48,7 +49,7 @@ EditGrid::EditGrid(QString servicename,QWidget *parent)
   QSignalMapper *mapper=new QSignalMapper(this);
   connect(mapper,SIGNAL(mapped(int)),this,SLOT(hourButtonData(int)));
   for(int i=0;i<5;i++) {
-    edit_day_boxes[i]=new QGroupBox(QDate::longDayName(i+1),this);
+    edit_day_boxes[i]=new QGroupBox(locale.standaloneDayName(i+1),this);
     edit_day_boxes[i]->setFont(labelFont());
     edit_day_boxes[i]->setGeometry(5,11+75*i,sizeHint().width()-5,65);
     for(int j=0;j<24;j++) {
@@ -64,7 +65,7 @@ EditGrid::EditGrid(QString servicename,QWidget *parent)
     }
   }
   for(int i=5;i<7;i++) {
-    edit_day_boxes[i]=new QGroupBox(QDate::longDayName(i+1),this);
+    edit_day_boxes[i]=new QGroupBox(locale.standaloneDayName(i+1),this);
     edit_day_boxes[i]->setFont(labelFont());
     edit_day_boxes[i]->setGeometry(5,41+75*i,sizeHint().width()-5,65);
     for(int j=0;j<24;j++) {

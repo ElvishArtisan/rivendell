@@ -2,7 +2,7 @@
 //
 // Calendar widget.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,6 +30,7 @@
 SvcRec::SvcRec(const QString &svcname,QWidget *parent)
   : RDWidget(parent)
 {
+  QLocale locale;
   QString sql;
   RDSqlQuery *q;
   pick_service_name=svcname;
@@ -61,7 +62,7 @@ SvcRec::SvcRec(const QString &svcname,QWidget *parent)
   pick_month_box=new QComboBox(this);
   pick_month_box->setGeometry(0,0,120,26);
   for(int i=1;i<13;i++) {
-    pick_month_box->insertItem(pick_month_box->count(),QDate::longMonthName(i));
+    pick_month_box->insertItem(pick_month_box->count(),locale.standaloneMonthName(i));
   }
   connect(pick_month_box,SIGNAL(activated(int)),
 	  this,SLOT(monthActivatedData(int)));

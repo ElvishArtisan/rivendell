@@ -2,7 +2,7 @@
 //
 // Widget for editing a LogManager event
 //
-//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -836,7 +836,7 @@ void EventWidget::resizeEvent(QResizeEvent *e)
   // First Cart Transition Type
   event_firsttrans_label->
     setGeometry(5,140,
-		labelFontMetrics()->width(event_firsttrans_label->text()+" "),
+		labelFontMetrics()->horizontalAdvance(event_firsttrans_label->text()+" "),
 		20);
   event_firsttrans_box->setGeometry(event_firsttrans_label->geometry().x()+
 				    event_firsttrans_label->geometry().width(),
@@ -844,11 +844,11 @@ void EventWidget::resizeEvent(QResizeEvent *e)
   event_firsttrans_unit->
     setGeometry(event_firsttrans_box->geometry().x()+
 		event_firsttrans_box->geometry().width()+5,140,
-		labelFontMetrics()->width(tr("transition.")),20);
+		labelFontMetrics()->horizontalAdvance(tr("transition.")),20);
   // Default Transition Type
   event_defaulttrans_label->
     setGeometry(5,161,
-		labelFontMetrics()->width(event_defaulttrans_label->text()+" "),
+		labelFontMetrics()->horizontalAdvance(event_defaulttrans_label->text()+" "),
 		20);
   event_defaulttrans_box->
     setGeometry(event_defaulttrans_label->geometry().x()+
@@ -856,7 +856,7 @@ void EventWidget::resizeEvent(QResizeEvent *e)
   event_defaulttrans_unit->
     setGeometry(event_defaulttrans_box->geometry().x()+
 		event_defaulttrans_box->geometry().width()+5,161,
-		labelFontMetrics()->width(tr("transition.")),20);
+		labelFontMetrics()->horizontalAdvance(tr("transition.")),20);
 
   //
   // Enforcing Length Section
@@ -868,12 +868,12 @@ void EventWidget::resizeEvent(QResizeEvent *e)
   event_autofill_slop_box->setGeometry(200,210,15,15);
   event_autofill_slop_label1->
     setGeometry(220,210,
-		labelFontMetrics()->width(event_autofill_slop_label1->text()),
+		labelFontMetrics()->horizontalAdvance(event_autofill_slop_label1->text()),
 		15);
   event_autofill_slop_label->
     setGeometry(event_autofill_slop_label1->geometry().x()+
 	   event_autofill_slop_label1->geometry().width(),210,
-	   labelFontMetrics()->width(event_autofill_slop_label->text()+" "),15);
+	   labelFontMetrics()->horizontalAdvance(event_autofill_slop_label->text()+" "),15);
   event_autofill_slop_edit->
     setGeometry(event_autofill_slop_label->geometry().x()+
 		event_autofill_slop_label->geometry().width(),207,60,22);
