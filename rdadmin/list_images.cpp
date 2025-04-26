@@ -2,7 +2,7 @@
 //
 // Manage a collection of pixmap images
 //
-//   (C) Copyright 2020-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2020-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -120,7 +120,7 @@ void ListImages::addData()
     //
     // Upload the image
     //
-    f0=filename.split(".",QString::SkipEmptyParts);
+    f0=filename.split(".",Qt::SkipEmptyParts);
     if(!list_feed->postImage(img_id)) {
       QMessageBox::warning(this,"RDAdmin - "+tr("Upload Error"),
 			   tr("Image upload failed!")+"\n"+
@@ -142,7 +142,7 @@ void ListImages::addData()
     //
     // Save import path
     //
-    f0=filename.split("/",QString::SkipEmptyParts);
+    f0=filename.split("/",Qt::SkipEmptyParts);
     f0.removeLast();
     list_file_dir=f0.join("/");
   }

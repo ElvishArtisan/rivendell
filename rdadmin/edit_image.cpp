@@ -2,7 +2,7 @@
 //
 // View a pixmap image and modify its metadata
 //
-//   (C) Copyright 2020-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2020-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,8 +22,9 @@
 #include <rdfeed.h>
 #include <rdescape_string.h>
 
-#include <qapplication.h>
-#include <qdesktopwidget.h>
+#include <QApplication>
+#include <QGuiApplication>
+#include <QScreen>
 
 #include "edit_image.h"
 
@@ -212,9 +213,7 @@ QSize EditImage::FittedSize(const QSize &img_size) const
 
 QSize EditImage::MaxFriendlyImageSize() const
 {
-  QDesktopWidget *dt=QApplication::desktop();
-  QSize dsize(dt->screenGeometry(dt->screenNumber(this)).size());
-
+  QSize dsize=QGuiApplication::screens().at(0)->size();
   return QSize(dsize.width()-EDIT_IMAGE_WIDTH_OFFSET,
 	       dsize.height()-EDIT_IMAGE_HEIGHT_OFFSET-100);
 }
