@@ -25033,3 +25033,5 @@
 2025-04-26 Fred Gleason <fredg@paravelsystems.com>
 	* Disabled 'stringop-overflow' warnings in
 	'apis/rivwebcapi/rivwebcapi/' to avoid false warnings.
+2025-04-26 Fred Gleason <fredg@paravelsystems.com>
+	* Restored SHA1 hash code in 'lib/rdhash.cpp'.

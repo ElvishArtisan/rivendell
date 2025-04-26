@@ -33,10 +33,6 @@
 
 QString __RDSha1Hash_MakePasswordHash(const QString &secret,const QString &salt)
 {
-  //
-  // FIXME: Reimplement this using modern methods!
-  //
-  /*
   SHA_CTX ctx;
   unsigned char md[SHA_DIGEST_LENGTH];
 
@@ -50,17 +46,11 @@ QString __RDSha1Hash_MakePasswordHash(const QString &secret,const QString &salt)
   }
   
   return ret;
-  */
-  return QString();
 }
 
 
 QString RDSha1HashData(const QByteArray &data)
 {
-  //
-  // FIXME: Reimplement this using modern methods!
-  //
-  /*
   SHA_CTX ctx;
   unsigned char md[SHA_DIGEST_LENGTH];
   QString ret;
@@ -73,17 +63,11 @@ QString RDSha1HashData(const QByteArray &data)
   }
   
   return ret;
-  */
-  return QString();
 }
 
 
 QString RDSha1HashFile(const QString &filename,bool throttle)
 {
-  //
-  // FIXME: Reimplement this using modern methods!
-  //
-  /*
   QString ret;
   SHA_CTX ctx;
   int fd=-1;
@@ -109,8 +93,6 @@ QString RDSha1HashFile(const QString &filename,bool throttle)
   }
 
   return ret;
-  */
-  return QString();
 }
 
 
