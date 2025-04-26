@@ -2,7 +2,7 @@
 //
 // Network server for caed(8).
 //
-//   (C) Copyright 2019-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2019-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -228,7 +228,7 @@ bool CaeServer::ProcessCommand(int id,const QString &cmd)
   CaeServerConnection *conn=cae_connections.value(id);
   bool ok=false;
   QString cmdstr=cmd;
-  QStringList f0=cmd.split(" ",QString::SkipEmptyParts);
+  QStringList f0=cmd.split(" ",Qt::SkipEmptyParts);
 
   if(f0.size()==0) {
     return false;
