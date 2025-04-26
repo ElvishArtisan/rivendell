@@ -2,7 +2,7 @@
 //
 // A Dedicated Cart Wall Utility for Rivendell.
 //
-//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -333,13 +333,11 @@ void MainWidget::resizeEvent(QResizeEvent *e)
 
 void MainWidget::wheelEvent(QWheelEvent *e)
 {
-  if(e->orientation()==Qt::Vertical) {
-    if(e->delta()>0) {
-      panel_panel->panelDown();
-    }
-    if(e->delta()<0) {
-      panel_panel->panelUp();
-    }
+  if(e->angleDelta().y()>0) {
+    panel_panel->panelDown();
+  }
+  if(e->angleDelta().y()<0) {
+    panel_panel->panelUp();
   }
   e->accept();
 }
