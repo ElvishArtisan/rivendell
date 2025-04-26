@@ -25014,3 +25014,5 @@
 	* Cleaned up compiler warnings in 'utils/alsaconfig/'.
 2025-04-26 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up compiler warnings in 'utils/rdclilogedit/'.
+2025-04-26 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up compiler warnings in 'utils/rddbmgr/'.

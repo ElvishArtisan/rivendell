@@ -2,7 +2,7 @@
 //
 // Rivendell database management utility
 //
-//   (C) Copyright 2018-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -175,7 +175,7 @@ MainObject::MainObject(QObject *parent)
     if(cmd->key(i)=="--set-version") {
       bool ok2=false;
       set_version=cmd->value(i);
-      QStringList f0=set_version.split(".",QString::KeepEmptyParts);
+      QStringList f0=set_version.split(".",Qt::KeepEmptyParts);
       if(f0.size()==3) {
 	ok2=true;
 	for(int i=0;i<3;i++) {

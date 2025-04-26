@@ -2,7 +2,7 @@
 //
 // Routines for --check for rddbmgr(8)
 //
-//   (C) Copyright 2018-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -776,8 +776,7 @@ void MainObject::CheckOrphanedCuts() const
 	//
 	// FIXME: Regen Cart Data
 	//
-	sql=QString().
-	  sprintf("update `CUTS` set `CART_NUMBER`=%u where `CUT_NAME`='%s'",
+	sql=QString::asprintf("update `CUTS` set `CART_NUMBER`=%u where `CUT_NAME`='%s'",
 		  q1->value(0).toUInt(),
 		  q->value(0).toString().toUtf8().constData());
 	q2=new QSqlQuery(sql);
