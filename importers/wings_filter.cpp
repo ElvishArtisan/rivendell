@@ -2,7 +2,7 @@
 //
 // A Library import filter for the Airforce Wings system
 //
-//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -154,8 +154,8 @@ bool MainObject::ImportCut(RDGroup *group,struct WingsRecord *rec,
     delete group;
     return false;
   }
-  destfile=new RDWaveFile(RDCut::pathName(QString().sprintf
-					   ("%06u_001",cartnum)));
+  destfile=
+    new RDWaveFile(RDCut::pathName(QString::asprintf("%06u_001",cartnum)));
   switch(wavefile->getFormatTag()) {
       case WAVE_FORMAT_PCM:
 	format=0;
