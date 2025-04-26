@@ -2,7 +2,7 @@
 //
 // System Monitor for Rivendell
 //
-//   (C) Copyright 2012-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,9 +22,11 @@
 
 #include <QApplication>
 #include <QDir>
+#include <QGuiApplication>
 #include <QMessageBox>
 #include <QPainter>
 #include <QProcess>
+#include <QScreen>
 #include <QTranslator>
 
 #include <dbversion.h>
@@ -59,7 +61,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   mon_rdselect_x=0;
   mon_rdselect_y=0;
 
-  rdt=new RDTranslator("rdmonitor",this);  // Load translations
+  rdt=new RDTranslator("rdmonitor",true,this);  // Load translations
 
   //
   // Read Command Options
@@ -289,8 +291,16 @@ void MainWidget::SetSummaryState(bool state)
 
 void MainWidget::SetPosition()
 {
-  int width=mon_metrics->width(mon_name_label->text())+40;
-  QRect geo=mon_desktop_widget->screenGeometry(mon_config->screenNumber());
+  int width=mon_metrics->horizontalAdvance(mon_name_label->text())+40;
+  //  QRect geo=mon_desktop_widget->screenGeometry(mon_config->screenNumber());
+  QRect geo;
+  QList<QScreen *> screens=QGuiApplication::screens();
+  if(screens.size()>mon_config->screenNumber()) {
+    geo=screens.at(mon_config->screenNumber())->geometry();
+  }
+  else {
+    geo=screens.at(0)->geometry();
+  }
   QRect main_geo=mon_desktop_widget->geometry();
   int x=0;
   int dx=mon_config->xOffset();
@@ -435,7 +445,7 @@ void MainWidget::SetStatusPosition()
 {
   QFontMetrics *fm=new QFontMetrics(mon_status_label->font());
   int h=10+fm->height();
-  int w=10+fm->width(mon_status_label->text());
+  int w=10+fm->horizontalAdvance(mon_status_label->text());
   QRect g=geometry();
 
   switch(mon_config->position()) {

@@ -25000,3 +25000,5 @@
 	* Cleaned up compiler warnings in 'rdlogin/'.
 2025-04-26 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up compiler warnings in 'rdlogmanager/'.
+2025-04-26 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up compiler warnings in 'rdmonitor/'.

@@ -2,7 +2,7 @@
 //
 // Dialog to set RDMonitor screen position.
 //
-//   (C) Copyright 2013-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,6 +17,8 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
+
+#include <QGuiApplication>
 
 #include "positiondialog.h"
 
@@ -101,7 +103,7 @@ QSizePolicy PositionDialog::sizePolicy() const
 int PositionDialog::exec()
 {
   pos_screen_number_box->clear();
-  for(int i=0;i<pos_desktop_widget->numScreens();i++) {
+  for(int i=0;i<QGuiApplication::screens().size();i++) {
     pos_screen_number_box->insertItem(i,QString::asprintf("%d",i));
     if(i==pos_config->screenNumber()) {
       pos_screen_number_box->setCurrentIndex(i);
