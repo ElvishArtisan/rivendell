@@ -2,7 +2,7 @@
 //
 // Test the RDTimeEngine class
 //
-//   (C) Copyright 2021-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -56,7 +56,7 @@ MainObject::MainObject(QObject *parent)
       int id;
       QTime time;
       QStringList f0=
-	rda->cmdSwitch()->value(i).split(":",QString::SkipEmptyParts);
+	rda->cmdSwitch()->value(i).split(":",Qt::SkipEmptyParts);
       if(f0.size()!=4) {
 	fprintf(stderr,"timeengine_test: invalid argument format\n");
 	exit(1);
