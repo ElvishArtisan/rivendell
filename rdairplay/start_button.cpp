@@ -2,7 +2,7 @@
 //
 // The Start Button for RDAirPlay Rivendell
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -178,19 +178,19 @@ void StartButton::paintEvent(QPaintEvent *e)
   if(start_mode!=StartButton::Disabled) {
     p->setPen(QColor(Qt::color1));
     p->setFont(labelFont());
-    p->drawText((w-p->fontMetrics().width(start_title))/2,
+    p->drawText((w-p->fontMetrics().horizontalAdvance(start_title))/2,
 		22,start_title);
     p->drawLine(10,24,70,24);
     if(!start_time.isNull()) {
-      p->drawText((w-p->fontMetrics().width(rda->timeString(start_time)))/2,40,
+      p->drawText((w-p->fontMetrics().horizontalAdvance(rda->timeString(start_time)))/2,40,
 		  rda->timeString(start_time));
     }
     else {
-      p->drawText((w-p->fontMetrics().width("--:--:--"))/2,
+      p->drawText((w-p->fontMetrics().horizontalAdvance("--:--:--"))/2,
 		  40,"--:--:--");
     }
     p->setFont(bigLabelFont());
-    p->drawText((w-p->fontMetrics().width(start_port))/2,70,start_port);
+    p->drawText((w-p->fontMetrics().horizontalAdvance(start_port))/2,70,start_port);
   }
   p->end();
   delete p;

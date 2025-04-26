@@ -2,7 +2,7 @@
 //
 // On Air Playout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -835,7 +835,7 @@ void LogLineBox::mouseMoveEvent(QMouseEvent *e)
 				      line_group_label->palette().
 				      color(QPalette::Foreground));
 	drag->setMimeData(cd);
-	drag->setPixmap(*(line_icon_label->pixmap()));
+	drag->setPixmap(line_icon_label->pixmap((Qt::ReturnByValueConstant)0));
 	drag->exec();
       }
     }

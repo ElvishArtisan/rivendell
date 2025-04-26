@@ -2,7 +2,7 @@
 //
 // A wall-clock widget with date.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -113,9 +113,9 @@ void WallClock::tickClock()
     p.setPen(QColor(text_color));
   }
   p.setFont(subLabelFont());
-  p.drawText((size().width()-2-p.fontMetrics().width(date))/2,22,date);
+  p.drawText((size().width()-2-p.fontMetrics().horizontalAdvance(date))/2,22,date);
   p.setFont(bannerFont());
-  p.drawText((size().width()-2-p.fontMetrics().width(accum))/2,48,accum);
+  p.drawText((size().width()-2-p.fontMetrics().horizontalAdvance(accum))/2,48,accum);
   p.end();
   setIcon(*pix);
 }

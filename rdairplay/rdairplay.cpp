@@ -2,7 +2,7 @@
 //
 // The On Air Playout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2024 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -1854,13 +1854,11 @@ void MainWidget::resizeEvent(QResizeEvent *e)
 
 void MainWidget::wheelEvent(QWheelEvent *e)
 {
-  if((air_panel!=NULL)&&(e->orientation()==Qt::Vertical)) {
-    if(e->delta()>0) {
-      air_panel->soundPanelWidget()->panelDown();
-    }
-    if(e->delta()<0) {
-      air_panel->soundPanelWidget()->panelUp();
-    }
+  if(e->angleDelta().y()>0) {
+    air_panel->soundPanelWidget()->panelDown();
+  }
+  if(e->angleDelta().y()<0) {
+    air_panel->soundPanelWidget()->panelUp();
   }
   e->accept();
 }

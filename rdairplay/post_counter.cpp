@@ -2,7 +2,7 @@
 //
 // The post counter widget for Rivendell
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -169,10 +169,10 @@ void PostCounter::UpdateDisplay()
   p->setPen(QColor(text_color));
   p->setFont(subLabelFont());
   p->drawText((size().width()-2-p->
-	       fontMetrics().width(point))/2,32,point);
+	       fontMetrics().horizontalAdvance(point))/2,32,point);
   p->setFont(bannerFont());
   p->drawText((size().width()-2-p->
-	       fontMetrics().width(state))/2,58,state);
+	       fontMetrics().horizontalAdvance(state))/2,58,state);
   p->end();
   delete p;
   setIcon(pix);    

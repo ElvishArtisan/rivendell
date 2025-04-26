@@ -2,7 +2,7 @@
 //
 // The mode display widget for RDAirPlay in Rivendell
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -101,10 +101,10 @@ void ModeDisplay::WriteMap()
       p->setPen(QColor(Qt::color1));
       p->setFont(subLabelFont());
       p->drawText((sizeHint().width()-2-p->fontMetrics().
-		   width(tr("Operating Mode")))/2,
+		   horizontalAdvance(tr("Operating Mode")))/2,
 		  22,tr("Operating Mode"));
       p->setFont(bannerFont());
-      p->drawText((sizeHint().width()-2-p->fontMetrics().width(tr("LiveAssist")))/2,
+      p->drawText((sizeHint().width()-2-p->fontMetrics().horizontalAdvance(tr("LiveAssist")))/2,
 		  48,tr("LiveAssist"));
       setPalette(live_assist_color);
       break;
@@ -115,10 +115,10 @@ void ModeDisplay::WriteMap()
       p->setPen(QColor(Qt::color1));
       p->setFont(subLabelFont());
       p->drawText((sizeHint().width()-2-p->fontMetrics().
-		   width(tr("Operating Mode")))/2,
+		   horizontalAdvance(tr("Operating Mode")))/2,
 		  22,tr("Operating Mode"));
       p->setFont(bannerFont());
-      p->drawText((sizeHint().width()-2-p->fontMetrics().width(tr("Automatic")))/2,
+      p->drawText((sizeHint().width()-2-p->fontMetrics().horizontalAdvance(tr("Automatic")))/2,
 		  48,tr("Automatic"));
       setPalette(auto_color);
       break;
@@ -129,10 +129,10 @@ void ModeDisplay::WriteMap()
       p->setPen(QColor(Qt::color1));
       p->setFont(subLabelFont());
       p->drawText((sizeHint().width()-2-p->fontMetrics().
-		   width(tr("Operating Mode")))/2,
+		   horizontalAdvance(tr("Operating Mode")))/2,
 		  22,tr("Operating Mode"));
       p->setFont(bannerFont());
-      p->drawText((sizeHint().width()-2-p->fontMetrics().width(tr("Manual")))/2,
+      p->drawText((sizeHint().width()-2-p->fontMetrics().horizontalAdvance(tr("Manual")))/2,
 		  48,tr("Manual"));
       setPalette(manual_color);
       break;
@@ -149,10 +149,10 @@ void ModeDisplay::WriteMap()
       p->setPen(QColor(Qt::color1));
       p->setFont(subLabelFont());
       p->drawText((sizeHint().width()-2-p->fontMetrics().
-		   width(tr("Operating Mode")))/2,
+		   horizontalAdvance(tr("Operating Mode")))/2,
 		  12,tr("Operating Mode"));
       p->setFont(bannerFont());
-      p->drawText((sizeHint().width()-2-p->fontMetrics().width(tr("LiveAssist")))/2,
+      p->drawText((sizeHint().width()-2-p->fontMetrics().horizontalAdvance(tr("LiveAssist")))/2,
 		  38,tr("LiveAssist"));
       setPalette(live_assist_color);
       break;
@@ -163,10 +163,10 @@ void ModeDisplay::WriteMap()
       p->setPen(QColor(Qt::color1));
       p->setFont(subLabelFont());
       p->drawText((sizeHint().width()-2-p->fontMetrics().
-		   width(tr("Operating Mode")))/2,
+		   horizontalAdvance(tr("Operating Mode")))/2,
 		  12,tr("Operating Mode"));
       p->setFont(bannerFont());
-      p->drawText((sizeHint().width()-2-p->fontMetrics().width(tr("Automatic")))/2,
+      p->drawText((sizeHint().width()-2-p->fontMetrics().horizontalAdvance(tr("Automatic")))/2,
 		  39,tr("Automatic"));
       setPalette(auto_color);
       break;
@@ -177,10 +177,10 @@ void ModeDisplay::WriteMap()
       p->setPen(QColor(Qt::color1));
       p->setFont(subLabelFont());
       p->drawText((sizeHint().width()-2-p->fontMetrics().
-		   width(tr("Operating Mode")))/2,
+		   horizontalAdvance(tr("Operating Mode")))/2,
 		  12,tr("Operating Mode"));
       p->setFont(bannerFont());
-      p->drawText((sizeHint().width()-2-p->fontMetrics().width(tr("Manual")))/2,
+      p->drawText((sizeHint().width()-2-p->fontMetrics().horizontalAdvance(tr("Manual")))/2,
 		  38,tr("Manual"));
       setPalette(manual_color);
       break;
@@ -192,7 +192,7 @@ void ModeDisplay::WriteMap()
     str=tr("A1")+": "+RDAirPlayConf::logModeText(mode_mode[1]);
     p->drawText(10,sizeHint().height()-2-5,str);
     str=tr("A2")+": "+RDAirPlayConf::logModeText(mode_mode[2]);
-    p->drawText(sizeHint().width()-p->fontMetrics().width(str)-10,sizeHint().height()-2-5,str);
+    p->drawText(sizeHint().width()-p->fontMetrics().horizontalAdvance(str)-10,sizeHint().height()-2-5,str);
   }
   p->end();
   delete p;

@@ -2,7 +2,7 @@
 //
 // Message Widget for RDAirPlay Rivendell
 //
-//   (C) Copyright 2024 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2024-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -168,7 +168,7 @@ void MessageWidget::resizeEvent(QResizeEvent *e)
 QFont MessageWidget::MessageFont(QString str) const
 {
   for(int i=(MESSAGE_FONT_QUANTITY-1);i>=0;i--) {
-    if(d_message_metrics[i]->width(str)<MESSAGE_WIDGET_WIDTH) {
+    if(d_message_metrics[i]->horizontalAdvance(str)<MESSAGE_WIDGET_WIDTH) {
       return d_message_fonts[i];
     }
   }

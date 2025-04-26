@@ -2,7 +2,7 @@
 //
 // The button log widget for RDAirPlay
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -72,24 +72,14 @@ ButtonLog::ButtonLog(RDLogPlay *log,int id,RDAirPlayConf *conf,bool allow_pause,
   QSignalMapper *mapper=new QSignalMapper(this);
   connect(mapper,SIGNAL(mapped(int)),
 	  this,SLOT(startButton(int)));
-  for(int i=0;i<BUTTON_PLAY_BUTTONS;i++) {
+  for(int i=0;i<BUTTON_TOTAL_BUTTONS;i++) {
     log_line_box[i]=new LogLineBox(conf,this);
-    log_line_box[i]->setMode(LogLineBox::Full);
-    log_line_box[i]->setAcceptDrops(rda->station()->enableDragdrop());
-    log_line_box[i]->setAllowDrags(rda->station()->enableDragdrop());
-    connect(log_line_box[i],SIGNAL(doubleClicked(int)),
-	    this,SLOT(boxDoubleClickedData(int)));
-    connect(log_line_box[i],SIGNAL(cartDropped(int,RDLogLine *)),
-	    this,SLOT(cartDroppedData(int,RDLogLine *)));
-    log_start_button[i]=new StartButton(allow_pause,this);
-    mapper->setMapping(log_start_button[i],i);
-    connect(log_start_button[i],SIGNAL(clicked()),
-	    mapper,SLOT(map()));
-  }
-
-  for(int i=BUTTON_PLAY_BUTTONS;i<BUTTON_TOTAL_BUTTONS;i++) {
-    log_line_box[i]=new LogLineBox(conf,this);
-    log_line_box[i]->setMode(LogLineBox::Half);
+    if(i<BUTTON_PLAY_BUTTONS) {
+      log_line_box[i]->setMode(LogLineBox::Full);
+    }
+    else {
+      log_line_box[i]->setMode(LogLineBox::Half);
+    }
     log_line_box[i]->setAcceptDrops(rda->station()->enableDragdrop());
     log_line_box[i]->setAllowDrags(rda->station()->enableDragdrop());
     connect(log_line_box[i],SIGNAL(doubleClicked(int)),
@@ -716,8 +706,7 @@ void ButtonLog::UpdateButtons()
 	}
       }
       else {
-	log_start_button[i]->
-	  setMode(StartButton::Disabled,logline->cartType());
+	log_start_button[i]->setMode(StartButton::Disabled,RDCart::All);
       }
     }
   }

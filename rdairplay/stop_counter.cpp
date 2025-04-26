@@ -2,7 +2,7 @@
 //
 // The stop counter widget for Rivendell
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -123,7 +123,7 @@ void StopCounter::UpdateTime()
 						 QPalette::Background));
     p->setPen(QColor(text_color));
     p->setFont(subLabelFont());
-    p->drawText((sizeHint().width()-2-p->fontMetrics().width(stop_text))/2,32,
+    p->drawText((sizeHint().width()-2-p->fontMetrics().horizontalAdvance(stop_text))/2,32,
 		stop_text);
     p->setFont(bannerFont());
     if (msecs < 0){
@@ -137,12 +137,12 @@ void StopCounter::UpdateTime()
     if(stop_running) {
       //      text=rda->timeString(QTime(0,0,1).addMSecs(msecs));
       text=QTime(0,0,1).addMSecs(msecs).toString("hh:mm:ss");
-      p->drawText((sizeHint().width()-2-p->fontMetrics().width(text))/2,59,
+      p->drawText((sizeHint().width()-2-p->fontMetrics().horizontalAdvance(text))/2,59,
 		  text);
     }
     else {
       p->drawText((sizeHint().width()-2-p->
-		   fontMetrics().width(tr("Stopped")))/2,59,
+		   fontMetrics().horizontalAdvance(tr("Stopped")))/2,59,
 		  tr("Stopped"));
     }
     p->end();

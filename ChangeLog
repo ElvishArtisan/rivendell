@@ -24988,3 +24988,5 @@
 	* Cleaned up compiler warnings in 'importers/'.
 2025-04-26 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up compiler warnings in 'rdadmin/'.
+2025-04-26 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up compiler warnings in 'rdairplay/'.
