@@ -2,7 +2,7 @@
 //
 // CD Disk Ripper Dialog for Rivendell.
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -743,7 +743,7 @@ void DiskRipper::mediaChangedData()
     rip_cutnames.push_back(QString());
     rip_end_track.push_back(-1);
     rip_wave_datas.push_back(new RDWaveData());
-    rip_wave_datas.back()->setTitle(tr("Track")+QString().sprintf(" %d",i));
+    rip_wave_datas.back()->setTitle(tr("Track")+QString::asprintf(" %d",i));
   }
   rip_disc_record.clear();
   rip_cdrom->setCddbRecord(&rip_disc_record);
@@ -1206,7 +1206,7 @@ QModelIndexList DiskRipper::SortRows(const QModelIndexList &rows) const
     modified=false;
     for(int i=1;i<rows.size();i++) {
       if(rows.at(index.at(i-1)).row()>rows.at(index.at(i)).row()) {
-	index.swap(i-1,i);
+	index.swapItemsAt(i-1,i);
 	modified=true;
       }
     }
