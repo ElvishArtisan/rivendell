@@ -24996,3 +24996,5 @@
 	* Cleaned up compiler warnings in 'rdlibrary/'.
 2025-04-26 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up compiler warnings in 'rdlogedit/'.
+2025-04-26 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up compiler warnings in 'rdlogin/'.

@@ -2,7 +2,7 @@
 //
 // The User Login/Logout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -100,8 +100,8 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
     "order by `LOGIN_NAME`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    if((20+fm.width(q->value(0).toString()))>login_user_width) {
-      login_user_width=20+fm.width(q->value(0).toString());
+    if((20+fm.horizontalAdvance(q->value(0).toString()))>login_user_width) {
+      login_user_width=20+fm.horizontalAdvance(q->value(0).toString());
     }
   }
   delete q;
