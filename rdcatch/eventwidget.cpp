@@ -2,7 +2,7 @@
 //
 // Widget for setting basic event parameters in rdcatch(1)
 //
-//   (C) Copyright 2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2022-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -253,7 +253,7 @@ void EventWidget::fromRecording(unsigned record_id)
 
 void EventWidget::locationActivatedData(const QString &str)
 {
-  QStringList f0=str.split(":",QString::KeepEmptyParts);
+  QStringList f0=str.split(":",Qt::KeepEmptyParts);
 
   switch(f0.size()) {
   case 1:
