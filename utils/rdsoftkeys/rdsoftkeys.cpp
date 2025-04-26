@@ -2,7 +2,7 @@
 //
 // A utility for sending RML Commands
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -88,8 +88,8 @@ MainWidget::MainWidget(RDConfig *config,Qt::WindowFlags f)
     profile->intValue("SoftKeys","Columns",RDSOFTKEYS_DEFAULT_COLUMNS);
   int col=0;
   unsigned row=0;
-  while(!(rmlcmd=profile->stringValue("SoftKeys",QString().
-				   sprintf("Command%d",n+1),"")).isEmpty()) {
+  while(!(rmlcmd=profile->stringValue("SoftKeys",
+			   QString::asprintf("Command%d",n+1),"")).isEmpty()) {
     for(int i=0;i<rmlcmd.length();i++) {
       if(rmlcmd.at(i)==':') {
 	key_macros.push_back(rmlcmd.right(rmlcmd.length()-(i+1)));
