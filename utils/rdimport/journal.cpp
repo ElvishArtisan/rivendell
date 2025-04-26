@@ -2,7 +2,7 @@
 //
 // E-mail file importation actions
 //
-//   (C) Copyright 2020-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2020-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -38,13 +38,13 @@ void Journal::addSuccess(const QString &groupname,QString filename,
   QString body;
   RDGroup *group=new RDGroup(groupname);
   QStringList addrs=
-    group->notifyEmailAddress().split(",",QString::SkipEmptyParts);
+    group->notifyEmailAddress().split(",",Qt::SkipEmptyParts);
   if(!rda->user()->emailAddress().isEmpty()) {
     addrs.push_back(rda->user()->emailAddress());
   }
 
   if(addrs.size()>0) {
-    filename=filename.split("/",QString::SkipEmptyParts).last();
+    filename=filename.split("/",Qt::SkipEmptyParts).last();
     if(c_send_immediately) {
       subject=QObject::tr("Rivendell import for file")+": "+filename;
       body+=QObject::tr("Rivendell File Import Report")+"\n";
@@ -88,13 +88,13 @@ void Journal::addFailure(const QString &groupname,QString filename,
   QString body;
   RDGroup *group=new RDGroup(groupname);
   QStringList addrs=
-    group->notifyEmailAddress().split(",",QString::SkipEmptyParts);
+    group->notifyEmailAddress().split(",",Qt::SkipEmptyParts);
   if(!rda->user()->emailAddress().isEmpty()) {
     addrs.push_back(rda->user()->emailAddress());
   }
 
   if(addrs.size()>0) {
-    filename=filename.split("/",QString::SkipEmptyParts).last();
+    filename=filename.split("/",Qt::SkipEmptyParts).last();
     if(c_send_immediately) {
       subject=QObject::tr("Rivendell import FAILURE for file")+": "+filename;
       body+=QObject::tr("Rivendell File Import Report")+"\n";
@@ -153,7 +153,7 @@ void Journal::sendAll()
 	}
 
 	from_addr=rda->system()->originEmailAddress();
-	to_addrs=it.key().split(",",QString::SkipEmptyParts);
+	to_addrs=it.key().split(",",Qt::SkipEmptyParts);
 	subject=QObject::tr("Rivendell import report")+"\n";
 
 	body+=QObject::tr("Rivendell File Import Report")+"\n";
@@ -197,7 +197,7 @@ void Journal::sendAll()
 	QStringList to_addrs;
 
 	from_addr=rda->system()->originEmailAddress();
-	to_addrs=it.key().split(",",QString::SkipEmptyParts);
+	to_addrs=it.key().split(",",Qt::SkipEmptyParts);
 	if(!rda->user()->emailAddress().isEmpty()) {
 	  to_addrs.push_back(rda->user()->emailAddress());
 	}

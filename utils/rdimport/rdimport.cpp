@@ -2,7 +2,7 @@
 //
 // A Batch Importer for Rivendell.
 //
-//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -522,7 +522,7 @@ MainObject::MainObject(QObject *parent)
     ErrorExit(RDApplication::ExitInvalidOption);
   }
   if((import_cart_number>0)&&import_by_isci) {
-    Log(LOG_ERR,QString().sprintf("rdimport: --to-cart and --by-isci are mutually exclusive\n"));
+    Log(LOG_ERR,QString::asprintf("rdimport: --to-cart and --by-isci are mutually exclusive\n"));
     ErrorExit(RDApplication::ExitInvalidOption);
   }
  
@@ -1236,7 +1236,7 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
     if(isci.isEmpty()) {
       isci=import_string_isci.trimmed();
       if(isci.isEmpty()) {
-	Log(LOG_WARNING,QString().sprintf(" File \"%s\" has no ISCI code, skipping...\n",
+	Log(LOG_WARNING,QString::asprintf(" File \"%s\" has no ISCI code, skipping...\n",
 					  RDGetBasePart(filename).toUtf8().constData()));
 	wavefile->closeWave();
 	import_failed_imports++;
@@ -1259,7 +1259,7 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
       *cartnum=wd->cartNumber();
     }
     if(*cartnum==0) {
-      Log(LOG_WARNING,QString().sprintf(" File \"%s\" has no ISCI xreference entry, skipping...\n",
+      Log(LOG_WARNING,QString::asprintf(" File \"%s\" has no ISCI xreference entry, skipping...\n",
 					RDGetBasePart(filename).toUtf8().constData()));
       wavefile->closeWave();
       import_failed_imports++;
@@ -1271,7 +1271,7 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
       return MainObject::FileBad;
     }
     if(!effective_group->cartNumberValid(*cartnum)) {
-      Log(LOG_WARNING,QString().sprintf(" File \"%s\" cart number %06u is is not valid in group \"%s\", skipping...\n",
+      Log(LOG_WARNING,QString::asprintf(" File \"%s\" cart number %06u is is not valid in group \"%s\", skipping...\n",
 		     RDGetBasePart(filename).toUtf8().constData(),
 		     *cartnum,
 		     effective_group->name().toUtf8().constData()));
@@ -1296,7 +1296,7 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
       *cartnum=effective_group->nextFreeCart();
     }
     if(*cartnum==0) {
-      Log(LOG_ERR,QString().sprintf("rdimport: no free carts available in specified group\n"));
+      Log(LOG_ERR,QString::asprintf("rdimport: no free carts available in specified group\n"));
       wavefile->closeWave();
       import_failed_imports++;
       import_failed_imports++;
@@ -1345,8 +1345,7 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
 	  "`TITLE`='"+RDEscapeString(wavedata->title())+"'";
 	q=new RDSqlQuery(sql);
 	if(q->first()) {
-	  QString err_msg=QString().
-	    sprintf(" File \"%s\" has duplicate title \"%s\", skipping...\n",
+	  QString err_msg=QString::asprintf(" File \"%s\" has duplicate title \"%s\", skipping...\n",
 		    RDGetBasePart(filename).toUtf8().constData(),
 		    wavedata->title().toUtf8().constData());
 	  Log(LOG_WARNING,err_msg);
@@ -1406,8 +1405,7 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   settings->setAutotrimLevel(import_autotrim_level/100);
   conv->setDestinationSettings(settings);
   conv->setUseMetadata(import_update_metadata);
-  Log(LOG_INFO,QString().
-      sprintf(" Importing file \"%s\" [%s] to cart %06u ... ",
+  Log(LOG_INFO,QString::asprintf(" Importing file \"%s\" [%s] to cart %06u ... ",
 	      RDGetBasePart(filename).toUtf8().constData(),
 	      wavedata->title().trimmed().toUtf8().constData(),
 	      *cartnum));
@@ -2440,7 +2438,7 @@ bool MainObject::LoadIsciXref(QString *err_msg,const QString &filename)
     }
     else {
       *err_msg=tr("invalid/corrupt data at line")+
-	QString().sprintf("%d",3+fields.size());
+	QString::asprintf("%d",3+fields.size());
       return false;
     }
   }
