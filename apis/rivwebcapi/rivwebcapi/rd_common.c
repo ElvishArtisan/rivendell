@@ -146,9 +146,9 @@ size_t strlcpy(char * dest, const char* src, size_t bufsize)
 *****************************************************************/
 size_t RD_Cnv_tm_to_DTString(struct tm *tmptr,char * dest)
 {
-    char theyear[5];
-    char themonth[3];
-    char theday[3];
+    char theyear[12];
+    char themonth[12];
+    char theday[12];
     char thehr[3];
     char themin[3];
     char thesec[3];
@@ -156,8 +156,8 @@ size_t RD_Cnv_tm_to_DTString(struct tm *tmptr,char * dest)
     char minus[2] = "-";
     char colon_sep[4] = ":";
     char T_sep[2] = "T";
-    char offsethr[3];
-    char offsetmin[3];
+    char offsethr[11];
+    char offsetmin[11];
     double offsetfromutc;
     int offhr = 0;
     int offmin = 0;
@@ -178,13 +178,13 @@ size_t RD_Cnv_tm_to_DTString(struct tm *tmptr,char * dest)
     double divby = 3600;
     hold_min = fmod(offsetfromutc,divby);
     offmin = (int) (hold_min / 60);
-    sprintf(offsethr,"%02d",abs(offhr));
-    sprintf(offsetmin,"%02d",abs(offmin));
+    snprintf(offsethr,11,"%02d",abs(offhr));
+    snprintf(offsetmin,11,"%02d",abs(offmin));
     val = tmptr->tm_year + 1900;
-    sprintf(theyear,"%d",val);
+    snprintf(theyear,12,"%04d",val);
     val = tmptr->tm_mon + 1;
-    sprintf(themonth,"%02d",val);
-    sprintf(theday,"%02d",tmptr->tm_mday);
+    snprintf(themonth,12,"%02d",val);
+    snprintf(theday,12,"%02d",tmptr->tm_mday);
     sprintf(thehr,"%02d",tmptr->tm_hour);
     sprintf(themin,"%02d",tmptr->tm_min);
     sprintf(thesec,"%02d",tmptr->tm_sec);
