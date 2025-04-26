@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Log Manager Event
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -1116,7 +1116,7 @@ void RDEventLine::GenerateMusicSchedEvent(__RDEventLine_GeneratorState *state,
   RDSchedCartList *schedCL=new RDSchedCartList();
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    QStringList codes=q->value(3).toString().split("|",QString::SkipEmptyParts);
+    QStringList codes=q->value(3).toString().split("|",Qt::SkipEmptyParts);
     if((codes.size()>0)&&(codes.last()==".")) {
       codes.removeLast();
     }

@@ -481,7 +481,7 @@ void RDCutListModel::sortRows(int use_weighting)
       for(int i=0;i<(d_row_index.size()-1);i++) {
 	if(d_texts.at(d_row_index.at(i)).at(12).toString()>
 	   d_texts.at(d_row_index.at(i+1)).at(12).toString()) {
-	  d_row_index.swap(i,i+1);
+	  d_row_index.swapItemsAt(i,i+1);
 	  modified=true;
 	}
       }
@@ -494,7 +494,7 @@ void RDCutListModel::sortRows(int use_weighting)
       for(int i=0;i<(d_row_index.size()-1);i++) {
 	if(d_texts.at(d_row_index.at(i)).at(0).toInt()>
 	   d_texts.at(d_row_index.at(i+1)).at(0).toInt()) {
-	  d_row_index.swap(i,i+1);
+	  d_row_index.swapItemsAt(i,i+1);
 	  modified=true;
 	}
       }

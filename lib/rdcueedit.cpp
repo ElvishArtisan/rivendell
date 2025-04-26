@@ -639,10 +639,10 @@ void RDCueEdit::wheelEvent(QWheelEvent *e)
       edit_play_deck->pause();
     }
     if(edit_shift_pressed) {
-      edit_slider->setValue(edit_slider->value()+(e->delta()*10)/12);
+      edit_slider->setValue(edit_slider->value()+(e->angleDelta().y()*10)/12);
       }
     else {
-      edit_slider->setValue(edit_slider->value()+(e->delta()*100)/12);
+      edit_slider->setValue(edit_slider->value()+(e->angleDelta().y()*100)/12);
       }
     sliderChangedData(edit_slider->value());
   }

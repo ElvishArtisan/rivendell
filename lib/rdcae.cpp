@@ -204,12 +204,12 @@ bool RDCae::connectHost(QString *err_msg)
   }
   usleep(100000);
   if(count>0) {
-    SendCommand(QString().sprintf("PW %s!",
+    SendCommand(QString::asprintf("PW %s!",
 				  cae_config->password().toUtf8().constData()));
     for(int i=0;i<RD_MAX_CARDS;i++) {
-      SendCommand(QString().sprintf("TS %d!",i));
+      SendCommand(QString::asprintf("TS %d!",i));
       for(int j=0;j<RD_MAX_PORTS;j++) {
-	SendCommand(QString().sprintf("IS %d %d!",i,j));
+	SendCommand(QString::asprintf("IS %d %d!",i,j));
       }
     }
   }
@@ -226,7 +226,7 @@ bool RDCae::connectHost(QString *err_msg)
 
 void RDCae::enableMetering(QList<int> *cards)
 {
-  QString cmd=QString().sprintf("ME %u",0xFFFF&cae_meter_port);
+  QString cmd=QString::asprintf("ME %u",0xFFFF&cae_meter_port);
   for(int i=0;i<cards->size();i++) {
     if(cards->at(i)>=0) {
       bool found=false;
@@ -236,7 +236,7 @@ void RDCae::enableMetering(QList<int> *cards)
 	}
       }
       if(!found) {
-	cmd+=QString().sprintf(" %d",cards->at(i));
+	cmd+=QString::asprintf(" %d",cards->at(i));
       }
     }
   }
@@ -247,7 +247,7 @@ void RDCae::enableMetering(QList<int> *cards)
 unsigned RDCae::loadPlay(unsigned card,unsigned port,const QString &name)
 {
   unsigned serial=next_serial_number++;
-  SendCommand(QString().sprintf("LP %u %u %u %s!",
+  SendCommand(QString::asprintf("LP %u %u %u %s!",
 				serial,card,port,name.toUtf8().constData()));
   bool found=false;
   for(QMap<unsigned,__RDCae_PlayChannel *>::const_iterator it=cae_play_channels.begin();it!=cae_play_channels.end();it++) {
@@ -267,7 +267,7 @@ unsigned RDCae::loadPlay(unsigned card,unsigned port,const QString &name)
 
 void RDCae::unloadPlay(unsigned serial)
 {
-  SendCommand(QString().sprintf("UP %u!",serial));
+  SendCommand(QString::asprintf("UP %u!",serial));
 }
 
 
@@ -276,7 +276,7 @@ void RDCae::positionPlay(unsigned serial,int pos)
   if(pos<0) {
     return;
   }
-  SendCommand(QString().sprintf("PP %u %u!",serial,pos));
+  SendCommand(QString::asprintf("PP %u %u!",serial,pos));
 }
 
 
@@ -288,14 +288,14 @@ void RDCae::play(unsigned serial,unsigned length,int speed,bool pitch)
     pitch_state=1;
   }
   //printf("      play: %s\n",QTime::currentTime().toString("hh:mm:ss.zzz").toUtf8().constData());
-  SendCommand(QString().sprintf("PY %u %u %d %d!",
+  SendCommand(QString::asprintf("PY %u %u %d %d!",
 				serial,length,speed,pitch_state));
 }
 
 
 void RDCae::stopPlay(unsigned serial)
 {
-  SendCommand(QString().sprintf("SP %u!",serial));
+  SendCommand(QString::asprintf("SP %u!",serial));
 }
 
 
@@ -303,7 +303,7 @@ void RDCae::loadRecord(int card,int stream,QString name,
 		       AudioCoding coding,int chan,int samp_rate,
 		       int bit_rate)
 {
-  SendCommand(QString().sprintf("LR %d %d %d %d %d %d %s!",
+  SendCommand(QString::asprintf("LR %d %d %d %d %d %d %s!",
 				card,stream,(int)coding,chan,samp_rate,
 				bit_rate,name.toUtf8().constData()));
 }
@@ -311,87 +311,86 @@ void RDCae::loadRecord(int card,int stream,QString name,
 
 void RDCae::unloadRecord(int card,int stream)
 {
-  SendCommand(QString().sprintf("UR %d %d!",card,stream));
+  SendCommand(QString::asprintf("UR %d %d!",card,stream));
 }
 
 
 void RDCae::record(int card,int stream,unsigned length,int threshold)
 {
-  SendCommand(QString().sprintf("RD %d %d %u %d!",
+  SendCommand(QString::asprintf("RD %d %d %u %d!",
 				card,stream,length,threshold));
 }
 
 
 void RDCae::stopRecord(int card,int stream)
 {
-  SendCommand(QString().sprintf("SR %d %d!",card,stream));
+  SendCommand(QString::asprintf("SR %d %d!",card,stream));
 }
 
 
 void RDCae::setClockSource(int card,RDCae::ClockSource src)
 {
-  SendCommand(QString().sprintf("CS %d %d!",card,src));
+  SendCommand(QString::asprintf("CS %d %d!",card,src));
 }
 
 
 void RDCae::setInputVolume(int card,int stream,int level)
 {
-  SendCommand(QString().sprintf("IV %d %d %d!",card,stream,level));
+  SendCommand(QString::asprintf("IV %d %d %d!",card,stream,level));
 }
 
 
 void RDCae::setOutputVolume(unsigned serial,int level)
 {
-  SendCommand(QString().sprintf("OV %u %d!",serial,level));
+  SendCommand(QString::asprintf("OV %u %d!",serial,level));
 }
 
 
 void RDCae::fadeOutputVolume(unsigned serial,int level,int length)
 {
-  SendCommand(QString().sprintf("FV %u %d %d!",serial,level,length));
+  SendCommand(QString::asprintf("FV %u %d %d!",serial,level,length));
 }
 
 
 void RDCae::setInputLevel(int card,int port,int level)
 {
-  SendCommand(QString().sprintf("IL %d %d %d!",card,port,level));
+  SendCommand(QString::asprintf("IL %d %d %d!",card,port,level));
 }
 
 
 void RDCae::setOutputLevel(int card,int port,int level)
 {
-  SendCommand(QString().sprintf("OL %d %d %d!",card,port,level));
+  SendCommand(QString::asprintf("OL %d %d %d!",card,port,level));
 }
 
 
 void RDCae::setInputMode(int card,int stream,RDCae::ChannelMode mode)
 {
-  SendCommand(QString().sprintf("IM %d %d %d!",card,stream,mode));
+  SendCommand(QString::asprintf("IM %d %d %d!",card,stream,mode));
 }
 
 
 void RDCae::setOutputMode(int card,int stream,RDCae::ChannelMode mode)
 {
-  SendCommand(QString().sprintf("OM %d %d %d!",card,stream,mode));
+  SendCommand(QString::asprintf("OM %d %d %d!",card,stream,mode));
 }
 
 
 void RDCae::setInputVOXLevel(int card,int stream,int level)
 {
-  SendCommand(QString().sprintf("IX %d %d %d!",card,stream,level));
+  SendCommand(QString::asprintf("IX %d %d %d!",card,stream,level));
 }
 
 
 void RDCae::setInputType(int card,int port,RDCae::SourceType type)
 {
-  SendCommand(QString().sprintf("IT %d %d %d!",card,port,type));
+  SendCommand(QString::asprintf("IT %d %d %d!",card,port,type));
 }
 
 
 void RDCae::setPassthroughVolume(int card,int in_port,int out_port,int level)
 {
-  SendCommand(QString().
-	      sprintf("AL %d %d %d %d!",card,in_port,out_port,level));
+  SendCommand(QString::asprintf("AL %d %d %d %d!",card,in_port,out_port,level));
 }
 
 
@@ -442,7 +441,7 @@ unsigned RDCae::playPosition(unsigned serial)
 
 void RDCae::requestTimescale(int card)
 {
-  SendCommand(QString().sprintf("TS %d!",card));
+  SendCommand(QString::asprintf("TS %d!",card));
 }
 
 
@@ -495,7 +494,7 @@ void RDCae::SendCommand(QString cmd)
 void RDCae::DispatchCommand(const QString &cmd)
 {
   __RDCae_PlayChannel *chan=NULL;
-  QStringList cmds=cmd.split(" ",QString::SkipEmptyParts);
+  QStringList cmds=cmd.split(" ",Qt::SkipEmptyParts);
   bool was_processed=false;
   bool ok=false;
 

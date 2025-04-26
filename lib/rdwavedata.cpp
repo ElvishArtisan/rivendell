@@ -21,6 +21,7 @@
 #include <QObject>
 
 #include "rdconf.h"
+#include "rddatedecode.h"
 #include "rdwavedata.h"
 
 RDWaveData::RDWaveData()
@@ -1224,10 +1225,10 @@ QString RDWaveData::dump() const
   ret+="\n";
   for(int i=1;i<8;i++) {
     if(dayOfWeek(i)) {
-      ret+=QDate::longDayName(i)+": true\n";
+      ret+=RDLongDayName(i)+": true\n";
     }
     else {
-      ret+=QDate::longDayName(i)+": false\n";
+      ret+=RDLongDayName(i)+": false\n";
     }
   }
   ret+="daypartStartTime: ";

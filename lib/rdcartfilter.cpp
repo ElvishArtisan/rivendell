@@ -571,7 +571,7 @@ void RDCartFilter::resizeEvent(QResizeEvent *e)
   d_group_box->setGeometry(70,38,140,24);
   d_codes_label->setGeometry(215,40,115,20);
   d_codes_box->setGeometry(335,38,120,24);
-  d_and_codes_label->setGeometry(455,40,labelFontMetrics()->width(d_and_codes_label->text()),20);
+  d_and_codes_label->setGeometry(455,40,labelFontMetrics()->horizontalAdvance(d_and_codes_label->text()),20);
   d_and_codes_box->setGeometry(d_and_codes_label->x()+d_and_codes_label->width(),38,120,24);
   d_matches_label->setGeometry(660,40,100,20);
   d_matches_edit->setGeometry(765,40,55,20);
@@ -602,7 +602,7 @@ QString RDCartFilter::phraseFilter(QString phrase, bool incl_cuts)
     //
     // Separate Out Cart Numbers
     //
-    QStringList words=phrase.split(" ",QString::KeepEmptyParts);
+    QStringList words=phrase.split(" ",Qt::KeepEmptyParts);
     for(int i=0;i<words.size();i++) {
       unsigned cartnum=words.at(i).toUInt(&ok);
       if(ok&&(cartnum>0)&&(cartnum<=RD_MAX_CART_NUMBER)) {

@@ -2,7 +2,7 @@
 //
 // Delete a file from the audio store via the Rivendell Web Service
 //
-//   (C) Copyright 2010-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -151,7 +151,7 @@ RDDelete::ErrorCode RDDelete::runDelete(const QString &username,
   }
 
   if(conv_target_url.scheme().toLower()=="ftp"||conv_target_url.scheme().toLower()=="ftps") {
-    QStringList f0=conv_target_url.path().split("/",QString::SkipEmptyParts);
+    QStringList f0=conv_target_url.path().split("/",Qt::SkipEmptyParts);
     filename=f0.last();
     f0.removeLast();
     if(f0.size()>0) {

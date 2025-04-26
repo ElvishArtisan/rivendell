@@ -2,7 +2,7 @@
 //
 // Data model for Rivendell hosts
 //
-//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -368,7 +368,7 @@ void RDStationListModel::updateRow(int row,RDSqlQuery *q)
   }
   else {
     texts.push_back(q->value(8).toString().
-		    split("/",QString::SkipEmptyParts).last());
+		    split("/",Qt::SkipEmptyParts).last());
   }
   icons.push_back(QVariant());
 
@@ -378,7 +378,7 @@ void RDStationListModel::updateRow(int row,RDSqlQuery *q)
   }
   else {
     texts.push_back(q->value(9).toString().
-		    split("/",QString::SkipEmptyParts).last());
+		    split("/",Qt::SkipEmptyParts).last());
   }
   icons.push_back(QVariant());
 

@@ -90,9 +90,9 @@ void RDBiPushButton::paintEvent(QPaintEvent *e)
     p->setPen(palette().color(QPalette::Disabled,QPalette::ButtonText));
   }
   p->setFont(buttonFont());
-  p->drawText((w-m->width(d_top_text))/2,h/2-5,d_top_text);
+  p->drawText((w-m->horizontalAdvance(d_top_text))/2,h/2-5,d_top_text);
   p->drawLine(10,h/2,w-10,h/2);
-  p->drawText((w-m->width(d_bottom_text))/2,h/2+m->height(),d_bottom_text);
+  p->drawText((w-m->horizontalAdvance(d_bottom_text))/2,h/2+m->height(),d_bottom_text);
   p->end();
   delete p;
 }

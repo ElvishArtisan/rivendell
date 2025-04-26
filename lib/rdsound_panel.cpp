@@ -2,7 +2,7 @@
 //
 // The sound panel widget.
 //
-//   (C) Copyright 2002-2024 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -991,13 +991,11 @@ void RDSoundPanel::resizeEvent(QResizeEvent *e)
 
 void RDSoundPanel::wheelEvent(QWheelEvent *e)
 {
-  if(e->orientation()==Qt::Vertical) {
-    if(e->delta()>0) {
-      panelDown();
-    }
-    if(e->delta()<0) {
-      panelUp();
-    }
+  if(e->angleDelta().y()>0) {
+    panelDown();
+  }
+  if(e->angleDelta().y()<0) {
+    panelUp();
   }
   e->accept();
 }
@@ -1094,8 +1092,7 @@ bool RDSoundPanel::PlayAudio(RDPanelButton *button,RDCart *cart,bool hookmode,in
   bool timescale=false;
   int button_deck=GetFreeButtonDeck();
   if(button_deck<0) {
-    LogLine(QString().
-	    sprintf("No button deck available, playout aborted.  Cart=%u",
+    LogLine(QString::asprintf("No button deck available, playout aborted. Cart=%u",
 		    cart->number()));
     return false;
   }
@@ -1119,8 +1116,7 @@ bool RDSoundPanel::PlayAudio(RDPanelButton *button,RDCart *cart,bool hookmode,in
   if(!button->playDeck()->setCart(&logline,true)) {
     delete button->playDeck();
     button->setPlayDeck(NULL);
-    LogLine(QString().
-	    sprintf("No CAE stream available, playout aborted.  Cart=%u",
+    LogLine(QString::asprintf("No CAE stream available, playout aborted. Cart=%u",
 		    cart->number()));
     return false;
   }
@@ -1659,8 +1655,7 @@ void RDSoundPanel::Playing(int id)
   panel_active_buttons[id]->setColor(RDPANEL_PLAY_BACKGROUND_COLOR);
   LogPlayEvent(panel_active_buttons[id]->playDeck()->cart()->number(),
 	       panel_active_buttons[id]->playDeck()->cut()->cutNumber());
-  LogLine(QString().
-	  sprintf("Playout started: id=%d  cart=%u  cut=%d",
+  LogLine(QString::asprintf("Playout started: id=%d  cart=%u  cut=%d",
 		  id,panel_active_buttons[id]->playDeck()->cart()->number(),
 		  panel_active_buttons[id]->playDeck()->cut()->cutNumber()));
 }
@@ -1675,8 +1670,7 @@ void RDSoundPanel::Paused(int id)
   }
   panel_active_buttons[id]->setState(true);
   panel_active_buttons[id]->setColor(RDPANEL_PAUSED_BACKGROUND_COLOR);
-  LogLine(QString().
-	  sprintf("Playout paused: id=%d  cart=%u  cut=%d",
+  LogLine(QString::asprintf("Playout paused: id=%d  cart=%u  cut=%d",
 		  id,panel_active_buttons[id]->playDeck()->cart()->number(),
 		  panel_active_buttons[id]->playDeck()->cut()->cutNumber()));
 }

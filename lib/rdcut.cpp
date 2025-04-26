@@ -1120,7 +1120,7 @@ void RDCut::setMetadata(RDWaveData *data) const
     sql+=QString::asprintf("`START_POINT`=%d,",data->startPos());
   }
   if(data->endPos()>=0) {
-    if(data->endPos()>length()) {
+    if((unsigned)data->endPos()>length()) {
       sql+=QString::asprintf("`END_POINT`=%d,",length());
     }
     else {
@@ -1205,7 +1205,7 @@ void RDCut::setMetadata(RDWaveData *data) const
   }
   if(data->startDate().isValid() && 
      (data->startDate()>QDate(1900,1,1))&&(data->endDate().year()<8000)) {
-    QDateTime startDateTime(data->startDate());
+    QDateTime startDateTime=data->startDate().startOfDay();
     if(data->startTime().isValid()) {
       startDateTime.setTime(data->startTime());
     }
@@ -1215,7 +1215,7 @@ void RDCut::setMetadata(RDWaveData *data) const
     sql+=QString("`START_DATETIME`=")+
       RDCheckDateTime(startDateTime,"yyyy-MM-dd hh:mm:ss")+",";      
     if(data->endDate().isValid()&&(data->endDate().year()<8000)) {
-      QDateTime endDateTime(data->endDate());      
+      QDateTime endDateTime=data->endDate().startOfDay();
       if(data->endTime().isValid()) {
         endDateTime.setTime(data->endTime());
       }

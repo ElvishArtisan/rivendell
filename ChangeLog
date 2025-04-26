@@ -24977,3 +24977,5 @@
 	* Incremented the package version to 4.3.0int8.
 2025-04-24 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'RDTimeArray' class for optimization and debugging.
+2025-04-26 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up compiler warning in 'lib/'.

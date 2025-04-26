@@ -2,7 +2,7 @@
 //
 // Decode Rivendell Date Macros
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -31,6 +31,10 @@ QString RDDateDecode(QString str,const QDate &date,RDStation *station,
 QString RDDateTimeDecode(QString str,const QDateTime &datetime,
 			 RDStation *station,RDConfig *config,
 			 const QString &svcname="");
+QString RDShortDayName(int dow);
+QString RDLongDayName(int dow);
+QString RDShortMonthName(int month);
+QString RDLongMonthName(int month);
 
 
 #endif  // RDDATEDECODE

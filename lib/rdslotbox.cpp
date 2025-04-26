@@ -2,7 +2,7 @@
 //
 // Cart slot label widget for RDCartSlot
 //
-//   (C) Copyright 2012-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -507,7 +507,8 @@ void RDSlotBox::mousePressEvent(QMouseEvent *e)
 		     line_group_label->
 		     palette().color(QPalette::Foreground));
     drag->setMimeData(cd);
-    drag->setPixmap(*line_icon_label->pixmap());
+    //    drag->setPixmap(*line_icon_label->pixmap());
+    drag->setPixmap(line_icon_label->pixmap((Qt::ReturnByValueConstant)0));
     drag->exec();
   }
 }

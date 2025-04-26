@@ -2,7 +2,7 @@
 //
 //   Container Class for Compact Disc Metadata
 //
-//   (C) Copyright 2003-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2003-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -32,7 +32,7 @@ void RDDiscRecord::clear()
 {
   for(int i=0;i<CDROM_LEADOUT;i++) {
     disc_track_title[RDDiscRecord::LocalSource][i]=
-      QObject::tr("Track")+QString().sprintf(" %d",i+1);
+      QObject::tr("Track")+QString::asprintf(" %d",i+1);
     disc_track_title[RDDiscRecord::RemoteSource][i]="";
   }
   for(int i=0;i<RDDiscRecord::LastSource;i++) {
@@ -405,7 +405,7 @@ QString RDDiscRecord::summary(RDDiscRecord::DataSource src) const
       discArtist(src)+"<br>\n";
   }
   for(int i=0;i<tracks();i++) {
-    ret+="<strong>"+QObject::tr("Track")+QString().sprintf(" %2d: ",i+1)+
+    ret+="<strong>"+QObject::tr("Track")+QString::asprintf(" %2d: ",i+1)+
       "</strong>"+trackTitle(src,i)+"<br>\n";
   }
 
@@ -415,7 +415,7 @@ QString RDDiscRecord::summary(RDDiscRecord::DataSource src) const
 
 QString RDDiscRecord::dump(RDDiscRecord::DataSource src) const
 {
-  QString ret=QString().sprintf("RDDiscRecord::dump(%u)\n",src);
+  QString ret=QString::asprintf("RDDiscRecord::dump(%u)\n",src);
 
   ret+=QString::asprintf("tracks: %d\n",tracks());
   ret+=QString::asprintf("discLength: %d\n",discLength());

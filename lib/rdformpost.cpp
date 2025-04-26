@@ -2,7 +2,7 @@
 //
 // Handle data from an HTML form.
 //
-//   (C) Copyright 2009-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2009-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -628,7 +628,7 @@ void RDFormPost::LoadUrlEncoding(char first)
   lines=QString(post_data).split("&");
 
   for(int i=0;i<lines.size();i++) {
-    line=lines[i].split("=",QString::KeepEmptyParts);
+    line=lines[i].split("=",Qt::KeepEmptyParts);
     for(int j=2;j<line.size();j++) {
       line[1]+="="+line.at(j);
     }
@@ -737,7 +737,7 @@ bool RDFormPost::GetMimePart(QString *name,QString *value,bool *is_file,
       if(f0[0].toLower()=="content-disposition") {
 	QStringList f1=f0[1].split(";");
 	for(int i=0;i<f1.size();i++) {
-	  QStringList f2=f1[i].trimmed().split("=",QString::KeepEmptyParts);
+	  QStringList f2=f1[i].trimmed().split("=",Qt::KeepEmptyParts);
 	  for(int j=2;j<f2.size();j++) {
 	    f2[1]+="="+f2.at(j);
 	  }

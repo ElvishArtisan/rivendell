@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Deck.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -41,8 +41,7 @@ RDDeck::RDDeck(QString station,unsigned channel,bool create)
     q=new RDSqlQuery(sql);
     if(q->size()!=1) {
       delete q;
-      sql=QString().
-        sprintf("insert into `DECKS` set ")+
+      sql=QString::asprintf("insert into `DECKS` set ")+
 	"`STATION_NAME`='"+RDEscapeString(deck_station)+"',"+
 	QString::asprintf("`CHANNEL`=%d",deck_channel);
       RDSqlQuery::apply(sql);

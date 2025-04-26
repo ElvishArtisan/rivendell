@@ -614,8 +614,7 @@ unsigned RDCartSlot::SelectCart(const QString &svcname,unsigned msecs)
     "`CART`.`FORCED_LENGTH` "+     // 01
     "from "+
     "`AUTOFILLS` left join `CART` on `AUTOFILLS`.`CART_NUMBER`=`CART`.`NUMBER`"+
-    QString().
-    sprintf(" where (`CART`.`FORCED_LENGTH`>%u)&&(`CART`.`FORCED_LENGTH`<%u)&&",
+    QString::asprintf(" where (`CART`.`FORCED_LENGTH`>%u)&&(`CART`.`FORCED_LENGTH`<%u)&&",
 	    (unsigned)((double)msecs*RD_TIMESCALE_MIN),
 	    (unsigned)((double)msecs*RD_TIMESCALE_MAX))+
     "(`SERVICE`='"+RDEscapeString(svcname)+"')";

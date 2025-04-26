@@ -2,7 +2,7 @@
 //
 // Data model for Rivendell logs
 //
-//   (C) Copyright 2020-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2020-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -104,20 +104,20 @@ void RDLogModel::setFont(const QFont &font)
   // Calculate Minimum Column Widths
   //
   if(rda->showTwelveHourTime()) {
-    d_size_hints[0]=QSize(40+d_bold_fms->width("T00:00:00.0 AM"),0);
+    d_size_hints[0]=QSize(40+d_bold_fms->horizontalAdvance("T00:00:00.0 AM"),0);
   }
   else {
-    d_size_hints[0]=QSize(40+d_bold_fms->width("T00:00:00.0"),0);
+    d_size_hints[0]=QSize(40+d_bold_fms->horizontalAdvance("T00:00:00.0"),0);
   }
-  width=d_bold_fms->width(tr("PLAY"));
-  if(d_bold_fms->width(tr("SEGUE"))>width) {
-    width=d_bold_fms->width(tr("SEGUE"));
+  width=d_bold_fms->horizontalAdvance(tr("PLAY"));
+  if(d_bold_fms->horizontalAdvance(tr("SEGUE"))>width) {
+    width=d_bold_fms->horizontalAdvance(tr("SEGUE"));
   }
-  if(d_bold_fms->width(tr("STOP"))>width) {
-    width=d_bold_fms->width(tr("STOP"));
+  if(d_bold_fms->horizontalAdvance(tr("STOP"))>width) {
+    width=d_bold_fms->horizontalAdvance(tr("STOP"));
   }
   d_size_hints[1]=QSize(10+width,0);
-  d_size_hints[2]=QSize(10+d_bold_fms->width("000000"),0);
+  d_size_hints[2]=QSize(10+d_bold_fms->horizontalAdvance("000000"),0);
 
   width=0;
   sql=QString("select ")+
@@ -125,19 +125,19 @@ void RDLogModel::setFont(const QFont &font)
     "from `GROUPS`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    if(d_bold_fms->width(q->value(0).toString())>width) {
-      width=d_bold_fms->width(q->value(0).toString());
+    if(d_bold_fms->horizontalAdvance(q->value(0).toString())>width) {
+      width=d_bold_fms->horizontalAdvance(q->value(0).toString());
     }
   }
   delete q;
   d_size_hints[3]=QSize(10+width,0);
-  d_size_hints[4]=QSize(10+d_bold_fms->width("8:88:88"),0);
+  d_size_hints[4]=QSize(10+d_bold_fms->horizontalAdvance("8:88:88"),0);
 
   width=0;
   for(int i=0;i<RDLogLine::LastSource;i++) {
     RDLogLine::Source src=(RDLogLine::Source)i;
-    if(d_bold_fms->width(RDLogLine::sourceText(src))>width) {
-      width=d_bold_fms->width(RDLogLine::sourceText(src));
+    if(d_bold_fms->horizontalAdvance(RDLogLine::sourceText(src))>width) {
+      width=d_bold_fms->horizontalAdvance(RDLogLine::sourceText(src));
     }
   }
   d_size_hints[10]=QSize(10+width,0);

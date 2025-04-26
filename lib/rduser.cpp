@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell User.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -746,7 +746,7 @@ bool RDUser::ticketIsValid(const QString &ticket,
 
 bool RDUser::emailIsValid(const QString &addr)
 {
-  QStringList f0=addr.split("@",QString::KeepEmptyParts);
+  QStringList f0=addr.split("@",Qt::KeepEmptyParts);
 
   if(f0.size()!=2) {
     return false;

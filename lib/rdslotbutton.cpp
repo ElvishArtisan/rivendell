@@ -2,7 +2,7 @@
 //
 //   Start/stop button for rdcartslots(1).
 //
-//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -104,13 +104,12 @@ void RDSlotButton::WriteKeycap()
   p->fillRect(0,0,w,h,palette().color(QPalette::Background));
 
   p->setFont(hugeButtonFont());
-  p->drawText((w-p->fontMetrics().width(QString().
-					sprintf("%d",1+d_slot_number)))/2,
+  p->drawText((w-p->fontMetrics().horizontalAdvance(QString::asprintf("%d",1+d_slot_number)))/2,
 	      p->fontMetrics().height(),
 	      QString::asprintf("%d",1+d_slot_number));
 
   p->setFont(bigLabelFont());
-  p->drawText((w-p->fontMetrics().width(d_port_label))/2,
+  p->drawText((w-p->fontMetrics().horizontalAdvance(d_port_label))/2,
 	      3*h/4,
 	      d_port_label);
 

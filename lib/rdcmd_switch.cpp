@@ -59,7 +59,7 @@ RDCmdSwitch::RDCmdSwitch(const QString &modname,const QString &usage)
       }
       exit(0);
     }
-    QStringList f0=value.split("=",QString::KeepEmptyParts);
+    QStringList f0=value.split("=",Qt::KeepEmptyParts);
     if(f0.size()>=2) {
       if(f0.at(0).left(1)=="-") {
 	switch_keys.push_back(f0.at(0));
@@ -115,7 +115,7 @@ RDCmdSwitch::RDCmdSwitch(int argc,char *argv[],const QString &modname,
       }
       exit(0);
     }
-    QStringList f0=value.split("=",QString::KeepEmptyParts);
+    QStringList f0=value.split("=",Qt::KeepEmptyParts);
     if(f0.size()>=2) {
       if(f0.at(0).left(1)=="-") {
 	switch_keys.push_back(f0.at(0));

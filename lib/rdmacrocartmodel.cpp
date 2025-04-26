@@ -2,7 +2,7 @@
 //
 // Data model for Rivendell services
 //
-//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -173,7 +173,7 @@ int RDMacroCartModel::totalLength() const
 
   for(int i=0;i<lineCount();i++) {
     QStringList f0=
-      d_texts.at(i).at(1).toString().split(" ",QString::SkipEmptyParts);
+      d_texts.at(i).at(1).toString().split(" ",Qt::SkipEmptyParts);
     if((f0.size()==2)&&(f0.at(0)=="SP")) {
       f0[1].remove("!");
       int msec=f0.at(1).toInt(&ok);
@@ -254,7 +254,7 @@ void RDMacroCartModel::updateModel()
   d_texts.clear();
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
-    QStringList f0=q->value(0).toString().split("!",QString::SkipEmptyParts);
+    QStringList f0=q->value(0).toString().split("!",Qt::SkipEmptyParts);
     for(int i=0;i<f0.size();i++) {
       d_texts.push_back(texts);
       d_texts.back()[0]=QString::asprintf("%d",i+1);

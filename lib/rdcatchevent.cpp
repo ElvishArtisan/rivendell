@@ -256,7 +256,7 @@ bool RDCatchEvent::read(const QString &str)
 
   case RDCatchEvent::SendMeterLevelsOp:
     for(int i=2;i<f0.size();i++) {
-      QStringList f1=f0.at(i).split(":",QString::KeepEmptyParts);
+      QStringList f1=f0.at(i).split(":",Qt::KeepEmptyParts);
       if(f1.size()==(1+RDCatchMeterLevel::LastChannel)) {
 	chan=f1.at(0).toUInt(&ok);
 	if(chan>=255) {

@@ -2,7 +2,7 @@
 //
 //   Base class for CD metadata lookup methods
 //
-//   (C) Copyright 2003-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2003-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -496,7 +496,7 @@ bool RDDiscLookup::ReadCdText(const QString &cdda_dev)
   //
   for(int i=0;i<lookup_record->tracks();i++) {
     title_profile->setSource(tempDirectoryPath()+
-                            QString().sprintf("/audio_%02d.inf",i+1));
+                            QString::asprintf("/audio_%02d.inf",i+1));
     str=title_profile->stringValue("","Albumtitle","");
     str.remove("'");
     if((!str.isEmpty())&&(str!="''")) {

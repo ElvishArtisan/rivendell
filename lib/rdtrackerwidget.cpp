@@ -2,7 +2,7 @@
 //
 // Rivendell Voice Tracker
 //
-//   (C) Copyright 2002-2024 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -2121,31 +2121,31 @@ void RDTrackerWidget::keyReleaseEvent(QKeyEvent *e)
 void RDTrackerWidget::wheelEvent(QWheelEvent *e)
 {
   if(d_shift_pressed) {
-    if(e->y()<TRACKER_Y_ORIGIN+TRACKER_Y_HEIGHT) {
-      DragTrack(0,e->delta());
+    if(e->position().y()<TRACKER_Y_ORIGIN+TRACKER_Y_HEIGHT) {
+      DragTrack(0,e->angleDelta().y());
     }
     else {
-      if(e->y()<(TRACKER_Y_ORIGIN+2*TRACKER_Y_HEIGHT)) {
-        DragTrack(1,e->delta());
+      if(e->position().y()<(TRACKER_Y_ORIGIN+2*TRACKER_Y_HEIGHT)) {
+        DragTrack(1,e->angleDelta().y());
       }
       else {
-        if(e->y()<(TRACKER_Y_ORIGIN+3*TRACKER_Y_HEIGHT)) {
-          DragTrack(2,e->delta());
+        if(e->position().y()<(TRACKER_Y_ORIGIN+3*TRACKER_Y_HEIGHT)) {
+          DragTrack(2,e->angleDelta().y());
         }
       }
     }
   }
   else {
     if(!d_wave_name[0].isEmpty() && !TransportActive()) {
-      DragTrack(0,e->delta());
+      DragTrack(0,e->angleDelta().y());
     }
     else {
       if(!d_wave_name[1].isEmpty() && !TransportActive()) {
-	DragTrack(1,e->delta());
+	DragTrack(1,e->angleDelta().y());
       }
       else {
 	if(!d_wave_name[2].isEmpty() && !TransportActive()) {
-	  DragTrack(2,e->delta());
+	  DragTrack(2,e->angleDelta().y());
 	}
       }
     }
@@ -3231,8 +3231,8 @@ void RDTrackerWidget::DrawTrackMap(int trackno)
 			     QString::asprintf(" :%d",(talk_len+500)/1000));
 	}
 	else {
-	  d_wpg[2]->drawText(550,75,tr("Talk")+QString().
-			     sprintf(" :%d",(d_loglines[2]->talkLength()+500)/1000));
+	  d_wpg[2]->drawText(550,75,tr("Talk")+
+	      QString::asprintf(" :%d",(d_loglines[2]->talkLength()+500)/1000));
 	}
 	d_wpg[2]->end();
       }

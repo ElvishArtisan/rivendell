@@ -2,7 +2,7 @@
 //
 //   A flashing button widget.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -296,7 +296,7 @@ void RDPushButton::flashOff()
 void RDPushButton::ComposeText()
 {
   int lines;
-  QStringList f0=plain_text.split(" ",QString::SkipEmptyParts);
+  QStringList f0=plain_text.split(" ",Qt::SkipEmptyParts);
   QFont font(buttonFont().family(),(double)size().height()/2.0,QFont::Bold);
   QString accum;
   QString text;
@@ -314,8 +314,8 @@ void RDPushButton::ComposeText()
       QFontMetrics fm(font);
       lines=1;
       for(int i=0;i<f0.size();i++) {
-	if((fm.width(accum+f0.at(i)+" "))>w) {
-	  if(fm.width(f0.at(i))>w) {
+	if((fm.horizontalAdvance(accum+f0.at(i)+" "))>w) {
+	  if(fm.horizontalAdvance(f0.at(i))>w) {
 	    singleton=true;
 	    break;
 	  }

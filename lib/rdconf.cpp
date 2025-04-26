@@ -970,8 +970,8 @@ bool RDProcessActive(const QStringList &cmds)
     if(ok) {
       if((f=fopen((QString("/proc/")+dirs[i]+"/cmdline").toUtf8(),"r"))!=NULL) {
 	if(fgets(line,1024,f)!=NULL) {
-	  QStringList f1=QString(line).split(" ",QString::SkipEmptyParts);
-	  QStringList f2=f1[0].split("/",QString::SkipEmptyParts);
+	  QStringList f1=QString(line).split(" ",Qt::SkipEmptyParts);
+	  QStringList f2=f1[0].split("/",Qt::SkipEmptyParts);
 	  cmdline=f2[f2.size()-1];
 	  for(int j=0;j<cmds.size();j++) {
 	    if(cmdline==cmds[j]) {
@@ -1011,45 +1011,7 @@ bool RDModulesActive()
 
 QByteArray RDStringToData(const QString &str)
 {
-  int istate=0;
-  unsigned n;
-  QString code;
-  QByteArray ret;
-  bool ok=false;
-
-  for(int i=0;i<str.length();i++) {
-    switch(istate) {
-    case 0:
-      if(str.at(i)==QChar('%')) {
-	istate=1;
-      }
-      else {
-	ret+=str.at(i);
-      }
-      break;
-
-    case 1:
-      n=str.mid(i,1).toUInt(&ok);
-      if((!ok)||(n>9)) {
-	istate=0;
-      }
-      code=str.mid(i,1);
-      istate=2;
-      break;
-
-    case 2:
-      n=str.mid(i,1).toUInt(&ok);
-      if((!ok)||(n>9)) {
-	istate=0;
-      }
-      code+=str.mid(i,1);
-      ret+=code.toUInt(NULL,16);
-      istate=0;
-      break;
-    }
-  }
-
-  return ret;
+  return str.toUtf8();
 }
 
 
@@ -1143,7 +1105,7 @@ QString RDMimeType(const QString &filename,bool *ok)
   }
   *ok=true;
   ret=QString(proc->readAllStandardOutput()).
-    split(":",QString::SkipEmptyParts).last().trimmed();
+    split(":",Qt::SkipEmptyParts).last().trimmed();
 
   delete proc;
 
@@ -1173,7 +1135,7 @@ QString RDMimeType(const QByteArray &data,bool *ok)
   *ok=true;
 
   ret=QString(proc->readAllStandardOutput()).
-    split(":",QString::SkipEmptyParts).last().trimmed();
+    split(":",Qt::SkipEmptyParts).last().trimmed();
 
   delete proc;
 
@@ -1185,7 +1147,7 @@ QString RDWrapText(const QString &str,int width)
 {
   QString line;
   QString ret;
-  QStringList f0=str.split(" ",QString::KeepEmptyParts);
+  QStringList f0=str.split(" ",Qt::KeepEmptyParts);
   int fn=0;
 
   while(fn<f0.size()) {

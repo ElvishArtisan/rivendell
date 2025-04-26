@@ -232,7 +232,7 @@ void RDCddbLookup::readyReadData()
 	QApplication::restoreOverrideCursor();
 	if((index_line=exec())>=0) {
 	  QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-	  f0=titlesKey()->at(index_line).split(" ",QString::SkipEmptyParts);
+	  f0=titlesKey()->at(index_line).split(" ",Qt::SkipEmptyParts);
 	  if(f0.size()!=2) {
 	    FinishCddbLookup(RDCddbLookup::LookupError,
 			     "Unexpected response from CDDB server");

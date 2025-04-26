@@ -2,7 +2,7 @@
 //
 // A container class for a list of RML macros.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -135,8 +135,7 @@ bool RDMacroEvent::load(const QString &str)
 
 bool RDMacroEvent::load(unsigned cartnum)
 {
-  QString sql=QString().
-    sprintf("select `MACROS` from `CART` where (`NUMBER`=%d)&&(`TYPE`=2)",
+  QString sql=QString::asprintf("select `MACROS` from `CART` where (`NUMBER`=%d)&&(`TYPE`=2)",
 	    cartnum);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(!q->first()) {
@@ -230,7 +229,7 @@ void RDMacroEvent::exec(int line)
     break;
 
   case RDMacro::CC:   // Send Command
-    args=event_cmds[line]->arg(0).split(":",QString::KeepEmptyParts);
+    args=event_cmds[line]->arg(0).split(":",Qt::KeepEmptyParts);
     stationname=args[0];
     if(args.size()==2) {
       port=args[1].toUInt();

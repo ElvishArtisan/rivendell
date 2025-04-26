@@ -3,7 +3,7 @@
 // This implements a widget that represents a stereo audio level meter,
 // complete with labels and scale.
 //
-// (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+// (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -161,7 +161,7 @@ void RDStereoMeter::setLabel(QString label)
     QFont meter_font=QFont("System",18,QFont::Normal);
     meter_font.setPixelSize(18);
     QFontMetrics meter_metrics=QFontMetrics(meter_font);
-    label_x=(335-meter_metrics.width(meter_label))/2;
+    label_x=(335-meter_metrics.horizontalAdvance(meter_label))/2;
     setFixedSize(335,80);
   }
   else {

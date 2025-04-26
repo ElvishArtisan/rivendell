@@ -2,7 +2,7 @@
 //
 // Parse and write dates/times in various standard formats. 
 //
-//   (C) Copyright 2019-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2019-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -160,8 +160,8 @@ QString RDWriteXmlTime(const QTime &time)
   if(utc_off<0) {
     tz_str="+";
   }
-  tz_str+=QString().
-    sprintf("%02d:%02d",utc_off/3600,(utc_off-3600*(utc_off/3600))/60);
+  tz_str+=QString::asprintf("%02d:%02d",utc_off/3600,
+			    (utc_off-3600*(utc_off/3600))/60);
 
   return time.toString("hh:mm:ss")+tz_str;
 }
@@ -234,7 +234,7 @@ QString RDWriteXmlDateTime(const QDateTime &dt)
 //
 QDateTime RDParseRfc822DateTime(const QString &str,bool *ok)
 {
-  QStringList f0=str.trimmed().split(" ",QString::SkipEmptyParts);
+  QStringList f0=str.trimmed().split(" ",Qt::SkipEmptyParts);
 
   //
   // Remove useless day-of-the-week tag
@@ -347,8 +347,8 @@ QString RDWriteRfc822DateTime(const QDateTime &dt)
   if(utc_off<0) {
     tz_str="+";
   }
-  tz_str+=QString().
-    sprintf("%02d%02d",utc_off/3600,(utc_off-3600*(utc_off/3600))/60);
+  tz_str+=QString::asprintf("%02d%02d",utc_off/3600,
+			    (utc_off-3600*(utc_off/3600))/60);
 
   return __rddatetime_dow_names[dt.date().dayOfWeek()-1]+", "+
     QString::asprintf("%d ",dt.date().day())+

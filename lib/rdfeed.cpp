@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell RSS Feed
 //
-//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -816,7 +816,7 @@ int RDFeed::importImageFile(const QString &pathname,QString *err_msg,
   //
   QString im_err;
 
-  QStringList f0=pathname.split(".",QString::SkipEmptyParts);
+  QStringList f0=pathname.split(".",Qt::SkipEmptyParts);
   sql=QString("insert into `FEED_IMAGES` set ")+
     QString::asprintf("`FEED_ID`=%u,",id())+
     "`FEED_KEY_NAME`='"+RDEscapeString(keyName())+"',"+
@@ -1980,12 +1980,12 @@ bool RDFeed::frontActiveCasts(QList<unsigned> *cast_ids,QString *err_msg)
     RDXsltEngine *xslt=
       new RDXsltEngine("/usr/share/rivendell/rss-item-enclosures.xsl",this);
     if(xslt->transform(&text,xml,err_msg)) {
-      QStringList f0=text.split("|",QString::SkipEmptyParts);
+      QStringList f0=text.split("|",Qt::SkipEmptyParts);
       for(int i=0;i<f0.size();i++) {
-	QStringList f1=f0.at(i).split("/",QString::SkipEmptyParts);
-	QStringList f2=f1.last().split(".",QString::KeepEmptyParts);
+	QStringList f1=f0.at(i).split("/",Qt::SkipEmptyParts);
+	QStringList f2=f1.last().split(".",Qt::KeepEmptyParts);
 	if(f2.size()==2) {
-	  QStringList f3=f2.first().split("_",QString::KeepEmptyParts);
+	  QStringList f3=f2.first().split("_",Qt::KeepEmptyParts);
 	  if(f3.size()==2) {
 	    cast_ids->push_back(f3.last().toUInt(&ok));
 	    if(ok) {
@@ -2034,12 +2034,12 @@ bool RDFeed::backActiveCasts(QList<unsigned> *cast_ids,QString *err_msg)
       new RDXsltEngine("/usr/share/rivendell/rss-item-enclosures.xsl",
 		       this);
     if(xslt->transform(&text,xml,err_msg)) {
-      QStringList f0=text.split("|",QString::SkipEmptyParts);
+      QStringList f0=text.split("|",Qt::SkipEmptyParts);
       for(int i=0;i<f0.size();i++) {
-	QStringList f1=f0.at(i).split("/",QString::SkipEmptyParts);
-	QStringList f2=f1.last().split(".",QString::KeepEmptyParts);
+	QStringList f1=f0.at(i).split("/",Qt::SkipEmptyParts);
+	QStringList f2=f1.last().split(".",Qt::KeepEmptyParts);
 	if(f2.size()==2) {
-	  QStringList f3=f2.first().split("_",QString::KeepEmptyParts);
+	  QStringList f3=f2.first().split("_",Qt::KeepEmptyParts);
 	  if(f3.size()==2) {
 	    cast_ids->push_back(f3.last().toUInt(&ok));
 	    if(ok) {

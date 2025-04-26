@@ -2,7 +2,7 @@
 //
 //   A StringList with quote mode
 //
-//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -42,7 +42,7 @@ RDStringList RDStringList::split(const QChar &sep,const QString &str,
 				 const QString &esc)
 {
   if(esc.isEmpty()) {
-    return (RDStringList)str.split(sep,QString::KeepEmptyParts);
+    return (RDStringList)str.split(sep,Qt::KeepEmptyParts);
   }
   RDStringList list;
   bool escape=false;

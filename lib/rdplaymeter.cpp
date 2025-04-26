@@ -3,7 +3,7 @@
 // This implements a widget that represents a stereo audio level meter,
 // complete with labels and scale.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -247,28 +247,28 @@ void RDPlayMeter::makeFont()
     label_font=QFont("helvetica",height()-2,QFont::Bold);
     label_font.setPixelSize(height()-2);
     meter_label_x=(height()-QFontMetrics(label_font).
-		   width(meter_label))/2;
+		   horizontalAdvance(meter_label))/2;
     break;
 
   case RDSegMeter::Right:
     label_font=QFont("helvetica",height()-2,QFont::Bold);
     label_font.setPixelSize(height()-2);
     meter_label_x=(height()-QFontMetrics(label_font).
-		   width(meter_label))/2;
+		   horizontalAdvance(meter_label))/2;
     break;
 
   case RDSegMeter::Up:
     label_font=QFont("helvetica",width()-2,QFont::Bold);
     label_font.setPixelSize(width()-2);
     meter_label_x=(width()-QFontMetrics(label_font).
-		   width(meter_label))/2;
+		   horizontalAdvance(meter_label))/2;
     break;
 
   case RDSegMeter::Down:
     label_font=QFont("helvetica",width()-2,QFont::Bold);
     label_font.setPixelSize(width()-2);
     meter_label_x=(width()-QFontMetrics(label_font).
-		   width(meter_label))/2;
+		   horizontalAdvance(meter_label))/2;
     break;
   }
 }

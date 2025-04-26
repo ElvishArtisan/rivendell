@@ -2,7 +2,7 @@
 //
 // Decode Rivendell Date Macros
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -142,24 +142,27 @@ QString RDDateDecode(QString str,const QDate &date,RDStation *station,
       }
 
       //
-      // Wildcard Lookup
+      // Wildcard Lookups
+      //
+      // Maintainer's Note: These lookups should be locale-independent. Do
+      //                    *not* use QLocale methods to resolve these!
       //
       switch(str.at(i).toLatin1()) {
       case 'a':   // Abbreviated weekday name
-	field=QDate::shortDayName(dt.dayOfWeek()).toLower();
+	field=RDShortDayName(dt.dayOfWeek()).toLower();
 	break;
 
       case 'A':   // Full weekday name
-	field=QDate::longDayName(dt.dayOfWeek()).toLower();
+	field=RDLongDayName(dt.dayOfWeek()).toLower();
 	break;
 
       case 'b':   // Abbreviated month name
       case 'h':
-	field=QDate::shortMonthName(dt.month()).toLower();
+	field=RDShortMonthName(dt.month()).toLower();
       break;
 
       case 'B':   // Full month name
-	field=QDate::longMonthName(dt.month()).toLower();
+	field=RDLongMonthName(dt.month()).toLower();
 	break;
 
       case 'C':   // Century
@@ -357,20 +360,20 @@ QString RDDateTimeDecode(QString str,const QDateTime &datetime,
       //
       switch(str.at(i).toLatin1()) {
       case 'a':   // Abbreviated weekday name
-	field=QDate::shortDayName(dt.date().dayOfWeek()).toLower();
+	field=RDShortDayName(dt.date().dayOfWeek()).toLower();
 	break;
 
       case 'A':   // Full weekday name
-	field=QDate::longDayName(dt.date().dayOfWeek()).toLower();
+	field=RDLongDayName(dt.date().dayOfWeek()).toLower();
 	break;
 
       case 'b':   // Abbreviated month name
       case 'h':
-	field=QDate::shortMonthName(dt.date().month()).toLower();
+	field=RDShortMonthName(dt.date().month()).toLower();
       break;
 
       case 'B':   // Full month name
-	field=QDate::longMonthName(dt.date().month()).toLower();
+	field=RDLongMonthName(dt.date().month()).toLower();
 	break;
 
       case 'C':   // Century
@@ -528,4 +531,199 @@ QString RDDateTimeDecode(QString str,const QDateTime &datetime,
   }
 
   return string;
+}
+
+
+//
+// Local-independent date element names
+//
+QString RDShortDayName(int dow)
+{
+  QString ret="Xxx";
+
+  switch(dow) {
+  case 1:
+    ret="Mon";
+    break;
+
+  case 2:
+    ret="Tue";
+    break;
+
+  case 3:
+    ret="Wed";
+    break;
+
+  case 4:
+    ret="Thu";
+    break;
+
+  case 5:
+    ret="Fri";
+    break;
+
+  case 6:
+    ret="Sat";
+    break;
+
+  case 7:
+    ret="Sun";
+    break;
+  }
+
+  return ret;
+}
+
+
+QString RDLongDayName(int dow)
+{
+  QString ret="Unknown";
+
+  switch(dow) {
+  case 1:
+    ret="Monday";
+    break;
+
+  case 2:
+    ret="Tuesday";
+    break;
+
+  case 3:
+    ret="Wednesday";
+    break;
+
+  case 4:
+    ret="Thursday";
+    break;
+
+  case 5:
+    ret="Friday";
+    break;
+
+  case 6:
+    ret="Saturday";
+    break;
+
+  case 7:
+    ret="Sunday";
+    break;
+  }
+  
+  return ret;
+}
+
+
+QString RDShortMonthName(int month)
+{
+  QString ret="Xxx";
+
+  switch(month) {
+  case 1:
+    ret="Jan";
+    break;
+
+  case 2:
+    ret="Feb";
+    break;
+
+  case 3:
+    ret="Mar";
+    break;
+
+  case 4:
+    ret="Apr";
+    break;
+
+  case 5:
+    ret="May";
+    break;
+
+  case 6:
+    ret="Jun";
+    break;
+
+  case 7:
+    ret="Jul";
+    break;
+
+  case 8:
+    ret="Aug";
+    break;
+
+  case 9:
+    ret="Sep";
+    break;
+
+  case 10:
+    ret="Oct";
+    break;
+
+  case 11:
+    ret="Nov";
+    break;
+
+  case 12:
+    ret="Dec";
+    break;
+  }
+
+  return ret;
+}
+
+
+QString RDLongMonthName(int month)
+{
+  QString ret="Unknown";
+
+  switch(month) {
+  case 1:
+    ret="January";
+    break;
+
+  case 2:
+    ret="February";
+    break;
+
+  case 3:
+    ret="March";
+    break;
+
+  case 4:
+    ret="April";
+    break;
+
+  case 5:
+    ret="May";
+    break;
+
+  case 6:
+    ret="June";
+    break;
+
+  case 7:
+    ret="July";
+    break;
+
+  case 8:
+    ret="August";
+    break;
+
+  case 9:
+    ret="Sepember";
+    break;
+
+  case 10:
+    ret="October";
+    break;
+
+  case 11:
+    ret="November";
+    break;
+
+  case 12:
+    ret="December";
+    break;
+  }
+
+  return ret;
 }

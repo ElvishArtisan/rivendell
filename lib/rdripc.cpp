@@ -2,7 +2,7 @@
 //
 // Connection to the Rivendell Interprocess Communication Daemon
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -298,7 +298,7 @@ void RDRipc::DispatchCommand()
   QString str;
 
   //  printf("RDRipc::DispatchCommand: %s\n",ripc_accum.toUtf8().constData());
-  QStringList cmds=ripc_accum.split(" ",QString::SkipEmptyParts);
+  QStringList cmds=ripc_accum.split(" ",Qt::SkipEmptyParts);
 
   if(cmds.size()==0) {
     return;
@@ -468,7 +468,7 @@ void RDRipc::DispatchCommand()
       msg+=QString(cmds[i])+" ";
     }
     msg=msg.left(msg.length()-1);
-    QStringList f0=msg.split(" ",QString::SkipEmptyParts);
+    QStringList f0=msg.split(" ",Qt::SkipEmptyParts);
     if(f0.at(0)=="NOTIFY") {
       RDNotification *notify=new RDNotification();
       if(!notify->read(msg)) {

@@ -2,7 +2,7 @@
 //
 // Data model for Rivendell podcast episodes
 //
-//   (C) Copyright 2021-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -206,11 +206,11 @@ QVariant RDPodcastListModel::data(const QModelIndex &index,int role) const
       if(col==0) {
 	return QSize(RD_LISTWIDGET_ITEM_WIDTH_PADDING+32+
 		     d_bold_font_metrics->
-		     width(d_texts.at(row).at(col).toString()),40);
+		     horizontalAdvance(d_texts.at(row).at(col).toString()),40);
       }
       return QSize(RD_LISTWIDGET_ITEM_WIDTH_PADDING+
 		   d_font_metrics->
-		   width(d_texts.at(row).at(col).toString()),40);
+		   horizontalAdvance(d_texts.at(row).at(col).toString()),40);
 
     default:
       break;

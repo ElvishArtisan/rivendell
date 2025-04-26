@@ -2,7 +2,7 @@
 //
 // Data model for the Rivendell cart library
 //
-//   (C) Copyright 2021-2024 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -279,7 +279,7 @@ QVariant RDLibraryModel::data(const QModelIndex &index,int role) const
 
       case Qt::SizeHintRole:
 	return QSize(RD_LISTWIDGET_ITEM_WIDTH_PADDING+
-		     d_font_metrics->width(d_cut_texts.
+		     d_font_metrics->horizontalAdvance(d_cut_texts.
 		     at(index.internalId()-1).at(row).at(col).toString()),
 		     RD_LISTWIDGET_ITEM_HEIGHT);
       default:
@@ -322,7 +322,8 @@ QVariant RDLibraryModel::data(const QModelIndex &index,int role) const
       case Qt::SizeHintRole:
 	return QSize(RD_LISTWIDGET_ITEM_WIDTH_PADDING+
 		     (d_icons.at(row).at(col).value<QPixmap>().width())+
-		     d_font_metrics->width(d_texts.at(row).at(col).toString()),
+		     d_font_metrics->horizontalAdvance(d_texts.at(row).at(col).
+						       toString()),
 		     RD_LISTWIDGET_ITEM_HEIGHT);
 
       default:

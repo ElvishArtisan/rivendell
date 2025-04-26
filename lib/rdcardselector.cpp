@@ -216,9 +216,9 @@ void RDCardSelector::portData(int port)
 
 void RDCardSelector::resizeEvent(QResizeEvent *e)
 {
-  int label_width=defaultFontMetrics()->width(tr("Card:"));
-  if(defaultFontMetrics()->width(tr("Port:")>label_width)) {
-    label_width=defaultFontMetrics()->width(tr("Port:"));
+  int label_width=defaultFontMetrics()->horizontalAdvance(tr("Card:"));
+  if(defaultFontMetrics()->horizontalAdvance(tr("Port:")>label_width)) {
+    label_width=defaultFontMetrics()->horizontalAdvance(tr("Port:"));
   }
   card_title->setGeometry(0,0,width(),19);
   card_card_label->setGeometry(0,

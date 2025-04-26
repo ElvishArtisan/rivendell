@@ -2,7 +2,7 @@
 //
 // A Calendar Widget.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -25,6 +25,7 @@
 RDDatePicker::RDDatePicker(int low_year,int high_year,QWidget *parent)
   : RDWidget(parent)
 {
+  QLocale locale;
   pick_low_year=low_year;
   pick_high_year=high_year;
 
@@ -34,7 +35,8 @@ RDDatePicker::RDDatePicker(int low_year,int high_year,QWidget *parent)
   pick_month_box=new QComboBox(this);
   pick_month_box->setGeometry(0,0,120,26);
   for(int i=1;i<13;i++) {
-    pick_month_box->insertItem(pick_month_box->count(),QDate::longMonthName(i));
+    pick_month_box->
+      insertItem(pick_month_box->count(),locale.standaloneMonthName(i));
   }
   connect(pick_month_box,SIGNAL(activated(int)),
 	  this,SLOT(monthActivatedData(int)));

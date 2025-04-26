@@ -2,7 +2,7 @@
 //
 // Implement Rivendell range specifications
 //
-//   (C) Copyright 2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2022-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -44,7 +44,7 @@ int RDRange::end() const
 
 bool RDRange::parse(const QString &str)
 {
-  QStringList f0=str.split(":",QString::KeepEmptyParts);
+  QStringList f0=str.split(":",Qt::KeepEmptyParts);
   bool ok1=false;
   bool ok2=false;
 

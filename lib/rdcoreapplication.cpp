@@ -678,7 +678,7 @@ bool RDCoreApplication::isUniqueProcess(const QString &cmdname)
       QFile *file=new QFile("/proc/"+dirs.at(i)+"/cmdline");
       if(file->open(QIODevice::ReadOnly)) {
 	QString cmdline(QString::fromUtf8(file->readAll()));
-	QStringList f0=cmdline.trimmed().split("/",QString::SkipEmptyParts);
+	QStringList f0=cmdline.trimmed().split("/",Qt::SkipEmptyParts);
 	if((f0.size()>0)&&(f0.last().trimmed()==cmdname)) {
 	  delete file;
 	  return false;
@@ -720,7 +720,7 @@ void RDCoreApplication::userChangedData()
     delete q;
   }
   fprintf(stderr,"%s: %s\n",
-	  QString(qApp->arguments().at(0)).split("/",QString::SkipEmptyParts).last().toUtf8().constData(),
+	  QString(qApp->arguments().at(0)).split("/",Qt::SkipEmptyParts).last().toUtf8().constData(),
 	  RDCoreApplication::exitCodeText(RDCoreApplication::ExitBadTicket).
 	  toUtf8().constData());
   exit(RDCoreApplication::ExitBadTicket);
@@ -769,7 +769,7 @@ QString RDCoreApplication::commandName() const
       else {
 	*err_msg=tr("Rivendell service is not active.");
 	QStringList f0=QString(proc->readAllStandardOutput()).
-	  split("\n",QString::SkipEmptyParts);
+	  split("\n",Qt::SkipEmptyParts);
 	for(int i=0;i<f0.size();i++) {
 	  QStringList f1=f0.at(i).trimmed().split("=");
 	  if((f1.size()==2)&&(f1.at(0)=="ActiveState")) {
