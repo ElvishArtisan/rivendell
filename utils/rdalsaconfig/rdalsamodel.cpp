@@ -2,7 +2,7 @@
 //
 // Abstract an ALSA configuration. 
 //
-//   (C) Copyright 2009-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2009-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -205,7 +205,7 @@ bool RDAlsaModel::loadConfig(const QString &filename)
 	  break;
 
 	case 1:
-	  list=str.split(" ",QString::SkipEmptyParts);
+	  list=str.split(" ",Qt::SkipEmptyParts);
 	  if(list[0]=="}") {
 	    if((port>=0)&&(port<RD_MAX_CARDS)) {
 	      for(int i=0;i<model_alsa_cards.size();i++) {

@@ -25010,3 +25010,5 @@
 	* Cleaned up compiler warnings in 'ripcd/'.
 2025-04-26 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up compiler warnings in 'tests/'.
+2025-04-26 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up compiler warnings in 'utils/alsaconfig/'.
