@@ -2,7 +2,7 @@
 //
 // A command-line log editor for Rivendell
 //
-//   (C) Copyright 2016-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2016-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -39,7 +39,7 @@ void MainObject::DispatchCommand(QString cmd)
     overwrite=true;
     cmd=cmd.left(cmd.length()-1).trimmed();
   }
-  cmds=cmd.split(" ",QString::SkipEmptyParts);
+  cmds=cmd.split(" ",Qt::SkipEmptyParts);
   verb=cmds[0].toLower();
 
   //

@@ -2,7 +2,7 @@
 //
 // A command-line log editor for Rivendell
 //
-//   (C) Copyright 2016-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2016-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -275,15 +275,13 @@ QString MainObject::ListLine(RDLogModel *model,int line) const
 
   switch(logline->timeType()) {
   case RDLogLine::Hard:
-    ret+=QString().
-      sprintf("T%s  ",logline->startTime(RDLogLine::Logged).
-	      toString("hh:mm:ss").toUtf8().constData());
+    ret+=QString::asprintf("T%s  ",logline->startTime(RDLogLine::Logged).
+			   toString("hh:mm:ss").toUtf8().constData());
     break;
 
   case RDLogLine::Relative:
-    ret+=QString().
-      sprintf(" %s  ",model->blockStartTime(line).
-	      toString("hh:mm:ss").toUtf8().constData());
+    ret+=QString::asprintf(" %s  ",model->blockStartTime(line).
+			   toString("hh:mm:ss").toUtf8().constData());
     break;
 
   case RDLogLine::NoTime:
