@@ -25039,3 +25039,10 @@
 	* Upgrade Qt dependency from Qt5 to Qt6.
 2025-04-28 Fred Gleason <fredg@paravelsystems.com>
 	* Removed nexgen_importer(1).
+2025-04-28 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'RedHat Enterprise Linux 7' entry from the
+	'DISTRO SPECIFIC NOTES' section of 'INSTALL'.
+	* Removed the 'Ubuntu 20.04 LTS' entry from the
+	'DISTRO SPECIFIC NOTES' section of 'INSTALL'.
+	* Updated the 'Ubuntu 22.04 LTS' entry in the
+	'DISTRO SPECIFIC NOTES' section of 'INSTALL'.
