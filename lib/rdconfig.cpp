@@ -30,7 +30,7 @@
 
 #include <QDateTime>
 #include <QObject>
-//#include <QRegExp>
+#include <QRegExp>
 #include <QSettings>
 #include <QStringList>
 
@@ -257,7 +257,7 @@ QString RDConfig::provisioningHostShortName(const QString &hostname) const
 {
   /*
    * FIXME: Reimplement using QRegularExpression
-   *
+   */
   QRegExp exp(conf_provisioning_host_short_name_regex);
 
   exp.indexIn(hostname);
@@ -266,7 +266,6 @@ QString RDConfig::provisioningHostShortName(const QString &hostname) const
     return QString();
   }
   return texts[conf_provisioning_host_short_name_group];
-  */return QString();
 }
 
 
@@ -592,6 +591,113 @@ QString RDConfig::destination(unsigned n)
 }
 
 
+QString RDConfig::dump() const
+{
+  QString ret;
+
+  ret+="[Identity]\n";
+  ret+="Password="+conf_password+"\n";
+  ret+="AudioOwner="+conf_audio_owner+"\n";
+  ret+=QString::asprintf("  {UID: %u}\n",conf_uid);
+  ret+="AudioGroup="+conf_audio_group+"\n";
+  ret+=QString::asprintf("  {GID: %u}\n",conf_uid);
+  ret+="PypadOwner="+conf_pypad_owner+"\n";
+  ret+=QString::asprintf("  {UID: %u}\n",conf_pypad_uid);
+  ret+="PypadGroup="+conf_pypad_group+"\n";
+  ret+=QString::asprintf("  {GID: %u}\n",conf_pypad_uid);
+  ret+="RnRmlOwner="+conf_rn_rml_owner+"\n";
+  ret+=QString::asprintf("  {UID: %u}\n",conf_rn_rml_uid);
+  ret+="RnRmlGroup="+conf_rn_rml_group+"\n";
+  ret+=QString::asprintf("  {GID: %u}\n",conf_rn_rml_uid);
+  ret+="Label="+conf_label+"\n";
+  ret+="HttpUserAgent="+conf_http_user_agent+"\n";
+  ret+="SyslogFacility="+QString::asprintf("%u",conf_syslog_facility)+"\n";
+  ret+="\n";
+  ret+="[AudioStore]\n";
+  ret+="MountSource="+conf_audio_store_mount_source+"\n";
+  ret+="MountType="+conf_audio_store_mount_type+"\n";
+  ret+="MountOptions="+conf_audio_store_mount_options+"\n";
+  ret+="CaeHostname="+conf_audio_store_cae_hostname+"\n";
+  ret+="XportHostname="+conf_audio_store_xport_hostname+"\n";
+  ret+="\n";
+  ret+="[Fonts]\n";
+  ret+="Family="+conf_font_family+"\n";
+  ret+="ButtonSize="+QString::asprintf("%d\n",conf_font_button_size);
+  ret+="LabelSize="+QString::asprintf("%d\n",conf_font_label_size);
+  ret+="DefaultSize="+QString::asprintf("%d\n",conf_font_default_size);
+  ret+="\n";
+  ret+="[Provisioning]\n";
+  ret+="CreateHost="+QString::asprintf("%u",conf_provisioning_create_host)+"\n";
+  ret+="NewHostTemplate="+conf_provisioning_host_template+"\n";
+  ret+="NewHostIpAddress="+conf_provisioning_host_ip_iface+"\n";
+  ret+="  {IPv4 Address: "+conf_provisioning_host_ip_address.toString()+"}\n";
+  ret+="NewHostShortNameRegex="+conf_provisioning_host_short_name_regex+"\n";
+  /* ************************ */
+  ret+="NewHostShortNameGroup="+QString::asprintf("%d",conf_provisioning_host_short_name_group)+"\n";
+  ret+="CreateService="+QString::asprintf("%u",conf_provisioning_create_service)+"\n";
+  ret+="NewServiceTemplate="+conf_provisioning_service_template+"\n";
+  ret+="NewServiceNameRegex="+conf_provisioning_service_name_regex+"\n";
+  /* ************************ */
+  ret+="NewServiceNameGroup="+QString::asprintf("%d",conf_provisioning_service_name_group)+"\n";
+  ret+="\n";
+  ret+="[Cae]\n";
+  ret+="AudioRoot="+conf_audio_root+"\n";
+  ret+="AudioExtension="+conf_audio_extension+"\n";
+  ret+="\n";
+  ret+="[Caed]\n";
+  ret+="EnableMixerLogging="+QString::asprintf("%u",conf_enable_mixer_logging)+"\n";
+  ret+="TestOutputStreams="+QString::asprintf("%u",conf_test_output_streams)+"\n";
+  ret+="\n";
+  ret+="[mySQL]\n";
+  ret+="Hostname="+conf_mysql_hostname+"\n";
+  ret+="Loginname="+conf_mysql_username+"\n";
+  ret+="Database="+conf_mysql_dbname+"\n";
+  ret+="Password=<REDACTED>\n";
+  ret+="Driver="+conf_mysql_driver+"\n";
+  ret+="HeartbeatInterval="+QString::asprintf("%d",conf_mysql_heartbeat_interval)+"\n";
+  ret+="Engine="+conf_mysql_engine+"\n";
+  ret+="Collation="+conf_mysql_collation+"\n";
+  ret+="  {create table postfix: "+conf_create_table_postfix+"}\n";
+  ret+="\n";
+  ret+="[Logs]\n";
+  ret+="LogXloadDebugData="+QString::asprintf("%u",conf_log_xload_debug_data)+"\n";
+  ret+="\n";
+  ret+="[Alsa]\n";
+  ret+="PeriodQuantity="+QString::asprintf("%d",conf_alsa_period_quantity)+"\n";
+  ret+="ChannelsPerPcm="+QString::asprintf("%d",conf_alsa_channels_per_pcm)+"\n";
+  ret+="\n";
+  ret+="[Hacks]\n";
+  ret+="DisableMaintChecks="+QString::asprintf("%u",conf_disable_maint_checks)+"\n";
+  ret+="SaveWebgetFilesDirectory="+conf_save_webget_files_directory+"\n";
+  ret+="SuppressRdcatchMeterUpdates="+QString::asprintf("%u",conf_suppress_rdcatch_meter_updates)+"\n";
+  ret+="PadSegueOverlaps="+QString::asprintf("%u",conf_pad_segue_overlaps)+"\n";
+  ret+="MeterPortBaseNumber="+QString::asprintf("%d",conf_meter_base_port)+"\n";
+  ret+="MeterPortRange="+QString::asprintf("%d",conf_meter_port_range)+"\n";
+  ret+="\n";
+  ret+="[Debugging]\n";
+  ret+="LogSearchStrings="+QString::asprintf("%d",conf_log_search_strings_level)+"\n";
+  ret+="LogLogRefresh="+QString::asprintf("%d",conf_log_log_refresh_level)+"\n";
+  ret+="LogSqlQueries="+QString::asprintf("%d",conf_log_sql_queries_level)+"\n";
+  ret+="KillPypadAfterJsonError="+QString::asprintf("%u",conf_kill_pypad_after_json_error)+"\n";
+  ret+="\n";
+  ret+="[Tuning]\n";
+  ret+="UseRealtime="+QString::asprintf("%u",conf_use_realtime)+"\n";
+  ret+="RealtimePriority="+QString::asprintf("%d",conf_realtime_priority)+"\n";
+  ret+="TranscodingDelay="+QString::asprintf("%d",conf_transcoding_delay)+"\n";
+  ret+="ServiceTimeout="+QString::asprintf("%d",conf_service_timeout)+"\n";
+  ret+="TempDirectory="+conf_temp_directory+"\n";
+  ret+="ServiceStartupDelay="+QString::asprintf("%d",conf_service_startup_delay)+"\n";
+  ret+="ExtendedNextPadEvents="+QString::asprintf("%d",conf_extended_next_pad_events)+"\n";
+  ret+="[SASFilter]\n";
+  ret+="Station="+conf_sas_station+"\n";
+  ret+="Matrix="+QString::asprintf("%d",conf_sas_matrix)+"\n";
+  ret+="BaseCart="+QString::asprintf("%d",conf_sas_base_cart)+"\n";
+  ret+="TtyDevice="+conf_sas_tty_device+"\n";
+
+  return ret;
+}
+
+
 bool RDConfig::load()
 {
   char sname[256];
@@ -625,6 +731,7 @@ bool RDConfig::load()
     profile->stringValue("Identity","RnRmlGroup",RD_DEFAULT_RN_RML_GROUP);
   conf_label=profile->stringValue("Identity","Label",RD_DEFAULT_LABEL);
   conf_http_user_agent=profile->stringValue("Identity","HttpUserAgent");
+  conf_syslog_facility=profile->intValue("Identity","SyslogFacility",LOG_USER);
 
   conf_audio_store_mount_source=
     profile->stringValue("AudioStore","MountSource");
@@ -637,7 +744,6 @@ bool RDConfig::load()
     profile->stringValue("AudioStore","CaeHostname","localhost");
   conf_audio_store_xport_hostname=
     profile->stringValue("AudioStore","XportHostname","localhost");
-
   conf_font_family=profile->stringValue("Fonts","Family");
   conf_font_button_size=profile->intValue("Fonts","ButtonSize",-1);
   conf_font_label_size=profile->intValue("Fonts","LabelSize",-1);
@@ -647,7 +753,7 @@ bool RDConfig::load()
     profile->boolValue("Provisioning","CreateHost");
   conf_provisioning_host_template=
     profile->stringValue("Provisioning","NewHostTemplate");
-  iface=profile->stringValue("Provisioning","NewHostIpAddress","lo");
+  conf_provisioning_host_ip_iface=profile->stringValue("Provisioning","NewHostIpAddress","lo");
   conf_provisioning_host_short_name_regex=
     profile->stringValue("Provisioning","NewHostShortNameRegex","[^*]*");
   conf_provisioning_host_short_name_group=
@@ -683,7 +789,7 @@ bool RDConfig::load()
     profile->stringValue("mySQL","Collation",DEFAULT_MYSQL_COLLATION);
   conf_create_table_postfix=
     RDConfig::createTablePostfix(conf_mysql_engine);
-
+  
   conf_log_xload_debug_data=profile->
     boolValue("Logs","LogXloadDebugData",false);
 
@@ -692,16 +798,19 @@ bool RDConfig::load()
   conf_alsa_period_size=
     profile->intValue("Alsa","PeriodSize",RD_ALSA_DEFAULT_PERIOD_SIZE);
   conf_alsa_channels_per_pcm=profile->intValue("Alsa","ChannelsPerPcm",-1);
-
+  
   conf_disable_maint_checks=
     profile->boolValue("Hacks","DisableMaintChecks",false);
   conf_save_webget_files_directory=
     profile->stringValue("Hacks","SaveWebgetFilesDirectory");
-  conf_disable_maint_checks=
-    profile->boolValue("Hacks","DisableMaintChecks",false);
   conf_suppress_rdcatch_meter_updates=
     profile->boolValue("Hacks","SuppressRdcatchMeterUpdates",false);
   conf_pad_segue_overlaps=profile->intValue("Hacks","PadSegueOverlaps");
+  conf_meter_base_port=
+    profile->intValue("Hacks","MeterPortBaseNumber",RD_DEFAULT_METER_SOCKET_BASE_UDP_PORT);
+  conf_meter_port_range=
+    profile->intValue("Hacks","MeterPortRange",RD_METER_SOCKET_PORT_RANGE);
+
   conf_log_search_strings_level=
     SyslogPriorityLevel(profile->stringValue("Debugging","LogSearchStrings",""),
 			&conf_log_search_strings);
@@ -713,10 +822,6 @@ bool RDConfig::load()
 			&conf_log_sql_queries);
   conf_kill_pypad_after_json_error=
     profile->boolValue("Debugging","KillPypadAfterJsonError");
-  conf_meter_base_port=
-    profile->intValue("Hacks","MeterPortBaseNumber",RD_DEFAULT_METER_SOCKET_BASE_UDP_PORT);
-  conf_meter_port_range=
-    profile->intValue("Hacks","MeterPortRange",RD_METER_SOCKET_PORT_RANGE);
   if((user=getpwnam(profile->stringValue("Identity","AudioOwner").toUtf8()))!=NULL) {
     conf_uid=user->pw_uid;
   }
@@ -740,10 +845,10 @@ bool RDConfig::load()
 					   RD_DEFAULT_RN_RML_GROUP).toUtf8()))!=NULL) {
     conf_rn_rml_gid=groups->gr_gid;
   }
-  conf_syslog_facility=profile->intValue("Identity","SyslogFacility",LOG_USER);
 
   conf_enable_mixer_logging=profile->boolValue("Caed","EnableMixerLogging");
   conf_test_output_streams=profile->boolValue("Caed","TestOutputStreams");
+  
   conf_use_realtime=profile->boolValue("Tuning","UseRealtime",false);
   conf_realtime_priority=profile->intValue("Tuning","RealtimePriority",9);
   conf_transcoding_delay=profile->intValue("Tuning","TranscodingDelay");
@@ -783,7 +888,7 @@ bool RDConfig::load()
   index=1;
   ifr.ifr_ifindex=index;
   while(ioctl(sock,SIOCGIFNAME,&ifr)==0) {
-    if(ifr.ifr_name==iface) {
+    if(ifr.ifr_name==conf_provisioning_host_ip_iface) {
       if(ioctl(sock,SIOCGIFADDR,&ifr)==0) {
 	struct sockaddr_in sa=*(sockaddr_in *)(&ifr.ifr_addr);
 	conf_provisioning_host_ip_address.setAddress(ntohl(sa.sin_addr.s_addr));
@@ -837,11 +942,11 @@ void RDConfig::clear()
   conf_audio_store_mount_source="";
   conf_audio_store_mount_type="";
   conf_audio_store_mount_options=RD_DEFAULT_AUDIO_STORE_MOUNT_OPTIONS;
-  conf_audio_store_xport_hostname="";
   conf_font_family="";
   conf_font_button_size=-1;
   conf_font_label_size=-1;
   conf_font_default_size=-1;
+  conf_audio_store_xport_hostname="";
   conf_audio_store_cae_hostname="";
   conf_jack_ports[0].clear();
   conf_jack_ports[1].clear();

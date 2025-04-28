@@ -25055,3 +25055,6 @@
 2025-04-28 Fred Gleason <fredg@paravelsystems.com>
 	* Modified orphaned table checking to use 'QRegularExpression' in
 	rddbmgr(8).
+2025-04-28 Fred Gleason <fredg@paravelsystems.com>
+	* Added a '--dump-config' switch to the set of common options
+	in 'RDCoreApplications'.

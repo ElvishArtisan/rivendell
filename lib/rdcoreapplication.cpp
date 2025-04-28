@@ -140,6 +140,7 @@ bool RDCoreApplication::open(QString *err_msg,ErrorType *err_type,
 {
   int schema=0;
   QString db_err;
+  bool dump_config=false;
   bool skip_db_check=false;
   int persistent_dropbox_id=-1;
   bool ok=false;
@@ -155,6 +156,10 @@ bool RDCoreApplication::open(QString *err_msg,ErrorType *err_type,
   //
   app_cmd_switch=new RDCmdSwitch(app_command_name,app_usage);
   for(unsigned i=0;i<app_cmd_switch->keys();i++) {
+    if(app_cmd_switch->key(i)=="--dump-config") {
+      dump_config=true;
+      app_cmd_switch->setProcessed(i,true);
+    }
     if(app_cmd_switch->key(i)=="--skip-db-check") {
       skip_db_check=true;
       app_cmd_switch->setProcessed(i,true);
@@ -207,6 +212,10 @@ bool RDCoreApplication::open(QString *err_msg,ErrorType *err_type,
   app_config=new RDConfig();
   app_config->load();
   app_config->setModuleName(app_module_name);
+  if(dump_config) {
+    printf("%s\n",app_config->dump().toUtf8().constData());
+    exit(0);
+  }
 
   //
   // Initialize Logging

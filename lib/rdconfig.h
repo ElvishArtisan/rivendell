@@ -2,7 +2,7 @@
 //
 // A container class for a Rivendell Base Configuration
 //
-//   (C) Copyright 2002-2024 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -133,6 +133,7 @@ class RDConfig
   unsigned sasBaseCart() const;
   QString sasTtyDevice() const;
   QString destination(unsigned n);
+  QString dump() const;
   bool load();
   void clear();
   static QString createTablePostfix(const QString &engine);
@@ -155,6 +156,7 @@ class RDConfig
   int conf_mysql_heartbeat_interval;
   bool conf_provisioning_create_host;
   QString conf_provisioning_host_template;
+  QString conf_provisioning_host_ip_iface;
   QHostAddress conf_provisioning_host_ip_address;
   QString conf_provisioning_host_short_name_regex;
   unsigned conf_provisioning_host_short_name_group;
