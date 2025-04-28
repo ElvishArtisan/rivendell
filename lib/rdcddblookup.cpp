@@ -2,7 +2,7 @@
 //
 //   RDDiscLookup instance class for accessing the FreeDB CD Database.
 //
-//   (C) Copyright 2003-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2003-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -21,10 +21,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <qapplication.h>
-#include <qdatetime.h>
-#include <qregexp.h>
-#include <qtimer.h>
+#include <QApplication>
+#include <QDateTime>
+#include <QTimer>
 
 #include "rdapplication.h"
 #include "rdcddblookup.h"

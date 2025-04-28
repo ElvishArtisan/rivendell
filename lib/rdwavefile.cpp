@@ -2,7 +2,7 @@
 //
 //   A class for handling audio files.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -3081,7 +3081,7 @@ bool RDWaveFile::GetAv10(int fd)
 	  istate=1;
 	}
 	else {
-	  label+=av10_chunk_data[i];
+	  label+=QChar(av10_chunk_data[i]);
 	}
 	break;
 
@@ -3169,7 +3169,7 @@ bool RDWaveFile::GetAv10(int fd)
 	  istate=0;
 	}
 	else {
-	  arg+=av10_chunk_data[i];
+	  arg+=QChar(av10_chunk_data[i]);
 	}
 	break;	
     }

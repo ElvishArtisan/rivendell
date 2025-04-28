@@ -2,7 +2,7 @@
 //
 // Validate a string as being valid for a SQL text datatype.
 //
-//   (C) Copyright 2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2004-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,11 +27,11 @@ RDTextValidator::RDTextValidator(QObject *parent,bool allow_quote)
   d_lower_case_only=false;
 
   if(!allow_quote) {
-    banned_chars.push_back(34);  // Double Quote
-    }
-  banned_chars.push_back(39);  // Single Quote
-  banned_chars.push_back(92);  // Backslash Quote
-  banned_chars.push_back(96);  // Apostrophe Quote
+    banned_chars.push_back(QChar('"'));  // Double Quote
+  }
+  banned_chars.push_back(QChar('\''));  // Single Quote
+  banned_chars.push_back(QChar('\\'));  // Backslash Quote
+  banned_chars.push_back(QChar('`'));  // Apostrophe Quote
 }
 
 
@@ -78,10 +78,10 @@ void RDTextValidator::setLowerCaseOnly(bool state)
 
 QString RDTextValidator::stripString(QString str)
 {
-  str.replace(34,"");  // Double Quote
-  str.replace(39,"");  // Single Quote
-  str.replace(92,"");  // Backslash Quote
-  str.replace(96,"");  // Apostrophe Quote
+  str.replace('"',"");  // Double Quote
+  str.replace('\'',"");  // Single Quote
+  str.replace('\\',"");  // Backslash Quote
+  str.replace('`',"");  // Apostrophe Quote
 
   return str;
 }

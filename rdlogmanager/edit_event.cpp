@@ -208,7 +208,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,QStringList *new_events,
   event_color_button->setFont(buttonFont());
   event_color_button->setText(tr("Color"));
   connect(event_color_button,SIGNAL(clicked()),this,SLOT(colorData()));
-  event_color=palette().color(QPalette::Background);
+  event_color=palette().color(QPalette::Window);
   
   //
   //  OK Button
@@ -236,7 +236,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,QStringList *new_events,
   event_color=event_event->color();
   if(event_color.isValid()) {
     event_color_button->
-      setPalette(QPalette(event_color,palette().color(QPalette::Background)));
+      setPalette(QPalette(event_color,palette().color(QPalette::Window)));
   }
   event_widget->load(event_event);
 }
@@ -390,10 +390,10 @@ void EditEvent::svcData()
 void EditEvent::colorData()
 {
   QColor color=
-    QColorDialog::getColor(event_color_button->palette().color(QPalette::Background),this);
+    QColorDialog::getColor(event_color_button->palette().color(QPalette::Window),this);
   if(color.isValid()) {
     event_color=color;
-    event_color_button->setPalette(QPalette(color,palette().color(QPalette::Background)));
+    event_color_button->setPalette(QPalette(color,palette().color(QPalette::Window)));
   }
 }
 

@@ -2,7 +2,7 @@
 //
 // A container class for a Rivendell Base Configuration
 //
-//   (C) Copyright 2002-2024 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,7 +30,7 @@
 
 #include <QDateTime>
 #include <QObject>
-#include <QRegExp>
+//#include <QRegExp>
 #include <QSettings>
 #include <QStringList>
 
@@ -255,6 +255,9 @@ QHostAddress RDConfig::provisioningHostIpAddress() const
 
 QString RDConfig::provisioningHostShortName(const QString &hostname) const
 {
+  /*
+   * FIXME: Reimplement using QRegularExpression
+   *
   QRegExp exp(conf_provisioning_host_short_name_regex);
 
   exp.indexIn(hostname);
@@ -263,6 +266,7 @@ QString RDConfig::provisioningHostShortName(const QString &hostname) const
     return QString();
   }
   return texts[conf_provisioning_host_short_name_group];
+  */return QString();
 }
 
 
@@ -280,6 +284,9 @@ QString RDConfig::provisioningServiceTemplate() const
 
 QString RDConfig::provisioningServiceName(const QString &hostname) const
 {
+  /*
+   * FIXME: Reimplement using QRegularExpression
+   *
   QRegExp exp(conf_provisioning_service_name_regex);
 
   exp.indexIn(hostname);
@@ -288,6 +295,8 @@ QString RDConfig::provisioningServiceName(const QString &hostname) const
     return QString();
   }
   return texts[conf_provisioning_service_name_group];
+  */
+  return QString();
 }
 
 

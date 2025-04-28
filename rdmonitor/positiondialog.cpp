@@ -22,11 +22,10 @@
 
 #include "positiondialog.h"
 
-PositionDialog::PositionDialog(QDesktopWidget *dw,RDMonitorConfig *mconfig,
+PositionDialog::PositionDialog(RDMonitorConfig *mconfig,
 			       RDConfig *config,QWidget *parent)
   : RDDialog(config,parent)
 {
-  pos_desktop_widget=dw;
   pos_config=mconfig;
 
   setWindowTitle("RDMonitor");

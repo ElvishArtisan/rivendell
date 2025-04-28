@@ -20,7 +20,7 @@
 
 #include <QEvent>
 #include <QKeyEvent>
-#include <QWebFrame>
+//#include <QWebFrame>
 
 #include <rdapplication.h>
 #include <rdeventfilter.h>
@@ -49,6 +49,7 @@ MessageWidget::MessageWidget(QWidget *parent)
   d_label=new QLabel(this);
   d_label->setWordWrap(true);
   d_label->setAlignment(Qt::AlignCenter);
+  /*
   d_view=new QWebView(this);
   connect(d_view,SIGNAL(loadFinished(bool)),
 	  this,SLOT(webLoadFinishedData(bool)));
@@ -64,7 +65,7 @@ MessageWidget::MessageWidget(QWidget *parent)
   filter->addFilter(QEvent::MouseMove);
   filter->addFilter(QEvent::Wheel);
   d_view->installEventFilter(filter);
-
+  */
   //
   // Refresh Timer
   //
@@ -86,13 +87,13 @@ void MessageWidget::setText(const QString &str,const QColor &col)
 {
   QPalette pal=d_label->palette();
 
-  pal.setColor(QPalette::Active,QPalette::Foreground,col);
-  pal.setColor(QPalette::Inactive,QPalette::Foreground,col);
+  pal.setColor(QPalette::Active,QPalette::WindowText,col);
+  pal.setColor(QPalette::Inactive,QPalette::WindowText,col);
   d_label->setPalette(pal);
   d_label->setFont(MessageFont(str));
   d_label->setText(str);
   d_label->show();
-  d_view->hide();
+  //  d_view->hide();
 
   d_refresh_timer->stop();
 }
@@ -100,6 +101,7 @@ void MessageWidget::setText(const QString &str,const QColor &col)
 
 bool MessageWidget::setUrl(const QString &str)
 {
+  /*
   QUrl url(str);
   if(!url.isValid()) {
     setText(tr("invalid URL")+": "+str.toUtf8().constData(),Qt::black);
@@ -126,7 +128,7 @@ bool MessageWidget::setUrl(const QString &str)
   else {
     d_refresh_timer->stop();
   }
-
+  */
   return true;
 }
 
@@ -135,7 +137,7 @@ void MessageWidget::clear()
 {
   d_label->clear();
   d_label->show();
-  d_view->hide();
+  //  d_view->hide();
   d_refresh_timer->stop();
 
   rda->airplayConf()->setMessageWidgetUrl(QString());
@@ -144,16 +146,18 @@ void MessageWidget::clear()
 
 void MessageWidget::webLoadFinishedData(bool state)
 {
+  /*
   d_view->page()->mainFrame()->
     setScrollBarPolicy(Qt::Horizontal,Qt::ScrollBarAlwaysOff);
   d_view->page()->mainFrame()->
     setScrollBarPolicy(Qt::Vertical,Qt::ScrollBarAlwaysOff);
+  */
 }
 
 
 void MessageWidget::refreshData()
 {
-  d_view->load(d_url);
+  //  d_view->load(d_url);
   d_refresh_timer->start(1000);
 }
 
@@ -161,7 +165,7 @@ void MessageWidget::refreshData()
 void MessageWidget::resizeEvent(QResizeEvent *e)
 {
   d_label->setGeometry(0,0,size().width(),size().height());
-  d_view->setGeometry(0,0,size().width(),size().height());
+  //  d_view->setGeometry(0,0,size().width(),size().height());
 }
 
 

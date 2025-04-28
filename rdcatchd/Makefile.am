@@ -2,7 +2,7 @@
 ##
 ## rdcatchd/ Makefile.am for Rivendell
 ##
-## (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -20,9 +20,9 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -I$(top_srcdir)/lib -Wno-strict-aliasing -std=c++11 -fPIC @QT5_CFLAGS@ @MUSICBRAINZ_CFLAGS@ @IMAGEMAGICK_CFLAGS@
+AM_CPPFLAGS = -Wall -I$(top_srcdir)/lib -Wno-strict-aliasing -std=c++17 -fPIC @QT6_CFLAGS@ @MUSICBRAINZ_CFLAGS@ @IMAGEMAGICK_CFLAGS@
 LIBS = -L$(top_srcdir)/lib
-MOC = @QT_MOC@
+MOC = @QT6_MOC@
 
 # QT's Meta Object Compiler (moc)
 moc_%.cpp:	%.h
@@ -39,7 +39,7 @@ dist_rdcatchd_SOURCES = batch.cpp\
 nodist_rdcatchd_SOURCES = moc_event_player.cpp\
                           moc_rdcatchd.cpp
 
-rdcatchd_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@ @IMAGEMAGICK_LIBS@
+rdcatchd_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT6_LIBS@ @MUSICBRAINZ_LIBS@ @IMAGEMAGICK_LIBS@
 
 CLEANFILES = *~\
              moc_*

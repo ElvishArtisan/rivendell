@@ -337,22 +337,22 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   // Create Palettes
   //
   auto_color=QPalette(QColor(BUTTON_MODE_AUTO_COLOR),
-		      palette().color(QPalette::Background));
+		      palette().color(QPalette::Window));
   manual_color=QPalette(QColor(BUTTON_MODE_MANUAL_COLOR),
-			palette().color(QPalette::Background));
+			palette().color(QPalette::Window));
   active_color=palette();
   active_color.setColor(QPalette::Active,QPalette::ButtonText,
 			BUTTON_LOG_ACTIVE_TEXT_COLOR);
   active_color.setColor(QPalette::Active,QPalette::Button,
 			BUTTON_LOG_ACTIVE_BACKGROUND_COLOR);
-  active_color.setColor(QPalette::Active,QPalette::Background,
-			palette().color(QPalette::Background));
+  active_color.setColor(QPalette::Active,QPalette::Window,
+			palette().color(QPalette::Window));
   active_color.setColor(QPalette::Inactive,QPalette::ButtonText,
 			BUTTON_LOG_ACTIVE_TEXT_COLOR);
   active_color.setColor(QPalette::Inactive,QPalette::Button,
 			BUTTON_LOG_ACTIVE_BACKGROUND_COLOR);
-  active_color.setColor(QPalette::Inactive,QPalette::Background,
-			palette().color(QPalette::Background));
+  active_color.setColor(QPalette::Inactive,QPalette::Window,
+			palette().color(QPalette::Window));
 
   //
   // Add Button

@@ -2,7 +2,7 @@
 //
 // System Monitor Applet for Rivendell
 //
-//   (C) Copyright 2012-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -70,7 +70,6 @@ class MainWidget : public RDWidget
   int mon_rdselect_y;
   QLabel *mon_status_label;
   //  StatusTip *mon_tooltip;
-  QDesktopWidget *mon_desktop_widget;
   RDMonitorConfig *mon_config;
   RDConfig *mon_rdconfig;
 };

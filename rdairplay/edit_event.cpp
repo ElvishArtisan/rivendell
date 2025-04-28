@@ -2,7 +2,7 @@
 //
 // Event Editor for RDAirPlay
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -99,7 +99,7 @@ EditEvent::EditEvent(RDLogPlay *log,QWidget *parent)
   QPainter *p=new QPainter(pix);
   p->setPen(Qt::black);
   p->setBrush(Qt::black);
-  p->fillRect(0,0,sizeHint().width(),3,palette().color(QPalette::Background));
+  p->fillRect(0,0,sizeHint().width(),3,palette().color(QPalette::Window));
   p->drawLine(10,1,sizeHint().width()-10,1);
   p->end();
   edit_horizrule_label->setPixmap(*pix);

@@ -120,7 +120,7 @@ void StopCounter::UpdateTime()
 	  
     p->fillRect(0,0,sizeHint().width()-2,sizeHint().height()-2,
 		QGuiApplication::palette().color(QPalette::Inactive,
-						 QPalette::Background));
+						 QPalette::Window));
     p->setPen(QColor(text_color));
     p->setFont(subLabelFont());
     p->drawText((sizeHint().width()-2-p->fontMetrics().horizontalAdvance(stop_text))/2,32,

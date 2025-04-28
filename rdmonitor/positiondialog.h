@@ -2,7 +2,7 @@
 //
 // Dialog to set RDMonitor screen position.
 //
-//   (C) Copyright 2013-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,11 +21,10 @@
 #ifndef POSITIONDIALOG_H
 #define POSITIONDIALOG_H
 
-#include <qcombobox.h>
-#include <qdesktopwidget.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
-#include <qspinbox.h>
+#include <QComboBox>
+#include <QLabel>
+#include <QPushButton>
+#include <QSpinBox>
 
 #include <rddialog.h>
 #include <rdmonitor_config.h>
@@ -34,7 +33,7 @@ class PositionDialog : public RDDialog
 {
  Q_OBJECT
  public:
-  PositionDialog(QDesktopWidget *dw,RDMonitorConfig *mconfig,RDConfig *config,
+  PositionDialog(RDMonitorConfig *mconfig,RDConfig *config,
 		 QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -59,7 +58,6 @@ class PositionDialog : public RDDialog
   QSpinBox *pos_y_offset_spin;
   QPushButton *pos_ok_button;
   QPushButton *pos_cancel_button;
-  QDesktopWidget *pos_desktop_widget;
   RDMonitorConfig *pos_config;
 };
 

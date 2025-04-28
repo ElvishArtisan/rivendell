@@ -19,7 +19,6 @@
 //
 
 #include <QApplication>
-#include <QDesktopWidget>
 #include <QDir>
 #include <QMessageBox>
 #include <QProcess>
@@ -55,7 +54,6 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   monitor_config=new RDMonitorConfig();
   monitor_config->load();
-  QDesktopWidget *dw=qApp->desktop();
   int width=sizeHint().width();
   int height=sizeHint().height();
   switch(monitor_config->position()) {
@@ -64,25 +62,25 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
     break;
 
   case RDMonitorConfig::UpperCenter:
-    setGeometry((dw->size().width()-width)/2,RDMONITOR_HEIGHT,width,height);
+    //    setGeometry((dw->size().width()-width)/2,RDMONITOR_HEIGHT,width,height);
     break;
 
   case RDMonitorConfig::UpperRight:
-    setGeometry(dw->size().width()-width,RDMONITOR_HEIGHT,width,height);
+    //    setGeometry(dw->size().width()-width,RDMONITOR_HEIGHT,width,height);
     break;
 
   case RDMonitorConfig::LowerLeft:
-    setGeometry(0,dw->size().height()-height+RDMONITOR_HEIGHT,width,height);
+    //    setGeometry(0,dw->size().height()-height+RDMONITOR_HEIGHT,width,height);
     break;
 
   case RDMonitorConfig::LowerCenter:
-    setGeometry((dw->size().width()-width)/2,
-		dw->size().height()-height+RDMONITOR_HEIGHT,width,height);
+    //    setGeometry((dw->size().width()-width)/2,
+    //		dw->size().height()-height+RDMONITOR_HEIGHT,width,height);
     break;
 
   case RDMonitorConfig::LowerRight:
-    setGeometry(dw->size().width()-width,
-		dw->size().height()-height+RDMONITOR_HEIGHT,width,height);
+    //    setGeometry(dw->size().width()-width,
+    //		dw->size().height()-height+RDMONITOR_HEIGHT,width,height);
     break;
 
   case RDMonitorConfig::LastPosition:

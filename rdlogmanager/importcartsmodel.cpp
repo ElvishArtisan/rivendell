@@ -154,7 +154,7 @@ QVariant ImportCartsModel::data(const QModelIndex &index,int role) const
       }
       return d_font;
 
-    case Qt::TextColorRole:
+    case Qt::ForegroundRole:
       if((col==1)&&((d_event_types.at(row)==RDLogLine::Cart)||
 		    (d_event_types.at(row)==RDLogLine::Macro))) {
 	return d_group_colors.value(d_texts.at(row).at(1).toString());

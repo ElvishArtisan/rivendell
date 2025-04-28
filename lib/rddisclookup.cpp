@@ -26,7 +26,6 @@
 #include <QDateTime>
 #include <QMessageBox>
 #include <QProcess>
-#include <QRegExp>
 #include <QTimer>
 
 #include "rdtempdirectory.h"

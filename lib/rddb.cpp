@@ -3,7 +3,7 @@
 //   Database driver with automatic reconnect
 //
 //   (C) Copyright 2007 Dan Mills <dmills@exponent.myzen.co.uk>
-//   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,7 +28,6 @@
 
 #include <QObject>
 #include <QString>
-#include <QTextCodec>
 #include <QTranslator>
 #include <QSqlError>
 #include <QStringList>

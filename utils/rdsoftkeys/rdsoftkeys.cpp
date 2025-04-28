@@ -104,7 +104,7 @@ MainWidget::MainWidget(RDConfig *config,Qt::WindowFlags f)
 					QString::asprintf("Color%d",n+1),"")).
 	   isEmpty()) {
 	  color=QColor(color_name);
-	  QPalette pal=QPalette(color,palette().color(QPalette::Background));
+	  QPalette pal=QPalette(color,palette().color(QPalette::Window));
 	  color.getHsv(&h,&s,&v);
 	  if((h>180)&&(h<300)) {
 	    v=255;

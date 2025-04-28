@@ -1,6 +1,6 @@
-## automake.am
+## Makefile.am
 ##
-## Automake.am for rivendell/web/tests
+## Makefile.am for rivendell/web/tests
 ##
 ##   (C) Copyright 2010-2023 Fred Gleason <fredg@paravelsystems.com>
 ##

@@ -2,7 +2,7 @@
 //
 // Data model for Rivendell dropboxes
 //
-//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -155,7 +155,7 @@ QVariant RDDropboxListModel::data(const QModelIndex &index,int role) const
       }
       return d_font;
 
-    case Qt::TextColorRole:
+    case Qt::ForegroundRole:
       if(col==1) {
 	return d_group_colors.at(row);
       }

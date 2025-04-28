@@ -44,15 +44,15 @@ PostCounter::PostCounter(QWidget *parent)
   post_early_palette=
     QPalette(QColor(POSTPOINT_EARLY_COLOR),
 	     QGuiApplication::palette().color(QPalette::Inactive,
-					      QPalette::Background));
+					      QPalette::Window));
   post_ontime_palette=
     QPalette(QColor(POSTPOINT_ONTIME_COLOR),
 	     QGuiApplication::palette().color(QPalette::Inactive,
-					      QPalette::Background));
+					      QPalette::Window));
   post_late_palette=
     QPalette(QColor(POSTPOINT_LATE_COLOR),
 	     QGuiApplication::palette().color(QPalette::Inactive,
-					      QPalette::Background));
+					      QPalette::Window));
 
   post_offset = 0;
   UpdateDisplay();
@@ -119,7 +119,7 @@ void PostCounter::resizeEvent(QResizeEvent *e)
 void PostCounter::UpdateDisplay()
 {
   QColor color=QGuiApplication::palette().color(QPalette::Inactive,
-						QPalette::Background);
+						QPalette::Window);
   QColor text_color=QGuiApplication::palette().buttonText().color();
   QString str;
   QString point;

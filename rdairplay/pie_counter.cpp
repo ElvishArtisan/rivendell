@@ -2,7 +2,7 @@
 //
 // The pie counter widget for Rivendell
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -41,10 +41,10 @@ PieCounter::PieCounter(int count_length,QWidget *parent)
   const int ring=(PIE_COUNTER_BBOX-PIE_COUNTER_SIZE)/2; 
 
   onair_on_palette=palette();
-  onair_on_palette.setColor(QPalette::Background,PIE_ONAIR_COLOR);
+  onair_on_palette.setColor(QPalette::Window,PIE_ONAIR_COLOR);
   onair_off_palette=palette();
   onair_on_palette.
-    setColor(QPalette::Background,QColor(AIR_WIDGET_BACKGROUND_COLOR));
+    setColor(QPalette::Window,QColor(AIR_WIDGET_BACKGROUND_COLOR));
   setPalette(onair_on_palette);
   
   setAutoFillBackground(true);
@@ -53,8 +53,8 @@ PieCounter::PieCounter(int count_length,QWidget *parent)
   pie_time_label->
     setGeometry(PIE_X_PADDING+ring+25,PIE_Y_PADDING+ring+32,48,36);
   time_label_palette=palette();
-  time_label_palette.setColor(QPalette::Background,Qt::lightGray);
-  time_label_palette.setColor(QPalette::Foreground,PIE_FINAL_COLOR);
+  time_label_palette.setColor(QPalette::Window,Qt::lightGray);
+  time_label_palette.setColor(QPalette::WindowText,PIE_FINAL_COLOR);
   pie_time_label->setPalette(time_label_palette);
   pie_time_label->setFont(bannerFont());
   pie_time_label->setAlignment(Qt::AlignCenter);
@@ -65,8 +65,8 @@ PieCounter::PieCounter(int count_length,QWidget *parent)
   pie_talk_label->
     setGeometry(PIE_X_PADDING+ring+25,PIE_Y_PADDING+ring+32,48,36);
   talk_label_palette=palette();
-  talk_label_palette.setColor(QPalette::Background,Qt::lightGray);
-  talk_label_palette.setColor(QPalette::Foreground,PIE_TALK_COLOR);
+  talk_label_palette.setColor(QPalette::Window,Qt::lightGray);
+  talk_label_palette.setColor(QPalette::WindowText,PIE_TALK_COLOR);
   pie_talk_label->setPalette(talk_label_palette);
   pie_talk_label->setFont(bannerFont());
   pie_talk_label->setAlignment(Qt::AlignCenter);

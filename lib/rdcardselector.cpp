@@ -2,7 +2,7 @@
 //
 // Audio channel assignments widget for Rivendell
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -217,7 +217,7 @@ void RDCardSelector::portData(int port)
 void RDCardSelector::resizeEvent(QResizeEvent *e)
 {
   int label_width=defaultFontMetrics()->horizontalAdvance(tr("Card:"));
-  if(defaultFontMetrics()->horizontalAdvance(tr("Port:")>label_width)) {
+  if(defaultFontMetrics()->horizontalAdvance(tr("Port:"))>label_width) {
     label_width=defaultFontMetrics()->horizontalAdvance(tr("Port:"));
   }
   card_title->setGeometry(0,0,width(),19);

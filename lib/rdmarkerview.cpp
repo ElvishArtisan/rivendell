@@ -2,7 +2,7 @@
 //
 // Widget for displaying/editing cut markers
 //
-//   (C) Copyright 2021-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -1171,7 +1171,7 @@ void RDMarkerView::mousePressEvent(QMouseEvent *e)
     emit positionClicked(d_msec_pos);
     break;
 
-  case Qt::MidButton:
+  case Qt::MiddleButton:
     break;
 
   case Qt::RightButton:

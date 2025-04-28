@@ -2,7 +2,7 @@
 //
 // Stored value drag object for Rivendell carts.
 //
-//   (C) Copyright 2013-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -46,7 +46,7 @@ class RDCartDrag : public QMimeData
 		     RDLogLine::TransType trans=RDLogLine::NoTrans);
 
  protected:
-  QVariant retrieveData(const QString &mimetype,QVariant::Type type) const;
+  QVariant retrieveData(const QString &mimetype,QMetaType::Type type) const;
 
  private:
   void SetData(unsigned cartnum,const QColor &color,const QString &title);

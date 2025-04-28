@@ -2,7 +2,7 @@
 //
 //   An audio- and touchscreen-friendly slider widget.
 //
-//   (C) Copyright 2009-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2009-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -133,7 +133,7 @@ void RDSlider::setKnobColor(const QPalette &pal)
 
 void RDSlider::setKnobColor(const QColor &color)
 {
-  knob_color.setColor(QPalette::Background,color);
+  knob_color.setColor(QPalette::Window,color);
   calcKnob();
   update();
 }
@@ -710,7 +710,7 @@ void RDSlider::calcKnob(int x,int y,int w,int h)
       delete knob_map;
     }
     knob_map=new QPixmap(curr_knob.size());
-    knob_map->fill(knob_color.color(QPalette::Background));
+    knob_map->fill(knob_color.color(QPalette::Window));
     p.begin(knob_map);
     
     //
@@ -789,7 +789,7 @@ void RDSlider::calcKnob(int x,int y,int w,int h)
       delete knob_map;
     }
     knob_map=new QPixmap(curr_knob.size());
-    knob_map->fill(knob_color.color(QPalette::Background));
+    knob_map->fill(knob_color.color(QPalette::Window));
     p.begin(knob_map);
     
     //

@@ -1,6 +1,6 @@
 ## Makefile.am
 ##
-##   (C) Copyright 2010-2021 Fred Gleason <fredg@paravelsystems.com>
+##   (C) Copyright 2010-2025 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -17,9 +17,9 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -Wno-strict-aliasing -std=c++11 -fPIC -I$(top_srcdir)/lib @QT5_CFLAGS@ @MUSICBRAINZ_CFLAGS@ @IMAGEMAGICK_CFLAGS@
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -Wno-strict-aliasing -std=c++17 -fPIC -I$(top_srcdir)/lib @QT6_CFLAGS@ @MUSICBRAINZ_CFLAGS@ @IMAGEMAGICK_CFLAGS@
 LIBS = -L$(top_srcdir)/lib
-MOC = @QT_MOC@
+MOC = @QT6_MOC@
 
 # The dependency for qt's Meta Object Compiler (moc)
 moc_%.cpp:	%.h
@@ -51,7 +51,7 @@ dist_rdxport_cgi_SOURCES = audioinfo.cpp\
 
 nodist_rdxport_cgi_SOURCES = moc_rdxport.cpp
 
-rdxport_cgi_LDADD = @LIB_RDLIBS@ -lsndfile @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@ @IMAGEMAGICK_LIBS@
+rdxport_cgi_LDADD = @LIB_RDLIBS@ -lsndfile @LIBVORBIS@ @QT6_LIBS@ @MUSICBRAINZ_LIBS@ @IMAGEMAGICK_LIBS@
 
 EXTRA_DIST = rdxport.pro
 

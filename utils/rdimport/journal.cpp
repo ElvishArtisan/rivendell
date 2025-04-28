@@ -139,7 +139,7 @@ void Journal::sendAll()
   used_addrs.clear();
   if(c_good_groups.size()>0) {
     QMultiMap<QString,QString> grp_map=GroupsByAddress(c_good_groups);
-    for(QMap<QString,QString>::const_iterator it=grp_map.begin();
+    for(QMultiMap<QString,QString>::const_iterator it=grp_map.begin();
 	it!=grp_map.end();it++) {
       if(!used_addrs.contains(it.key())) {
 	QString errors;
@@ -187,7 +187,7 @@ void Journal::sendAll()
   used_addrs.clear();
   if(c_bad_groups.size()>0) {
     QMultiMap<QString,QString> grp_map=GroupsByAddress(c_bad_groups);
-    for(QMap<QString,QString>::const_iterator it=grp_map.begin();
+    for(QMultiMap<QString,QString>::const_iterator it=grp_map.begin();
 	it!=grp_map.end();it++) {
       if(!used_addrs.contains(it.key())) {
 	QString errors;

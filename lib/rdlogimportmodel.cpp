@@ -2,7 +2,7 @@
 //
 // Data model for Rivendell log imports
 //
-//   (C) Copyright 2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2022-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -139,7 +139,7 @@ QVariant RDLogImportModel::data(const QModelIndex &index,int role) const
     case Qt::FontRole:
       return d_font;
 
-    case Qt::TextColorRole:
+    case Qt::ForegroundRole:
       // Nothing to do!
       break;
 

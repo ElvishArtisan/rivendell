@@ -2,7 +2,7 @@
 //
 // Button Editor for SoundPanel
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -142,7 +142,7 @@ int RDButtonDialog::exec(RDPanelButton *button,bool hookmode,
   edit_user_password=passwd;
   edit_cart=edit_button->cart();
   edit_color=edit_button->defaultColor();
-  QPalette p=QPalette(edit_color,palette().color(QPalette::Background));
+  QPalette p=QPalette(edit_color,palette().color(QPalette::Window));
   p.setColor(QPalette::ButtonText,RDGetTextColor(edit_color));
   edit_color_button->setPalette(p);
   edit_label_edit->setText(edit_button->text());
@@ -163,7 +163,7 @@ void RDButtonDialog::clearCartData()
 {
   edit_cart=0;
   edit_color=Qt::lightGray;
-  edit_color_button->setPalette(QPalette(edit_color,palette().color(QPalette::Background)));
+  edit_color_button->setPalette(QPalette(edit_color,palette().color(QPalette::Window)));
   edit_label_edit->setText("");
   edit_cart_edit->setText("");
 }
@@ -174,7 +174,7 @@ void RDButtonDialog::setColorData()
   QColor new_color=QColorDialog::getColor(edit_color,this,"edit_color_dialog");
   if(new_color.isValid()) {
     edit_color=new_color;
-    QPalette p=QPalette(edit_color,palette().color(QPalette::Background));
+    QPalette p=QPalette(edit_color,palette().color(QPalette::Window));
     p.setColor(QPalette::ButtonText,RDGetTextColor(edit_color));
     edit_color_button->setPalette(p);
   }

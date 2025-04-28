@@ -1835,8 +1835,8 @@ void RDSoundPanel::ApplyButtonFields(RDPanelButton *button,RDSqlQuery *q)
     }
   }
   if(q->value(8).toString().isEmpty()) {
-    button->setColor(palette().color(QPalette::Background));
-    button->setDefaultColor(palette().color(QPalette::Background));
+    button->setColor(palette().color(QPalette::Window));
+    button->setDefaultColor(palette().color(QPalette::Window));
   }
   else {
     button->setColor(QColor(q->value(8).toString()));

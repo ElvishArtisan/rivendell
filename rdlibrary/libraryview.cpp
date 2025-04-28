@@ -2,7 +2,7 @@
 //
 // QTreeView widget that supports cart dragging.
 //
-//   (C) Copyright 2020-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2020-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -46,7 +46,7 @@ void LibraryView::mousePressEvent(QMouseEvent *e)
     RDCartDrag *cd=
       new RDCartDrag(mod->cartNumber(index),
 		     mod->data(mod->index(index.row(),4)).toString(),
-		     mod->data(mod->index(index.row(),1),Qt::TextColorRole).
+		     mod->data(mod->index(index.row(),1),Qt::ForegroundRole).
 		     value<QColor>());
     drag->setMimeData(cd);
     drag->setPixmap(mod->data(mod->index(index.row(),0),Qt::DecorationRole).

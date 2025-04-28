@@ -2,7 +2,7 @@
 //
 // The cart slot widget.
 //
-//   (C) Copyright 2012-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -61,10 +61,10 @@ RDCartSlot::RDCartSlot(int slotnum,RDRipc *ripc,RDCae *cae,RDStation *station,
   //
   slot_ready_color=
     QPalette(QColor(BUTTON_STOPPED_BACKGROUND_COLOR),
-	     palette().color(QPalette::Background));
+	     palette().color(QPalette::Window));
   slot_playing_color=
     QPalette(QColor(BUTTON_PLAY_BACKGROUND_COLOR),
-	     palette().color(QPalette::Background));
+	     palette().color(QPalette::Window));
 
   //
   // Slot Options

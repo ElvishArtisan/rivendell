@@ -2,7 +2,7 @@
 //
 //   An audio transport button widget.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -384,7 +384,7 @@ void RDTransportButton::drawOnCap()
   }
   delete on_cap;
   on_cap=new QPixmap(capSize());
-  on_cap->fill(palette().color(QPalette::Background));
+  on_cap->fill(palette().color(QPalette::Window));
   drawMask(on_cap);
   p=new QPainter(on_cap);
   p->setPen(on_color);
@@ -743,7 +743,7 @@ void RDTransportButton::drawOffCap()
   }
   delete off_cap;
   off_cap=new QPixmap(capSize());
-  off_cap->fill(palette().color(QPalette::Background));
+  off_cap->fill(palette().color(QPalette::Window));
   drawMask(off_cap);
   p=new QPainter(off_cap);
   p->setPen(QColor(Qt::black));

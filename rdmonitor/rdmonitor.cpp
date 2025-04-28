@@ -91,11 +91,9 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   mon_rdconfig->load();
   mon_rdconfig->setModuleName("RDMonitor");
 
-  mon_desktop_widget=new QDesktopWidget();
   mon_config=new RDMonitorConfig();
   mon_config->load();
-  mon_position_dialog=new PositionDialog(mon_desktop_widget,mon_config,
-					 mon_rdconfig,this);
+  mon_position_dialog=new PositionDialog(mon_config,mon_rdconfig,this);
   mon_position_dialog->setGeometry(0,0,mon_position_dialog->sizeHint().width(),
 				   mon_position_dialog->sizeHint().height());
 
@@ -190,14 +188,14 @@ void MainWidget::quitMainWidget()
 void MainWidget::enterEvent(QEvent *e)
 {
   mon_status_label->show();
-  QWidget::enterEvent(e);
+  //  QWidget::enterEvent(e);
 }
 
 
 void MainWidget::leaveEvent(QEvent *e)
 {
   mon_status_label->hide();
-  QWidget::leaveEvent(e);
+  //  QWidget::leaveEvent(e);
 }
 
 
@@ -301,7 +299,7 @@ void MainWidget::SetPosition()
   else {
     geo=screens.at(0)->geometry();
   }
-  QRect main_geo=mon_desktop_widget->geometry();
+  QRect main_geo;//=mon_desktop_widget->geometry();
   int x=0;
   int dx=mon_config->xOffset();
   int y=0;

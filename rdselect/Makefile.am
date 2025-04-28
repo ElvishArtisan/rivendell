@@ -1,6 +1,6 @@
 ## Makefile.am
 ##
-## (C) Copyright 2012-2021 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2012-2025 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -18,9 +18,9 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -Wno-strict-aliasing -std=c++11 -fPIC -I$(top_srcdir)/lib @QT5_CFLAGS@ @MUSICBRAINZ_CFLAGS@ @IMAGEMAGICK_CFLAGS@
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -Wno-strict-aliasing -std=c++17 -fPIC -I$(top_srcdir)/lib @QT6_CFLAGS@ @MUSICBRAINZ_CFLAGS@ @IMAGEMAGICK_CFLAGS@
 LIBS = -L$(top_srcdir)/lib
-MOC = @QT_MOC@
+MOC = @QT6_MOC@
 
 # The dependency for qt's Meta Object Compiler (moc)
 moc_%.cpp:	%.h
@@ -46,7 +46,7 @@ dist_rdselect_SOURCES = rdselect.cpp rdselect.h
 
 nodist_rdselect_SOURCES = moc_rdselect.cpp
 
-rdselect_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@ @IMAGEMAGICK_LIBS@
+rdselect_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT6_LIBS@ @MUSICBRAINZ_LIBS@ @IMAGEMAGICK_LIBS@
 
 EXTRA_DIST = rd.audiostore.autofs\
              rdselect.pro\

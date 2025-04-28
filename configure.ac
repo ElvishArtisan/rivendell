@@ -93,15 +93,26 @@ AC_ARG_ENABLE(i18n-updates,[  --enable-i18n-updates   enable I18N metadata updat
 #
 # Check for Qt5 (Mandatory)
 #
-PKG_CHECK_MODULES(QT5,Qt5Core Qt5Widgets Qt5Gui Qt5Network Qt5Sql Qt5Xml Qt5WebKitWidgets,,[AC_MSG_ERROR([*** Qt5 not found ***])])
-PKG_CHECK_MODULES(QT5_CLI,Qt5Core Qt5Network Qt5Sql Qt5Xml,,[AC_MSG_ERROR([*** Qt5 not found ***])])
-AC_CHECK_PROG(MOC_NAME,moc-qt5,[moc-qt5],[moc])
-AC_SUBST(QT_MOC,$MOC_NAME)
+#PKG_CHECK_MODULES(QT5,Qt5Core Qt5Widgets Qt5Gui Qt5Network Qt5Sql Qt5Xml Qt5WebKitWidgets,,[AC_MSG_ERROR([*** Qt5 not found ***])])
+#PKG_CHECK_MODULES(QT5_CLI,Qt5Core Qt5Network Qt5Sql Qt5Xml,,[AC_MSG_ERROR([*** Qt5 not found ***])])
+#AC_CHECK_PROG(MOC_NAME,moc-qt5,[moc-qt5],[moc])
+#AC_SUBST(QT_MOC,$MOC_NAME)
 
-AC_CHECK_PROG(LUPDATE_NAME,lupdate-qt5,[lupdate-qt5],[lupdate])
+#AC_CHECK_PROG(LUPDATE_NAME,lupdate-qt5,[lupdate-qt5],[lupdate])
+#AC_SUBST(QT_LUPDATE,$LUPDATE_NAME)
+
+#AC_CHECK_PROG(LRELEASE_NAME,lrelease-qt5,[lrelease-qt5],[lrelease])
+#AC_SUBST(QT_LRELEASE,$LRELEASE_NAME)
+
+#
+# Check for Qt6 (Mandatory)
+#
+AQ_FIND_QT6(QT6,Core Gui Widgets Network Sql Xml,[],[AC_MSG_ERROR([*** Qt6 not found ***])])
+
+AC_CHECK_PROG(LUPDATE_NAME,lupdate-qt6,[lupdate-qt6],[lupdate])
 AC_SUBST(QT_LUPDATE,$LUPDATE_NAME)
 
-AC_CHECK_PROG(LRELEASE_NAME,lrelease-qt5,[lrelease-qt5],[lrelease])
+AC_CHECK_PROG(LRELEASE_NAME,lrelease-qt6,[lrelease-qt6],[lrelease])
 AC_SUBST(QT_LRELEASE,$LRELEASE_NAME)
 
 
@@ -143,7 +154,7 @@ case "$ar_distro_id" in
        AC_SUBST(APACHE_CONFIG_DIR,"/etc/apache2/conf.d")
        AC_SUBST(USERMODE_PKG,"")
        AC_SUBST(MYSQL_PKG,"mariadb-client")
-       AC_SUBST(QT_MYSQL_PKG,"libqt5sql5-mysql")
+       AC_SUBST(QT_MYSQL_PKG,"libqt6sql5-mysql")
        AC_SUBST(DOC_PATH,"/usr/share/doc/rivendell")
        AC_SUBST(HAVE_USERMODE,"no")
        AC_SUBST(RDALSACONFIG_DESKTOP_FILE,"rivendell-rdalsaconfig-sudo.desktop")
@@ -161,7 +172,7 @@ case "$ar_distro_id" in
        AC_SUBST(APACHE_CONFIG_DIR,"/etc/apache2/conf.d")
        AC_SUBST(USERMODE_PKG,"")
        AC_SUBST(MYSQL_PKG,"mariadb-client")
-       AC_SUBST(QT_MYSQL_PKG,"libqt5sql5-mysql")
+       AC_SUBST(QT_MYSQL_PKG,"libqt6sql5-mysql")
        AC_SUBST(DOC_PATH,"/usr/share/doc/rivendell")
        AC_SUBST(HAVE_USERMODE,"no")
        AC_SUBST(RDALSACONFIG_DESKTOP_FILE,"rivendell-rdalsaconfig-sudo.desktop")
@@ -179,7 +190,7 @@ case "$ar_distro_id" in
        AC_SUBST(APACHE_CONFIG_DIR,"/etc/apache2/conf.d")
        AC_SUBST(USERMODE_PKG,"")
        AC_SUBST(MYSQL_PKG,"mariadb-client")
-       AC_SUBST(QT_MYSQL_PKG,"libqt5sql5-mysql")
+       AC_SUBST(QT_MYSQL_PKG,"libqt6sql5-mysql")
        AC_SUBST(DOC_PATH,"/usr/share/doc/rivendell")
        AC_SUBST(HAVE_USERMODE,"no")
        AC_SUBST(RDALSACONFIG_DESKTOP_FILE,"rivendell-rdalsaconfig-sudo.desktop")
@@ -197,7 +208,7 @@ case "$ar_distro_id" in
        AC_SUBST(APACHE_CONFIG_DIR,"/etc/apache2/conf.d")
        AC_SUBST(USERMODE_PKG,"")
        AC_SUBST(MYSQL_PKG,"mariadb-client")
-       AC_SUBST(QT_MYSQL_PKG,"libqt5sql5-mysql")
+       AC_SUBST(QT_MYSQL_PKG,"libqt6sql5-mysql")
        AC_SUBST(DOC_PATH,"/usr/share/doc/rivendell")
        AC_SUBST(HAVE_USERMODE,"no")
        AC_SUBST(RDALSACONFIG_DESKTOP_FILE,"rivendell-rdalsaconfig-sudo.desktop")
@@ -225,7 +236,7 @@ case "$ar_distro_id" in
        AC_SUBST(APACHE_CONFIG_DIR,"/etc/httpd/conf.d")
        AC_SUBST(USERMODE_PKG,"usermode usermode-gtk")
        AC_SUBST(MYSQL_PKG,"mariadb")
-       AC_SUBST(QT_MYSQL_PKG,"qt5-qtbase-mysql")
+       AC_SUBST(QT_MYSQL_PKG,"qt6-qtbase-mysql")
        AC_SUBST(DOC_PATH,"/usr/share/doc/rivendell-$PACKAGE_VERSION")
        AC_SUBST(HAVE_USERMODE,"yes")
        AC_SUBST(RDALSACONFIG_DESKTOP_FILE,"rivendell-rdalsaconfig-root.desktop")

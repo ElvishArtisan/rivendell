@@ -271,7 +271,7 @@ void EditGrid::LoadButtons()
 void EditGrid::LabelButton(int dayofweek,int hour,QString clockname)
 {
   QString code=QString("---");
-  QColor color=palette().color(QPalette::Background);
+  QColor color=palette().color(QPalette::Window);
 
   QString sql=QString("select ")+
     "`SHORT_NAME`,"+  // 00
@@ -288,7 +288,7 @@ void EditGrid::LabelButton(int dayofweek,int hour,QString clockname)
   edit_hour_button[dayofweek-1][hour]->
     setText(QString::asprintf("%02d-%02d\n",hour,hour+1)+code);
   edit_hour_button[dayofweek-1][hour]->
-    setPalette(QPalette(color,palette().color(QPalette::Background)));
+    setPalette(QPalette(color,palette().color(QPalette::Window)));
 }
 
 

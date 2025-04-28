@@ -2,7 +2,7 @@
 //
 // Data model for Rivendell cut metadata
 //
-//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -143,7 +143,7 @@ QVariant RDCutListModel::data(const QModelIndex &index,int role) const
     case Qt::FontRole:
       return d_font;
 
-    case Qt::TextColorRole:
+    case Qt::ForegroundRole:
       // Nothing to do!
       break;
 
@@ -176,7 +176,7 @@ QModelIndex RDCutListModel::addCut(const QString &name)
   }
   list[12]=name;
   d_texts.push_back(list);
-  d_colors.push_back(d_palette.color(QPalette::Background));
+  d_colors.push_back(d_palette.color(QPalette::Window));
   d_row_index.push_back(d_row_index.size());
   updateCutLine(d_texts.size()-1);
   sortRows(d_use_weighting);
@@ -297,7 +297,7 @@ void RDCutListModel::setCartNumber(unsigned cartnum)
     int row=0;
     while(q->next()) {
       d_texts.push_back(text);
-      d_colors.push_back(d_palette.color(QPalette::Background));
+      d_colors.push_back(d_palette.color(QPalette::Window));
       d_row_index.push_back(row++);
       updateRow(d_texts.size()-1,q);
     }
@@ -411,7 +411,7 @@ void RDCutListModel::updateRow(int row,RDSqlQuery *q)
       break;
 
     case RDCart::AlwaysValid:
-      d_colors[d_row_index.at(row)]=d_palette.color(QPalette::Background);
+      d_colors[d_row_index.at(row)]=d_palette.color(QPalette::Window);
       break;
     }
   }
@@ -547,7 +547,7 @@ RDCart::Validity RDCutListModel::ValidateCut(RDSqlQuery *q,unsigned offset,
 void RDCutListModel::DumpIndex(const QString &str) const
 {
   printf("* %s ****************\n",str.toUtf8().constData());
-  printf("SIZE: %d\n",d_row_index.size());
+  printf("SIZE: %lld\n",d_row_index.size());
   for(int i=0;i<d_row_index.size();i++) {
     printf("%s - %d => %d\n",
 	   d_texts.at(i).at(12).toString().toUtf8().constData(),

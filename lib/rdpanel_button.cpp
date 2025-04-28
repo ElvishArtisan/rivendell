@@ -164,7 +164,7 @@ void RDPanelButton::setColor(QColor color)
 {
   button_color=color;
   if(button_flash) {
-    if(color==palette().color(QPalette::Background)) {
+    if(color==palette().color(QPalette::Window)) {
       button_flashing=false;
     }
     else {

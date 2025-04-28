@@ -1,6 +1,6 @@
 ## Makefile.am
 ##
-##   (C) Copyright 2018-2022 Fred Gleason <fredg@paravelsystems.com>
+##   (C) Copyright 2018-2025 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -17,8 +17,8 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -Wno-strict-aliasing -std=c++11 -fPIC @QT5_CLI_CFLAGS@ @MUSICBRAINZ_CFLAGS@ @IMAGEMAGICK_CFLAGS@
-MOC = @QT_MOC@
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -Wno-strict-aliasing -std=c++17 -fPIC @QT6_CFLAGS@ @MUSICBRAINZ_CFLAGS@ @IMAGEMAGICK_CFLAGS@
+MOC = @QT6_MOC@
 
 # The dependency for qt's Meta Object Compiler (moc)
 moc_%.cpp:	%.h
@@ -36,7 +36,7 @@ nodist_rdselect_helper_SOURCES = moc_rdselect_helper.cpp\
                                  rdconfig.cpp rdconfig.h\
                                  rdprofile.cpp rdprofile.h
 
-rdselect_helper_LDADD = @QT5_CLI_LIBS@ @MUSICBRAINZ_LIBS@ @IMAGEMAGICK_LIBS@
+rdselect_helper_LDADD = @QT6_LIBS@ @MUSICBRAINZ_LIBS@ @IMAGEMAGICK_LIBS@
 
 CLEANFILES = *~\
              *.idb\

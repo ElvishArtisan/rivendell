@@ -502,7 +502,6 @@ void DiskRipper::ejectedData()
   rip_cddb_label->hide();
   rip_cdtext_label->hide();
   rip_cddb_label->hide();
-  rip_track=-1;
   rip_artist_edit->clear();
   rip_album_edit->clear();
   rip_other_edit->clear();
@@ -729,7 +728,6 @@ void DiskRipper::mediaChangedData()
   }
   rip_wave_datas.clear();
   rip_track_model->clear();
-  rip_track=-1;
   rip_setcut_button->setDisabled(true);
   rip_setall_button->setDisabled(true);
   rip_setsingle_button->setDisabled(true);
@@ -781,7 +779,6 @@ void DiskRipper::lookupDoneData(RDDiscLookup::Result result,
     else {
       rip_apply_box->hide();
       rip_apply_label->hide();
-      rip_track=-1;
       rip_cdtext_label->hide();
       rip_cddb_label->hide();
       return;  // Apply no metadata
@@ -793,7 +790,6 @@ void DiskRipper::lookupDoneData(RDDiscLookup::Result result,
     if(rip_cdrom->status()!=RDCdPlayer::Ok) {
       rip_apply_box->hide();
       rip_apply_label->hide();
-      rip_track=-1;
       rip_cdtext_label->hide();
       rip_cddb_label->hide();
       return;
@@ -844,7 +840,6 @@ void DiskRipper::lookupDoneData(RDDiscLookup::Result result,
   case RDDiscLookup::NoMatch:
     rip_apply_box->hide();
     rip_apply_label->hide();
-    rip_track=-1;
     rip_cdtext_label->hide();
     rip_cddb_label->hide();
     break;
@@ -854,7 +849,6 @@ void DiskRipper::lookupDoneData(RDDiscLookup::Result result,
 			 " "+tr("Lookup Error"),err_msg);
     rip_apply_box->hide();
     rip_apply_label->hide();
-    rip_track=-1;
     rip_cdtext_label->hide();
     rip_cddb_label->hide();
     break;

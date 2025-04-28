@@ -109,7 +109,7 @@ void WallClock::tickClock()
   }
   else {
     p.fillRect(0,0,width()-2,height()-2,QGuiApplication::palette().color(QPalette::Inactive,
-							QPalette::Background));
+							QPalette::Window));
     p.setPen(QColor(text_color));
   }
   p.setFont(subLabelFont());

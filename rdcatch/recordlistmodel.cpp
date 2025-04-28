@@ -2,7 +2,7 @@
 //
 // Data model for Rivendell RDCatch events.
 //
-//   (C) Copyright 2021-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -203,7 +203,7 @@ QVariant RecordListModel::data(const QModelIndex &index,int role) const
       }
       return d_font;
 
-    case Qt::TextColorRole:
+    case Qt::ForegroundRole:
       return d_text_colors.at(row);
 
     case Qt::BackgroundRole:
@@ -632,7 +632,7 @@ void RecordListModel::updateRow(int row,RDSqlQuery *q)
   d_exit_codes[row]=(RDRecording::ExitCode)q->value(25).toUInt();
 
   //
-  // Qt::TextColorRole
+  // Qt::ForegroundRole
   //
   if(q->value(2).toString()=="Y") {
     d_text_colors[row]=QColor(EVENT_ACTIVE_TEXT_COLOR);

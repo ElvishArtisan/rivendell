@@ -132,28 +132,28 @@ LogLineBox::LogLineBox(RDAirPlayConf *conf,QWidget *parent)
   line_changed_play_palette.setColor(QPalette::Inactive,QPalette::Highlight,
 			     QColor(BAR_CHANGED_TRANSITION_COLOR));
   line_time_palette=QGuiApplication::palette();
-  line_time_palette.setColor(QPalette::Active,QPalette::Foreground,
+  line_time_palette.setColor(QPalette::Active,QPalette::WindowText,
 			     QColor(Qt::black));
-  line_time_palette.setColor(QPalette::Inactive,QPalette::Foreground,
+  line_time_palette.setColor(QPalette::Inactive,QPalette::WindowText,
 			     QColor(Qt::black));
   line_time_style_sheet="";
   line_hard_palette=QGuiApplication::palette();
-  line_hard_palette.setColor(QPalette::Active,QPalette::Foreground,
+  line_hard_palette.setColor(QPalette::Active,QPalette::WindowText,
 			     QColor(LOG_HARDTIME_TEXT_COLOR));
-  line_hard_palette.setColor(QPalette::Inactive,QPalette::Foreground,
+  line_hard_palette.setColor(QPalette::Inactive,QPalette::WindowText,
 			     QColor(LOG_HARDTIME_TEXT_COLOR));
   line_hard_style_sheet="color: "+QColor(LOG_HARDTIME_TEXT_COLOR).name();
 
   line_timescale_palette=QGuiApplication::palette();
-  line_timescale_palette.setColor(QPalette::Active,QPalette::Foreground,
+  line_timescale_palette.setColor(QPalette::Active,QPalette::WindowText,
 				  QColor(LOGLINEBOX_TIMESCALE_COLOR));
-  line_timescale_palette.setColor(QPalette::Inactive,QPalette::Foreground,
+  line_timescale_palette.setColor(QPalette::Inactive,QPalette::WindowText,
 				  QColor(LOGLINEBOX_TIMESCALE_COLOR));
 
   line_transition_palette=QGuiApplication::palette();
-  line_transition_palette.setColor(QPalette::Active,QPalette::Foreground,
+  line_transition_palette.setColor(QPalette::Active,QPalette::WindowText,
 				  QColor(RD_CUSTOM_TRANSITION_COLOR));
-  line_transition_palette.setColor(QPalette::Inactive,QPalette::Foreground,
+  line_transition_palette.setColor(QPalette::Inactive,QPalette::WindowText,
 				  QColor(RD_CUSTOM_TRANSITION_COLOR));
 
   line_text_palette=QGuiApplication::palette();
@@ -544,7 +544,7 @@ void LogLineBox::setEvent(int line,RDLogLine::TransType next_type,
 	}
 	line_group_label->setText(cart->groupName());
 	p=line_group_label->palette();
-	p.setColor(QPalette::Foreground,line_logline->groupColor());
+	p.setColor(QPalette::WindowText,line_logline->groupColor());
 	line_group_label->setPalette(p);
 	if(line_logline->talkLength()<=0) {
 	  line_talktime_label->setText(":00");
@@ -702,7 +702,7 @@ void LogLineBox::setEvent(int line,RDLogLine::TransType next_type,
     line_cut_label->setText("");
     line_group_label->setText(cart->groupName());
     p=line_group_label->palette();
-    p.setColor(QPalette::Foreground,line_logline->groupColor());
+    p.setColor(QPalette::WindowText,line_logline->groupColor());
     line_group_label->setPalette(p);
     line_length_label->
       setText(RDGetTimeLength(line_logline->effectiveLength(),
@@ -833,7 +833,7 @@ void LogLineBox::mouseMoveEvent(QMouseEvent *e)
 	RDCartDrag *cd=new RDCartDrag(line_logline->cartNumber(),
 				      line_logline->title(),
 				      line_group_label->palette().
-				      color(QPalette::Foreground));
+				      color(QPalette::WindowText));
 	drag->setMimeData(cd);
 	drag->setPixmap(line_icon_label->pixmap((Qt::ReturnByValueConstant)0));
 	drag->exec();

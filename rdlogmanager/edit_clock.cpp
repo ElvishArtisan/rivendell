@@ -172,7 +172,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
   edit_color_button->setFont(buttonFont());
   edit_color_button->setText(tr("Color"));
   connect(edit_color_button,SIGNAL(clicked()),this,SLOT(colorData()));
-  edit_color=palette().color(QPalette::Background);
+  edit_color=palette().color(QPalette::Window);
   
   //
   // Clock Display
@@ -206,7 +206,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
   if(edit_clocks_model->color().isValid()) {
     edit_color=edit_clocks_model->color();
     edit_color_button->
-      setPalette(QPalette(edit_clocks_model->color(),palette().color(QPalette::Background)));
+      setPalette(QPalette(edit_clocks_model->color(),palette().color(QPalette::Window)));
   }
   edit_remarks_edit->setText(edit_clocks_model->remarks());
   edit_modified=false;
@@ -453,10 +453,10 @@ void EditClock::doubleClickedData(const QModelIndex &index)
 void EditClock::colorData()
 {
   QColor color=
-    QColorDialog::getColor(edit_color_button->palette().color(QPalette::Background),this);
+    QColorDialog::getColor(edit_color_button->palette().color(QPalette::Window),this);
   if(color.isValid()) {
     edit_color=color;
-    edit_color_button->setPalette(QPalette(color,palette().color(QPalette::Background)));
+    edit_color_button->setPalette(QPalette(color,palette().color(QPalette::Window)));
   }
 }
 

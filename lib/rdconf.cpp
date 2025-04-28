@@ -2,7 +2,7 @@
 //
 //  Small library for handling common configuration file tasks
 // 
-//   (C) Copyright 1996-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 1996-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -857,7 +857,7 @@ QString RDTempFile()
 QString RDTimeZoneName(const QDateTime &datetime)
 {
   char name[20];
-  time_t time=datetime.toTime_t();
+  time_t time=datetime.toSecsSinceEpoch();
   strftime(name,20,"%Z",localtime(&time));
   return QString(name);
 }
@@ -1043,7 +1043,7 @@ QList<pid_t> RDGetPids(const QString &program)
       QFile file(QString("/proc/")+files.at(i)+"/cmdline");
       if(file.open(QIODevice::ReadOnly)) {
 	QTextStream strm(&file);
-	strm.setCodec("UTF-8");
+	strm.setEncoding(QStringConverter::Utf8);
 	QStringList f0=strm.readLine().split(" ");
 	QStringList f1=f0.at(0).split("/");
 	if(f1.back().left(f1.back().length()-1)==program.trimmed()) {

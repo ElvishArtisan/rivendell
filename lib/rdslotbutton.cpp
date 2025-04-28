@@ -33,10 +33,10 @@ RDSlotButton::RDSlotButton(int slotnum,QWidget *parent,RDConfig *c)
   //
   d_ready_color=
     QPalette(QColor(BUTTON_STOPPED_BACKGROUND_COLOR),
-	     palette().color(QPalette::Background));
+	     palette().color(QPalette::Window));
   d_playing_color=
     QPalette(QColor(BUTTON_PLAY_BACKGROUND_COLOR),
-	     palette().color(QPalette::Background));
+	     palette().color(QPalette::Window));
   setFocusPolicy(Qt::NoFocus);
 }
 
@@ -101,7 +101,7 @@ void RDSlotButton::WriteKeycap()
   p->setRenderHint(QPainter::SmoothPixmapTransform,true);
   p->setPen(Qt::black);
   p->setBrush(Qt::black);
-  p->fillRect(0,0,w,h,palette().color(QPalette::Background));
+  p->fillRect(0,0,w,h,palette().color(QPalette::Window));
 
   p->setFont(hugeButtonFont());
   p->drawText((w-p->fontMetrics().horizontalAdvance(QString::asprintf("%d",1+d_slot_number)))/2,

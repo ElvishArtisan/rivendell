@@ -2,7 +2,7 @@
 //
 // A marker widget for the RDCueEdit widget.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -84,7 +84,7 @@ void RDMarkerBar::DrawMap()
   QPixmap *pix=new QPixmap(size());
   QPainter *p=new QPainter(pix);
   QPolygon *pt;
-  p->fillRect(0,0,size().width(),size().height(),palette().color(QPalette::Background));
+  p->fillRect(0,0,size().width(),size().height(),palette().color(QPalette::Window));
   if(marker_length>0) {
     p->setPen(RD_CUEEDITOR_START_MARKER);
     p->setBrush(RD_CUEEDITOR_START_MARKER);

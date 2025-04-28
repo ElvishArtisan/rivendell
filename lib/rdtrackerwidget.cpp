@@ -74,10 +74,10 @@ RDTrackerWidget::RDTrackerWidget(QString *import_path,QWidget *parent)
   //
   // Create Palettes
   //
-  d_record_palette=QPalette(TRACKER_RECORD_BUTTON_COLOR,palette().color(QPalette::Background));
-  d_start_palette=QPalette(TRACKER_START_BUTTON_COLOR,palette().color(QPalette::Background));
-  d_done_palette=QPalette(TRACKER_DONE_BUTTON_COLOR,palette().color(QPalette::Background));
-  d_abort_palette=QPalette(TRACKER_ABORT_BUTTON_COLOR,palette().color(QPalette::Background));
+  d_record_palette=QPalette(TRACKER_RECORD_BUTTON_COLOR,palette().color(QPalette::Window));
+  d_start_palette=QPalette(TRACKER_START_BUTTON_COLOR,palette().color(QPalette::Window));
+  d_done_palette=QPalette(TRACKER_DONE_BUTTON_COLOR,palette().color(QPalette::Window));
+  d_abort_palette=QPalette(TRACKER_ABORT_BUTTON_COLOR,palette().color(QPalette::Window));
   QColor system_mid_color = palette().mid().color();
   QColor system_button_color = palette().button().color();
 
@@ -290,7 +290,7 @@ RDTrackerWidget::RDTrackerWidget(QString *import_path,QWidget *parent)
   d_length_label->setText("-:--:--.-");
   d_length_label->
     setStyleSheet("background-color: "+
-		  palette().color(QPalette::Background).name());
+		  palette().color(QPalette::Window).name());
   d_length_label->setAlignment(Qt::AlignCenter);
   d_length_label->setFont(timerFont());
 
@@ -301,39 +301,39 @@ RDTrackerWidget::RDTrackerWidget(QString *import_path,QWidget *parent)
   d_tracks_remaining_label_label->setFont(subLabelFont());
   d_tracks_remaining_label_label->setAlignment(Qt::AlignHCenter);
   d_tracks_remaining_label_label->
-    setPalette(QPalette(palette().color(QPalette::Background),palette().mid().
+    setPalette(QPalette(palette().color(QPalette::Window),palette().mid().
 			color()));  
   d_tracks_remaining_label=new QLabel(this);
   d_tracks_remaining_label->setText("0");
   d_tracks_remaining_label->
     setStyleSheet("background-color: "+
-		  palette().color(QPalette::Background).name());
+		  palette().color(QPalette::Window).name());
   d_tracks_remaining_label->setAlignment(Qt::AlignCenter);
   d_tracks_remaining_label->setFont(labelFont());
   d_time_remaining_label_label=new QLabel(tr("Tracks"),this);
   d_time_remaining_label_label->setFont(subLabelFont());
   d_time_remaining_label_label->setAlignment(Qt::AlignHCenter);
   d_time_remaining_label_label->
-    setPalette(QPalette(palette().color(QPalette::Background),palette().mid().
+    setPalette(QPalette(palette().color(QPalette::Window),palette().mid().
 			color()));  
 
   d_time_remaining_label=new QLabel(this);
   d_time_remaining_label->setText("0:00:00.0");
   d_time_remaining_label->
     setStyleSheet("background-color: "+
-		  palette().color(QPalette::Background).name());
+		  palette().color(QPalette::Window).name());
   d_time_remaining_label->setAlignment(Qt::AlignCenter);
   d_time_remaining_label->setFont(labelFont());
   d_time_remaining_palette[0]=d_time_remaining_label->palette();
   d_time_remaining_palette[1]=d_time_remaining_label->palette();
   d_time_remaining_palette[1].
-    setColor(QPalette::Active,QPalette::Foreground,Qt::red);
+    setColor(QPalette::Active,QPalette::WindowText,Qt::red);
   d_time_remaining_palette[1].
-    setColor(QPalette::Inactive,QPalette::Foreground,Qt::red);
+    setColor(QPalette::Inactive,QPalette::WindowText,Qt::red);
   d_time_label=new QLabel(tr("Time"),this);
   d_time_label->setFont(subLabelFont());
   d_time_label->setAlignment(Qt::AlignHCenter);
-  d_time_label->setPalette(QPalette(palette().color(QPalette::Background),
+  d_time_label->setPalette(QPalette(palette().color(QPalette::Window),
 				    palette().mid().color()));
 
   //
@@ -1975,7 +1975,7 @@ void RDTrackerWidget::mouseReleaseEvent(QMouseEvent *e)
     d_rightclick_track=-1;
     break;
 
-  case Qt::MidButton:
+  case Qt::MiddleButton:
     if(e->y()<TRACKER_Y_ORIGIN+TRACKER_Y_HEIGHT) {
       DragTrack(0,((d_wave_origin[0]-d_loglines[0]->
 		    startPoint())/TRACKER_MSECS_PER_PIXEL)+250);
@@ -2874,7 +2874,7 @@ void RDTrackerWidget::DrawTrackMap(int trackno)
 	d_wpg[0]->begin(d_wave_map[0]);
 	d_wpg[0]->setFont(labelFont());
 	d_wpg[0]->setPen(TRACKER_TEXT_COLOR);
-	d_wpg[0]->setBackground(palette().color(QPalette::Background));
+	d_wpg[0]->setBackground(palette().color(QPalette::Window));
 	d_wpg[0]->eraseRect(0,0,d_wave_map[0]->size().width(),
 			    d_wave_map[0]->size().height());
 	if(!d_wave_name[0].isEmpty()) {
@@ -2955,7 +2955,7 @@ void RDTrackerWidget::DrawTrackMap(int trackno)
       if(!d_wave_map[1]->isNull()) {
 	p=new QPainter(d_wave_map[1]);
 	if(d_loaded) {
-	  p->setBackground(palette().color(QPalette::Background));
+	  p->setBackground(palette().color(QPalette::Window));
 	  p->setFont(labelFont());
 	  p->setPen(TRACKER_TEXT_COLOR);
 	  p->eraseRect(0,0,d_wave_map[1]->size().width(),
@@ -2978,7 +2978,7 @@ void RDTrackerWidget::DrawTrackMap(int trackno)
     }
     else {
       if((d_loglines[1]->transType()==RDLogLine::Segue)) {
-	back_color=palette().color(QPalette::Background);
+	back_color=palette().color(QPalette::Window);
       }
       else {
 	back_color=Qt::lightGray;
@@ -3120,7 +3120,7 @@ void RDTrackerWidget::DrawTrackMap(int trackno)
     }
     else {
       if((d_loglines[2]->transType()==RDLogLine::Segue)) {
-	back_color=palette().color(QPalette::Background);
+	back_color=palette().color(QPalette::Window);
       }
       else {
 	back_color=Qt::lightGray;

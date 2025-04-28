@@ -2,7 +2,7 @@
 //
 // Export a Rivendell Cut Report.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -50,7 +50,7 @@ bool RDReport::ExportCutLog(const QString &filename,const QDate &startdate,
     return false;
   }
   QTextStream *strm=new QTextStream(file);
-  strm->setCodec("UTF-8");
+  strm->setEncoding(QStringConverter::Utf8);
   if(useLeadingZeros()) {
     cart_fmt=QString::asprintf("%%0%uu",cartDigits());
   }

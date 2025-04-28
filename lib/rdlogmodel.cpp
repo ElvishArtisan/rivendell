@@ -186,7 +186,7 @@ QVariant RDLogModel::data(const QModelIndex &index,int role) const
     case Qt::FontRole:
       return cellTextFont(col,row,ll);
 
-    case Qt::TextColorRole:
+    case Qt::ForegroundRole:
       return cellTextColor(col,row,ll);
 
     case Qt::BackgroundRole:

@@ -22,7 +22,7 @@
 #include <unistd.h>
 #include <sys/stat.h>
 
-#include <QRegExp>
+//#include <QRegExp>
 
 #include <rd.h>
 #include <rdconf.h>

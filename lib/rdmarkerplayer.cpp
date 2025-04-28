@@ -2,7 +2,7 @@
 //
 // Audio player for RDMarkerDialog
 //
-//   (C) Copyright 2021-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -95,7 +95,7 @@ RDMarkerPlayer::RDMarkerPlayer(int card,int port,QWidget *parent)
   d_position_label->setFont(labelFont());
   d_position_label->setAlignment(Qt::AlignCenter);
   d_position_label->
-    setPalette(QPalette(palette().color(QPalette::Background),
+    setPalette(QPalette(palette().color(QPalette::Window),
   			palette().mid().color()));
   d_position_edit=new QLabel(this);
   d_position_edit->setAcceptDrops(false);

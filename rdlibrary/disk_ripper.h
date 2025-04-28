@@ -111,7 +111,6 @@ class DiskRipper : public RDDialog
   QPushButton *rip_cartlabel_button;
   QPushButton *rip_clear_button;
   QString rip_cutname;
-  QString rip_track;
   QString rip_title;
   QLabel *rip_diskbar_label;
   QProgressBar *rip_disk_bar;

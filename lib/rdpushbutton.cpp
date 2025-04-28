@@ -93,7 +93,7 @@ void RDPushButton::setFlashColor(QColor color)
   int v=0;
 
   flash_color=color;  
-  flash_palette=QPalette(QColor(flash_color),palette().color(QPalette::Background));
+  flash_palette=QPalette(QColor(flash_color),palette().color(QPalette::Window));
 
   color.getHsv(&h,&s,&v);
   if((h>180)&&(h<300)) {
@@ -158,7 +158,7 @@ void RDPushButton::mousePressEvent(QMouseEvent *e)
     QPushButton::mousePressEvent(e);
     break;
 	
-  case Qt::MidButton:
+  case Qt::MiddleButton:
     emit centerPressed();
     break;
 	
@@ -179,7 +179,7 @@ void RDPushButton::mouseReleaseEvent(QMouseEvent *e)
     QPushButton::mouseReleaseEvent(e);
     break;
 	
-  case Qt::MidButton:
+  case Qt::MiddleButton:
     e->accept();
     emit centerReleased();
     if((e->x()>=0)&&(e->x()<geometry().width())&&

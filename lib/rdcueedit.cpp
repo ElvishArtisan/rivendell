@@ -2,7 +2,7 @@
 //
 // Cueing Editor for RDLogLine-based Events
 //
-//   (C) Copyright 2013-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -37,9 +37,9 @@ RDCueEdit::RDCueEdit(QWidget *parent)
   //
   edit_play_color=
     QPalette(QColor(BUTTON_PLAY_BACKGROUND_COLOR),
-	     palette().color(QPalette::Background));
+	     palette().color(QPalette::Window));
   edit_start_color=palette();
-  edit_start_color.setColor(QPalette::Foreground,RD_CUEEDITOR_START_MARKER);
+  edit_start_color.setColor(QPalette::WindowText,RD_CUEEDITOR_START_MARKER);
 
   edit_position_label=new QLabel(this);
   edit_position_label->setGeometry(0,0,sizeHint().width()-30,30);
@@ -106,7 +106,7 @@ RDCueEdit::RDCueEdit(QWidget *parent)
   edit_pause_button=new RDTransportButton(RDTransportButton::Pause,this);
   edit_pause_button->setGeometry(sizeHint().width()/2-40,90,80,50);
   edit_pause_button->
-    setPalette(QPalette(palette().color(QPalette::Background),
+    setPalette(QPalette(palette().color(QPalette::Window),
 			QColor(Qt::gray)));
   edit_pause_button->setFont(buttonFont());
   edit_pause_button->
@@ -120,7 +120,7 @@ RDCueEdit::RDCueEdit(QWidget *parent)
   edit_stop_button->setGeometry(sizeHint().width()/2+50,90,80,50);
   edit_stop_button->setOnColor(QColor(Qt::red));
   edit_stop_button->
-    setPalette(QPalette(palette().color(QPalette::Background),
+    setPalette(QPalette(palette().color(QPalette::Window),
 			QColor(Qt::gray)));
   edit_stop_button->setFont(buttonFont());
   edit_stop_button->
@@ -133,11 +133,11 @@ RDCueEdit::RDCueEdit(QWidget *parent)
   edit_start_button=new RDPushButton(this);
   edit_start_button->setCheckable(true);
   edit_start_button->setGeometry(0,155,66,45);
-  edit_start_button->setFlashColor(palette().color(QPalette::Background));
+  edit_start_button->setFlashColor(palette().color(QPalette::Window));
   edit_start_button->setFlashPeriod(RD_CUEEDITOR_BUTTON_FLASH_PERIOD);
   edit_start_button->
     setPalette(QPalette(QColor(RD_CUEEDITOR_START_MARKER),
-			palette().color(QPalette::Background)));
+			palette().color(QPalette::Window)));
   edit_start_button->setFont(buttonFont());
   edit_start_button->setText(tr("Start"));
   connect(edit_start_button,SIGNAL(clicked()),this,SLOT(startClickedData()));
@@ -148,10 +148,10 @@ RDCueEdit::RDCueEdit(QWidget *parent)
   edit_end_button=new RDPushButton(this);
   edit_end_button->setCheckable(true);
   edit_end_button->setGeometry(90,155,66,45);
-  edit_end_button->setFlashColor(palette().color(QPalette::Background));
+  edit_end_button->setFlashColor(palette().color(QPalette::Window));
   edit_end_button->setFlashPeriod(RD_CUEEDITOR_BUTTON_FLASH_PERIOD);
   edit_end_button->setPalette(QPalette(QColor(RD_CUEEDITOR_START_MARKER),
-				       palette().color(QPalette::Background)));
+				       palette().color(QPalette::Window)));
   edit_end_button->setFont(buttonFont());
   edit_end_button->setText(tr("End"));
   connect(edit_end_button,SIGNAL(clicked()),this,SLOT(endClickedData()));
@@ -162,11 +162,11 @@ RDCueEdit::RDCueEdit(QWidget *parent)
   edit_recue_button=new RDPushButton(this);
   edit_recue_button->setCheckable(true);
   edit_recue_button->setGeometry(180,155,66,45);
-  edit_recue_button->setFlashColor(palette().color(QPalette::Background));
+  edit_recue_button->setFlashColor(palette().color(QPalette::Window));
   edit_recue_button->setFlashPeriod(RD_CUEEDITOR_BUTTON_FLASH_PERIOD);
   edit_recue_button->
     setPalette(QPalette(QColor(RD_CUEEDITOR_START_MARKER),
-			palette().color(QPalette::Background)));
+			palette().color(QPalette::Window)));
   edit_recue_button->setFont(buttonFont());
   edit_recue_button->setText(tr("Recue"));
   connect(edit_recue_button,SIGNAL(clicked()),this,SLOT(recue()));
@@ -663,7 +663,7 @@ void RDCueEdit::mousePressEvent(QMouseEvent *e)
           }
         break;
 
-      case Qt::MidButton:
+      case Qt::MiddleButton:
         if(edit_audition_button->isVisible()) {
           if(edit_logline->forcedLength()>10000) {
             if(edit_play_deck->state()==RDPlayDeck::Playing) {

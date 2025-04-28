@@ -2,7 +2,7 @@
 //
 //   A 'progress bar' widget that shows busy state.
 //
-//   (C) Copyright 2010-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   it under the terms of the GNU Library General Public License 
 //   version 2 as published by the Free Software Foundation.
@@ -25,12 +25,12 @@ RDBusyBar::RDBusyBar(QWidget *parent,Qt::WindowFlags f)
   bar_pos=0;
   setFrameStyle(QFrame::StyledPanel|QFrame::Sunken);
   QPalette p=palette();
-  p.setColor(QPalette::Active,QPalette::Background,
+  p.setColor(QPalette::Active,QPalette::Window,
 	     p.color(QPalette::Active,QPalette::Base));
   setPalette(p);
 
   bar_label=new QLabel(this);
-  p.setColor(QPalette::Active,QPalette::Background,
+  p.setColor(QPalette::Active,QPalette::Window,
 	     p.color(QPalette::Active,QPalette::Highlight));
   bar_label->setPalette(p);
   bar_label->setStyleSheet("background-color:"+

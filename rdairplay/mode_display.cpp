@@ -36,11 +36,11 @@ ModeDisplay::ModeDisplay(QWidget *parent)
   // Create Palettes
   //
   auto_color=
-    QPalette(QColor(BUTTON_MODE_AUTO_COLOR),palette().color(QPalette::Background));
+    QPalette(QColor(BUTTON_MODE_AUTO_COLOR),palette().color(QPalette::Window));
   live_assist_color=
-    QPalette(QColor(BUTTON_MODE_LIVE_ASSIST_COLOR),palette().color(QPalette::Background));
+    QPalette(QColor(BUTTON_MODE_LIVE_ASSIST_COLOR),palette().color(QPalette::Window));
   manual_color=
-    QPalette(QColor(BUTTON_MODE_MANUAL_COLOR),palette().color(QPalette::Background));
+    QPalette(QColor(BUTTON_MODE_MANUAL_COLOR),palette().color(QPalette::Window));
 
   setPalette(live_assist_color);
 }

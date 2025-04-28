@@ -20,8 +20,8 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" @QT5_CFLAGS@ @MUSICBRAINZ_CFLAGS@ -Wno-strict-aliasing -std=c++11 -fPIC -I/usr/include/taglib @IMAGEMAGICK_CFLAGS@
-MOC = @QT_MOC@
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" @QT6_CFLAGS@ @MUSICBRAINZ_CFLAGS@ -Wno-strict-aliasing -std=c++17 -fPIC -I/usr/include/taglib @IMAGEMAGICK_CFLAGS@
+MOC = @QT6_MOC@
 CWRAP = ../helpers/cwrap
 
 # The dependency for qt's Meta Object Compiler (moc)

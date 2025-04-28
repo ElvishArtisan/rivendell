@@ -23,9 +23,9 @@
 #include <sys/mount.h>
 #include <sys/types.h>
 
-#include <qcoreapplication.h>
-#include <qdir.h>
-#include <qprocess.h>
+#include <QCoreApplication>
+#include <QDir>
+#include <QProcess>
 
 #include "rd.h"
 #include "rdselect_helper.h"

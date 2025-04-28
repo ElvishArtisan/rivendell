@@ -2,7 +2,7 @@
 //
 // The full log widget for RDAirPlay
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -81,26 +81,26 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
 			BUTTON_LOG_ACTIVE_TEXT_COLOR);
   list_scroll_color[0].setColor(QPalette::Active,QPalette::Button,
 			BUTTON_LOG_ACTIVE_BACKGROUND_COLOR);
-  list_scroll_color[0].setColor(QPalette::Active,QPalette::Background,
+  list_scroll_color[0].setColor(QPalette::Active,QPalette::Window,
 			system_mid_color);
   list_scroll_color[0].setColor(QPalette::Inactive,QPalette::ButtonText,
 			BUTTON_LOG_ACTIVE_TEXT_COLOR);
   list_scroll_color[0].setColor(QPalette::Inactive,QPalette::Button,
 			BUTTON_LOG_ACTIVE_BACKGROUND_COLOR);
-  list_scroll_color[0].setColor(QPalette::Inactive,QPalette::Background,
+  list_scroll_color[0].setColor(QPalette::Inactive,QPalette::Window,
 			system_mid_color);
   list_scroll_color[1]=palette();
   list_scroll_color[1].setColor(QPalette::Active,QPalette::ButtonText,
                        system_button_text_color);
   list_scroll_color[1].setColor(QPalette::Active,QPalette::Button,
                        system_button_color);
-  list_scroll_color[1].setColor(QPalette::Active,QPalette::Background,
+  list_scroll_color[1].setColor(QPalette::Active,QPalette::Window,
 			system_mid_color);
   list_scroll_color[1].setColor(QPalette::Inactive,QPalette::ButtonText,
                        system_button_text_color);
   list_scroll_color[1].setColor(QPalette::Inactive,QPalette::Button,
                        system_button_color);
-  list_scroll_color[1].setColor(QPalette::Inactive,QPalette::Background,
+  list_scroll_color[1].setColor(QPalette::Inactive,QPalette::Window,
 			system_mid_color);
 
   //

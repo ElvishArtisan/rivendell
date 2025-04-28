@@ -2,7 +2,7 @@
 //
 // A Qt-based application for testing General Purpose Input (GPI) devices.
 //
-//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -155,18 +155,18 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   QPalette p=palette();
-  p.setColor(QPalette::Active,QPalette::Foreground,Qt::darkGreen);
-  p.setColor(QPalette::Inactive,QPalette::Foreground,Qt::darkGreen);
-  p.setColor(QPalette::Disabled,QPalette::Foreground,Qt::darkGreen);
+  p.setColor(QPalette::Active,QPalette::WindowText,Qt::darkGreen);
+  p.setColor(QPalette::Inactive,QPalette::WindowText,Qt::darkGreen);
+  p.setColor(QPalette::Disabled,QPalette::WindowText,Qt::darkGreen);
   label->setPalette(p);
 
   label=new QLabel(tr("Red = OFF Cart"),this);
   label->setGeometry(200,392,300,12);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-  p.setColor(QPalette::Active,QPalette::Foreground,Qt::darkRed);
-  p.setColor(QPalette::Inactive,QPalette::Foreground,Qt::darkRed);
-  p.setColor(QPalette::Disabled,QPalette::Foreground,Qt::darkRed);
+  p.setColor(QPalette::Active,QPalette::WindowText,Qt::darkRed);
+  p.setColor(QPalette::Inactive,QPalette::WindowText,Qt::darkRed);
+  p.setColor(QPalette::Disabled,QPalette::WindowText,Qt::darkRed);
   label->setPalette(p);
 
   //
@@ -221,13 +221,13 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
 			    Qt::white);
   gpi_scroll_color.setColor(QPalette::Active,QPalette::Button,
 			    Qt::blue);
-  gpi_scroll_color.setColor(QPalette::Active,QPalette::Background,
+  gpi_scroll_color.setColor(QPalette::Active,QPalette::Window,
 			    Qt::lightGray);
   gpi_scroll_color.setColor(QPalette::Inactive,QPalette::ButtonText,
 			    Qt::white);
   gpi_scroll_color.setColor(QPalette::Inactive,QPalette::Button,
 			    Qt::blue);
-  gpi_scroll_color.setColor(QPalette::Inactive,QPalette::Background,
+  gpi_scroll_color.setColor(QPalette::Inactive,QPalette::Window,
 			    Qt::lightGray);
 
   gpi_events_report_button=new QPushButton(tr("Report"),this);

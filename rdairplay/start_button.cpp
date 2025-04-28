@@ -36,35 +36,35 @@ StartButton::StartButton(bool allow_pause,QWidget *parent)
   //
   start_stop_color=
     QPalette(QColor(BUTTON_STOPPED_BACKGROUND_COLOR),
-	     palette().color(QPalette::Background));
+	     palette().color(QPalette::Window));
   start_play_color=
     QPalette(QColor(BUTTON_PLAY_BACKGROUND_COLOR),
-	     palette().color(QPalette::Background));
+	     palette().color(QPalette::Window));
   start_play_color.
     setColor(QPalette::ButtonText,QColor(BUTTON_PLAY_TEXT_COLOR));
   start_pause_color=
     QPalette(QColor(BUTTON_PAUSE_BACKGROUND_COLOR),
-	     palette().color(QPalette::Background));
+	     palette().color(QPalette::Window));
   start_pause_color.
     setColor(QPalette::ButtonText,QColor(BUTTON_PAUSE_TEXT_COLOR));
 
   start_from_color=QPalette(QColor(BUTTON_FROM_BACKGROUND_COLOR),
-			    palette().color(QPalette::Background));
+			    palette().color(QPalette::Window));
   start_from_color.
     setColor(QPalette::ButtonText,QColor(BUTTON_FROM_TEXT_COLOR));
 
   start_to_color=QPalette(QColor(BUTTON_TO_BACKGROUND_COLOR),
-			       palette().color(QPalette::Background));
+			       palette().color(QPalette::Window));
   start_to_color.
     setColor(QPalette::ButtonText,QColor(BUTTON_TO_TEXT_COLOR));
 
   start_disabled_color=QPalette(QColor(BUTTON_DISABLED_BACKGROUND_COLOR),
-				palette().color(QPalette::Background));
+				palette().color(QPalette::Window));
   start_disabled_color.
     setColor(QPalette::ButtonText,QColor(BUTTON_DISABLED_TEXT_COLOR));
 
   start_error_color=QPalette(QColor(BUTTON_ERROR_BACKGROUND_COLOR),
-			     palette().color(QPalette::Background));
+			     palette().color(QPalette::Window));
   start_error_color.
     setColor(QPalette::ButtonText,QColor(BUTTON_ERROR_TEXT_COLOR));
 

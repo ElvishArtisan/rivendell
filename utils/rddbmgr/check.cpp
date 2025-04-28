@@ -936,11 +936,13 @@ bool MainObject::CheckTableNames(const QStringList &canonical,
   for(int i=0;i<existing.size();i++) {
     found=false;
     for(int j=0;j<canonical.size();j++) {
+      /*
       QRegExp exp(canonical.at(j));
       exp.setPatternSyntax(QRegExp::Wildcard);
       if(exp.indexIn(existing.at(i),0)>=0) {
 	found=true;
       }
+      */
     }
     if(!found) {
       extra.push_back(existing.at(i));

@@ -2,7 +2,7 @@
 //
 // A utility for sending RML Commands
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -376,7 +376,7 @@ void MainObject::InitStream()
     }
   }
   input_stream=new QTextStream(f,QIODevice::ReadOnly);
-  input_stream->setCodec("UTF-8");
+  input_stream->setEncoding(QStringConverter::Utf8);
 }
 
 

@@ -2,7 +2,7 @@
 //
 // Data model for Rivendell services
 //
-//   (C) Copyright 2021-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -153,7 +153,7 @@ QVariant RDServiceListModel::data(const QModelIndex &index,int role) const
       }
       return d_font;
 
-    case Qt::TextColorRole:
+    case Qt::ForegroundRole:
       if(col==3) {  // Track Group
 	return d_group_color_map.value(d_texts.at(row).at(col).toString(),
 				       QVariant());

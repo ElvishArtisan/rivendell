@@ -310,7 +310,7 @@ QVariant RDLibraryModel::data(const QModelIndex &index,int role) const
 	  return d_notes.at(row);
 	}
 
-      case Qt::TextColorRole:
+      case Qt::ForegroundRole:
 	if(col==1) {
 	  return d_group_colors.value(d_texts.at(row).at(1).toString());
 	}

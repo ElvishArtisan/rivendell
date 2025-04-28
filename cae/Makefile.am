@@ -2,7 +2,7 @@
 ##
 ## Core Audio Engine Makefile.am for Rivendell
 ##
-## Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
+## Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -19,9 +19,9 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -I$(top_srcdir)/lib -I$(top_srcdir)/rdhpi -Wno-strict-aliasing -std=c++11 -fPIC @QT5_CFLAGS@ @MUSICBRAINZ_CFLAGS@ @IMAGEMAGICK_CFLAGS@ @LIBJACK_CFLAGS@
+AM_CPPFLAGS = -Wall -I$(top_srcdir)/lib -I$(top_srcdir)/rdhpi -Wno-strict-aliasing -std=c++17 -fPIC @QT6_CFLAGS@ @MUSICBRAINZ_CFLAGS@ @IMAGEMAGICK_CFLAGS@ @LIBJACK_CFLAGS@
 LIBS = -L$(top_srcdir)/lib -L$(top_srcdir)/rdhpi
-MOC = @QT_MOC@
+MOC = @QT6_MOC@
 
 # The dependency for qt's Meta Object Compiler (moc)
 moc_%.cpp:	%.h
@@ -50,7 +50,7 @@ caed_LDADD = @LIB_RDLIBS@\
              @LIBJACK_LIBS@\
              @LIBSRC@\
              @LIBVORBIS@\
-             @QT5_LIBS@\
+             @QT6_LIBS@\
              @MUSICBRAINZ_LIBS@\
              @IMAGEMAGICK_LIBS@
 

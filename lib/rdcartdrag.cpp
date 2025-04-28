@@ -2,7 +2,7 @@
 //
 // Stored value drag object for Rivendell carts.
 //
-//   (C) Copyright 2013-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -82,7 +82,7 @@ bool RDCartDrag::decode(const QMimeData *e,RDLogLine *ll,
 }
 
 
-QVariant RDCartDrag::retrieveData(const QString &mimetype,QVariant::Type type)
+QVariant RDCartDrag::retrieveData(const QString &mimetype,QMetaType::Type type)
   const
 {
   return d_data.value(mimetype,QVariant());

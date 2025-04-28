@@ -74,8 +74,8 @@ QVariant RDAlsaModel::data(const QModelIndex &index,int role) const
   case Qt::SizeHintRole:
   case Qt::FontRole:
   case Qt::TextAlignmentRole:
-  case Qt::BackgroundColorRole:
-  case Qt::TextColorRole:
+  case Qt::BackgroundRole:
+  case Qt::ForegroundRole:
   case Qt::CheckStateRole:
   case Qt::AccessibleTextRole:
   case Qt::AccessibleDescriptionRole:
