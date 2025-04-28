@@ -25037,3 +25037,5 @@
 	* Restored SHA1 hash code in 'lib/rdhash.cpp'.
 2025-04-28 Fred Gleason <fredg@paravelsystems.com>
 	* Upgrade Qt dependency from Qt5 to Qt6.
+2025-04-28 Fred Gleason <fredg@paravelsystems.com>
+	* Removed nexgen_importer(1).

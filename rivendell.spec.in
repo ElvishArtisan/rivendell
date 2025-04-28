@@ -71,7 +71,7 @@ audio are also included.
 %description importers
 This package contains various importer scripts, which can be used to
 import audio from existing legacy automation systems into Rivendell.
-Currently, scripts exist for the AirForce Wings, Prophet NexGen and Sierra
+Currently, scripts exist for the AirForce Wings and Sierra
 Automated Systems SASAuto systems, as well as from another Rivendell system
 (useful for 'merging' multiple databases).  Additionally, scripts for
 initializing switcher matrices for the Christian Radio Consortium
@@ -526,7 +526,6 @@ rm -rf $RPM_BUILD_ROOT
 %files importers
 %{_bindir}/wings_filter
 %{_bindir}/rivendell_filter
-%{_bindir}/nexgen_filter
 %{_bindir}/crc-unity4k.sh
 %{_bindir}/rdcatch_copy
 %{_bindir}/panel_copy

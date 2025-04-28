@@ -28,15 +28,10 @@ MOC = @QT6_MOC@
 moc_%.cpp:	%.h
 	$(MOC) $< -o $@
 
-bin_PROGRAMS = nexgen_filter\
-               panel_copy\
+bin_PROGRAMS = panel_copy\
                rdcatch_copy\
                rivendell_filter\
                wings_filter
-
-dist_nexgen_filter_SOURCES = nexgen_filter.cpp nexgen_filter.h
-nodist_nexgen_filter_SOURCES = moc_nexgen_filter.cpp
-nexgen_filter_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT6_LIBS@ @MUSICBRAINZ_LIBS@ @IMAGEMAGICK_LIBS@
 
 dist_panel_copy_SOURCES = panel_copy.cpp panel_copy.h
 nodist_panel_copy_SOURCES = moc_panel_copy.cpp
