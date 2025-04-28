@@ -22,8 +22,6 @@
 #include <unistd.h>
 #include <sys/stat.h>
 
-//#include <QRegExp>
-
 #include <rd.h>
 #include <rdconf.h>
 #include <rddb.h>

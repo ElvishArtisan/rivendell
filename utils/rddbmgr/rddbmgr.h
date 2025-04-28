@@ -79,7 +79,6 @@ class MainObject : public QObject
   void CheckOrphanedTables() const;
   bool CheckTableNames(const QStringList &table_names,
 		       QStringList &missing,QStringList &extra) const;
-  QStringList GetCanonicalTables(int schema) const;
   void CheckLogLineIds(const QString &logname) const;
   void ValidateAudioLengths() const;
   void Rehash(const QString &arg) const;
@@ -142,6 +141,7 @@ class MainObject : public QObject
   // schemamap.cpp
   //
   void InitializeSchemaMap();
+  QStringList GetCanonicalTables(int schema) const;
   int GetVersionSchema(const QString &ver) const;
   QString GetSchemaVersion(int schema) const;
 
