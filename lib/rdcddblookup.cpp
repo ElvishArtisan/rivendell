@@ -42,7 +42,7 @@ RDCddbLookup::RDCddbLookup(const QString &caption,FILE *profile_msgs,
   //
   lookup_socket=new QTcpSocket(this);
   connect(lookup_socket,SIGNAL(readyRead()),this,SLOT(readyReadData()));
-  connect(lookup_socket,SIGNAL(error(QAbstractSocket::SocketError)),
+  connect(lookup_socket,SIGNAL(errorOccurred(QAbstractSocket::SocketError)),
 	  this,SLOT(errorData(QAbstractSocket::SocketError)));
 }
 

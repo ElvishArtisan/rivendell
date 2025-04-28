@@ -2,7 +2,7 @@
 //
 // A class for providing one-shot single use timers.
 //
-//   (C) Copyright 2008,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2008-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,7 +28,7 @@ RDOneShot::RDOneShot(QObject *parent)
   //
   shot_count=0;
   shot_mapper=new QSignalMapper(this);
-  connect(shot_mapper,SIGNAL(mapped(int)),this,SLOT(timeoutData(int)));
+  connect(shot_mapper,SIGNAL(mappedInt(int)),this,SLOT(timeoutData(int)));
 
   //
   // Zombie Timer

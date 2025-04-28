@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Log Event
 //
-//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -80,7 +80,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,QStringList *new_events,
   event_group_model=new RDGroupListModel(true,false,false,this);
   event_group_model->changeUser();
   event_group_box->setModel(event_group_model);
-  connect(event_group_box,SIGNAL(activated(const QString &)),
+  connect(event_group_box,SIGNAL(textActivated(const QString &)),
 	  this,SLOT(filterActivatedData(const QString &)));
   event_group_label=new QLabel(tr("Group:"),this);
   event_group_label->setFont(labelFont());

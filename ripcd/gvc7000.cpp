@@ -63,7 +63,7 @@ Gvc7000::Gvc7000(RDMatrix *matrix,QObject *parent)
   gvc_socket=new QTcpSocket(this);
   connect(gvc_socket,SIGNAL(connected()),this,SLOT(connectedData()));
   connect(gvc_socket,SIGNAL(disconnected()),this,SLOT(disconnectedData()));
-  connect(gvc_socket,SIGNAL(error(QAbstractSocket::SocketError)),
+  connect(gvc_socket,SIGNAL(errorOccurred(QAbstractSocket::SocketError)),
 	  this,SLOT(errorData(QAbstractSocket::SocketError)));
   ipConnect();
 }

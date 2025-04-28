@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the Harlond Virtual Mixer
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -44,7 +44,8 @@ Harlond::Harlond(RDMatrix *matrix,QObject *parent)
   // Reset Timers
   //
   bt_reset_mapper=new QSignalMapper(this);
-  connect(bt_reset_mapper,SIGNAL(mapped(int)),this,SLOT(resetTimeoutData(int)));
+  connect(bt_reset_mapper,SIGNAL(mappedInt(int)),
+	  this,SLOT(resetTimeoutData(int)));
   for(int i=0;i<bt_inputs;i++) {
     bt_reset_states.push_back(false);
     bt_reset_timers.push_back(new QTimer(this));
@@ -61,7 +62,7 @@ Harlond::Harlond(RDMatrix *matrix,QObject *parent)
   connect(bt_socket,SIGNAL(connected()),this,SLOT(socketConnectedData()));
   connect(bt_socket,SIGNAL(disconnected()),this,SLOT(socketDisconnectedData()));
   connect(bt_socket,SIGNAL(readyRead()),this,SLOT(socketReadyReadData()));
-  connect(bt_socket,SIGNAL(error(QAbstractSocket::SocketError)),
+  connect(bt_socket,SIGNAL(errorOccurred(QAbstractSocket::SocketError)),
 	  this,SLOT(socketErrorData(QAbstractSocket::SocketError)));
   bt_watchdog_timer=new QTimer(this);
   bt_watchdog_timer->setSingleShot(true);

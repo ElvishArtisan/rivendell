@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for using TTY modem lines for GPIO
 //
-//   (C) Copyright 2015-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2015-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -80,7 +80,7 @@ ModemLines::ModemLines(RDMatrix *matrix,QObject *parent)
   // GPO Timers
   //
   gpio_gpo_mapper=new QSignalMapper(this);
-  connect(gpio_gpo_mapper,SIGNAL(mapped(int)),this,SLOT(gpoResetData(int)));
+  connect(gpio_gpo_mapper,SIGNAL(mappedInt(int)),this,SLOT(gpoResetData(int)));
   for(int i=0;i<gpio_gpos;i++) {
     gpio_gpo_timers[i]=new QTimer(this);
     gpio_gpo_timers[i]->setSingleShot(true);

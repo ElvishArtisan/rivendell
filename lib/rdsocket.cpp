@@ -32,7 +32,7 @@ RDSocket::RDSocket(int id,QObject *parent)
   connect(this,SIGNAL(connected()),this,SLOT(connectedData()));
   connect(this,SIGNAL(disconnected()),this,SLOT(connectionClosedData()));
   connect(this,SIGNAL(readyRead()),this,SLOT(readyReadData()));
-  connect(this,SIGNAL(error(QAbstractSocket::SocketError)),
+  connect(this,SIGNAL(errorOccurred(QAbstractSocket::SocketError)),
 	  this,SLOT(errorData(QAbstractSocket::SocketError)));
 }
 

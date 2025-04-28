@@ -2,7 +2,7 @@
 //
 // Execute a list of RML commands asynchronously.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,7 +30,7 @@ RDEventPlayer::RDEventPlayer(RDRipc *ripc,QObject *parent)
     player_state[i]=false;
   }
   player_mapper=new QSignalMapper(this);
-  connect(player_mapper,SIGNAL(mapped(int)),
+  connect(player_mapper,SIGNAL(mappedInt(int)),
 	  this,SLOT(macroFinishedData(int)));
   player_timer=new QTimer(this);
   player_timer->setSingleShot(true);

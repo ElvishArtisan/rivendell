@@ -122,7 +122,7 @@ RDLiveWire::RDLiveWire(unsigned id,QObject *parent)
   connect(live_socket,SIGNAL(disconnected()),
 	  this,SLOT(connectionClosedData()));
   connect(live_socket,SIGNAL(readyRead()),this,SLOT(readyReadData()));
-  connect(live_socket,SIGNAL(error(QAbstractSocket::SocketError)),
+  connect(live_socket,SIGNAL(errorOccurred(QAbstractSocket::SocketError)),
 	  this,SLOT(errorData(QAbstractSocket::SocketError)));
 
   //
@@ -645,7 +645,7 @@ void RDLiveWire::ReadVersion(const QString &cmd)
 	if(f1[0]=="NGPI") {
 	  live_gpis=f1[1].toInt();
 	  QSignalMapper *mapper=new QSignalMapper(this);
-	  connect(mapper,SIGNAL(mapped(int)),this,SLOT(gpiTimeoutData(int)));
+	  connect(mapper,SIGNAL(mappedInt(int)),this,SLOT(gpiTimeoutData(int)));
 	  for(int i=0;i<live_gpis;i++) {
 	    live_gpi_states.push_back(new bool[RD_LIVEWIRE_GPIO_BUNDLE_SIZE]);
 	    live_gpi_channels.
@@ -670,7 +670,7 @@ void RDLiveWire::ReadVersion(const QString &cmd)
 	if(f1[0]=="NGPO") {
 	  live_gpos=f1[1].toInt();
 	  QSignalMapper *mapper=new QSignalMapper(this);
-	  connect(mapper,SIGNAL(mapped(int)),this,SLOT(gpoTimeoutData(int)));
+	  connect(mapper,SIGNAL(mappedInt(int)),this,SLOT(gpoTimeoutData(int)));
 	  for(int i=0;i<live_gpos;i++) {
 	    live_gpo_states.push_back(new bool[RD_LIVEWIRE_GPIO_BUNDLE_SIZE]);
 	    live_gpo_channels.

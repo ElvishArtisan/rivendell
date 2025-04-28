@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for Modbus TCP
 //
-//   (C) Copyright 2017-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -44,7 +44,7 @@ Modbus::Modbus(RDMatrix *matrix,QObject *parent)
   modbus_socket=new QTcpSocket(this);
   connect(modbus_socket,SIGNAL(connected()),this,SLOT(connectedData()));
   connect(modbus_socket,SIGNAL(readyRead()),this,SLOT(readyReadData()));
-  connect(modbus_socket,SIGNAL(error(QAbstractSocket::SocketError)),
+  connect(modbus_socket,SIGNAL(errorOccurred(QAbstractSocket::SocketError)),
 	  this,SLOT(errorData(QAbstractSocket::SocketError)));
   modbus_socket->connectToHost(modbus_ip_address.toString(),modbus_ip_port);
 
@@ -53,7 +53,7 @@ Modbus::Modbus(RDMatrix *matrix,QObject *parent)
   connect(modbus_poll_timer,SIGNAL(timeout()),this,SLOT(pollInputs()));
 
   modbus_reset_mapper=new QSignalMapper(this);
-  connect(modbus_reset_mapper,SIGNAL(mapped(int)),
+  connect(modbus_reset_mapper,SIGNAL(mappedInt(int)),
 	  this,SLOT(resetStateData(int)));
   for(int i=0;i<modbus_gpos;i++) {
     modbus_reset_timers.push_back(new QTimer(this));

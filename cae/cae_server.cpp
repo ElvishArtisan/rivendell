@@ -21,8 +21,8 @@
 #include <ctype.h>
 #include <stdio.h>
 
-#include <qbytearray.h>
-#include <qstringlist.h>
+#include <QByteArray>
+#include <QStringList>
 
 #include <rdapplication.h>
 
@@ -63,11 +63,11 @@ CaeServer::CaeServer(RDConfig *config,QObject *parent)
   connect(cae_server,SIGNAL(newConnection()),this,SLOT(newConnectionData()));
 
   cae_ready_read_mapper=new QSignalMapper(this);
-  connect(cae_ready_read_mapper,SIGNAL(mapped(int)),
+  connect(cae_ready_read_mapper,SIGNAL(mappedInt(int)),
 	  this,SLOT(readyReadData(int)));
 
   cae_connection_closed_mapper=new QSignalMapper(this);
-  connect(cae_connection_closed_mapper,SIGNAL(mapped(int)),
+  connect(cae_connection_closed_mapper,SIGNAL(mappedInt(int)),
 	  this,SLOT(connectionClosedData(int)));
 }
 

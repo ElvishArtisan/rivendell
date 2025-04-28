@@ -25046,3 +25046,5 @@
 	'DISTRO SPECIFIC NOTES' section of 'INSTALL'.
 	* Updated the 'Ubuntu 22.04 LTS' entry in the
 	'DISTRO SPECIFIC NOTES' section of 'INSTALL'.
+2025-04-28 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up numerous 'no such signal' runtime errors.

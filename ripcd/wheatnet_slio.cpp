@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for WheatNet SLIO
 //
-//   (C) Copyright 2017-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -36,7 +36,7 @@ WheatnetSlio::WheatnetSlio(RDMatrix *matrix,QObject *parent)
   slio_socket=new QTcpSocket(this);
   connect(slio_socket,SIGNAL(connected()),this,SLOT(connectedData()));
   connect(slio_socket,SIGNAL(readyRead()),this,SLOT(readyReadData()));
-  connect(slio_socket,SIGNAL(error(QAbstractSocket::SocketError)),
+  connect(slio_socket,SIGNAL(errorOccurred(QAbstractSocket::SocketError)),
 	  this,SLOT(errorData(QAbstractSocket::SocketError)));
   slio_socket->connectToHost(slio_ip_address.toString(),slio_ip_port);
 
@@ -45,7 +45,7 @@ WheatnetSlio::WheatnetSlio(RDMatrix *matrix,QObject *parent)
   connect(slio_poll_timer,SIGNAL(timeout()),this,SLOT(pollData()));
 
   slio_reset_mapper=new QSignalMapper(this);
-  connect(slio_reset_mapper,SIGNAL(mapped(int)),
+  connect(slio_reset_mapper,SIGNAL(mappedInt(int)),
 	  this,SLOT(resetStateData(int)));
   for(int i=0;i<slio_gpios;i++) {
     slio_reset_timers.push_back(new QTimer(this));

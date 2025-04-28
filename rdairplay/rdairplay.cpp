@@ -266,9 +266,9 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   // Log Machines
   //
   QSignalMapper *reload_mapper=new QSignalMapper(this);
-  connect(reload_mapper,SIGNAL(mapped(int)),this,SLOT(logReloadedData(int)));
+  connect(reload_mapper,SIGNAL(mappedInt(int)),this,SLOT(logReloadedData(int)));
   QSignalMapper *rename_mapper=new QSignalMapper(this);
-  connect(rename_mapper,SIGNAL(mapped(int)),this,SLOT(logRenamedData(int)));
+  connect(rename_mapper,SIGNAL(mappedInt(int)),this,SLOT(logRenamedData(int)));
   QString default_svcname=rda->airplayConf()->defaultSvc();
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
     air_log[i]=new RDLogPlay(i,air_event_player,true,this);
@@ -569,7 +569,7 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   // Full Log Buttons
   //
   QSignalMapper *mapper=new QSignalMapper(this);
-  connect(mapper,SIGNAL(mapped(int)),this,SLOT(fullLogButtonData(int)));
+  connect(mapper,SIGNAL(mappedInt(int)),this,SLOT(fullLogButtonData(int)));
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
     air_log_button[i]=new QPushButton(this);
     air_log_button[i]->setFont(bigButtonFont());

@@ -103,7 +103,7 @@ void RDRipc::connectHost(QString hostname,uint16_t hostport,QString password)
   }
   ripc_socket=new QTcpSocket(this);
   connect(ripc_socket,SIGNAL(connected()),this,SLOT(connectedData()));
-  connect(ripc_socket,SIGNAL(error(QAbstractSocket::SocketError)),
+  connect(ripc_socket,SIGNAL(errorOccurred(QAbstractSocket::SocketError)),
 	  this,SLOT(errorData(QAbstractSocket::SocketError)));
   connect(ripc_socket,SIGNAL(readyRead()),this,SLOT(readyData()));
 

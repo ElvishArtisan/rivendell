@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the Logitek vGuest Protocol
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -182,9 +182,9 @@ VGuest::VGuest(RDMatrix *matrix,QObject *parent)
   // Ping Timers
   //
   vguest_ping_mapper=new QSignalMapper(this);
-  connect(vguest_ping_mapper,SIGNAL(mapped(int)),this,SLOT(pingData(int)));
+  connect(vguest_ping_mapper,SIGNAL(mappedInt(int)),this,SLOT(pingData(int)));
   vguest_ping_response_mapper=new QSignalMapper(this);
-  connect(vguest_ping_response_mapper,SIGNAL(mapped(int)),
+  connect(vguest_ping_response_mapper,SIGNAL(mappedInt(int)),
 	  this,SLOT(pingResponseData(int)));
   for(int i=0;i<2;i++) {
     vguest_ping_timer[i]=new QTimer(this);
@@ -203,7 +203,7 @@ VGuest::VGuest(RDMatrix *matrix,QObject *parent)
   // Reconnection Timer
   //
   QSignalMapper *reconnect_mapper=new QSignalMapper(this);
-  connect(reconnect_mapper,SIGNAL(mapped(int)),
+  connect(reconnect_mapper,SIGNAL(mappedInt(int)),
 	  this,SLOT(ipConnect(int)));
   for(int i=0;i<2;i++) {
     vguest_reconnect_timer[i]=new QTimer(this);

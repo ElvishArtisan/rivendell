@@ -2,7 +2,7 @@
 //
 //   A driver for General-Purpose I/O devices.
 //
-//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -344,7 +344,7 @@ void RDGpio::RemapTimers()
   //
   ioctl(gpio_fd,GPIO_GETINFO,&info);
   gpio_revert_mapper=new QSignalMapper(this);
-  connect(gpio_revert_mapper,SIGNAL(mapped(int)),this,SLOT(revertData(int)));
+  connect(gpio_revert_mapper,SIGNAL(mappedInt(int)),this,SLOT(revertData(int)));
   for(int i=0;i<info.outputs;i++) {
     gpio_revert_timer[i]=new QTimer(this);
     gpio_revert_timer[i]->setSingleShot(true);

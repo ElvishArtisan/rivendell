@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the Quartz Type 1 Switcher Protocol
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -53,7 +53,7 @@ Quartz1::Quartz1(RDMatrix *matrix,QObject *parent)
   // Reconnection Timers
   //
   QSignalMapper *mapper=new QSignalMapper(this);
-  connect(mapper,SIGNAL(mapped(int)),this,SLOT(ipConnect(int)));
+  connect(mapper,SIGNAL(mappedInt(int)),this,SLOT(ipConnect(int)));
   for(int i=0;i<2;i++) {
     sas_reconnect_timer[i]=new QTimer(this);
     sas_reconnect_timer[i]->setSingleShot(true);
@@ -65,9 +65,9 @@ Quartz1::Quartz1(RDMatrix *matrix,QObject *parent)
   // Initialize the connections
   //
   QSignalMapper *connected_mapper=new QSignalMapper(this);
-  connect(connected_mapper,SIGNAL(mapped(int)),this,SLOT(connectedData(int)));
+  connect(connected_mapper,SIGNAL(mappedInt(int)),this,SLOT(connectedData(int)));
   QSignalMapper *closed_mapper=new QSignalMapper(this);
-  connect(closed_mapper,SIGNAL(mapped(int)),
+  connect(closed_mapper,SIGNAL(mappedInt(int)),
 	  this,SLOT(connectionClosedData(int)));
   for(int i=0;i<2;i++) {
     switch(sas_porttype[i]) {
@@ -94,12 +94,14 @@ Quartz1::Quartz1(RDMatrix *matrix,QObject *parent)
 	      closed_mapper,SLOT(map()));
       switch(i) {
       case 0:
-	connect(sas_socket[i],SIGNAL(error(QAbstractSocket::SocketError)),
+	connect(sas_socket[i],
+		SIGNAL(errorOccurred(QAbstractSocket::SocketError)),
 		this,SLOT(error0Data(QAbstractSocket::SocketError)));
 	break;
 
       case 1:
-	connect(sas_socket[i],SIGNAL(error(QAbstractSocket::SocketError)),
+	connect(sas_socket[i],
+		SIGNAL(errorOccurred(QAbstractSocket::SocketError)),
 		this,SLOT(error1Data(QAbstractSocket::SocketError)));
 	break;
       }

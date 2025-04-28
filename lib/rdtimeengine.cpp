@@ -2,7 +2,7 @@
 //
 //   An event timer engine.
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -24,7 +24,7 @@ RDTimeEngine::RDTimeEngine(QObject *parent)
   : QObject(parent)
 {
   d_mapper=new QSignalMapper(this);
-  connect(d_mapper,SIGNAL(mapped(int)),this,SLOT(timerData(int)));
+  connect(d_mapper,SIGNAL(mappedInt(int)),this,SLOT(timerData(int)));
 }
 
 

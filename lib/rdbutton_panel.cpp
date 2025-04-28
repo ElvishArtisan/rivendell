@@ -34,7 +34,7 @@ RDButtonPanel::RDButtonPanel(RDAirPlayConf::PanelType type,int number,
   panel_title=title;
 
   panel_button_mapper=new QSignalMapper(this);
-  connect(panel_button_mapper,SIGNAL(mapped(int)),
+  connect(panel_button_mapper,SIGNAL(mappedInt(int)),
 	  this,SLOT(buttonClickedData(int)));
 
   for(int i=0;i<PANEL_MAX_BUTTON_ROWS;i++) {

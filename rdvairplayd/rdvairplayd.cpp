@@ -2,7 +2,7 @@
 //
 // Headless log player
 //
-//   (C) Copyright 2018-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -118,7 +118,7 @@ MainObject::MainObject(QObject *parent)
   // Log Machines
   //
   QSignalMapper *reload_mapper=new QSignalMapper(this);
-  connect(reload_mapper,SIGNAL(mapped(int)),this,SLOT(logReloadedData(int)));
+  connect(reload_mapper,SIGNAL(mappedInt(int)),this,SLOT(logReloadedData(int)));
   QSignalMapper *rename_mapper=new QSignalMapper(this);
   QString default_svcname=rda->airplayConf()->defaultSvc();
   for(int i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {

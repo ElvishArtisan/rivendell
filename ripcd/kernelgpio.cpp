@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the Kernel GPIO interface. 
 //
-//   (C) Copyright 2017-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -35,7 +35,8 @@ KernelGpio::KernelGpio(RDMatrix *matrix,QObject *parent)
   // Initialize the interface
   //
   gpio_reset_mapper=new QSignalMapper(this);
-  connect(gpio_reset_mapper,SIGNAL(mapped(int)),this,SLOT(gpoResetData(int)));
+  connect(gpio_reset_mapper,SIGNAL(mappedInt(int)),
+	  this,SLOT(gpoResetData(int)));
   gpio_gpio=new RDKernelGpio(this);
   connect(gpio_gpio,SIGNAL(valueChanged(int,bool)),
 	  this,SLOT(gpiChangedData(int,bool)));

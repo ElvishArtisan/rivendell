@@ -2,7 +2,7 @@
 //
 // A Combo Box widget for RSS categories.
 //
-//   (C) Copyright 2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2020-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,7 +30,7 @@ RDRssCategoryBox::RDRssCategoryBox(QWidget *parent)
   // Category
   //
   c_box=new QComboBox(this);
-  connect(c_box,SIGNAL(activated(const QString &)),
+  connect(c_box,SIGNAL(textActivated(const QString &)),
 	  this,SLOT(boxActivatedData(const QString &)));
   c_edit=new QLineEdit(this);
   c_edit->setMaxLength(64);
@@ -48,7 +48,7 @@ RDRssCategoryBox::RDRssCategoryBox(QWidget *parent)
   c_sub_box=new QComboBox(this);
   c_sub_edit=new QLineEdit(this);
   c_sub_edit->setMaxLength(64);
-  connect(c_sub_box,SIGNAL(activated(const QString &)),
+  connect(c_sub_box,SIGNAL(textActivated(const QString &)),
 	  c_sub_edit,SLOT(setText(const QString &)));
 }
 

@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Log
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -147,7 +147,7 @@ EditLog::EditLog(QString *filter,QString *group,QString *schedcode,
   edit_service_label=new QLabel(tr("Service:"),this);
   edit_service_label->setFont(labelFont());
   edit_service_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);  
-  connect(edit_service_box,SIGNAL(activated(const QString &)),
+  connect(edit_service_box,SIGNAL(textActivated(const QString &)),
 	  this,SLOT(serviceActivatedData(const QString &)));
 
   //

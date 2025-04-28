@@ -2,7 +2,7 @@
 //
 // Add a Rivendell Cart
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -66,7 +66,7 @@ RDAddCart::RDAddCart(QString *group,RDCart::Type *type,QString *title,
     }
   }
   delete q;
-  connect(cart_group_box,SIGNAL(activated(const QString &)),
+  connect(cart_group_box,SIGNAL(textActivated(const QString &)),
 	  this,SLOT(groupActivatedData(const QString &)));
 
   //

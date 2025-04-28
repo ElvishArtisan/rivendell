@@ -2,7 +2,7 @@
 //
 // A Rivendell multicast GPIO driver for LiveWire networks.
 //
-//   (C) Copyright 2013-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -63,7 +63,7 @@ LiveWireMcastGpio::LiveWireMcastGpio(RDMatrix *matrix,QObject *parent)
   // Timers
   //
   livewire_gpi_timer_mapper=new QSignalMapper(this);
-  connect(livewire_gpi_timer_mapper,SIGNAL(mapped(int)),
+  connect(livewire_gpi_timer_mapper,SIGNAL(mappedInt(int)),
 	  this,SLOT(gpiTimeoutData(int)));
   for(unsigned i=0;i<livewire_gpios;i++) {
     livewire_gpi_timers.push_back(new QTimer(this));
@@ -73,7 +73,7 @@ LiveWireMcastGpio::LiveWireMcastGpio(RDMatrix *matrix,QObject *parent)
 	    livewire_gpi_timer_mapper,SLOT(map()));
   }
   livewire_gpo_out_timer_mapper=new QSignalMapper(this);
-  connect(livewire_gpo_out_timer_mapper,SIGNAL(mapped(int)),
+  connect(livewire_gpo_out_timer_mapper,SIGNAL(mappedInt(int)),
 	  this,SLOT(gpoOutTimeoutData(int)));
   for(unsigned i=0;i<livewire_gpios;i++) {
     livewire_gpo_out_timers.push_back(new QTimer(this));
@@ -85,7 +85,7 @@ LiveWireMcastGpio::LiveWireMcastGpio(RDMatrix *matrix,QObject *parent)
   }
 
   livewire_gpo_in_timer_mapper=new QSignalMapper(this);
-  connect(livewire_gpo_in_timer_mapper,SIGNAL(mapped(int)),
+  connect(livewire_gpo_in_timer_mapper,SIGNAL(mappedInt(int)),
 	  this,SLOT(gpoInTimeoutData(int)));
   for(unsigned i=0;i<livewire_gpios;i++) {
     livewire_gpo_in_timers.push_back(new QTimer(this));

@@ -35,7 +35,7 @@ BtSentinel4Web::BtSentinel4Web(RDMatrix *matrix,QObject *parent)
   //
   bt_socket=new QTcpSocket(this);
   connect(bt_socket,SIGNAL(connected()),this,SLOT(connectedData()));
-  connect(bt_socket,SIGNAL(error(QAbstractSocket::SocketError)),
+  connect(bt_socket,SIGNAL(errorOccurred(QAbstractSocket::SocketError)),
 	  this,SLOT(errorData(QAbstractSocket::SocketError)));
   connect(bt_socket,SIGNAL(readyRead()),this,SLOT(readyReadData()));
 
@@ -168,7 +168,7 @@ void BtSentinel4Web::watchdogResetData()
   delete bt_socket;
   bt_socket=new QTcpSocket(this);
   connect(bt_socket,SIGNAL(connected()),this,SLOT(connectedData()));
-  connect(bt_socket,SIGNAL(error(QAbstractSocket::SocketError)),
+  connect(bt_socket,SIGNAL(errorOccurred(QAbstractSocket::SocketError)),
 	  this,SLOT(errorData(QAbstractSocket::SocketError)));
   connect(bt_socket,SIGNAL(readyRead()),this,SLOT(readyReadData()));
 

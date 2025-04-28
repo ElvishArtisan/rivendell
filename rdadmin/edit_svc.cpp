@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Service
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -132,7 +132,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   svc_bypass_box->setGeometry(185,136,60,19);
   svc_bypass_box->insertItem(0,tr("No"));
   svc_bypass_box->insertItem(1,tr("Yes"));
-  connect(svc_bypass_box,SIGNAL(activated(const QString &)),
+  connect(svc_bypass_box,SIGNAL(textActivated(const QString &)),
 	  this,SLOT(textChangedData(const QString &)));
   connect(svc_bypass_box,SIGNAL(activated(int)),
 	  this,SLOT(bypassModeChangedData(int)));
@@ -149,7 +149,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
     insertItem((int)RDSvc::ParentEvent,tr("From Relative Position"));
   svc_sub_event_inheritance_box->
     insertItem((int)RDSvc::SchedFile,tr("From Scheduler File"));
-  connect(svc_sub_event_inheritance_box,SIGNAL(activated(const QString &)),
+  connect(svc_sub_event_inheritance_box,SIGNAL(textActivated(const QString &)),
 	  this,SLOT(textChangedData(const QString &)));
   svc_sub_event_inheritance_label=
     new QLabel(tr("Inline Event Start/Length")+":",this);

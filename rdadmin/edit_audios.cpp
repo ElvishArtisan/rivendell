@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Audio Port Configuration
 //
-//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -91,7 +91,7 @@ EditAudioPorts::EditAudioPorts(RDStation *station,QWidget *parent)
     edit_input_label_edit[i]->setMaxLength(4);
     
     QSignalMapper *mapper=new QSignalMapper(this);
-    connect(mapper,SIGNAL(mapped(int)),this,SLOT(inputMapData(int)));
+    connect(mapper,SIGNAL(mappedInt(int)),this,SLOT(inputMapData(int)));
     edit_type_box[i]=new QComboBox(this);
     edit_type_box[i]->
       insertItem(edit_type_box[i]->count(),tr("Analog"));

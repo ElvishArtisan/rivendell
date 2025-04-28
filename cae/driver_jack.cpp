@@ -628,11 +628,11 @@ bool DriverJack::initialize(unsigned *next_cardnum)
   // Stop & Fade Timers
   //
   QSignalMapper *stop_mapper=new QSignalMapper(this);
-  connect(stop_mapper,SIGNAL(mapped(int)),this,SLOT(stopTimerData(int)));
+  connect(stop_mapper,SIGNAL(mappedInt(int)),this,SLOT(stopTimerData(int)));
   QSignalMapper *fade_mapper=new QSignalMapper(this);
-  connect(fade_mapper,SIGNAL(mapped(int)),this,SLOT(fadeTimerData(int)));
+  connect(fade_mapper,SIGNAL(mappedInt(int)),this,SLOT(fadeTimerData(int)));
   QSignalMapper *record_mapper=new QSignalMapper(this);
-  connect(record_mapper,SIGNAL(mapped(int)),this,SLOT(recordTimerData(int)));
+  connect(record_mapper,SIGNAL(mappedInt(int)),this,SLOT(recordTimerData(int)));
   for(int i=0;i<RD_MAX_STREAMS;i++) {
     jack_stop_timer[i]=new QTimer(this);
     jack_stop_timer[i]->setSingleShot(true);

@@ -63,7 +63,7 @@ SoftwareAuthority::SoftwareAuthority(RDMatrix *matrix,QObject *parent)
   connect(swa_socket,SIGNAL(disconnected()),this,SLOT(connectionClosedData()));
   connect(swa_socket,SIGNAL(readyRead()),
 	  this,SLOT(readyReadData()));
-  connect(swa_socket,SIGNAL(error(QAbstractSocket::SocketError)),
+  connect(swa_socket,SIGNAL(errorOccurred(QAbstractSocket::SocketError)),
 	  this,SLOT(errorData(QAbstractSocket::SocketError)));
   ipConnect();
 }

@@ -95,7 +95,7 @@ SasUsi::SasUsi(RDMatrix *matrix,QObject *parent)
 	    this,SLOT(connectionClosedData()));
     connect(sas_socket,SIGNAL(readyRead()),
 	    this,SLOT(readyReadData()));
-    connect(sas_socket,SIGNAL(error(QAbstractSocket::SocketError)),
+    connect(sas_socket,SIGNAL(errorOccurred(QAbstractSocket::SocketError)),
 	    this,SLOT(errorData(QAbstractSocket::SocketError)));
     ipConnect();
     break;

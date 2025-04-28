@@ -2,7 +2,7 @@
 //
 // The Rivendell Netcatcher Daemon
 //
-//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -164,7 +164,7 @@ MainObject::MainObject(QObject *parent)
     catch_macro_event_id[i]=-1;
   }
   catch_event_mapper=new QSignalMapper(this);
-  connect(catch_event_mapper,SIGNAL(mapped(int)),
+  connect(catch_event_mapper,SIGNAL(mappedInt(int)),
 	  this,SLOT(eventFinishedData(int)));
   QTimer *timer=new QTimer(this);
   connect(timer,SIGNAL(timeout()),this,SLOT(freeEventsData()));
@@ -179,10 +179,10 @@ MainObject::MainObject(QObject *parent)
   // GPI Mappers
   //
   catch_gpi_start_mapper=new QSignalMapper(this);
-  connect(catch_gpi_start_mapper,SIGNAL(mapped(int)),
+  connect(catch_gpi_start_mapper,SIGNAL(mappedInt(int)),
 	  this,SLOT(startTimerData(int)));
   catch_gpi_offset_mapper=new QSignalMapper(this);
-  connect(catch_gpi_offset_mapper,SIGNAL(mapped(int)),
+  connect(catch_gpi_offset_mapper,SIGNAL(mappedInt(int)),
 	  this,SLOT(offsetTimerData(int)));
 
   //

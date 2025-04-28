@@ -70,7 +70,7 @@ ButtonLog::ButtonLog(RDLogPlay *log,int id,RDAirPlayConf *conf,bool allow_pause,
   // Line Boxes / Start Buttons
   //
   QSignalMapper *mapper=new QSignalMapper(this);
-  connect(mapper,SIGNAL(mapped(int)),
+  connect(mapper,SIGNAL(mappedInt(int)),
 	  this,SLOT(startButton(int)));
   for(int i=0;i<BUTTON_TOTAL_BUTTONS;i++) {
     log_line_box[i]=new LogLineBox(conf,this);

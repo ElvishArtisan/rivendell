@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Playback Deck
 //
-//   (C) Copyright 2003-2024 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2003-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -62,7 +62,7 @@ RDPlayDeck::RDPlayDeck(RDCae *cae,int id,QObject *parent)
   // Timers
   //
   QSignalMapper *mapper=new QSignalMapper(this);
-  connect(mapper,SIGNAL(mapped(int)),this,SLOT(pointTimerData(int)));
+  connect(mapper,SIGNAL(mappedInt(int)),this,SLOT(pointTimerData(int)));
   for(int i=0;i<3;i++) {
     play_point_timer[i]=new QTimer(this);
     play_point_timer[i]->setSingleShot(true);

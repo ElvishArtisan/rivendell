@@ -81,7 +81,7 @@ MainWidget::MainWidget(RDConfig *config,Qt::WindowFlags f)
   int v=0;
 
   QSignalMapper *mapper=new QSignalMapper(this);
-  connect(mapper,SIGNAL(mapped(int)),this,SLOT(buttonData(int)));
+  connect(mapper,SIGNAL(mappedInt(int)),this,SLOT(buttonData(int)));
   RDProfile *profile=new RDProfile();
   profile->setSource(map_filename);
   key_columns=

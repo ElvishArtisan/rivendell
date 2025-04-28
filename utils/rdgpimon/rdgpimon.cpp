@@ -206,7 +206,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
 	  gpi_events_view,SLOT(resizeColumnsToContents()));
   connect(gpi_events_date_edit,SIGNAL(dateChanged(const QDate &)),
 	  gpi_events_model,SLOT(setDateFilter(const QDate &)));
-  connect(gpi_events_state_box,SIGNAL(activated(const QString &)),
+  connect(gpi_events_state_box,SIGNAL(textActivated(const QString &)),
 	  gpi_events_model,SLOT(setStateFilter(const QString &)));
   connect(gpi_events_model,SIGNAL(rowsInserted(const QModelIndex &,int,int)),
 	  this,SLOT(rowsInsertedData(const QModelIndex &,int,int)));

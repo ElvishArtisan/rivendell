@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Netcatch Cart Event
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -77,7 +77,7 @@ EditSwitchEvent::EditSwitchEvent(QWidget *parent)
   edit_matrix_label=new QLabel(tr("Switch Matrix:"),this);
   edit_matrix_label->setFont(labelFont());
   edit_matrix_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  connect(edit_matrix_box,SIGNAL(activated(const QString &)),
+  connect(edit_matrix_box,SIGNAL(textActivated(const QString &)),
 	  this,SLOT(activateMatrixData(const QString &)));
 
   //
@@ -88,7 +88,7 @@ EditSwitchEvent::EditSwitchEvent(QWidget *parent)
   edit_input_label->setFont(labelFont());
   edit_input_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   edit_input_spin=new QSpinBox(this);
-  connect(edit_input_box,SIGNAL(activated(const QString &)),
+  connect(edit_input_box,SIGNAL(textActivated(const QString &)),
 	  this,SLOT(activateInputData(const QString &)));
 
   //
@@ -99,7 +99,7 @@ EditSwitchEvent::EditSwitchEvent(QWidget *parent)
   edit_output_label->setFont(labelFont());
   edit_output_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   edit_output_spin=new QSpinBox(this);
-  connect(edit_output_box,SIGNAL(activated(const QString &)),
+  connect(edit_output_box,SIGNAL(textActivated(const QString &)),
 	  this,SLOT(activateOutputData(const QString &)));
 
   //
