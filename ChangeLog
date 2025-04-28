@@ -25048,3 +25048,7 @@
 	'DISTRO SPECIFIC NOTES' section of 'INSTALL'.
 2025-04-28 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up numerous 'no such signal' runtime errors.
+2025-04-28 Fred Gleason <fredg@paravelsystems.com>
+	* Modified validator for new scheduler codes to use
+	'QRegularExpressionValidator' in the 'Add Scheduler Code' dialog
+	in rdadmin(1).
