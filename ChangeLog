@@ -25063,3 +25063,6 @@
 	'RDConfig::provisioningServiceName()' to use the QRegularExpression
 	class rather than QRegExp.
 	* Added a 'provisioning_test' test harness in 'tests/'.
+2025-04-29 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up deprecation warnings in 'lib/rdhash.cpp'.
+	* Added a 'sha1_test' test harness in 'tests/'.

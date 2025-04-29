@@ -1,8 +1,8 @@
-// rdhash.h
+// sha1_test.h
 //
-// Functions for generating and verifying hashes.
+// Test Rivendell SHA1 methods.
 //
-//   (C) Copyright 2017-2025 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,15 +18,19 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef RDHASH_H
-#define RDHASH_H
+#ifndef SHA1_TEST_H
+#define SHA1_TEST_H
 
-#include <QString>
+#include <QObject>
 
-QString RDSha1HashData(const QByteArray &data);
-QString RDSha1HashFile(const QString &filename,bool throttle=false);
-QString RDSha1HashPassword(const QString &secret);
-bool RDSha1HashCheckPassword(const QString &secret,const QString &hash);
+#define SHA1_TEST_USAGE "--verify-password=<passwd> --verify-string=<str> --verify-file=<filename> --verify-hash=<sha1-hash>"
+
+class MainObject : public QObject
+{
+  Q_OBJECT
+  public:
+    MainObject(QObject *parent=0);
+};
 
 
-#endif  // RDHASH_H
+#endif  // SHA1_TEST_H

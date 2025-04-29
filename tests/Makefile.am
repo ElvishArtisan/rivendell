@@ -53,6 +53,7 @@ noinst_PROGRAMS = audio_convert_test\
                   reserve_carts_test\
                   rml_torture_test\
                   sendmail_test\
+                  sha1_test\
                   stringcode_test\
                   tempdir_test\
                   test_hash\
@@ -153,6 +154,10 @@ rml_torture_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT6_LIBS@ @MUSICBRAINZ_LIBS@ 
 
 dist_sendmail_test_SOURCES = sendmail_test.cpp sendmail_test.h
 sendmail_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT6_LIBS@ @MUSICBRAINZ_LIBS@ @IMAGEMAGICK_LIBS@
+
+dist_sha1_test_SOURCES = sha1_test.cpp sha1_test.h
+nodist_sha1_test_SOURCES = moc_sha1_test.cpp
+sha1_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT6_LIBS@ @MUSICBRAINZ_LIBS@ @IMAGEMAGICK_LIBS@
 
 dist_stringcode_test_SOURCES = stringcode_test.cpp stringcode_test.h
 stringcode_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT6_LIBS@ @MUSICBRAINZ_LIBS@ @IMAGEMAGICK_LIBS@

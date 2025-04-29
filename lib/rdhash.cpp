@@ -1,8 +1,8 @@
 // rdhash.cpp
 //
-// Functions for generating hashes.
+// Functions for generating and verifying hashes.
 //
-//   (C) Copyright 2017-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,6 +26,7 @@
 #include <stdio.h>
 
 #include <openssl/sha.h>
+#include <openssl/evp.h>
 
 #include <QDateTime>
 
@@ -33,16 +34,23 @@
 
 QString __RDSha1Hash_MakePasswordHash(const QString &secret,const QString &salt)
 {
-  SHA_CTX ctx;
-  unsigned char md[SHA_DIGEST_LENGTH];
+  QByteArray bytes;
+  EVP_MD_CTX *ctx;
+  unsigned char *digest=NULL;
+  unsigned int digest_len=EVP_MD_size(EVP_sha1());
 
-  SHA1_Init(&ctx);
-  SHA1_Update(&ctx,salt.toUtf8(),salt.toUtf8().length());
-  SHA1_Update(&ctx,secret.toUtf8(),secret.toUtf8().length());
-  SHA1_Final(md,&ctx);
+  ctx=EVP_MD_CTX_new();
+  EVP_DigestInit_ex(ctx,EVP_sha1(),NULL);
+  bytes=salt.toUtf8();
+  EVP_DigestUpdate(ctx,bytes,bytes.size());
+  bytes=secret.toUtf8();
+  EVP_DigestUpdate(ctx,bytes,bytes.size());
+  digest=(unsigned char *)OPENSSL_malloc(digest_len);
+  EVP_DigestFinal_ex(ctx,digest,&digest_len);
+  EVP_MD_CTX_free(ctx);
   QString ret=salt;
-  for(int i=0;i<SHA_DIGEST_LENGTH;i++) {
-    ret+=QString::asprintf("%02x",0xff&md[i]);
+  for(unsigned i=0;i<digest_len;i++) {
+    ret+=QString::asprintf("%02x",0xFF&(digest[i]));
   }
   
   return ret;
@@ -51,15 +59,19 @@ QString __RDSha1Hash_MakePasswordHash(const QString &secret,const QString &salt)
 
 QString RDSha1HashData(const QByteArray &data)
 {
-  SHA_CTX ctx;
-  unsigned char md[SHA_DIGEST_LENGTH];
-  QString ret;
+  EVP_MD_CTX *ctx;
+  unsigned char *digest=NULL;
+  unsigned int digest_len=EVP_MD_size(EVP_sha1());
 
-  SHA1_Init(&ctx);
-  SHA1_Update(&ctx,data,data.length());
-  SHA1_Final(md,&ctx);
-  for(int i=0;i<SHA_DIGEST_LENGTH;i++) {
-    ret+=QString::asprintf("%02x",0xff&md[i]);
+  ctx=EVP_MD_CTX_new();
+  EVP_DigestInit_ex(ctx,EVP_sha1(),NULL);
+  EVP_DigestUpdate(ctx,data,data.size());
+  digest=(unsigned char *)OPENSSL_malloc(digest_len);
+  EVP_DigestFinal_ex(ctx,digest,&digest_len);
+  EVP_MD_CTX_free(ctx);
+  QString ret;
+  for(unsigned i=0;i<digest_len;i++) {
+    ret+=QString::asprintf("%02x",0xFF&(digest[i]));
   }
   
   return ret;
@@ -68,31 +80,32 @@ QString RDSha1HashData(const QByteArray &data)
 
 QString RDSha1HashFile(const QString &filename,bool throttle)
 {
-  QString ret;
-  SHA_CTX ctx;
+  unsigned char buffer[1024];
   int fd=-1;
   int n;
-  char data[1024];
-  unsigned char md[SHA_DIGEST_LENGTH];
+  EVP_MD_CTX *ctx;
+  unsigned char *digest=NULL;
+  unsigned int digest_len=EVP_MD_size(EVP_sha1());
 
-  if((fd=open(filename.toUtf8(),O_RDONLY))<0) {
+  if((fd=open(filename.toUtf8(),O_RDONLY))>=0) {
+    ctx=EVP_MD_CTX_new();
+    EVP_DigestInit_ex(ctx,EVP_sha1(),NULL);
+    while((n=read(fd,buffer,1024))>0) {
+      EVP_DigestUpdate(ctx,buffer,n);
+    }
+    if(n<0) {  // read() returned an error!
+      fprintf(stderr,"RDSha1HashFile() read error: %s\n",strerror(errno));
+    }
+    digest=(unsigned char *)OPENSSL_malloc(digest_len);
+    EVP_DigestFinal_ex(ctx,digest,&digest_len);
+    EVP_MD_CTX_free(ctx);
+    QString ret;
+    for(unsigned i=0;i<digest_len;i++) {
+      ret+=QString::asprintf("%02x",0xFF&(digest[i]));
+    }
     return ret;
   }
-  SHA1_Init(&ctx);
-  while((n=read(fd,data,1024))>0) {
-    SHA1_Update(&ctx,data,n);
-    if(throttle) {
-      usleep(1);
-    }
-  }
-  close(fd);
-  SHA1_Final(md,&ctx);
-  ret="";
-  for(int i=0;i<SHA_DIGEST_LENGTH;i++) {
-    ret+=QString::asprintf("%02x",0xff&md[i]);
-  }
-
-  return ret;
+  return QString();
 }
 
 
