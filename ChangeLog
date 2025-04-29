@@ -25062,4 +25062,4 @@
 	* Modified regex code in ' RDConfig::provisioningHostShortName()' and
 	'RDConfig::provisioningServiceName()' to use the QRegularExpression
 	class rather than QRegExp.
-	* Added a 'test_provisioning' test harness in 'tests/'.
+	* Added a 'provisioning_test' test harness in 'tests/'.
