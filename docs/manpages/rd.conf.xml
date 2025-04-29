@@ -536,7 +536,8 @@
 	   <listitem>
 	     <para>
 	       The name of an existing network interface from which to
-	       extract the IP address of a newly provisioned Host.
+	       extract the IP address to be assigned to a newly provisioned
+	       Host entry.
 	     </para>
 	   </listitem>
 	 </varlistentry>
@@ -546,7 +547,7 @@
 	   </term>
 	   <listitem>
 	     <para>
-	       A regular express to use when setting the Short Name of a
+	       A regular expression to use when setting the Short Name of a
 	       newly provisioned Host from the system host name.
 	     </para>
 	   </listitem>

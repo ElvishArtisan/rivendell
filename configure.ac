@@ -89,21 +89,6 @@ AC_ARG_ENABLE(rdxport-debug,[  --enable-rdxport-debug  enable DEBUG support for 
 AC_ARG_ENABLE(i18n-updates,[  --enable-i18n-updates   enable I18N metadata updates],
 		      [I18N_ENABLED=yes],[])
 
-
-#
-# Check for Qt5 (Mandatory)
-#
-#PKG_CHECK_MODULES(QT5,Qt5Core Qt5Widgets Qt5Gui Qt5Network Qt5Sql Qt5Xml Qt5WebKitWidgets,,[AC_MSG_ERROR([*** Qt5 not found ***])])
-#PKG_CHECK_MODULES(QT5_CLI,Qt5Core Qt5Network Qt5Sql Qt5Xml,,[AC_MSG_ERROR([*** Qt5 not found ***])])
-#AC_CHECK_PROG(MOC_NAME,moc-qt5,[moc-qt5],[moc])
-#AC_SUBST(QT_MOC,$MOC_NAME)
-
-#AC_CHECK_PROG(LUPDATE_NAME,lupdate-qt5,[lupdate-qt5],[lupdate])
-#AC_SUBST(QT_LUPDATE,$LUPDATE_NAME)
-
-#AC_CHECK_PROG(LRELEASE_NAME,lrelease-qt5,[lrelease-qt5],[lrelease])
-#AC_SUBST(QT_LRELEASE,$LRELEASE_NAME)
-
 #
 # Check for Qt6 (Mandatory)
 #
@@ -114,7 +99,6 @@ AC_SUBST(QT_LUPDATE,$LUPDATE_NAME)
 
 AC_CHECK_PROG(LRELEASE_NAME,lrelease-qt6,[lrelease-qt6],[lrelease])
 AC_SUBST(QT_LRELEASE,$LRELEASE_NAME)
-
 
 #
 # Determine the target architecture

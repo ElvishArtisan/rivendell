@@ -30,7 +30,7 @@
 
 #include <QDateTime>
 #include <QObject>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QSettings>
 #include <QStringList>
 
@@ -255,17 +255,10 @@ QHostAddress RDConfig::provisioningHostIpAddress() const
 
 QString RDConfig::provisioningHostShortName(const QString &hostname) const
 {
-  /*
-   * FIXME: Reimplement using QRegularExpression
-   */
-  QRegExp exp(conf_provisioning_host_short_name_regex);
+  QRegularExpression regex(conf_provisioning_host_short_name_regex);
+  QRegularExpressionMatch match=regex.match(hostname);
 
-  exp.indexIn(hostname);
-  QStringList texts=exp.capturedTexts();
-  if((unsigned)texts.size()<conf_provisioning_host_short_name_group) {
-    return QString();
-  }
-  return texts[conf_provisioning_host_short_name_group];
+  return match.captured(conf_provisioning_host_short_name_group);
 }
 
 
@@ -283,19 +276,10 @@ QString RDConfig::provisioningServiceTemplate() const
 
 QString RDConfig::provisioningServiceName(const QString &hostname) const
 {
-  /*
-   * FIXME: Reimplement using QRegularExpression
-   *
-  QRegExp exp(conf_provisioning_service_name_regex);
+  QRegularExpression regex(conf_provisioning_service_name_regex);
+  QRegularExpressionMatch match=regex.match(hostname);
 
-  exp.indexIn(hostname);
-  QStringList texts=exp.capturedTexts();
-  if((unsigned)texts.size()<conf_provisioning_service_name_group) {
-    return QString();
-  }
-  return texts[conf_provisioning_service_name_group];
-  */
-  return QString();
+  return match.captured(conf_provisioning_service_name_group);
 }
 
 

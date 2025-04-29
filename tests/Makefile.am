@@ -46,6 +46,7 @@ noinst_PROGRAMS = audio_convert_test\
                   metadata_wildcard_test\
                   meterstrip_test\
                   notification_test\
+                  provisioning_test\
                   rdwavefile_test\
                   rdxml_parse_test\
                   readcd_test\
@@ -129,6 +130,10 @@ mcast_recv_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT6_LIBS@ @MUSICBRAINZ_LIBS@ @
 dist_notification_test_SOURCES = notification_test.cpp notification_test.h
 nodist_notification_test_SOURCES = moc_notification_test.cpp
 notification_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT6_LIBS@ @MUSICBRAINZ_LIBS@ @IMAGEMAGICK_LIBS@
+
+dist_provisioning_test_SOURCES = provisioning_test.cpp provisioning_test.h
+nodist_provisioning_test_SOURCES = moc_provisioning_test.cpp
+provisioning_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT6_LIBS@ @MUSICBRAINZ_LIBS@ @IMAGEMAGICK_LIBS@
 
 dist_rdwavefile_test_SOURCES = rdwavefile_test.cpp rdwavefile_test.h
 nodist_rdwavefile_test_SOURCES = moc_rdwavefile_test.cpp

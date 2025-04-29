@@ -25058,3 +25058,8 @@
 2025-04-28 Fred Gleason <fredg@paravelsystems.com>
 	* Added a '--dump-config' switch to the set of common options
 	in 'RDCoreApplications'.
+2025-04-29 Fred Gleason <fredg@paravelsystems.com>
+	* Modified regex code in ' RDConfig::provisioningHostShortName()' and
+	'RDConfig::provisioningServiceName()' to use the QRegularExpression
+	class rather than QRegExp.
+	* Added a 'test_provisioning' test harness in 'tests/'.

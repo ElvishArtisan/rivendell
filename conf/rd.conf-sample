@@ -117,7 +117,7 @@ XportHostname=
 CreateHost=No
 NewHostTemplate=some_host_entry
 NewHostIpAddress=lo
-NewHostShortNameRegex=[^*]*
+NewHostShortNameRegex=(\w+)-(\w+)
 NewHostShortNameGroup=0
 
 ; If CreateService=Yes, a Service entry will be automatically created in the DB
@@ -128,7 +128,7 @@ NewHostShortNameGroup=0
 ; captured group from the regex specified in 'NewServiceNameGroup='.
 CreateService=No
 NewServiceTemplate=some_service_entry
-NewServiceNameRegex=[^*]*
+NewServiceNameRegex=(\w+)-(\w+)
 NewServiceNameGroup=0
 
 [Logs]
