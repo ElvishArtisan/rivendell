@@ -326,7 +326,7 @@ void VGuest::processCommand(RDMacro *cmd)
 	  return;
 	}
 	label=cmd->rollupArgs(5).left(VGUEST_MAX_TEXT_LENGTH);
-	sprintf(buffer,"\x02%c\x5C%c%c%c%c%c%c%c%s",8+label.length(),
+	sprintf(buffer,"\x02%c\x5C%c%c%c%c%c%c%c%s",8+(uint8_t)label.length(),
 		(char)vguest_displays_engine_nums[cmd->arg(1).toInt()-1],
 		(char)(vguest_displays_device_nums[cmd->arg(1).toInt()-1]>>8),
 		(char)(vguest_displays_device_nums[cmd->arg(1).toInt()-1]&0xFF),

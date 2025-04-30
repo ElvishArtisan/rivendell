@@ -1951,7 +1951,7 @@ void RDTrackerWidget::mousePressEvent(QMouseEvent *e)
     d_rightclick_track=GetClick(e,d_previous_point);
     d_rightclick_pos=d_previous_point->x();
     if(d_rightclick_track>=0) {
-      d_mouse_menu->setGeometry(e->globalX(),e->globalY(),
+      d_mouse_menu->setGeometry(e->globalPosition().x(),e->globalPosition().y(),
 			      d_mouse_menu->sizeHint().width(),
 			      d_mouse_menu->sizeHint().height());
       d_mouse_menu->exec();
@@ -1976,17 +1976,17 @@ void RDTrackerWidget::mouseReleaseEvent(QMouseEvent *e)
     break;
 
   case Qt::MiddleButton:
-    if(e->y()<TRACKER_Y_ORIGIN+TRACKER_Y_HEIGHT) {
+    if(e->position().y()<TRACKER_Y_ORIGIN+TRACKER_Y_HEIGHT) {
       DragTrack(0,((d_wave_origin[0]-d_loglines[0]->
 		    startPoint())/TRACKER_MSECS_PER_PIXEL)+250);
     }
     else {
-      if(e->y()<(TRACKER_Y_ORIGIN+2*TRACKER_Y_HEIGHT)) {
+      if(e->position().y()<(TRACKER_Y_ORIGIN+2*TRACKER_Y_HEIGHT)) {
 	DragTrack(0,((d_wave_origin[1]-d_loglines[1]->
 		      startPoint())/TRACKER_MSECS_PER_PIXEL)+250);
       }
       else {
-	if(e->y()<(TRACKER_Y_ORIGIN+3*TRACKER_Y_HEIGHT)) {
+	if(e->position().y()<(TRACKER_Y_ORIGIN+3*TRACKER_Y_HEIGHT)) {
 	  DragTrack(0,((d_wave_origin[2]-d_loglines[2]->
 			startPoint())/TRACKER_MSECS_PER_PIXEL)+250);
 	}
@@ -2507,22 +2507,22 @@ QString RDTrackerWidget::GetCutName(int line,RDCut **cut)
 
 int RDTrackerWidget::GetClick(QMouseEvent *e,QPoint *p)
 {
-  p->setX(e->x()-TRACKER_X_ORIGIN);
-  if((e->x()<=TRACKER_X_ORIGIN)||
-     (e->x()>=(TRACKER_X_ORIGIN+TRACKER_X_WIDTH))||
-     (e->y()<=TRACKER_Y_ORIGIN)||
-     (e->y()>=(TRACKER_Y_ORIGIN+3*TRACKER_Y_HEIGHT))) {
+  p->setX(e->position().x()-TRACKER_X_ORIGIN);
+  if((e->position().x()<=TRACKER_X_ORIGIN)||
+     (e->position().x()>=(TRACKER_X_ORIGIN+TRACKER_X_WIDTH))||
+     (e->position().y()<=TRACKER_Y_ORIGIN)||
+     (e->position().y()>=(TRACKER_Y_ORIGIN+3*TRACKER_Y_HEIGHT))) {
     return -1;
   }
-  if(e->y()<TRACKER_Y_ORIGIN+TRACKER_Y_HEIGHT) {
-    p->setY(e->y()-TRACKER_Y_ORIGIN);
+  if(e->position().y()<TRACKER_Y_ORIGIN+TRACKER_Y_HEIGHT) {
+    p->setY(e->position().y()-TRACKER_Y_ORIGIN);
     return 0;
   }
-  if(e->y()<(TRACKER_Y_ORIGIN+2*TRACKER_Y_HEIGHT)) {
-    p->setY(e->y()-(TRACKER_Y_ORIGIN+TRACKER_Y_HEIGHT));
+  if(e->position().y()<(TRACKER_Y_ORIGIN+2*TRACKER_Y_HEIGHT)) {
+    p->setY(e->position().y()-(TRACKER_Y_ORIGIN+TRACKER_Y_HEIGHT));
     return 1;
   }
-  p->setY(e->y()-(TRACKER_Y_ORIGIN+2*TRACKER_Y_HEIGHT));
+  p->setY(e->position().y()-(TRACKER_Y_ORIGIN+2*TRACKER_Y_HEIGHT));
   return 2;
 }
 

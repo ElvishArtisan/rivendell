@@ -55,7 +55,6 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   monitor_config=new RDMonitorConfig();
   monitor_config->load();
   int width=sizeHint().width();
-  int height=sizeHint().height();
   switch(monitor_config->position()) {
   case RDMonitorConfig::UpperLeft:
     setGeometry(0,RDMONITOR_HEIGHT,width,sizeHint().height());

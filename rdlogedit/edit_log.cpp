@@ -1082,7 +1082,7 @@ void EditLog::cancelData()
     switch(QMessageBox::question(this,
 	   tr("RDLogEdit"),
 	   tr("The log has been modified.\nDo you want to save your changes?"),
-				 QMessageBox::Yes,QMessageBox::No,
+				 QMessageBox::Yes|QMessageBox::No|
 				 QMessageBox::Cancel)) {
     case QMessageBox::Yes:
       if(!edit_log_model->allGroupsValid()) {
@@ -1093,8 +1093,7 @@ void EditLog::cancelData()
       SaveLog();
       break;
 
-    case QMessageBox::Cancel:
-    case QMessageBox::NoButton:
+    default:
       return;
       break;
     }

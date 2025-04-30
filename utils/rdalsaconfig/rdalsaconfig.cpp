@@ -2,7 +2,7 @@
 //
 // A Qt-based application to display info about ALSA cards.
 //
-//   (C) Copyright 2009-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2009-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -192,19 +192,16 @@ void MainWidget::closeEvent(QCloseEvent *e)
 {
   int r=QMessageBox::question(this,tr("RDAlsaConfig quit"),
 			      tr("Save configuration before exiting?"),
-			      QMessageBox::Yes,QMessageBox::No,
+			      QMessageBox::Yes|QMessageBox::No|
 			      QMessageBox::Cancel);
   switch(r) {
-    case QMessageBox::Yes:
-      saveData();
-      break;
+  case QMessageBox::Yes:
+    saveData();
+    break;
 
-    case QMessageBox::No:
-      cancelData();
-      break;
-
-    default:
-      break;
+  default:
+    cancelData();
+    break;
   }
 }
 

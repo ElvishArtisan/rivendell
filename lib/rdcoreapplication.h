@@ -89,6 +89,7 @@ class RDCoreApplication : public QObject
   void syslog(int priority,const char *fmt,...) const;
   void logAuthenticationFailure(const QHostAddress &orig_addr,
 				const QString &login_name=QString());
+  int checkcall(const char *cmd,int return_code) const;
   static void syslog(RDConfig *config,int priority,const char *fmt,...);
   static QString exitCodeText(ExitCode code);
   static bool isUniqueProcess(const QString &cmdname);

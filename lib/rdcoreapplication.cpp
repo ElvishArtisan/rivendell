@@ -578,6 +578,15 @@ void RDCoreApplication::syslog(RDConfig *config,int priority,const char *fmt,...
 }
 
 
+int RDCoreApplication::checkcall(const char *cmd,int return_code) const
+{
+  if(return_code<0) {
+    fprintf(stderr,"%s: returned error %s\n",cmd,strerror(errno));
+  }
+  return return_code;
+}
+
+
 QString RDCoreApplication::exitCodeText(RDCoreApplication::ExitCode code)
 {
   QString ret=tr("unknown")+QString::asprintf(" [%u]",code);

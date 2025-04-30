@@ -2,7 +2,7 @@
 //
 // Connection to the Rivendell Core Audio Engine
 //
-//   (C) Copyright 2002-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -487,7 +487,8 @@ void RDCae::readyData()
 
 void RDCae::SendCommand(QString cmd)
 {
-  write(cae_socket,cmd.toUtf8().constData(),cmd.toUtf8().length());
+  rda->checkcall("write",write(cae_socket,cmd.toUtf8().constData(),
+			       cmd.toUtf8().length()));
 }
 
 

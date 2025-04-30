@@ -2406,8 +2406,8 @@ bool MainObject::LoadIsciXref(QString *err_msg,const QString &filename)
   //
   // Skip Header
   //
-  fgets(line,1024,f);
-  fgets(line,1024,f);
+  if(fgets(line,1024,f)!=line); // Use if to suppress useless warning
+  if(fgets(line,1024,f)!=line);
 
   //
   // Load Records
@@ -2438,7 +2438,7 @@ bool MainObject::LoadIsciXref(QString *err_msg,const QString &filename)
     }
     else {
       *err_msg=tr("invalid/corrupt data at line")+
-	QString::asprintf("%d",3+fields.size());
+	QString::asprintf("%lld",3+fields.size());
       return false;
     }
   }

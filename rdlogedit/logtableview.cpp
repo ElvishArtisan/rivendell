@@ -2,7 +2,7 @@
 //
 //   TableView widget for RDLogEdit
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -70,7 +70,7 @@ void LogTableView::dropEvent(QDropEvent *e)
 {
   RDLogLine ll;
   int line=-1;
-  int y_pos=e->pos().y();
+  int y_pos=e->position().y();
 
   if(RDCartDrag::decode(e->mimeData(),&ll)) {
     line=rowAt(y_pos);
@@ -84,7 +84,7 @@ void LogTableView::mousePressEvent(QMouseEvent *e)
   if(e->button()==Qt::RightButton) {
     d_mouse_row=indexAt(e->pos()).row();
     if((d_mouse_row>=0)&&(d_mouse_row<(model()->rowCount()-1))) {
-      d_mouse_menu->popup(e->globalPos());
+      d_mouse_menu->popup(e->globalPosition().toPoint());
     }
     else {
       d_mouse_row=-1;

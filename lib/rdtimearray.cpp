@@ -80,7 +80,7 @@ RDTimePoint RDTimeArray::timePoint(int n) const
 void RDTimeArray::addPoint(QString label)
 {
   if(label.isEmpty()) {
-    label=QObject::tr("point")+QString::asprintf(" %d",d_points.size());
+    label=QObject::tr("point")+QString::asprintf(" %lld",d_points.size());
   }
   d_points.push_back(RDTimePoint(label));
 }

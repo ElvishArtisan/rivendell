@@ -2,7 +2,7 @@
 //
 // A utility for displaying messages on the desktop
 //
-//   (C) Copyright 2009-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2009-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,42 +19,13 @@
 //
 
 #include <QApplication>
-#include <QIcon>
 #include <QMessageBox>
 
 #include <rd.h>
 #include <rdapplication.h>
 #include <rdcmd_switch.h>
-#include <rdconfig.h>
-#include <rdfontengine.h>
 
 #include "rdpopup.h"
-
-//
-// Icons
-//
-#include "../icons/rivendell-22x22.xpm"
-
-QString WordWrap(const QString &str)
-{
-  QString ret;
-  QString residue=str;
-
-  while(residue.length()>TEXT_WIDTH) {
-    int cutpt=TEXT_WIDTH;
-    for(int i=TEXT_WIDTH;i>=0;i--) {
-      if(residue.at(i).isSpace()) {
-	cutpt=i;
-	break;
-      }
-    }
-    ret+=residue.left(cutpt)+"\n";
-    residue=residue.right(residue.length()-cutpt-1);
-  }
-
-  ret+=residue;
-  return ret;
-}
 
 int main(int argc,char *argv[])
 {
@@ -87,42 +58,25 @@ int main(int argc,char *argv[])
   }
 
   QDateTime dt=QDateTime(QDate::currentDate(),QTime::currentTime());
-  QString msg=WordWrap(argv[argc-1]);
-  QMessageBox *mb;
+  QString msg(argv[argc-1]);
 
   switch(prio) {
   case 1:
-    mb=new QMessageBox(dt.toString("MM/dd @ hh:mm"),msg,
-		       QMessageBox::Information,
-		       QMessageBox::Ok,QMessageBox::
-		       NoButton,QMessageBox::NoButton);
+    QMessageBox::information(NULL,dt.toString("MM/dd @ hh:mm"),msg);
     break;
 
   case 2:
-    mb=new QMessageBox(dt.toString("MM/dd @ hh:mm"),msg,
-		       QMessageBox::Warning,QMessageBox::Ok,
-		       QMessageBox::NoButton,QMessageBox::NoButton);
+    QMessageBox::warning(NULL,dt.toString("MM/dd @ hh:mm"),msg);
     break;
 
   case 3:
-    mb=new QMessageBox(dt.toString("MM/dd @ hh:mm"),msg,
-		       QMessageBox::Critical,QMessageBox::Ok,
-		       QMessageBox::NoButton,QMessageBox::NoButton);
+    QMessageBox::critical(NULL,dt.toString("MM/dd @ hh:mm"),msg);
     break;
 
   default:
-    mb=new QMessageBox(dt.toString("MM/dd @ hh:mm"),msg,
-		       QMessageBox::Information,
-		       QMessageBox::Ok,QMessageBox::NoButton,
-		       QMessageBox::NoButton);
+    QMessageBox::information(NULL,dt.toString("MM/dd @ hh:mm"),msg);
     break;
   }
-  mb->setWindowIcon(QIcon(QPixmap(rivendell_22x22_xpm)));
-
-  RDFontEngine *fs=new RDFontEngine(config);
-  mb->setFont(fs->progressFont());
-  mb->exec();
-  delete mb;
 
   RDApplication::syslog(config,LOG_INFO,"\"%s\" acknowledged",argv[argc-1]);
   closelog();

@@ -2,7 +2,7 @@
 //
 // Abstract base class for caed(8) audio driver implementations.
 //
-//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -45,7 +45,7 @@ RDStation::AudioDriver Driver::driverType() const
 
 bool Driver::hasCard(int cardnum) const
 {
-  return d_cards.contains(cardnum);
+  return d_cards.contains((unsigned)cardnum);
 }
 
 

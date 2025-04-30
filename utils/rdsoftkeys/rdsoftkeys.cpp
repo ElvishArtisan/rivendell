@@ -24,10 +24,10 @@
 #include <QApplication>
 #include <QMessageBox>
 #include <QSignalMapper>
-#include <QTranslator>
 
 #include <rdprofile.h>
 #include <rdpushbutton.h>
+#include <rdtranslator.h>
 
 #include "rdsoftkeys.h"
 
@@ -39,6 +39,8 @@
 MainWidget::MainWidget(RDConfig *config,Qt::WindowFlags f)
   : QWidget(NULL,f)
  {
+   rdt=new RDTranslator("rdsoftkeys",NULL); 
+
   key_ysize=70;
 
   //
@@ -208,30 +210,6 @@ int main(int argc,char *argv[])
   QApplication::setStyle(RD_GUI_STYLE);
   QApplication a(argc,argv);
   
-  //
-  // Load Translations
-  //
-  QString tr_path;
-  QString qt_path;
-
-  QString loc=RDApplication::locale();
-  if(!loc.isEmpty()) {
-    tr_path=QString(PREFIX)+QString("/share/srlabs/");
-    qt_path=QString("/usr/share/qt4/translation/");
-
-    QTranslator qt(0);
-    qt.load(qt_path+QString("qt_")+loc,".");
-    a.installTranslator(&qt);
-
-    QTranslator libradio(0);
-    libradio.load(tr_path+QString("librd_")+loc,".");
-    a.installTranslator(&libradio);
-
-    QTranslator tests(0);
-    tests.load(tr_path+QString("rdsoftkeys_")+loc,".");
-    a.installTranslator(&tests);
-  }
-
   //
   // Read Command Options
   //

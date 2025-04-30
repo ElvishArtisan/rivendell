@@ -2,7 +2,7 @@
 //
 // The audio cart editor for RDLibrary.
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -271,7 +271,7 @@ void AudioCart::deleteCutData()
   else {
     if(QMessageBox::question(this,"RDLibrary - "+tr("Delete Cuts"),
 			     tr("Are you sure you want to delete")+
-			     QString::asprintf(" %d ",cutnames.size())+
+			     QString::asprintf(" %lld ",cutnames.size())+
 			     tr("cuts")+"?",QMessageBox::Yes,
 			     QMessageBox::No)!=QMessageBox::Yes) {
       return;

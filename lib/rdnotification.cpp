@@ -2,7 +2,7 @@
 //
 // A container class for a Rivendell Notification message.
 //
-//   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -206,21 +206,27 @@ QString RDNotification::dump() const
 {
   QString ret;
 
-  switch((QMetaType::Type)id().type()) {
-  case QMetaType::Int:
+  switch(notify_type) {
+  case RDNotification::PypadType:
+  case RDNotification::CatchEventType:
+  case RDNotification::PanelButtonType:
+  case RDNotification::ExtendedPanelButtonType:
     ret+=QString::asprintf("id: %d\n",id().toInt());
     break;
 
-  case QMetaType::UInt:
+  case RDNotification::CartType:
+  case RDNotification::FeedItemType:
     ret+=QString::asprintf("id: %u\n",id().toUInt());
     break;
 
-  case QMetaType::QString:
+  case RDNotification::LogType:
+  case RDNotification::DropboxType:
+  case RDNotification::FeedType:
     ret+="id: "+id().toString()+"\n";
     break;
 
   default:
-    ret+="Unknown QMetaType type value: %u\n",id().type();
+    ret+=QString::asprintf("Unknown type value: %u\n",notify_type);
     break;
   }
   ret+="type: "+RDNotification::typeString(type())+"\n";

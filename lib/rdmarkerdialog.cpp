@@ -2,7 +2,7 @@
 //
 // Rivendell Audio Marker Editor
 //
-//   (C) Copyright 2021-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -200,7 +200,7 @@ void RDMarkerDialog::cancelData()
     switch(QMessageBox::question(this,d_caption+" - "+tr("Unsaved Changes"),
 				 tr("There are unsaved changes!")+"\n"+
 				 tr("Do you want to save them?"),
-				 QMessageBox::Cancel,QMessageBox::No,
+				 QMessageBox::Cancel|QMessageBox::No|
 				 QMessageBox::Yes)) {
     case QMessageBox::Yes:
       okData();

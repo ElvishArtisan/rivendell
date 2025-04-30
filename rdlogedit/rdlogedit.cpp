@@ -340,7 +340,7 @@ void MainWidget::deleteData()
     else {
       if(QMessageBox::question(this,"RDLogEdit - "+tr("Delete Log"),
 			       tr("Are you sure you want to delete these")+
-			       QString::asprintf(" %d ",rows.size())+
+			       QString::asprintf(" %lld ",rows.size())+
 			       tr("logs?"),QMessageBox::Yes,QMessageBox::No)!=
 	 QMessageBox::Yes) {
 	return;

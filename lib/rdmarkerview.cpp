@@ -1153,11 +1153,12 @@ void RDMarkerView::mousePressEvent(QMouseEvent *e)
   if(d_view->horizontalScrollBar()!=NULL) {
     origin=d_view->horizontalScrollBar()->value();
   }
-  if((e->x()<=LEFT_MARGIN)||((e->x()+origin)>d_right_margin)) {
+  if((e->position().x()<=LEFT_MARGIN)||
+     ((e->position().x()+origin)>d_right_margin)) {
     QWidget::mousePressEvent(e);
     return;
   }
-  d_mouse_pos=e->x()-LEFT_MARGIN;
+  d_mouse_pos=e->position().x()-LEFT_MARGIN;
   
   if(d_marker_menu_used) {
     d_marker_menu_used=false;
@@ -1177,7 +1178,7 @@ void RDMarkerView::mousePressEvent(QMouseEvent *e)
   case Qt::RightButton:
     d_deleting_roles.clear();
       
-    d_main_menu->setGeometry(e->globalX(),e->globalY(),
+    d_main_menu->setGeometry(e->globalPosition().x(),e->globalPosition().y(),
 			     d_main_menu->sizeHint().width(),
 			     d_main_menu->sizeHint().height());
     d_main_menu->exec();

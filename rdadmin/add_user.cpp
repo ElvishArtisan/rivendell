@@ -105,7 +105,7 @@ void AddUser::okData()
     "`LOGIN_NAME`='"+RDEscapeString(username)+"'";
   if(!RDSqlQuery::apply(sql)) {
     QMessageBox::warning(this,tr("User Exists"),tr("User Already Exists!"),
-			 1,0,0);
+			 QMessageBox::Ok);
     return;
   }
   sql="select `NAME` from `GROUPS`";

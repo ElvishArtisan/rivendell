@@ -2,7 +2,7 @@
 //
 // Set Password widget for Rivendell.
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -117,7 +117,7 @@ void RDPasswd::okData()
   else {
     QMessageBox::warning(this,tr("Password Mismatch"),
 			 tr("The passwords don't match,\nplease try again!"),
-			 tr("OK"));
+			 QMessageBox::Ok);
   }
 }
 

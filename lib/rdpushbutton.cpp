@@ -182,20 +182,20 @@ void RDPushButton::mouseReleaseEvent(QMouseEvent *e)
   case Qt::MiddleButton:
     e->accept();
     emit centerReleased();
-    if((e->x()>=0)&&(e->x()<geometry().width())&&
-       (e->y()>=0)&&(e->y()<geometry().height())) {
+    if((e->position().x()>=0)&&(e->position().x()<geometry().width())&&
+       (e->position().y()>=0)&&(e->position().y()<geometry().height())) {
       emit centerClicked();
-      emit centerClicked(button_id,QPoint(e->x(),e->y()));
+      emit centerClicked(button_id,QPoint(e->position().x(),e->position().y()));
     }
     break;
 	
   case Qt::RightButton:
     e->accept();
     emit rightReleased();
-    if((e->x()>=0)&&(e->x()<geometry().width())&&
-       (e->y()>=0)&&(e->y()<geometry().height())) {
+    if((e->position().x()>=0)&&(e->position().x()<geometry().width())&&
+       (e->position().y()>=0)&&(e->position().y()<geometry().height())) {
       emit rightClicked();
-      emit rightClicked(button_id,QPoint(e->x(),e->y()));
+      emit rightClicked(button_id,QPoint(e->position().x(),e->position().y()));
     }
     break;
 

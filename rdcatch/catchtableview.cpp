@@ -2,7 +2,7 @@
 //
 //   Events List Widget for RDCatch
 //
-//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -91,7 +91,7 @@ void CatchTableView::mousePressEvent(QMouseEvent *e)
   if(e->button()==Qt::RightButton) {
     d_mouse_row=indexAt(e->pos()).row();
     if((d_mouse_row>=0)&&(d_mouse_row<model()->rowCount())) {
-      d_mouse_menu->popup(e->globalPos());
+      d_mouse_menu->popup(e->globalPosition().toPoint());
     }
     else {
       d_mouse_row=-1;

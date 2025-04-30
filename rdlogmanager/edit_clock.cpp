@@ -408,13 +408,12 @@ void EditClock::saveAsData()
   QString old_name=edit_name;
   if(edit_modified) {
     switch(QMessageBox::question(this,tr("Clock Modified"),
-				 tr("The clock has been modified.\nDo you want to save?"),QMessageBox::Yes,QMessageBox::No,QMessageBox::Cancel)) {
+				 tr("The clock has been modified.\nDo you want to save?"),QMessageBox::Yes|QMessageBox::No|QMessageBox::Cancel)) {
 	case QMessageBox::Yes:
 	  Save();
 	  break;
 
-	case QMessageBox::Cancel:
-	case QMessageBox::NoButton:
+    default:
 	  return;
 	  break;
     }
@@ -495,18 +494,15 @@ void EditClock::cancelData()
 {
   if(edit_modified) {
     switch(QMessageBox::question(this,tr("Clock Modified"),
-				 tr("The clock has been modified.\nDo you want to save?"),QMessageBox::Yes,QMessageBox::No,QMessageBox::Cancel)) {
+				 tr("The clock has been modified.\nDo you want to save?"),QMessageBox::Yes|QMessageBox::No|QMessageBox::Cancel)) {
     case QMessageBox::Yes:
       Save();
       done(0);
       break;
 
-    case QMessageBox::No:
+    default:
       done(-1);
       break;
-
-    case QMessageBox::NoButton:
-      return;
     }
   }
   else {
