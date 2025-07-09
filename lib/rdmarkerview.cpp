@@ -794,7 +794,7 @@ void RDMarkerView::gotoEnd()
 void RDMarkerView::maxShrinkTime()
 {
   if(canShrinkTime()) {
-    SetShrinkFactor(1);
+    SetShrinkFactor(d_min_shrink_factor);
   }    
 }
 
