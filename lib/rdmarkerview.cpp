@@ -743,13 +743,12 @@ bool RDMarkerView::setCut(QString *err_msg,unsigned cartnum,int cutnum)
   }
 
   //
-  // Minimum Shrink Factor  - if fractional, go next size larger
+  // Minimum Shrink Factor  - if fractional, go up
   //
-  int min_shrink=d_wave_factory->energySize()/(32768);
-  if(d_wave_factory->energySize()>(min_shrink*32768)){
-    d_min_shrink_factor=min_shrink*2;
-  }else{
-    d_min_shrink_factor=min_shrink;
+  int min_shrink=(int)ceil(d_wave_factory->energySize()/(32768.0));
+  d_min_shrink_factor=1;
+  while(d_min_shrink_factor<min_shrink) {
+    d_min_shrink_factor*=2;
   }
 
   d_pad_size=64+(d_width*d_max_shrink_factor-d_wave_factory->energySize())/d_max_shrink_factor-1;
