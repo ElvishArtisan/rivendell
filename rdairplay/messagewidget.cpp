@@ -20,7 +20,12 @@
 
 #include <QEvent>
 #include <QKeyEvent>
+#ifdef HAVE_QT_WEBENGINE
+#include <QWebEnginePage>
+#include <QWebEngineSettings>
+#else
 #include <QWebFrame>
+#endif
 
 #include <rdapplication.h>
 #include <rdeventfilter.h>
@@ -49,7 +54,11 @@ MessageWidget::MessageWidget(QWidget *parent)
   d_label=new QLabel(this);
   d_label->setWordWrap(true);
   d_label->setAlignment(Qt::AlignCenter);
+#ifdef HAVE_QT_WEBENGINE
+  d_view=new QWebEngineView(this);
+#else
   d_view=new QWebView(this);
+#endif
   connect(d_view,SIGNAL(loadFinished(bool)),
 	  this,SLOT(webLoadFinishedData(bool)));
   d_view->hide();
@@ -144,10 +153,15 @@ void MessageWidget::clear()
 
 void MessageWidget::webLoadFinishedData(bool state)
 {
+#ifdef HAVE_QT_WEBENGINE
+  d_view->settings()->
+    setAttribute(QWebEngineSettings::ShowScrollBars, false);
+#else
   d_view->page()->mainFrame()->
     setScrollBarPolicy(Qt::Horizontal,Qt::ScrollBarAlwaysOff);
   d_view->page()->mainFrame()->
     setScrollBarPolicy(Qt::Vertical,Qt::ScrollBarAlwaysOff);
+#endif
 }
 
 

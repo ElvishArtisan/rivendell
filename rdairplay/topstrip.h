@@ -22,7 +22,11 @@
 #define TOPSTRIP_H
 
 #include <QLabel>
+#ifdef HAVE_QT_WEBENGINE
+#include <QWebEngineView>
+#else
 #include <QWebView>
+#endif
 
 #include <rdmeterstrip.h>
 #include <rdwidget.h>
