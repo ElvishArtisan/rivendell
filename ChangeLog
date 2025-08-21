@@ -25134,3 +25134,5 @@
 2026-03-06 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdautorest(8) that caused a crash when
 	cleaning up the mountpoint on CentOS 7.
+2026-05-22 Dennis Graiani <dennis.graiani@gmail.com>
+	* Modified ImageMagick check to try Magick++-7 before Magick++-6.

@@ -350,7 +350,9 @@ AC_CHECK_HEADER(soundtouch/SoundTouch.h,[],[AC_MSG_ERROR([*** SoundTouch not fou
 #
 # Check for ImageMagick
 #
-PKG_CHECK_MODULES(IMAGEMAGICK,Magick++-6.Q16,[],[AC_MSG_ERROR([*** ImageMagick 6 Magick++ binding not found ***])])
+PKG_CHECK_MODULES(IMAGEMAGICK,Magick++-7.Q16,[],[
+  PKG_CHECK_MODULES(IMAGEMAGICK,Magick++-6.Q16,[],[AC_MSG_ERROR([*** ImageMagick 6/7 Magick++ binding not found ***])])
+])
 
 #
 # Check for Python
