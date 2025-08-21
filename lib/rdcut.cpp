@@ -1256,7 +1256,7 @@ void RDCut::setMetadata(RDWaveData *data,bool incl_str_fields) const
   //
   sql=QString("select `DESCRIPTION` from `CUTS` where ")+
     "`CUT_NAME`='"+RDEscapeString(cut_name)+"'";
-  q=new RDSqlQuery(sql);
+  RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     if(q->value(0).toString().isEmpty()) {
       sql=QString("update `CUTS` set ")+
