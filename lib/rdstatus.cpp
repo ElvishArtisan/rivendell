@@ -45,11 +45,11 @@ bool RDAudioStoreValid(RDConfig *config)
     return false;
   }
   if(config->audioStoreMountSource().isEmpty()) {  // Audio store is local
-    ret=true;
+    ret=false;
     while(fgets(line,1024,f)!=NULL) {
       QStringList fields=QString(line).split(" ");
       if(fields.size()>=2) {
-	ret=ret&&(fields[1]!=RD_AUDIO_ROOT);
+	ret=ret||(fields[1]==RD_AUDIO_ROOT);
       }
     }
   }
