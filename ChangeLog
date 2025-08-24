@@ -25072,3 +25072,5 @@
 	* Cleaned up numerous compiler warnings.
 2025-08-24 Dennis Graiani <dennis.graiani@gmail.com>
 	* Update location of 'moc' executable which changed in Qt 6.1.0.
+2025-08-24 Dennis Graiani <dennis.graiani@gmail.com>
+	* Implement MessageWidget with QtWebEngine.

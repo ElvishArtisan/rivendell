@@ -22,7 +22,7 @@
 #define TOPSTRIP_H
 
 #include <QLabel>
-//#include <QWebView>
+#include <QWebEngineView>
 
 #include <rdmeterstrip.h>
 #include <rdwidget.h>

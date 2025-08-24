@@ -92,7 +92,7 @@ AC_ARG_ENABLE(i18n-updates,[  --enable-i18n-updates   enable I18N metadata updat
 #
 # Check for Qt6 (Mandatory)
 #
-AQ_FIND_QT6(QT6,Core Gui Widgets Network Sql Xml,[],[AC_MSG_ERROR([*** Qt6 not found ***])])
+AQ_FIND_QT6(QT6,Core Gui Widgets Network Sql Xml WebEngineCore WebEngineWidgets,[],[AC_MSG_ERROR([*** Qt6 not found ***])])
 
 AC_CHECK_PROG(LUPDATE_NAME,lupdate-qt6,[lupdate-qt6],[lupdate])
 AC_SUBST(QT_LUPDATE,$LUPDATE_NAME)
