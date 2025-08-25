@@ -271,7 +271,7 @@ AC_DEFUN([AQ_FIND_QT6],[AC_REQUIRE([AC_PROG_CXX])]
       qt_libs="-L "$qt_Prefix$qt_Libraries
       qt_cppflags="-I"$qt_Prefix"/"$qt_Headers
       qt_libs="-L"$qt_Prefix"/"$qt_Libraries
-      qt_moc=$qt_Prefix"/"$qt_Binaries"/moc"
+      qt_moc=$qt_Prefix"/"$qt_LibraryExecutables"/moc"
       if test -n "$QT6_MOC" ; then
         qt_moc=$QT6_MOC
       fi
