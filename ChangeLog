@@ -25071,4 +25071,4 @@
 2025-04-30 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up numerous compiler warnings.
 2025-08-24 Dennis Graiani <dennis.graiani@gmail.com>
-	* Update location of 'moc' executable which changed in Qt 6.1.0
+	* Update location of 'moc' executable which changed in Qt 6.1.0.
