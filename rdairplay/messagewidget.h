@@ -23,7 +23,7 @@
 
 #include <QLabel>
 #include <QTimer>
-//#include <QWebView>
+#include <QWebEngineView>
 
 #define MESSAGE_FONT_QUANTITY 8
 #define MESSAGE_WIDGET_WIDTH 410
@@ -47,7 +47,7 @@ class MessageWidget : public QWidget
  private:
   QFont MessageFont(QString str) const;
   QLabel *d_label;
-  //  QWebView *d_view;
+  QWebEngineView *d_view;
   QTimer *d_refresh_timer;
   QFont d_message_fonts[MESSAGE_FONT_QUANTITY];
   QFontMetrics *d_message_metrics[MESSAGE_FONT_QUANTITY];
