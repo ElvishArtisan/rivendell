@@ -40,6 +40,7 @@
 #include <rdwavedata.h>
 #include <rdwavefile.h>
 
+#include "dropboxlist.h"
 #include "journal.h"
 #include "markerset.h"
 
@@ -80,10 +81,12 @@ class MainObject : public QObject
   bool SchedulerCodeExists(const QString &code) const;
   void ReadXmlFile(const QString &basename,RDWaveData *wavedata) const;
   void Log(int prio,const QString &msg) const;
+  void LogDropBox(const QString &msg) const;
   void SendNotification(RDNotification::Action action,unsigned cartnum);
   void NormalExit() const;
   void ErrorExit(RDApplication::ExitCode code) const;
-  unsigned import_file_key;
+  QString ResultText(Result rslt) const;
+   unsigned import_file_key;
   RDGroup *import_group;
   bool import_verbose;
   bool import_log_syslog;
@@ -147,13 +150,7 @@ class MainObject : public QObject
   QString import_string_user_defined;
   int import_string_year;
   int import_failed_imports;
-  struct DropboxList {
-    QString filename;
-    unsigned size;
-    unsigned pass;
-    bool checked;
-    bool failed;
-  };
+  bool import_log_processing;
   std::list<DropboxList *> import_dropbox_list;
   QString import_temp_fix_filename;
   MarkerSet *import_cut_markers;

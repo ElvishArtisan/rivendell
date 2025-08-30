@@ -2,7 +2,7 @@
 //
 // A container class for a Rivendell Base Configuration
 //
-//   (C) Copyright 2002-2024 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -113,6 +113,7 @@ class RDConfig
   bool logSqlQueries() const;
   int logSqlQueriesLevel() const;
   bool killPypadAfterJsonError() const;
+  QList<int> logDropboxProcessingIds() const;
   bool enableMixerLogging() const;
   bool testOutputStreams() const;
   uid_t uid() const;
@@ -195,6 +196,7 @@ class RDConfig
   int conf_log_log_refresh_level;
   bool conf_log_sql_queries;
   bool conf_kill_pypad_after_json_error;
+  QList<int> conf_log_dropbox_processing_ids;
   int conf_log_sql_queries_level;
   bool conf_lock_rdairplay_memory;
   QString conf_save_webget_files_directory;

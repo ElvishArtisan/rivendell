@@ -1,6 +1,6 @@
 ## Makefile.am
 ##
-##   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+##   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -27,7 +27,8 @@ moc_%.cpp:	%.h
 
 bin_PROGRAMS = rdimport
 
-dist_rdimport_SOURCES = journal.cpp journal.h\
+dist_rdimport_SOURCES = dropboxlist.cpp dropboxlist.h\
+                        journal.cpp journal.h\
                         markerset.cpp markerset.h\
                         rdimport.cpp rdimport.h
 

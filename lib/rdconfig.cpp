@@ -2,7 +2,7 @@
 //
 // A container class for a Rivendell Base Configuration
 //
-//   (C) Copyright 2002-2024 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -441,6 +441,12 @@ bool RDConfig::killPypadAfterJsonError() const
 }
 
 
+QList<int> RDConfig::logDropboxProcessingIds() const
+{
+  return conf_log_dropbox_processing_ids;
+}
+
+
 int RDConfig::logSqlQueriesLevel() const
 {
   return conf_log_sql_queries_level;
@@ -704,7 +710,20 @@ bool RDConfig::load()
 			&conf_log_sql_queries);
   conf_kill_pypad_after_json_error=
     profile->boolValue("Debugging","KillPypadAfterJsonError");
-  conf_meter_base_port=
+
+  QStringList f0=profile->stringValue("Debugging","LogDropboxProcessing").
+    split(",",QString::KeepEmptyParts);
+  for(int i=0;i<f0.size();i++) {
+    bool ok=false;
+    int id=f0.at(i).trimmed().toUInt(&ok);
+    if(ok&&(id>0)) {
+      conf_log_dropbox_processing_ids.push_back(id);
+    }
+    else {
+      fprintf(stderr,"WARNING: invalid dropbox ID \"%s\" specified in LogDropboxProcessing=\n",f0.at(i).toUtf8().constData());
+    }
+  }
+ conf_meter_base_port=
     profile->intValue("Hacks","MeterPortBaseNumber",RD_DEFAULT_METER_SOCKET_BASE_UDP_PORT);
   conf_meter_port_range=
     profile->intValue("Hacks","MeterPortRange",RD_METER_SOCKET_PORT_RANGE);
@@ -847,6 +866,7 @@ void RDConfig::clear()
   conf_log_sql_queries=false;
   conf_log_sql_queries_level=LOG_DEBUG;
   conf_kill_pypad_after_json_error=false;
+  conf_log_dropbox_processing_ids.clear();
   conf_lock_rdairplay_memory=false;
   conf_meter_base_port=RD_DEFAULT_METER_SOCKET_BASE_UDP_PORT;
   conf_meter_port_range=RD_METER_SOCKET_PORT_RANGE;

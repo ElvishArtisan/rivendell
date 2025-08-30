@@ -281,3 +281,11 @@ LogSqlQueries=
 ; generate a useful error message in
 ; RDAdmin->ManageHosts->PyPADInstances->ErrorLog.
 KillPypadAfterJsonError=No
+
+; Log the internal processing steps used by rdimport(1) when processing the
+; specified dropbox instances. Take a comma-delimited list of dropbox IDs,
+; which can be found in the 'ID' column of the dropbox list at
+; RDAdmin->ManageHosts->[hostname]->Dropboxes. The log messages are sent
+; DEBUG priority level.
+; LogDropboxProcessing=<dropbox-id-1>,<dropbox-id-2>,<dropbox-id-3>
+;LogDropboxProcessing=27,52,12
