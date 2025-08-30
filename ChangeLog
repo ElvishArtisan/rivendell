@@ -24819,3 +24819,5 @@
 2025-08-30 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'LogDropboxProcessing=' directive to the '[Debugging]'
 	section of rd.conf(5).
+2025-08-30 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.3.0dropbox0.
