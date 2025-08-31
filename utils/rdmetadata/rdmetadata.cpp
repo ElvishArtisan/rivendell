@@ -109,10 +109,10 @@ MainObject::MainObject(QObject *parent)
       bpm=rda->cmdSwitch()->value(i).toInt();
       rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(rda->cmdSwitch(->key(i)--"--user-defined") {
-      user_defined=>cmdSwitch()->value(i);
+    if(rda->cmdSwitch()->key(i)=="--user-defined") {
+      user_defined=rda->cmdSwitch()->value(i);
       rda->cmdSwitch()->setProcessed(i,true);
-    })
+    }
     if(rda->cmdSwitch()->key(i)=="--add-schedcode") {
       add_schedcode=rda->cmdSwitch()->value(i);
       rda->cmdSwitch()->setProcessed(i,true);
@@ -268,7 +268,7 @@ void MainObject::updateMetadata()
     Print(QString("rdmetadata: Set cart %1 bpm to '%2'").arg(cartstring).arg(bpm));
   }
 
-  if(user_defined) {
+  if(!user_defined.isEmpty()) {
     cart->setUserDefined(user_defined);
     Print(QString("rdmetadata: Set cart %1 user_defined to '%2'").arg(cartstring).arg(user_defined));
   }
