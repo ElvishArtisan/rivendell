@@ -25056,3 +25056,6 @@
 	* Moved the 'RDAlsaCard' class from 'utils/rdalsaconfig/' to
 	'rdalsa/' to contain ALSA card quirk information.
 	* Refactored the ALSA driver in caed(8) to use 'RDAlsaCard'.
+2025-09-18 Dennis Graiani <dennis.graiani@gmail.com>
+	* Reversed logic in rdstatus to return true when local audio store
+	is mounted.
