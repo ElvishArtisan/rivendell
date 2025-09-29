@@ -25056,3 +25056,7 @@
 	* Moved the 'RDAlsaCard' class from 'utils/rdalsaconfig/' to
 	'rdalsa/' to contain ALSA card quirk information.
 	* Refactored the ALSA driver in caed(8) to use 'RDAlsaCard'.
+2025-09-25 Chris Conkright <cconkrig@gmail.com>
+    * Fixed a bug in RDAirPlay where next log item with a Play transition
+	would start at the segue start marker of the previous log item.
+	
