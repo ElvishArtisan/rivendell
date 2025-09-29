@@ -2062,6 +2062,9 @@ bool RDLogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
       rda->syslog(LOG_DEBUG,"log engine: *** position out of bounds: Line: %d  Cart: %d  Pos: %d ***",line,logline->cartNumber(),logline->playPosition());
       logline->setPlayPosition(0);
     }
+    // Respect segue markers only if the next transition is Segue; otherwise,
+    // wait for the end marker when next is Play (no overlap per manual).
+    playdeck->setRespectSegue(nextTrans(line)==RDLogLine::Segue);
     playdeck->play(logline->playPosition(),-1,-1,duck_length);
     if(logline->status()==RDLogLine::RDLogLine::Paused) {
       logline->

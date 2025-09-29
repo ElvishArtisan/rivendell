@@ -45,6 +45,7 @@ RDPlayDeck::RDPlayDeck(RDCae *cae,int id,QObject *parent)
   play_duck_up_point=0;
   play_duck_down_state=false;
   play_fade_down_state=false;
+  play_respect_segue=true;
 
   //
   // CAE Connection
@@ -619,6 +620,12 @@ void RDPlayDeck::duckVolume(int level,int fade)
 }
 
 
+void RDPlayDeck::setRespectSegue(bool state)
+{
+  play_respect_segue=state;
+}
+
+
 void RDPlayDeck::playingData(unsigned serial)
 {
   if(serial!=play_serial) {
@@ -663,6 +670,9 @@ void RDPlayDeck::pointTimerData(int point)
 {
   switch(point) {
       case RDPlayDeck::Segue:
+        if(!play_respect_segue) {
+          return;
+        }
 	if(play_point_state[point]) {
 	  play_point_state[point]=false;
 	  rda->cae()->stopPlay(play_serial);
@@ -824,36 +834,38 @@ void RDPlayDeck::StartTimers(int offset)
   // Initialize Segue Timers
   //
   play_point_state[RDPlayDeck::Segue]=false;
-  if((play_point_value[RDPlayDeck::Segue][0]>=0)&&
-     (play_point_value[RDPlayDeck::Segue][1]>=0)&&
-     (play_point_value[RDPlayDeck::Segue][1]>
-      play_point_value[RDPlayDeck::Segue][0])) {
-    // Setup Full Segue
-    if((play_point_value[RDPlayDeck::Segue][0]-play_audio_point[0]-offset)>=0) {
-      play_point_timer[RDPlayDeck::Segue]->
-	start(scaled_point_value[RDPlayDeck::Segue][0]-scaled_audio_point[0]-
-	      offset);
-    }
-    else {
-      if((play_point_value[RDPlayDeck::Segue][1]-play_audio_point[0]-
-	  offset)>=0) {
-	play_point_state[RDPlayDeck::Segue]=true;
-	play_point_timer[RDPlayDeck::Segue]->
-	  start(scaled_point_value[RDPlayDeck::Segue][1]-scaled_audio_point[0]-
-		offset);
+  if(play_respect_segue) {
+    if((play_point_value[RDPlayDeck::Segue][0]>=0)&&
+       (play_point_value[RDPlayDeck::Segue][1]>=0)&&
+       (play_point_value[RDPlayDeck::Segue][1]>
+        play_point_value[RDPlayDeck::Segue][0])) {
+      // Setup Full Segue
+      if((play_point_value[RDPlayDeck::Segue][0]-play_audio_point[0]-offset)>=0) {
+        play_point_timer[RDPlayDeck::Segue]->
+          start(scaled_point_value[RDPlayDeck::Segue][0]-scaled_audio_point[0]-
+                offset);
+      }
+      else {
+        if((play_point_value[RDPlayDeck::Segue][1]-play_audio_point[0]-
+            offset)>=0) {
+          play_point_state[RDPlayDeck::Segue]=true;
+          play_point_timer[RDPlayDeck::Segue]->
+            start(scaled_point_value[RDPlayDeck::Segue][1]-scaled_audio_point[0]-
+                  offset);
+        }
+      }
+      if(rda->config()->padSegueOverlaps()>0) {
+        play_point_timer[RDPlayDeck::Segue]->stop();
+        play_point_timer[RDPlayDeck::Segue]->
+          start(play_point_timer[RDPlayDeck::Segue]->interval()+
+                rda->config()->padSegueOverlaps());
       }
     }
-    if(rda->config()->padSegueOverlaps()>0) {
-      play_point_timer[RDPlayDeck::Segue]->stop();
+    else {
+      // Setup "Play Style" Segue
       play_point_timer[RDPlayDeck::Segue]->
-	start(play_point_timer[RDPlayDeck::Segue]->interval()+
-	      rda->config()->padSegueOverlaps());;
+        start(scaled_audio_point[1]-scaled_audio_point[0]+100);
     }
-  }
-  else {
-    // Setup "Play Style" Segue
-    play_point_timer[RDPlayDeck::Segue]->
-      start(scaled_audio_point[1]-scaled_audio_point[0]+100);
   }
 
   //
