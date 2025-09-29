@@ -74,6 +74,7 @@ class RDPlayDeck : public QObject
   void stop(int interval,int gain=-10000);
   void duckDown(int interval);
   void duckVolume(int level,int fade);
+  void setRespectSegue(bool state);
 
  signals:
   void stateChanged(int id,RDPlayDeck::State);
@@ -146,6 +147,7 @@ class RDPlayDeck : public QObject
   int play_current_position;
   bool play_timescale_active;
   int play_timescale_speed;
+  bool play_respect_segue;
 };
 
 
