@@ -45,6 +45,12 @@ Label=Default (Local)
 ; used when making HTTP requests. Rarely needed!
 ;HttpUserAgent=Mozilla/5.0 rivendell/3.0
 
+; This entry allows Rivendell services to run as non-root users.
+; This should only be enabled when you understand the security implications 
+; and have properly configured the system to allow non-root access to 
+; required resources. Valid values: Yes, No (default: No)
+AllowNonRoot=No
+
 
 [mySQL]
 ; The connection parameters for the MySQL server.

@@ -83,6 +83,7 @@ class RDConfig
   QString pypadGroup() const;
   QString rnRmlOwner() const;
   QString rnRmlGroup() const;
+  bool allowNonRoot() const;
   int syslogFacility() const;
   QString audioRoot() const;
   QString audioExtension() const;
@@ -175,6 +176,7 @@ class RDConfig
   QString conf_pypad_group;
   QString conf_rn_rml_owner;
   QString conf_rn_rml_group;
+  bool conf_allow_non_root;
   int conf_syslog_facility;
   QString conf_audio_root;
   QString conf_audio_extension;

@@ -2,7 +2,7 @@
 //
 // Rivendell Services Manager
 //
-//   (C) Copyright 2018-2023 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -84,10 +84,10 @@ MainObject::MainObject(QObject *parent)
   }
 
   //
-  // Ensure that we are 'root'
+  // Ensure that we are 'root' unless AllowNonRoot is enabled
   //
-  if(geteuid()!=0) {
-    rda->syslog(LOG_ERR,"this service requires root");
+  if(!rda->config()->allowNonRoot() && (geteuid()!=0)) {
+    rda->syslog(LOG_ERR,"this service requires root (or set AllowNonRoot=Yes in rd.conf)");
     exit(RDApplication::ExitNoPerms);
   }
 

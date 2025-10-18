@@ -2,7 +2,7 @@
 //
 // Convert Audio File Formats
 //
-//   (C) Copyright 2010-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -150,6 +150,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::convert()
   RDAudioConvert::ErrorCode err;
   QString tmpfile1;
   QString tmpfile2;
+  QString tmpfile3;
   RDTempDirectory *temp_dir=NULL;
 
   //
@@ -186,6 +187,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::convert()
   }
   tmpfile1=QString(temp_dir->path())+"/signed32_1.wav";
   tmpfile2=QString(temp_dir->path())+"/signed32_2.wav";
+  tmpfile3=QString(temp_dir->path())+"/encoded_1.wav";
 
   //
   // Stage One -- Convert Source Format to Signed 32 Bit Integer
@@ -206,13 +208,40 @@ RDAudioConvert::ErrorCode RDAudioConvert::convert()
   }
 
   //
-  // Stage Three -- Write Out Destination Format
+  // Stage Three -- Write Out Destination Format to temp file
   //
-  if((err=Stage3Convert(tmpfile2,conv_dst_filename))!=
+  if((err=Stage3Convert(tmpfile2,tmpfile3))!=
      RDAudioConvert::ErrorOk) {
     delete temp_dir;
     return err;
   }
+
+  //Copy the temporary file to the destination (manual copy to avoid S3 rename/link issues)
+  QFile srcFile(tmpfile3);
+  QFile dstFile(conv_dst_filename);
+  if(!srcFile.open(QIODevice::ReadOnly)) {
+    rda->syslog(LOG_WARNING,"Could not open source file %s for copying", tmpfile3.toUtf8().constData());
+    delete temp_dir;
+    return err;
+  }
+  if(!dstFile.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+    rda->syslog(LOG_WARNING,"Could not open destination file %s for copying", conv_dst_filename.toUtf8().constData());
+    srcFile.close();
+    delete temp_dir;
+    return err;
+  }
+  QByteArray buffer;
+  while(!(buffer = srcFile.read(64*1024)).isEmpty()) {
+    if(dstFile.write(buffer) != buffer.size()) {
+      rda->syslog(LOG_WARNING,"Write error copying %s to %s", tmpfile3.toUtf8().constData(), conv_dst_filename.toUtf8().constData());
+      srcFile.close();
+      dstFile.close();
+      delete temp_dir;
+      return err;
+    }
+  }
+  srcFile.close();
+  dstFile.close();
 
   //
   // Clean Up
