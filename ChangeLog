@@ -25061,3 +25061,7 @@
 2025-10-13 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.4.1.
 	* Incremented the Python API version to 4.4.1.
+2025-10-18 Brian McGlynn <bmcglynn@geneseemedia.net>
+	* Updated .gitignore to ignore VSCode configuration files
+	* Updated RDAudioConvert for increased compatibility with network filesystems
+	* Added an option to rd.conf to allow Rivendell to run as a non-root user

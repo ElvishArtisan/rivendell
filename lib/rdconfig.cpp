@@ -357,6 +357,12 @@ QString RDConfig::rnRmlGroup() const
 }
 
 
+bool RDConfig::allowNonRoot() const
+{
+  return conf_allow_non_root;
+}
+
+
 int RDConfig::syslogFacility() const
 {
   return conf_syslog_facility;
@@ -620,6 +626,8 @@ bool RDConfig::load()
     profile->stringValue("Identity","RnRmlOwner",RD_DEFAULT_RN_RML_OWNER);
   conf_rn_rml_group=
     profile->stringValue("Identity","RnRmlGroup",RD_DEFAULT_RN_RML_GROUP);
+  conf_allow_non_root=
+    profile->boolValue("Identity","AllowNonRoot",false);
   conf_label=profile->stringValue("Identity","Label",RD_DEFAULT_LABEL);
   conf_http_user_agent=profile->stringValue("Identity","HttpUserAgent");
 
@@ -842,6 +850,7 @@ void RDConfig::clear()
   conf_pypad_group="";
   conf_rn_rml_owner="";
   conf_rn_rml_group="";
+  conf_allow_non_root=false;
   conf_syslog_facility=LOG_USER;
   conf_audio_root=RD_AUDIO_ROOT;
   conf_audio_extension=RD_AUDIO_EXTENSION;
