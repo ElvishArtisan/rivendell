@@ -47,6 +47,7 @@ RDRingBuffer *alsa_passthrough_ring[RD_MAX_CARDS][RD_MAX_PORTS];
 volatile bool alsa_playing[RD_MAX_CARDS][RD_MAX_STREAMS];
 volatile bool alsa_stopping[RD_MAX_CARDS][RD_MAX_STREAMS];
 volatile bool alsa_eof[RD_MAX_CARDS][RD_MAX_STREAMS];
+volatile bool alsa_timer_expired[RD_MAX_CARDS][RD_MAX_STREAMS];
 volatile int alsa_output_pos[RD_MAX_CARDS][RD_MAX_STREAMS];
 volatile bool alsa_recording[RD_MAX_CARDS][RD_MAX_PORTS];
 volatile bool alsa_ready[RD_MAX_CARDS][RD_MAX_PORTS];
@@ -322,8 +323,13 @@ void *AlsaPlayCallback(void *ptr)
             break;
           }
           alsa_output_pos[alsa_format->card][j]+=n;
-          if((n==0)&&alsa_eof[alsa_format->card][j]) {
-            alsa_stopping[alsa_format->card][j]=true;
+          // Improved EOF logic: only stop when timer expired AND buffer is empty
+          // This prevents cutting off the tail end of audio
+          if(n==0) {
+            if(alsa_timer_expired[alsa_format->card][j] || alsa_eof[alsa_format->card][j]) {
+              alsa_eof[alsa_format->card][j]=true;
+              alsa_stopping[alsa_format->card][j]=true;
+            }
           }
         }
       }
@@ -440,12 +446,17 @@ void *AlsaPlayCallback(void *ptr)
             break;
           }
           alsa_output_pos[alsa_format->card][j]+=n;
-          if((n==0)&&alsa_eof[alsa_format->card][j]) {
-            alsa_stopping[alsa_format->card][j]=true;
-            // Empty the ring buffer
-            while(alsa_play_ring[alsa_format->card][j]->
-                  read(alsa_buffer,alsa_format->buffer_size*2/
-                       alsa_format->periods)/(2*sizeof(int16_t))>0);
+          // Improved EOF logic: only stop when timer expired AND buffer is empty
+          // This prevents cutting off the tail end of audio
+          if(n==0) {
+            if(alsa_timer_expired[alsa_format->card][j] || alsa_eof[alsa_format->card][j]) {
+              alsa_eof[alsa_format->card][j]=true;
+              alsa_stopping[alsa_format->card][j]=true;
+              // Empty the ring buffer
+              while(alsa_play_ring[alsa_format->card][j]->
+                    read(alsa_buffer,alsa_format->buffer_size*2/
+                         alsa_format->periods)/(2*sizeof(int16_t))>0);
+            }
           }
         }
       }
@@ -554,6 +565,7 @@ void DriverAlsa::AlsaInitCallback()
     for(int j=0;j<RD_MAX_STREAMS;j++) {
       alsa_play_ring[i][j]=NULL;
       alsa_playing[i][j]=false;
+      alsa_timer_expired[i][j]=false;
       for(int k=0;k<2;k++) {
 	alsa_stream_output_meter[i][j][k]=new RDMeterAverage(avg_periods);
       }
@@ -832,6 +844,8 @@ bool DriverAlsa::unloadPlayback(int card,int stream)
     return false;
   }
   alsa_playing[card][stream]=false;
+  alsa_timer_expired[card][stream]=false;  // Reset timer expired flag
+  alsa_eof[card][stream]=false;  // Reset EOF flag
   switch(alsa_play_wave[card][stream]->getFormatTag()) {
   case WAVE_FORMAT_MPEG:
     FreeMadDecoder(card,stream);
@@ -884,13 +898,18 @@ bool DriverAlsa::playbackPosition(int card,int stream,unsigned pos)
   alsa_output_pos[card][stream]=0;
   alsa_play_wave[card][stream]->seekWave(offset,SEEK_SET);
   alsa_eof[card][stream]=false;
+  alsa_timer_expired[card][stream]=false;  // Reset timer expired flag when seeking
   alsa_play_ring[card][stream]->reset();
   FillAlsaOutputStream(card,stream);
 
   if(alsa_playing[card][stream]) {
     alsa_stop_timer[card][stream]->stop();
-    alsa_stop_timer[card][stream]->
-      start(alsa_play_wave[card][stream]->getExtTimeLength()-pos);
+    int remaining_msec=
+      static_cast<int>(alsa_play_wave[card][stream]->getExtTimeLength())-
+      static_cast<int>(pos);
+    if(remaining_msec>0) {
+      alsa_stop_timer[card][stream]->start(remaining_msec);
+    }
   }
   return true;
 #else
@@ -908,6 +927,8 @@ bool DriverAlsa::play(int card,int stream,int length,int speed,bool pitch,
     return false;
   }
   alsa_playing[card][stream]=true;
+  alsa_timer_expired[card][stream]=false;  // Reset timer expired flag for new playback
+  alsa_eof[card][stream]=false;  // Reset EOF flag for new playback
   if(length>0) {
     alsa_stop_timer[card][stream]->start(length);
   }
@@ -926,6 +947,8 @@ bool DriverAlsa::stopPlayback(int card,int stream)
     return false;
   }
   alsa_playing[card][stream]=false;
+  alsa_timer_expired[card][stream]=false;  // Reset timer expired flag
+  alsa_eof[card][stream]=false;  // Reset EOF flag
   alsa_play_ring[card][stream]->reset();
   alsa_stop_timer[card][stream]->stop();
   statePlayUpdate(card,stream,2);
@@ -1381,7 +1404,16 @@ void DriverAlsa::stopTimerData(int cardstream)
   int card=cardstream/RD_MAX_STREAMS;
   int stream=cardstream-card*RD_MAX_STREAMS;
 
-  stopPlayback(card,stream);
+  if((alsa_play_ring[card][stream]==NULL)||(!alsa_playing[card][stream])) {
+    return;
+  }
+  alsa_stop_timer[card][stream]->stop();
+  // Instead of immediately setting EOF, let the buffer drain naturally
+  // EOF will be set in the audio callback when buffer is actually empty
+  // This prevents cutting off the tail end of audio
+  alsa_eof[card][stream]=false;  // Keep false to allow buffer drainage
+  // Set a flag to indicate timer has expired but allow buffer to finish
+  alsa_timer_expired[card][stream]=true;
 #endif  // ALSA
 }
 
@@ -1847,6 +1879,9 @@ void DriverAlsa::FillAlsaOutputStream(int card,int stream)
   double ratio=0.0;
   int free=(alsa_play_ring[card][stream]->writeSpace()-1);
   if(free<=0) {
+    return;
+  }
+  if(alsa_eof[card][stream]) {
     return;
   }
   ratio=(double)alsa_play_format[card].sample_rate/
