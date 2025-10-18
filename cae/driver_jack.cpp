@@ -844,8 +844,12 @@ bool DriverJack::playbackPosition(int card,int stream,unsigned pos)
 
   if(jack_playing[stream]) {
     jack_stop_timer[stream]->stop();
-    jack_stop_timer[stream]->
-      start(jack_play_wave[stream]->getExtTimeLength()-pos);
+    int remaining_msec=
+      static_cast<int>(jack_play_wave[stream]->getExtTimeLength())-
+      static_cast<int>(pos);
+    if(remaining_msec>0) {
+      jack_stop_timer[stream]->start(remaining_msec);
+    }
   }
   return true;
 #else
@@ -1369,8 +1373,14 @@ void DriverJack::processBuffers()
 void DriverJack::stopTimerData(int stream)
 {
 #ifdef JACK
-  stopPlayback(jack_card,stream);
-  //  statePlayUpdate(jack_card,stream,2);
+  if((stream<0)||(stream>=RD_MAX_STREAMS)) {
+    return;
+  }
+  if(!jack_playing[stream]) {
+    return;
+  }
+  jack_stop_timer[stream]->stop();
+  jack_eof[stream]=true;
 #endif  // JACK
 }
 

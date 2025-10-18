@@ -889,8 +889,12 @@ bool DriverAlsa::playbackPosition(int card,int stream,unsigned pos)
 
   if(alsa_playing[card][stream]) {
     alsa_stop_timer[card][stream]->stop();
-    alsa_stop_timer[card][stream]->
-      start(alsa_play_wave[card][stream]->getExtTimeLength()-pos);
+    int remaining_msec=
+      static_cast<int>(alsa_play_wave[card][stream]->getExtTimeLength())-
+      static_cast<int>(pos);
+    if(remaining_msec>0) {
+      alsa_stop_timer[card][stream]->start(remaining_msec);
+    }
   }
   return true;
 #else
@@ -1381,7 +1385,11 @@ void DriverAlsa::stopTimerData(int cardstream)
   int card=cardstream/RD_MAX_STREAMS;
   int stream=cardstream-card*RD_MAX_STREAMS;
 
-  stopPlayback(card,stream);
+  if((alsa_play_ring[card][stream]==NULL)||(!alsa_playing[card][stream])) {
+    return;
+  }
+  alsa_stop_timer[card][stream]->stop();
+  alsa_eof[card][stream]=true;
 #endif  // ALSA
 }
 
@@ -1847,6 +1855,9 @@ void DriverAlsa::FillAlsaOutputStream(int card,int stream)
   double ratio=0.0;
   int free=(alsa_play_ring[card][stream]->writeSpace()-1);
   if(free<=0) {
+    return;
+  }
+  if(alsa_eof[card][stream]) {
     return;
   }
   ratio=(double)alsa_play_format[card].sample_rate/
