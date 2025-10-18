@@ -48,13 +48,8 @@ void SigHandler(int signo)
 
   switch(signo) {
   case SIGCHLD:
-    pLocalPid=waitpid(-1,NULL,WNOHANG);
-    while(pLocalPid>0) {
-            pLocalPid=waitpid(-1,NULL,WNOHANG);
+    while((pLocalPid=waitpid(-1,NULL,WNOHANG))>0) {
     }
-    ::signal(SIGCHLD,SigHandler);
-    ::signal(SIGTERM,SigHandler);
-    ::signal(SIGINT,SigHandler);
     return;
 
   case SIGTERM:
@@ -62,6 +57,20 @@ void SigHandler(int signo)
     global_exiting=true;
     break;
   }
+}
+
+
+static void InstallSignalHandlers()
+{
+  struct sigaction act;
+
+  memset(&act,0,sizeof(act));
+  act.sa_handler=SigHandler;
+  sigemptyset(&act.sa_mask);
+  act.sa_flags=SA_RESTART|SA_NOCLDSTOP;
+  sigaction(SIGCHLD,&act,NULL);
+  sigaction(SIGTERM,&act,NULL);
+  sigaction(SIGINT,&act,NULL);
 }
 
 
@@ -139,9 +148,7 @@ MainObject::MainObject(QObject *parent)
   if(qApp->arguments().size()!=1) {
     debug=true;
   }
-  ::signal(SIGCHLD,SigHandler);
-  ::signal(SIGTERM,SigHandler);
-  ::signal(SIGINT,SigHandler);
+  InstallSignalHandlers();
 
   //
   // The RML Sockets
@@ -319,7 +326,13 @@ void MainObject::readyReadData(int conn_id)
 {
   char data[1501];
   int n;
+  if((conn_id<0)||(static_cast<unsigned>(conn_id)>=ripcd_conns.size())) {
+    return;
+  }
   RipcdConnection *conn=ripcd_conns[conn_id];
+  if(conn==NULL) {
+    return;
+  }
   QChar c;
 
   while((n=conn->socket()->read(data,1500))>0) {
@@ -334,9 +347,17 @@ void MainObject::readyReadData(int conn_id)
 	conn->accum="";
       }
       else {
-	if((c!=QChar('\r'))&&(c!=QChar('\n'))) {
-	  conn->accum+=c;
-	}
+        if((c!=QChar('\r'))&&(c!=QChar('\n'))) {
+          conn->accum+=c;
+          if(conn->accum.length()>RIPCD_MAX_LENGTH) {
+            rda->syslog(LOG_WARNING,
+                        "command from connection %d exceeded maximum length", 
+                        conn->id());
+            conn->socket()->disconnectFromHost();
+            conn->close();
+            return;
+          }
+        }
       }
     }
   }
@@ -374,13 +395,21 @@ void MainObject::exitTimerData()
 
 void MainObject::garbageData()
 {
+  bool trimmed=false;
+
   for(unsigned i=0;i<ripcd_conns.size();i++) {
     if(ripcd_conns[i]!=NULL) {
       if(ripcd_conns[i]->isClosing()) {
-	delete ripcd_conns[i];
-	ripcd_conns[i]=NULL;
-	rda->syslog(LOG_DEBUG,"cleaned up connection %d",i);
+        delete ripcd_conns[i];
+        ripcd_conns[i]=NULL;
+        rda->syslog(LOG_DEBUG,"cleaned up connection %d",i);
+        trimmed=true;
       }
+    }
+  }
+  if(trimmed) {
+    while((!ripcd_conns.empty())&&(ripcd_conns.back()==NULL)) {
+      ripcd_conns.pop_back();
     }
   }
 }
