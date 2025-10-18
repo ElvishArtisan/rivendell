@@ -25061,3 +25061,7 @@
 2025-10-13 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.4.1.
 	* Incremented the Python API version to 4.4.1.
+2025-10-18 Brian McGlynn <bmcglynn@geneseemedia.net>
+	* Update Jack and Alsa CAED to wait for play buffer to drain before closing
+	* Fixed potential race condition in playback timers
+
