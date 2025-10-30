@@ -17,7 +17,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -Wno-strict-aliasing -std=c++11 -fPIC -I$(top_srcdir)/lib @QT5_CFLAGS@ @QT5_WEBENGINE_CFLAGS@ @MUSICBRAINZ_CFLAGS@ @IMAGEMAGICK_CFLAGS@
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -Wno-strict-aliasing -std=c++11 -fPIC -I$(top_srcdir)/lib @QT5_CFLAGS@ @MUSICBRAINZ_CFLAGS@ @IMAGEMAGICK_CFLAGS@
 LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
 
@@ -41,7 +41,7 @@ dist_webget_cgi_SOURCES =  webget.cpp webget.h
 
 nodist_webget_cgi_SOURCES = moc_webget.cpp
 
-webget_cgi_LDADD = @LIB_RDLIBS@ -lsndfile @LIBVORBIS@ @QT5_LIBS@ @QT5_WEBENGINE_LIBS@ @MUSICBRAINZ_LIBS@ @IMAGEMAGICK_LIBS@
+webget_cgi_LDADD = @LIB_RDLIBS@ -lsndfile @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@ @IMAGEMAGICK_LIBS@
 
 EXTRA_DIST = webget.js
 

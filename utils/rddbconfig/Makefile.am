@@ -18,7 +18,7 @@
 ##   Use automake to process this into a Makefile.in
 ##
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -Wno-strict-aliasing -std=c++11 -fPIC -I$(top_srcdir)/lib -I$(top_srcdir)/rdhpi -I$(top_srcdir)/rdalsa @QT5_CFLAGS@ @QT5_WEBENGINE_CFLAGS@ @MUSICBRAINZ_CFLAGS@ @IMAGEMAGICK_CFLAGS@
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -Wno-strict-aliasing -std=c++11 -fPIC -I$(top_srcdir)/lib -I$(top_srcdir)/rdhpi -I$(top_srcdir)/rdalsa @QT5_CFLAGS@ @MUSICBRAINZ_CFLAGS@ @IMAGEMAGICK_CFLAGS@
 LIBS = -L$(top_srcdir)/lib -L$(top_srcdir)/rdhpi -L$(top_srcdir)/rdalsa
 MOC = @QT_MOC@
 
@@ -33,7 +33,7 @@ dist_rddbconfig_SOURCES = rddbconfig.cpp rddbconfig.h mysql_login.cpp mysql_logi
 
 nodist_rddbconfig_SOURCES = moc_rddbconfig.cpp moc_mysql_login.cpp
 
-rddbconfig_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @LIBALSA@ @QT5_LIBS@ @QT5_WEBENGINE_LIBS@ @MUSICBRAINZ_LIBS@ @IMAGEMAGICK_LIBS@
+rddbconfig_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @LIBALSA@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@ @IMAGEMAGICK_LIBS@
 
 CLEANFILES = *~\
              *.qm\

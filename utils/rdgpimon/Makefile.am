@@ -17,7 +17,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -Wno-strict-aliasing -std=c++11 -fPIC -I$(top_srcdir)/lib @QT5_CFLAGS@ @QT5_WEBENGINE_CFLAGS@ @MUSICBRAINZ_CFLAGS@ @IMAGEMAGICK_CFLAGS@
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -Wno-strict-aliasing -std=c++11 -fPIC -I$(top_srcdir)/lib @QT5_CFLAGS@ @MUSICBRAINZ_CFLAGS@ @IMAGEMAGICK_CFLAGS@
 LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
 
@@ -43,7 +43,7 @@ dist_rdgpimon_SOURCES = gpi_label.cpp gpi_label.h\
 nodist_rdgpimon_SOURCES = moc_gpi_label.cpp\
                           moc_rdgpimon.cpp
 
-rdgpimon_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @QT5_WEBENGINE_LIBS@ @MUSICBRAINZ_LIBS@ @IMAGEMAGICK_LIBS@
+rdgpimon_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@ @IMAGEMAGICK_LIBS@
 
 EXTRA_DIST = rdgpimon.pro\
              rdgpimon_cs.ts\
