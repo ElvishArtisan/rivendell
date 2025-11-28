@@ -102,6 +102,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdcueedit.cpp rdcueedit.h\
                         rdcueeditdialog.cpp rdcueeditdialog.h\
                         rdcut.cpp rdcut.h\
+                        rdcut_cache.cpp rdcut_cache.h\
                         rdcut_dialog.cpp rdcut_dialog.h\
                         rdcut_path.cpp rdcut_path.h\
                         rddatedecode.cpp rddatedecode.h\

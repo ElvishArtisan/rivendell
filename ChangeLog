@@ -25070,3 +25070,5 @@
 	* Fixed potential race condition in playback timers
 	* Fixed segue transitions not working properly when markers or
 	other non-audio events are placed between audio events. 
+2025-11-28 Brian McGlynn <bmcglynn@geneseemedia.net>
+	* Implemented Cart and Cut cache to speed up loading logs in rdairplay	

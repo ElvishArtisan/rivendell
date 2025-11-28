@@ -2,7 +2,7 @@
 //
 // A container class for a Rivendell Log Line.
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -218,6 +218,7 @@ void RDLogLine::clear()
   log_link_embedded=false;
   log_start_source=RDLogLine::StartUnknown;
   is_holdover = false;
+  log_cut_cache=NULL;
 }
 
 
@@ -1840,6 +1841,7 @@ RDLogLine::State RDLogLine::setEvent(int mach,RDLogLine::TransType next_type,
 
   switch(log_type) {
   case RDLogLine::Cart:
+    {
     cart=new RDCart(log_cart_number);
     if(!cart->exists()) {
       delete cart;
@@ -1849,50 +1851,103 @@ RDLogLine::State RDLogLine::setEvent(int mach,RDLogLine::TransType next_type,
       log_state=RDLogLine::NoCart;
       return RDLogLine::NoCart;
     }
-    cart->selectCut(&log_cut_name);
+    
+    // Optimization: Try cache-based cut selection first
+    // Handles rotation (Sequential/Random/Weighted) using cached cut data
+    // Falls back to database query only if cache is empty or expired
+    if(log_cut_cache!=NULL) {
+      log_cut_name=log_cut_cache->selectCut(log_cart_number,
+                                             cart->playOrder(),
+                                             cart->useWeighting(),
+                                             QTime::currentTime());
+    }
+    
+    // Fall back to database query if cache didn't have the cut
+    if(log_cut_name.isEmpty()) {
+      cart->selectCut(&log_cut_name);
+    }
+    
     if(log_cut_name.isEmpty()) {
       delete cart;
       log_state=RDLogLine::NoCut;
       return RDLogLine::NoCut;
     }
     log_cut_number=log_cut_name.right(3).toInt();
-    sql=QString("select ")+
-      "`LENGTH`,"+                // 00
-      "`START_POINT`,"+           // 01
-      "`END_POINT`,"+             // 02
-      "`SEGUE_START_POINT`,"+     // 03
-      "`SEGUE_END_POINT`,"+       // 04
-      "`SEGUE_GAIN`,"+            // 05
-      "`TALK_START_POINT`,"+      // 06
-      "`TALK_END_POINT`,"+        // 07
-      "`HOOK_START_POINT`,"+      // 08
-      "`HOOK_END_POINT`,"+        // 09
-      "`OUTCUE`,"+                // 10
-      "`ISRC`,"+                  // 11
-      "`ISCI`,"+                  // 12
-      "`DESCRIPTION`,"+           // 13
-      "`RECORDING_MBID`,"+        // 14
-      "`RELEASE_MBID` "+          // 15
-      "from `CUTS` where `CUT_NAME`='"+RDEscapeString(log_cut_name)+"'";
-    q=new RDSqlQuery(sql);
-    if(!q->first()) {
+    
+    //
+    // Optimization: Try to load cut data from cache first
+    // Avoids individual database query for cut metadata (length, points, etc.)
+    // Falls back to database query only if not in cache
+    //
+    RDCutData cut_data;
+    bool from_cache=false;
+    if((log_cut_cache!=NULL)&&log_cut_cache->getCutByName(log_cut_name,&cut_data)) {
+      if(cut_data.length>0) {
+        from_cache=true;
+      }
+    }
+    
+    if(!from_cache) {
+      sql=QString("select ")+
+        "`LENGTH`,"+                // 00
+        "`START_POINT`,"+           // 01
+        "`END_POINT`,"+             // 02
+        "`SEGUE_START_POINT`,"+     // 03
+        "`SEGUE_END_POINT`,"+       // 04
+        "`SEGUE_GAIN`,"+            // 05
+        "`TALK_START_POINT`,"+      // 06
+        "`TALK_END_POINT`,"+        // 07
+        "`HOOK_START_POINT`,"+      // 08
+        "`HOOK_END_POINT`,"+        // 09
+        "`OUTCUE`,"+                // 10
+        "`ISRC`,"+                  // 11
+        "`ISCI`,"+                  // 12
+        "`DESCRIPTION`,"+           // 13
+        "`RECORDING_MBID`,"+        // 14
+        "`RELEASE_MBID` "+          // 15
+        "from `CUTS` where `CUT_NAME`='"+RDEscapeString(log_cut_name)+"'";
+      q=new RDSqlQuery(sql);
+      if(!q->first()) {
+        delete q;
+        delete cart;
+        rda->syslog(LOG_DEBUG,
+                    "RDLogLine::setEvent(): no cut record found, SQL=%s",
+                    sql.toUtf8().constData());
+        log_state=RDLogLine::NoCut;
+        return RDLogLine::NoCut;
+      }
+      // Populate cut_data from query result
+      cut_data.length=q->value(0).toUInt();
+      cut_data.start_point=q->value(1).toInt();
+      cut_data.end_point=q->value(2).toInt();
+      cut_data.segue_start_point=q->value(3).toInt();
+      cut_data.segue_end_point=q->value(4).toInt();
+      cut_data.segue_gain=q->value(5).toInt();
+      cut_data.talk_start_point=q->value(6).toInt();
+      cut_data.talk_end_point=q->value(7).toInt();
+      cut_data.hook_start_point=q->value(8).toInt();
+      cut_data.hook_end_point=q->value(9).toInt();
+      cut_data.outcue=q->value(10).toString();
+      cut_data.isrc=q->value(11).toString();
+      cut_data.isci=q->value(12).toString();
+      cut_data.description=q->value(13).toString();
+      cut_data.recording_mbid=q->value(14).toString();
+      cut_data.release_mbid=q->value(15).toString();
       delete q;
+    }
+    
+    // Check for zero length cut
+    if(cut_data.length==0) {
       delete cart;
       rda->syslog(LOG_DEBUG,
-		  "RDLogLine::setEvent(): no cut record found, SQL=%s",
-		  sql.toUtf8().constData());
+                  "RDLogLine::setEvent(): zero length cut audio, CUT=%s",
+                  log_cut_name.toUtf8().constData());
       log_state=RDLogLine::NoCut;
       return RDLogLine::NoCut;
     }
-    if(q->value(0).toInt()==0) {
-      delete q;
-      delete cart;
-      rda->syslog(LOG_DEBUG,
-		  "RDLogLine::setEvent(): zero length cut audio, SQL=%s",
-		  sql.toUtf8().constData());
-      log_state=RDLogLine::NoCut;
-      return RDLogLine::NoCut;
-    }
+    
+    // Use cut_data (whether from cache or query) for all subsequent processing
+    // This unified code path handles timescaling, hook mode, talk/segue points
     if(timescale) {
       if(len>0) {
        log_effective_length=len;
@@ -1900,8 +1955,8 @@ RDLogLine::State RDLogLine::setEvent(int mach,RDLogLine::TransType next_type,
       }
       else {
        if(log_hook_mode&&
-          (q->value(8).toInt()>=0)&&(q->value(9).toInt()>=0)) {
-         log_effective_length=q->value(9).toInt()-q->value(8).toInt();
+          (cut_data.hook_start_point>=0)&&(cut_data.hook_end_point>=0)) {
+         log_effective_length=cut_data.hook_end_point-cut_data.hook_start_point;
          log_forced_length=log_effective_length;
          time_ratio=1.0;
          timescale=false;
@@ -1909,7 +1964,7 @@ RDLogLine::State RDLogLine::setEvent(int mach,RDLogLine::TransType next_type,
        else {
          log_effective_length=cart->forcedLength();
          time_ratio=(double)log_forced_length/
-           (q->value(2).toDouble()-q->value(1).toDouble());
+           ((double)cut_data.end_point-(double)cut_data.start_point);
 	 /*
 	  * FIXME: timescale limits need to be applied here
 	  *
@@ -1922,21 +1977,21 @@ RDLogLine::State RDLogLine::setEvent(int mach,RDLogLine::TransType next_type,
       }
     }
     if(timescale) {
-      log_start_point[0]=(int)(q->value(1).toDouble()*time_ratio);
-      log_end_point[0]=(int)(q->value(2).toDouble()*time_ratio);
-      if(q->value(3).toInt()>=0) {
-	log_segue_start_point[0]=(int)(q->value(3).toDouble()*time_ratio);
-	log_segue_end_point[0]=(int)(q->value(4).toDouble()*time_ratio);
+      log_start_point[0]=(int)((double)cut_data.start_point*time_ratio);
+      log_end_point[0]=(int)((double)cut_data.end_point*time_ratio);
+      if(cut_data.segue_start_point>=0) {
+	log_segue_start_point[0]=(int)((double)cut_data.segue_start_point*time_ratio);
+	log_segue_end_point[0]=(int)((double)cut_data.segue_end_point*time_ratio);
       }
       else {
 	log_segue_start_point[0]=-1;
 	log_segue_end_point[0]=-1;
       }
-      log_talk_start=q->value(6).toInt();
-      log_talk_end=q->value(7).toInt();
+      log_talk_start=cut_data.talk_start_point;
+      log_talk_end=cut_data.talk_end_point;
       if(log_talk_start>=0) {
 	log_talk_start=(int)((double)log_talk_start*time_ratio);
-	log_talk_end=(int)(q->value(7).toDouble()*time_ratio);
+	log_talk_end=(int)((double)cut_data.talk_end_point*time_ratio);
       }
       else {
 	log_talk_start=-1;
@@ -1946,32 +2001,32 @@ RDLogLine::State RDLogLine::setEvent(int mach,RDLogLine::TransType next_type,
     }
     else {
       if(log_hook_mode&&
-	 (q->value(8).toInt()>=0)&&(q->value(9).toInt()>=0)) {
-	log_start_point[0]=q->value(8).toInt();
-	log_end_point[0]=q->value(9).toInt();
+	 (cut_data.hook_start_point>=0)&&(cut_data.hook_end_point>=0)) {
+	log_start_point[0]=cut_data.hook_start_point;
+	log_end_point[0]=cut_data.hook_end_point;
 	log_segue_start_point[0]=-1;
 	log_segue_end_point[0]=-1;
 	log_talk_start=-1;
 	log_talk_end=-1;
       }
       else {
-       log_start_point[0]=q->value(1).toInt();
-       log_end_point[0]=q->value(2).toInt();
+       log_start_point[0]=cut_data.start_point;
+       log_end_point[0]=cut_data.end_point;
        if(log_start_point[RDLogLine::LogPointer]>=0 ||
           log_end_point[RDLogLine::LogPointer]>=0) {
          log_effective_length=log_end_point[RDLogLine::LogPointer]-
            log_start_point[RDLogLine::LogPointer];
        }
        else {
-         log_effective_length=q->value(0).toUInt();
+         log_effective_length=cut_data.length;
        }
-       log_segue_start_point[0]=q->value(3).toInt();
-       log_segue_end_point[0]=q->value(4).toInt();
-       log_talk_start=q->value(6).toInt();
-       log_talk_end=q->value(7).toInt();
+       log_segue_start_point[0]=cut_data.segue_start_point;
+       log_segue_end_point[0]=cut_data.segue_end_point;
+       log_talk_start=cut_data.talk_start_point;
+       log_talk_end=cut_data.talk_end_point;
       }
-      log_hook_start=q->value(8).toInt();
-      log_hook_end=q->value(9).toInt();
+      log_hook_start=cut_data.hook_start_point;
+      log_hook_end=cut_data.hook_end_point;
       if(log_talk_end>log_end_point[RDLogLine::LogPointer] && 
         log_end_point[RDLogLine::LogPointer]>=0) {
        log_talk_end=log_end_point[RDLogLine::LogPointer];
@@ -2000,15 +2055,15 @@ RDLogLine::State RDLogLine::setEvent(int mach,RDLogLine::TransType next_type,
       log_average_segue_length=segueStartPoint(RDLogLine::AutoPointer)-
        startPoint(RDLogLine::AutoPointer);
     }
-    log_outcue=q->value(10).toString();
-    log_isrc=q->value(11).toString();
-    log_isci=q->value(12).toString();
-    log_description=q->value(13).toString();
-    log_recording_mbid=q->value(14).toString();
-    log_release_mbid=q->value(15).toString();
-    log_segue_gain_cut=q->value(5).toInt();
-    delete q;
+    log_outcue=cut_data.outcue;
+    log_isrc=cut_data.isrc;
+    log_isci=cut_data.isci;
+    log_description=cut_data.description;
+    log_recording_mbid=cut_data.recording_mbid;
+    log_release_mbid=cut_data.release_mbid;
+    log_segue_gain_cut=cut_data.segue_gain;
     delete cart;
+    }
     break;
 
   case RDLogLine::Macro:
@@ -2069,6 +2124,8 @@ void RDLogLine::loadCart(int cartnum,RDLogLine::TransType next_type,int mach,
 			 bool timescale,RDLogLine::TransType type,int len,
 			 bool skip_cart_query)
 {
+  // Optimization: skip_cart_query=true avoids redundant cart metadata query
+  // Cart data was already loaded by RDLogModel::LoadLines() via JOIN with CART table
   if(!skip_cart_query) {
     loadCart(cartnum);
   }
@@ -2348,6 +2405,108 @@ void RDLogLine::refreshPointers()
     log_hook_end=q->value(9).toInt();
   }
   delete q;
+}
+
+
+void RDLogLine::applyCutData(const RDCutData &cut_data,bool hook_mode,
+                              bool timescale,double time_ratio)
+{
+  //
+  // Apply cut data from cache (avoids database query)
+  //
+  log_cut_name=cut_data.cut_name;
+  log_cut_number=cut_data.cut_number;
+  
+  if(timescale) {
+    log_start_point[0]=(int)((double)cut_data.start_point*time_ratio);
+    log_end_point[0]=(int)((double)cut_data.end_point*time_ratio);
+    if(cut_data.segue_start_point>=0) {
+      log_segue_start_point[0]=(int)((double)cut_data.segue_start_point*time_ratio);
+      log_segue_end_point[0]=(int)((double)cut_data.segue_end_point*time_ratio);
+    }
+    else {
+      log_segue_start_point[0]=-1;
+      log_segue_end_point[0]=-1;
+    }
+    log_talk_start=cut_data.talk_start_point;
+    log_talk_end=cut_data.talk_end_point;
+    if(log_talk_start>=0) {
+      log_talk_start=(int)((double)log_talk_start*time_ratio);
+      log_talk_end=(int)((double)cut_data.talk_end_point*time_ratio);
+    }
+    else {
+      log_talk_start=-1;
+      log_talk_end=-1;
+    }
+    log_talk_length=log_talk_end-log_talk_start;
+  }
+  else {
+    if(hook_mode&&(cut_data.hook_start_point>=0)&&(cut_data.hook_end_point>=0)) {
+      log_start_point[0]=cut_data.hook_start_point;
+      log_end_point[0]=cut_data.hook_end_point;
+      log_segue_start_point[0]=-1;
+      log_segue_end_point[0]=-1;
+      log_talk_start=-1;
+      log_talk_end=-1;
+    }
+    else {
+      log_start_point[0]=cut_data.start_point;
+      log_end_point[0]=cut_data.end_point;
+      if(log_start_point[RDLogLine::LogPointer]>=0 ||
+         log_end_point[RDLogLine::LogPointer]>=0) {
+        log_effective_length=log_end_point[RDLogLine::LogPointer]-
+          log_start_point[RDLogLine::LogPointer];
+      }
+      else {
+        log_effective_length=cut_data.length;
+      }
+      log_segue_start_point[0]=cut_data.segue_start_point;
+      log_segue_end_point[0]=cut_data.segue_end_point;
+      log_talk_start=cut_data.talk_start_point;
+      log_talk_end=cut_data.talk_end_point;
+    }
+    log_hook_start=cut_data.hook_start_point;
+    log_hook_end=cut_data.hook_end_point;
+    if(log_talk_end>log_end_point[RDLogLine::LogPointer] && 
+       log_end_point[RDLogLine::LogPointer]>=0) {
+      log_talk_end=log_end_point[RDLogLine::LogPointer];
+    }
+    if(log_talk_end<log_start_point[RDLogLine::LogPointer]) {
+      log_talk_end=0;
+      log_talk_start=0;
+    }
+    else {
+      if(log_talk_start<log_start_point[RDLogLine::LogPointer]) {
+        log_talk_start=0;
+        log_talk_end-=log_start_point[RDLogLine::LogPointer];
+      }
+      if(log_talk_start>log_end_point[RDLogLine::LogPointer] &&
+         log_end_point[RDLogLine::LogPointer]>=0) {
+        log_talk_start=0;
+        log_talk_end=0;
+      }
+    }
+    log_talk_length=log_talk_end-log_talk_start;
+  }
+  
+  if(segueStartPoint(RDLogLine::AutoPointer)>=0) {
+    log_average_segue_length=segueStartPoint(RDLogLine::AutoPointer)-
+      startPoint(RDLogLine::AutoPointer);
+  }
+  
+  log_outcue=cut_data.outcue;
+  log_isrc=cut_data.isrc;
+  log_isci=cut_data.isci;
+  log_description=cut_data.description;
+  log_recording_mbid=cut_data.recording_mbid;
+  log_release_mbid=cut_data.release_mbid;
+  log_segue_gain_cut=cut_data.segue_gain;
+}
+
+
+void RDLogLine::setCutCache(RDCutCache *cache)
+{
+  log_cut_cache=cache;
 }
 
 

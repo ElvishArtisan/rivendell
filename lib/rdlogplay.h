@@ -32,6 +32,7 @@
 #include <rd.h>
 #include <rdairplay_conf.h>
 #include <rdapplication.h>
+#include <rdcut_cache.h>
 #include <rdevent_player.h>
 #include <rdlog.h>
 #include <rdlogmodel.h>
@@ -258,6 +259,7 @@ class RDLogPlay : public RDLogModel
   RDEventPlayer *play_event_player;
   RDUnixSocket *play_pad_socket[2];
   bool play_hours[24];
+  RDCutCache *play_cut_cache;
   int play_slot_quantity;
 };
 

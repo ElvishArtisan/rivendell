@@ -2,7 +2,7 @@
 //
 // Rivendell Log Playout Machine
 //
-//   (C) Copyright 2002-2024 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -157,6 +157,11 @@ RDLogPlay::RDLogPlay(int id,RDEventPlayer *player,bool enable_cue,QObject *paren
   else {
     play_audition_player=NULL;
   }
+
+  //
+  // Cut Cache for Batch Loading
+  //
+  play_cut_cache=new RDCutCache();
 
   //
   // Transition Timers
@@ -560,6 +565,52 @@ void RDLogPlay::load()
       logLine(i)->setTimescalingActive(logLine(i)->enforceLength());
     }
   }
+  
+  //
+  // Batch Load Cuts for Performance (Tier 2 Optimization)
+  //
+  // Instead of querying the database ~800 times (once per line for cut selection
+  // and cut data), we batch-load ALL cuts for ALL carts in the log with a single
+  // query. The cache handles both cut rotation (Sequential/Random/Weighted) and
+  // cut data retrieval. Cache expires after 5 minutes to ensure fresh data for
+  // ad-hoc carts added during playback.
+  //
+  // Check if cache is still valid, clear if expired
+  if(!play_cut_cache->isValid()) {
+    play_cut_cache->clear();
+    rda->syslog(LOG_DEBUG,
+                "RDLogPlay[%d]: cut cache expired or invalid, cleared for log '%s'",
+                play_id,logName().toUtf8().constData());
+  }
+  
+  // Collect unique cart numbers from the loaded log
+  QVector<unsigned> cart_numbers;
+  for(int i=0;i<lineCount();i++) {
+    if((logLine(i)->type()==RDLogLine::Cart)&&(logLine(i)->cartNumber()>0)) {
+      if(!cart_numbers.contains(logLine(i)->cartNumber())) {
+        cart_numbers.push_back(logLine(i)->cartNumber());
+      }
+    }
+  }
+  // Execute single batch query: SELECT * FROM CUTS WHERE CART_NUMBER IN (...)
+  // This replaces ~800 individual queries (400 for selectCut + 400 for cut data)
+  if(!cart_numbers.isEmpty()) {
+    int cut_count=play_cut_cache->batchLoadCuts(cart_numbers);
+    rda->syslog(LOG_INFO,
+                "RDLogPlay[%d]: batch-loaded %d cuts for %d carts in log '%s'",
+                play_id,cut_count,cart_numbers.size(),logName().toUtf8().constData());
+  }
+  
+  //
+  // Distribute cut cache pointer to all log lines
+  // This allows setEvent() to use cached data instead of querying the database
+  //
+  for(int i=0;i<lineCount();i++) {
+    logLine(i)->setCutCache(play_cut_cache);
+  }
+  
+  // Optimization: RefreshEvents calls loadCart() with skip_cart_query=true
+  // to avoid redundant cart metadata queries (data already loaded by LoadLines)
   RefreshEvents(0,lineCount());
   RDLog *log=new RDLog(logName());
   play_svc_name=log->service();
