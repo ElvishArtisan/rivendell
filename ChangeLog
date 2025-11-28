@@ -25079,3 +25079,6 @@
 2025-11-26 Fred Gleason <fredg@paravelsystems.com>
 	* Documented the 'LogDropboxProcessing=' directive in the rd.conf(5)
 	manpage.
+2025-11-26 Dennis Graiani <dennis.graiani@gmail.com>
+	* Replaced Qt WebKit with Qt WebEngine, if WebEngine is present,
+	or fall back to WebKit.
