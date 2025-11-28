@@ -2066,9 +2066,12 @@ RDLogLine::State RDLogLine::setEvent(int mach,RDLogLine::TransType next_type,
 
 
 void RDLogLine::loadCart(int cartnum,RDLogLine::TransType next_type,int mach,
-			 bool timescale,RDLogLine::TransType type,int len)
+			 bool timescale,RDLogLine::TransType type,int len,
+			 bool skip_cart_query)
 {
-  loadCart(cartnum);
+  if(!skip_cart_query) {
+    loadCart(cartnum);
+  }
 
   if(len>=0) {
     log_forced_length=len;
@@ -2082,87 +2085,92 @@ void RDLogLine::loadCart(int cartnum,RDLogLine::TransType next_type,int mach,
 }
 
 
-void RDLogLine::loadCart(int cartnum,int cutnum)
+void RDLogLine::loadCart(int cartnum,int cutnum,bool skip_cart_query)
 {
-  QString sql=QString("select ")+
-    "`CART`.`TYPE`,"+                  // 00
-    "`CART`.`GROUP_NAME`,"+            // 01
-    "`CART`.`TITLE`,"+                 // 02
-    "`CART`.`ARTIST`,"+                // 03
-    "`CART`.`ALBUM`,"+                 // 04
-    "`CART`.`YEAR`,"+                  // 05
-    "`CART`.`LABEL`,"+                 // 06
-    "`CART`.`CLIENT`,"+                // 07
-    "`CART`.`AGENCY`,"+                // 08
-    "`CART`.`USER_DEFINED`,"+          // 09
-    "`CART`.`CONDUCTOR`,"+             // 10
-    "`CART`.`SONG_ID`,"+               // 11
-    "`CART`.`FORCED_LENGTH`,"+         // 12
-    "`CART`.`CUT_QUANTITY`,"+          // 13
-    "`CART`.`LAST_CUT_PLAYED`,"+       // 14
-    "`CART`.`PLAY_ORDER`,"+            // 15
-    "`CART`.`START_DATETIME`,"+        // 16
-    "`CART`.`END_DATETIME`,"+          // 17
-    "`CART`.`ENFORCE_LENGTH`,"+        // 18
-    "`CART`.`PRESERVE_PITCH`,"+        // 19
-    "`CART`.`ASYNCRONOUS`,"+           // 20
-    "`CART`.`PUBLISHER`,"+             // 21
-    "`CART`.`COMPOSER`,"+              // 22
-    "`CART`.`USAGE_CODE`,"+            // 23
-    "`CART`.`AVERAGE_SEGUE_LENGTH`,"+  // 24
-    "`CART`.`NOTES`,"+                 // 25
-    "`GROUPS`.`COLOR` "+               // 26
-    "from `CART` left join `GROUPS` "+
-    "on `CART`.`GROUP_NAME`=`GROUPS`.`NAME` where "+
-    QString::asprintf("(`CART`.`NUMBER`=%d)",cartnum);
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  if(!q->first()) {
+  QString sql;
+  RDSqlQuery *q=NULL;
+
+  if(!skip_cart_query) {
+    sql=QString("select ")+
+      "`CART`.`TYPE`,"+                  // 00
+      "`CART`.`GROUP_NAME`,"+            // 01
+      "`CART`.`TITLE`,"+                 // 02
+      "`CART`.`ARTIST`,"+                // 03
+      "`CART`.`ALBUM`,"+                 // 04
+      "`CART`.`YEAR`,"+                  // 05
+      "`CART`.`LABEL`,"+                 // 06
+      "`CART`.`CLIENT`,"+                // 07
+      "`CART`.`AGENCY`,"+                // 08
+      "`CART`.`USER_DEFINED`,"+          // 09
+      "`CART`.`CONDUCTOR`,"+             // 10
+      "`CART`.`SONG_ID`,"+               // 11
+      "`CART`.`FORCED_LENGTH`,"+         // 12
+      "`CART`.`CUT_QUANTITY`,"+          // 13
+      "`CART`.`LAST_CUT_PLAYED`,"+       // 14
+      "`CART`.`PLAY_ORDER`,"+            // 15
+      "`CART`.`START_DATETIME`,"+        // 16
+      "`CART`.`END_DATETIME`,"+          // 17
+      "`CART`.`ENFORCE_LENGTH`,"+        // 18
+      "`CART`.`PRESERVE_PITCH`,"+        // 19
+      "`CART`.`ASYNCRONOUS`,"+           // 20
+      "`CART`.`PUBLISHER`,"+             // 21
+      "`CART`.`COMPOSER`,"+              // 22
+      "`CART`.`USAGE_CODE`,"+            // 23
+      "`CART`.`AVERAGE_SEGUE_LENGTH`,"+  // 24
+      "`CART`.`NOTES`,"+                 // 25
+      "`GROUPS`.`COLOR` "+               // 26
+      "from `CART` left join `GROUPS` "+
+      "on `CART`.`GROUP_NAME`=`GROUPS`.`NAME` where "+
+      QString::asprintf("(`CART`.`NUMBER`=%d)",cartnum);
+    RDSqlQuery *q=new RDSqlQuery(sql);
+    if(!q->first()) {
+      delete q;
+      log_state=RDLogLine::NoCart;
+      return;
+    }
+    log_cart_number=cartnum;
+    log_cart_type=(RDCart::Type)q->value(0).toInt();
+    switch((RDCart::Type)q->value(0).toInt()) {
+        case RDCart::Audio:
+	  log_type=RDLogLine::Cart;
+	  break;
+
+        case RDCart::Macro:
+	  log_type=RDLogLine::Macro;
+	  break;
+
+        default:
+	  break;
+    }
+    log_group_name=q->value(1).toString();
+    log_title=q->value(2).toString();
+    log_artist=q->value(3).toString();
+    log_album=q->value(4).toString();
+    log_year=q->value(5).toDate();
+    log_label=q->value(6).toString();
+    log_client=q->value(7).toString();
+    log_agency=q->value(8).toString();
+    log_user_defined=q->value(9).toString();
+    log_conductor=q->value(10).toString();
+    log_song_id=q->value(11).toString();
+    log_cut_quantity=q->value(13).toUInt();
+    log_last_cut_played=q->value(14).toUInt();
+    log_play_order=(RDCart::PlayOrder)q->value(15).toInt();
+    log_start_datetime=q->value(16).toDateTime();
+    log_end_datetime=q->value(17).toDateTime();
+    log_forced_length=q->value(12).toUInt();
+    log_enforce_length=RDBool(q->value(18).toString());
+    log_preserve_pitch=RDBool(q->value(19).toString());
+    log_asyncronous=RDBool(q->value(20).toString());
+    log_publisher=q->value(21).toString();
+    log_composer=q->value(22).toString();
+    log_usage_code=(RDCart::UsageCode)q->value(23).toInt();
+    log_average_segue_length=q->value(24).toInt();
+    log_cart_notes=q->value(25).toString();
+    log_group_color=QColor(q->value(26).toString());
+    log_play_source=RDLogLine::UnknownSource;
     delete q;
-    log_state=RDLogLine::NoCart;
-    return;
-  }
-  log_cart_number=cartnum;
-  log_cart_type=(RDCart::Type)q->value(0).toInt();
-  switch((RDCart::Type)q->value(0).toInt()) {
-      case RDCart::Audio:
-	log_type=RDLogLine::Cart;
-	break;
-
-      case RDCart::Macro:
-	log_type=RDLogLine::Macro;
-	break;
-
-      default:
-	break;
-  }
-  log_group_name=q->value(1).toString();
-  log_title=q->value(2).toString();
-  log_artist=q->value(3).toString();
-  log_album=q->value(4).toString();
-  log_year=q->value(5).toDate();
-  log_label=q->value(6).toString();
-  log_client=q->value(7).toString();
-  log_agency=q->value(8).toString();
-  log_user_defined=q->value(9).toString();
-  log_conductor=q->value(10).toString();
-  log_song_id=q->value(11).toString();
-  log_cut_quantity=q->value(13).toUInt();
-  log_last_cut_played=q->value(14).toUInt();
-  log_play_order=(RDCart::PlayOrder)q->value(15).toInt();
-  log_start_datetime=q->value(16).toDateTime();
-  log_end_datetime=q->value(17).toDateTime();
-  log_forced_length=q->value(12).toUInt();
-  log_enforce_length=RDBool(q->value(18).toString());
-  log_preserve_pitch=RDBool(q->value(19).toString());
-  log_asyncronous=RDBool(q->value(20).toString());
-  log_publisher=q->value(21).toString();
-  log_composer=q->value(22).toString();
-  log_usage_code=(RDCart::UsageCode)q->value(23).toInt();
-  log_average_segue_length=q->value(24).toInt();
-  log_cart_notes=q->value(25).toString();
-  log_group_color=QColor(q->value(26).toString());
-  log_play_source=RDLogLine::UnknownSource;
-  delete q;
+  } // end if(!skip_cart_query)
 
   if(cutnum>0) {
     sql=QString("select ")+

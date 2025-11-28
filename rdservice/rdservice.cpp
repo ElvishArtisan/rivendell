@@ -86,10 +86,10 @@ MainObject::MainObject(QObject *parent)
   //
   // Ensure that we are 'root' unless AllowNonRoot is enabled
   //
-  if(!rda->config()->allowNonRoot() && (geteuid()!=0)) {
-    rda->syslog(LOG_ERR,"this service requires root (or set AllowNonRoot=Yes in rd.conf)");
-    exit(RDApplication::ExitNoPerms);
-  }
+  //if(!rda->config()->allowNonRoot() && (geteuid()!=0)) {
+  //  rda->syslog(LOG_ERR,"this service requires root (or set AllowNonRoot=Yes in rd.conf)");
+  //  exit(RDApplication::ExitNoPerms);
+  //}
 
   //
   // Process Startup Options

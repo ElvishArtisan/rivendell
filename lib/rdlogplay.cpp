@@ -2846,11 +2846,13 @@ void RDLogPlay::RefreshEvents(int line,int line_quan,bool force_update)
 	    if((next_logline=logLine(i+1))!=NULL) {
 	      logline->
 		loadCart(logline->cartNumber(),next_logline->transType(),
-			 play_id,logline->timescalingActive());
+			 play_id,logline->timescalingActive(),
+			 RDLogLine::NoTrans,-1,true);
 	    }
 	    else {
 	      logline->loadCart(logline->cartNumber(),RDLogLine::Play,
-				play_id,logline->timescalingActive());
+				play_id,logline->timescalingActive(),
+				RDLogLine::NoTrans,-1,true);
 	    }
 	    if(force_update||(state!=logline->state())) {
 	      emit modified(i);
