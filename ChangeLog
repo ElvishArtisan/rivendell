@@ -25062,10 +25062,11 @@
 	* Incremented the package version to 4.4.1.
 	* Incremented the Python API version to 4.4.1.
 2025-10-18 Brian McGlynn <bmcglynn@geneseemedia.net>
-	* Update Jack and Alsa CAED to wait for play buffer to drain before closing
-	* Fixed potential race condition in playback timers
-
-2025-10-18 Brian McGlynn <bmcglynn@geneseemedia.net>
 	* Updated .gitignore to ignore VSCode configuration files
 	* Updated RDAudioConvert for increased compatibility with network filesystems
 	* Added an option to rd.conf to allow Rivendell to run as a non-root user
+2025-11-28 Brian McGlynn <bmcglynn@geneseemedia.net>
+	* Update Jack and Alsa CAED to wait for play buffer to drain before closing
+	* Fixed potential race condition in playback timers
+	* Fixed segue transitions not working properly when markers or
+	other non-audio events are placed between audio events. 

@@ -2366,27 +2366,32 @@ void RDLogPlay::UpdateStartTimes()
 	stop_set=true;
       }
 
-      prev_total_length=logline->effectiveLength()-
-	logline->playPosition();
-      prev_segue_length=
-	logline->segueLength(next_trans)-logline->playPosition();
-      end_time=
-	time.addMSecs(logline->effectiveLength()-
-		      logline->playPosition());
-
-      if((logline->status()==RDLogLine::Scheduled)||
-	 (logline->status()==RDLogLine::Paused)) {
+      // Only update previous timing info if this is an actual audio event
+      // Markers, Tracks, etc. should not reset the segue timing from the previous audio
+      // This preserves segue transitions when markers are between audio events
+      if(logline->type() == RDLogLine::Cart) {
 	prev_total_length=logline->effectiveLength()-
 	  logline->playPosition();
 	prev_segue_length=
 	  logline->segueLength(next_trans)-logline->playPosition();
 	end_time=
-	  time.addMSecs(logline->effectiveLength()-logline->playPosition());
-      }
-      else {
-	prev_total_length=logline->effectiveLength();
-	prev_segue_length=logline->segueLength(next_trans);
-	end_time=time.addMSecs(logline->effectiveLength());
+	  time.addMSecs(logline->effectiveLength()-
+			logline->playPosition());
+
+	if((logline->status()==RDLogLine::Scheduled)||
+	   (logline->status()==RDLogLine::Paused)) {
+	  prev_total_length=logline->effectiveLength()-
+	    logline->playPosition();
+	  prev_segue_length=
+	    logline->segueLength(next_trans)-logline->playPosition();
+	  end_time=
+	    time.addMSecs(logline->effectiveLength()-logline->playPosition());
+	}
+	else {
+	  prev_total_length=logline->effectiveLength();
+	  prev_segue_length=logline->segueLength(next_trans);
+	  end_time=time.addMSecs(logline->effectiveLength());
+	}
       }
     }
   }
