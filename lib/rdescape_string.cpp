@@ -49,12 +49,17 @@ QString RDCheckDateTime(QTime const &time, QString const &format)
 QString RDCheckDateTime(QDateTime const &datetime, QString const &format)
 {
   QString checkedValue = "NULL";
+
+  if((datetime==RDCheckDateTime_InvalidStart)||
+     (datetime==RDCheckDateTime_InvalidEnd)) {
+    return checkedValue;
+  }
   
-  if(datetime.isValid())
+  if(datetime.isValid()) {
     checkedValue = "\"" + datetime.toString(format) + "\"";
-  
+  }
+
   return checkedValue;
-  
 }
 
 /**

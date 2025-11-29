@@ -25065,6 +25065,20 @@
 	* Updated .gitignore to ignore VSCode configuration files
 	* Updated RDAudioConvert for increased compatibility with network filesystems
 	* Added an option to rd.conf to allow Rivendell to run as a non-root user
+2025-10-23 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.4.1int0.
+2025-11-24 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdimport(1) that could cause imports to
+	get hung up when using dropbox mode with the '--delete-source'
+	flag set.
+2025-11-24 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.4.1int1.
+2025-11-26 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'RDCart::updateLength()' that could throw a SQL
+	error.
+2025-11-26 Fred Gleason <fredg@paravelsystems.com>
+	* Documented the 'LogDropboxProcessing=' directive in the rd.conf(5)
+	manpage.
 2025-11-28 Brian McGlynn <bmcglynn@geneseemedia.net>
 	* Update Jack and Alsa CAED to wait for play buffer to drain before closing
 	* Fixed potential race condition in playback timers
@@ -25073,4 +25087,7 @@
 2025-11-29 Brian McGlynn <bmcglynn@geneseemedia.net>
 	* Implemented Cart and Cut cache to speed up loading logs in rdairplay
 	* Implemented pre-fetching of CHAIN TO logs
-	* Implemented soft-roll CHAIN TO events in rdairplay
+	* Implemented soft-roll CHAIN TO events in rdairplay2025-10-23 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'RDCart::updateLength()' that could cause patently
+	ridiculous values to be calculated for the 'Start' and 'End'
+	date-time columns in the cart library.

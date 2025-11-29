@@ -1080,30 +1080,19 @@ void RDCart::updateLength(bool enforce_length,unsigned length)
     "`CART`.`TYPE`,"+        // 00
     "`CART`.`TITLE` "+       // 01
     "from `CART` where "+
-    QString::asprintf("NUMBER=%u",cart_number);
+    QString::asprintf("`NUMBER`=%u",cart_number);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     cart_type=(RDCart::Type)q->value(0).toInt();
     cart_title=q->value(1).toString();
   }
-  delete q;
-  if(cart_type==RDCart::All) {  // Should never happen!
-    sql=QString("update `CART` set ")+
-      QString::asprintf("`CART`.`VALIDITY`=%u,",RDCart::NeverValid)+
-      "`CART`.`START_DATETIME`=NULL,"+
-      "`CART`.`END_DATETIME`=NULL,"+
-      "`CART`.`AVERAGE_LENGTH`=0,"+
-      "`CART`.`AVERAGE_SEGUE_LENGTH`=0,"+
-      "`CART`.`AVERAGE_HOOK_LENGTH`=0,"+
-      "`CART`.`MINIMUM_TALK_LENGTH`=0,"+
-      "`CART`.`MAXIMUM_TALK_LENGTH`=0 "+
-      QString::asprintf(" where `CART_NUMBER`=%u",cart_number);
-    RDSqlQuery::apply(sql);
-    rda->syslog(LOG_WARNING,"cart %06u [%s] has ambiguous type",
-		cart_number,cart_title.toUtf8().constData());
+  else {
+    rda->syslog(LOG_WARNING,"attempted to update non-existent cart \"%06u\"",
+		cart_number);
+    delete q;
     return;
   }
-    
+  delete q;
   if(cart_type==RDCart::Macro) {
     RDMacroEvent *macro_evt=new RDMacroEvent(rda->ripc(),NULL);
     sql=QString("update `CART` set ")+
@@ -1115,7 +1104,7 @@ void RDCart::updateLength(bool enforce_length,unsigned length)
       "`CART`.`AVERAGE_HOOK_LENGTH`=0,"+
       "`CART`.`MINIMUM_TALK_LENGTH`=0,"+
       "`CART`.`MAXIMUM_TALK_LENGTH`=0 "+
-      QString::asprintf(" where `CART_NUMBER`=%u",cart_number);
+      QString::asprintf(" where `CART`.`NUMBER`=%u",cart_number);
     RDSqlQuery::apply(sql);
     delete macro_evt;
     return;

@@ -25,6 +25,16 @@
 #include <qdatetime.h>
 #include <qstring.h>
 
+/*
+ * These are used in conjunction with the code in RDCart::updateLength()
+ * to calculate the outer limits of a disjunctive set of QDateTime values.
+ *
+ * If either of these values are found by RDCheckDateTime(), they will be
+ * returned as a NULL value (meaning, "no limits were found").
+ */
+#define RDCheckDateTime_InvalidStart QDateTime(QDate(3000,1,1),QTime(0,0,0))
+#define RDCheckDateTime_InvalidEnd QDateTime(QDate(1000,1,1),QTime(0,0,0))
+
 QString RDCheckDateTime(const QTime &time, const QString &format);
 QString RDCheckDateTime(const QDateTime &datetime, const QString &format);
 QString RDCheckDateTime(const QDate &date, const QString &format);

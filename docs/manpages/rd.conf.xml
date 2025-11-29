@@ -971,6 +971,31 @@
 	   </listitem>
 	 </varlistentry>
        </variablelist>
+
+
+
+       <variablelist>
+	 <varlistentry>
+	   <term>
+	     <userinput>LogDropboxProcessing = <replaceable>dropbox-id-1</replaceable>[,<replaceable>dropbox-id-2</replaceable>][...]</userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       Log the internal processing steps used by
+	       <command>rdimport</command><manvolnum>1</manvolnum>  when
+	       processing the specified dropbox instances. Takes a
+	       comma-delimited list of dropbox IDs, which can be found in
+	       the <computeroutput>ID</computeroutput> column of the dropbox
+	       list in RDAdmin->ManageHosts->[hostname]->Dropboxes. The log
+	       messages are sent at DEBUG priority level.               
+	     </para>
+	   </listitem>
+	 </varlistentry>
+       </variablelist>
+
+
+
+
        <variablelist>
 	 <varlistentry>
 	   <term>

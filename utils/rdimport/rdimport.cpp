@@ -2386,7 +2386,7 @@ QDateTime MainObject::GetCachedTimestamp(const QString &filename)
   QString sql;
   RDSqlQuery *q;
   QDateTime dt;
-  if(import_persistent_dropbox_id<0) {
+  if(import_delete_source) {
     return dt;
   }
   sql=QString::asprintf("select `FILE_DATETIME` from `DROPBOX_PATHS` where ")+
@@ -2406,7 +2406,7 @@ void MainObject::WriteTimestampCache(const QString &filename,
 {
   QString sql;
 
-  if(import_persistent_dropbox_id<0) {
+  if(import_delete_source) {
     return;
   }
   if(GetCachedTimestamp(filename).isNull()) {
