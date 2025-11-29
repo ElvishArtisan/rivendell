@@ -55,6 +55,7 @@ class RDLogPlay : public RDLogModel
  Q_OBJECT
  public:
   RDLogPlay(int id,RDEventPlayer *player,bool enable_cue,QObject *parent);
+  ~RDLogPlay();
   QString serviceName() const;
   void setServiceName(const QString &svcname);
   QString defaultServiceName() const;
@@ -206,6 +207,9 @@ class RDLogPlay : public RDLogModel
   void LogTraffic(RDLogLine *logline,RDLogLine::PlaySource src,
 		  RDAirPlayConf::TrafficAction action,bool onair_flag) const;
   void DumpToSyslog(int prio_lvl,const QString &hdr) const;
+  bool scanForChainTo(int start_line, QString *chain_log_name,
+                     int *chain_line, int *msecs_remaining);
+  void checkPrefetchNeeded();
   RDCae *play_cae;
   RDAirPlayConf::OpMode play_op_mode;
   int play_slot_id[LOGPLAY_MAX_PLAYS];
@@ -261,6 +265,11 @@ class RDLogPlay : public RDLogModel
   bool play_hours[24];
   RDCutCache *play_cut_cache;
   int play_slot_quantity;
+  // Simple prefetch state (no threading)
+  RDLogModel *play_prefetch_model;
+  QString play_prefetch_log_name;
+  bool play_prefetch_enabled;
+  int play_prefetch_threshold_slots;
 };
 
 

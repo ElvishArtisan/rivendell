@@ -20,11 +20,13 @@
 
 #include "rdapplication.h"
 #include "rdconf.h"
+#include "rdcut_cache.h"
 #include "rddatetime.h"
 #include "rddb.h"
 #include "rddebug.h"
 #include "rdescape_string.h"
 #include "rdlog.h"
+#include "rdlog_loader.h"
 #include "rdlogplay.h"
 #include "rdsvc.h"
 #include "rdweb.h"
@@ -164,6 +166,16 @@ RDLogPlay::RDLogPlay(int id,RDEventPlayer *player,bool enable_cue,QObject *paren
   play_cut_cache=new RDCutCache();
 
   //
+  // Simple Pre-fetch for CHAIN TO Events (synchronous, no threading)
+  //
+  play_prefetch_model=NULL;
+  play_prefetch_log_name.clear();
+  
+  // Configuration for pre-fetch from rd.conf [Hacks] section
+  play_prefetch_enabled=rda->config()->rdairplayPrefetch();
+  play_prefetch_threshold_slots=rda->config()->rdairplayPrefetchSlots();
+
+  //
   // Transition Timers
   //
   play_trans_timer=new QTimer(this);
@@ -174,6 +186,16 @@ RDLogPlay::RDLogPlay(int id,RDEventPlayer *player,bool enable_cue,QObject *paren
   play_grace_timer->setSingleShot(true);
   connect(play_grace_timer,SIGNAL(timeout()),
 	  this,SLOT(graceTimerData()));
+}
+
+
+RDLogPlay::~RDLogPlay()
+{
+  // Clean up prefetch model
+  if(play_prefetch_model != NULL) {
+    delete play_prefetch_model;
+    play_prefetch_model = NULL;
+  }
 }
 
 
@@ -518,6 +540,10 @@ void RDLogPlay::makeNext(int line,bool refresh_status)
   SendNowNext();
   SetTransTimer();
   UpdatePostPoint();
+  
+  // Check if we should pre-fetch the next log for upcoming CHAIN TO
+  checkPrefetchNeeded();
+  
   emit nextEventChanged(line);
   ChangeTransport();
 }
@@ -556,58 +582,92 @@ void RDLogPlay::load()
     logLine(i)->setHoldover(true);
 
   //
-  // Load Events
+  // CHECK FOR PREFETCHED LOG - If we have it, use it
   //
-  RDLogModel::load();
-  play_rescan_pos=0;
-  if(play_timescaling_available) {
-    for(int i=0;i<lineCount();i++) {
-      logLine(i)->setTimescalingActive(logLine(i)->enforceLength());
-    }
-  }
-  
-  //
-  // Batch Load Cuts for Performance (Tier 2 Optimization)
-  //
-  // Instead of querying the database ~800 times (once per line for cut selection
-  // and cut data), we batch-load ALL cuts for ALL carts in the log with a single
-  // query. The cache handles both cut rotation (Sequential/Random/Weighted) and
-  // cut data retrieval. Cache expires after 5 minutes to ensure fresh data for
-  // ad-hoc carts added during playback.
-  //
-  // Check if cache is still valid, clear if expired
-  if(!play_cut_cache->isValid()) {
-    play_cut_cache->clear();
-    rda->syslog(LOG_DEBUG,
-                "RDLogPlay[%d]: cut cache expired or invalid, cleared for log '%s'",
-                play_id,logName().toUtf8().constData());
-  }
-  
-  // Collect unique cart numbers from the loaded log
-  QVector<unsigned> cart_numbers;
-  for(int i=0;i<lineCount();i++) {
-    if((logLine(i)->type()==RDLogLine::Cart)&&(logLine(i)->cartNumber()>0)) {
-      if(!cart_numbers.contains(logLine(i)->cartNumber())) {
-        cart_numbers.push_back(logLine(i)->cartNumber());
+  if(play_prefetch_enabled && 
+     play_prefetch_model != NULL && 
+     play_prefetch_log_name == logName()) {
+    
+    rda->syslog(LOG_INFO,
+                "RDLogPlay[%d]: using PRE-LOADED log '%s'",
+                play_id, logName().toUtf8().constData());
+    
+    // Copy lines from prefetched model to this model (in-memory, very fast)
+    int prefetch_line_count = play_prefetch_model->lineCount();
+    
+    for(int i = 0; i < prefetch_line_count; i++) {
+      RDLogLine *src_line = play_prefetch_model->logLine(i);
+      if(src_line != NULL) {
+        // Insert a new empty line slot
+        RDLogModel::insert(lineCount(), 1, false);
+        
+        // Get the newly created line
+        RDLogLine *dest_line = logLine(lineCount() - 1);
+        
+        if(dest_line != NULL) {
+          // Copy all data (this uses compiler-generated assignment operator)
+          *dest_line = *src_line;
+        }
       }
     }
-  }
-  // Execute single batch query: SELECT * FROM CUTS WHERE CART_NUMBER IN (...)
-  // This replaces ~800 individual queries (400 for selectCut + 400 for cut data)
-  if(!cart_numbers.isEmpty()) {
-    int cut_count=play_cut_cache->batchLoadCuts(cart_numbers);
+    
+    // Clean up prefetch model
+    delete play_prefetch_model;
+    play_prefetch_model = NULL;
+    play_prefetch_log_name.clear();
+    
     rda->syslog(LOG_INFO,
-                "RDLogPlay[%d]: batch-loaded %d cuts for %d carts in log '%s'",
-                play_id,cut_count,cart_numbers.size(),logName().toUtf8().constData());
+                "RDLogPlay[%d]: prefetch load complete - %d lines copied from memory",
+                play_id, prefetch_line_count);
+    
+    // Continue with normal post-load processing
+    int line_count = prefetch_line_count;
+    
+    play_rescan_pos=0;
+    RefreshEvents(0,lineCount());
+    RDLog *log=new RDLog(logName());
+    play_svc_name=log->service();
+    delete log;
+    play_line_counter=0;
+    play_next_line=0;
+    UpdateStartTimes();
+    emit reloaded();
+    SetTransTimer();
+    ChangeTransport();
+    UpdatePostPoint();
+    if((running>0)&&(lineCount()>running)) {
+      makeNext(running);
+    }
+    
+    return; 
+  }
+
+  //
+  // No prefetch available - load from database using RDLogLoader
+  //
+  RDLogLoader loader;
+  int line_count = loader.loadLog(this, play_timescaling_available, 300);
+  
+  if(line_count <= 0) {
+    rda->syslog(LOG_WARNING,
+                "RDLogPlay[%d]: failed to load log '%s': %s",
+                play_id, logName().toUtf8().constData(),
+                loader.lastError().toUtf8().constData());
+    return;
   }
   
-  //
-  // Distribute cut cache pointer to all log lines
-  // This allows setEvent() to use cached data instead of querying the database
-  //
-  for(int i=0;i<lineCount();i++) {
-    logLine(i)->setCutCache(play_cut_cache);
+  // Transfer cut cache ownership from loader
+  if(play_cut_cache != NULL) {
+    delete play_cut_cache;
   }
+  play_cut_cache = loader.cutCache();
+  
+  rda->syslog(LOG_INFO,
+              "RDLogPlay[%d]: loaded %d lines (%d carts) for log '%s'",
+              play_id, line_count, loader.lastCartCount(), 
+              logName().toUtf8().constData());
+  
+  play_rescan_pos=0;
   
   // Optimization: RefreshEvents calls loadCart() with skip_cart_query=true
   // to avoid redundant cart metadata queries (data already loaded by LoadLines)
@@ -862,6 +922,14 @@ void RDLogPlay::clear()
   int start_line=0;
   play_duck_volume_port1=0;
   play_duck_volume_port2=0;
+  
+  // Clean up any prefetch model
+  if(play_prefetch_model != NULL) {
+    delete play_prefetch_model;
+    play_prefetch_model = NULL;
+  }
+  play_prefetch_log_name.clear();
+  
   while(ClearBlock(start_line++));
   play_svc_name=play_defaultsvc_name;
   play_rescan_pos=0;
@@ -2245,6 +2313,11 @@ bool RDLogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
 	play_start_next=false;
       }
     }
+    
+    //
+    // Use LL macro to load the chained log
+    // If we prefetched it, load() will use the cached data (instant!)
+    //
     if(GetTransType(logline->markerLabel(),0)!=RDLogLine::Stop) {
       play_macro_deck->
 	load(QString::asprintf("LL %d %s -2!",
@@ -2259,8 +2332,7 @@ bool RDLogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
     }
     play_macro_deck->setLine(line);
     play_macro_deck->exec();
-    rda->syslog(LOG_INFO,"log engine: chained to log: Line: %d  Log: %s",
-		line,logline->markerLabel().toUtf8().constData());
+    
     break;
 
   default:
@@ -3539,3 +3611,120 @@ void RDLogPlay::DumpToSyslog(int prio_lvl,const QString &hdr) const
   rda->syslog(prio_lvl,"%s\n%s",hdr.toUtf8().constData(),
 	      str.toUtf8().constData());
 }
+
+
+//
+// Scan ahead in the log to find the next CHAIN TO event
+// Returns the line distance (number of events) to the CHAIN TO
+//
+bool RDLogPlay::scanForChainTo(int start_line, QString *chain_log_name,
+                               int *chain_line, int *msecs_remaining)
+{
+  *msecs_remaining = 0;
+  int event_count = 0;  // Count events between start and CHAIN TO
+  
+  // Scan from start_line onwards
+  for(int i = start_line; i < lineCount(); i++) {
+    RDLogLine *ll = logLine(i);
+    if(ll == NULL) {
+      continue;
+    }
+    
+    // Skip finished events
+    if(ll->status() == RDLogLine::Finished) {
+      continue;
+    }
+    
+    // Check if this is a CHAIN TO event
+    if(ll->type() == RDLogLine::Chain) {
+      *chain_log_name = ll->markerLabel();
+      *chain_line = i;
+      *msecs_remaining = event_count;  // Use event count instead of milliseconds
+      rda->syslog(LOG_DEBUG, 
+                  "scanForChainTo: found CHAIN TO at line %d, %d events away",
+                  i, event_count);
+      return true;
+    }
+    
+    // Count scheduled events (Cart events only)
+    if(ll->type() == RDLogLine::Cart && ll->status() == RDLogLine::Scheduled) {
+      event_count++;
+    }
+  }
+  
+  return false;  // No CHAIN TO found
+}
+
+
+//
+// Check if we need to pre-load the next log.
+// Called during makeNext() to continuously monitor for upcoming CHAIN TO events.
+//
+void RDLogPlay::checkPrefetchNeeded()
+{
+  // Pre-fetch disabled in configuration?
+  if(!play_prefetch_enabled) {
+    return;
+  }
+  
+  // Already pre-loaded something? Skip.
+  if(play_prefetch_model != NULL) {
+    return;
+  }
+  
+  QString chain_log;
+  int chain_line;
+  int events_until_chain;  // Number of events until CHAIN TO
+  
+  // Scan from next event
+  if(!scanForChainTo(play_next_line, &chain_log, &chain_line, &events_until_chain)) {
+    return;  // No CHAIN TO found
+  }
+  
+  // Already pre-loaded this same log?
+  if(!play_prefetch_log_name.isEmpty() && play_prefetch_log_name == chain_log) {
+    return;  // Already have this one
+  }
+  
+  // Different log than what we prefetched? Clean up old prefetch
+  if(play_prefetch_model != NULL && play_prefetch_log_name != chain_log) {
+    delete play_prefetch_model;
+    play_prefetch_model = NULL;
+    play_prefetch_log_name.clear();
+  }
+  
+  // Check if CHAIN TO is within the slot threshold
+  if(events_until_chain <= play_prefetch_threshold_slots) {
+    rda->syslog(LOG_INFO, 
+                "Pre-loading log '%s' synchronously (%d events before CHAIN TO)",
+                chain_log.toUtf8().constData(), 
+                events_until_chain);
+    
+    // Load the log RIGHT NOW in main thread (synchronous, simple, safe)
+    // With Tier 1+2 optimizations, this takes ~500ms which is acceptable
+    play_prefetch_model = new RDLogModel(NULL);
+    play_prefetch_model->setLogName(chain_log);
+    
+    RDLogLoader loader;
+    int line_count = loader.loadLog(play_prefetch_model, false, 300);
+    
+    if(line_count > 0) {
+      play_prefetch_log_name = chain_log;
+      rda->syslog(LOG_INFO,
+                 "Pre-load complete: log '%s' ready (%d lines, %d carts)",
+                 chain_log.toUtf8().constData(),
+                 line_count,
+                 loader.lastCartCount());
+    }
+    else {
+      // Load failed - clean up
+      delete play_prefetch_model;
+      play_prefetch_model = NULL;
+      rda->syslog(LOG_WARNING,
+                 "Pre-load failed for log '%s': %s",
+                 chain_log.toUtf8().constData(),
+                 loader.lastError().toUtf8().constData());
+    }
+  }
+}
+

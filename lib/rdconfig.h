@@ -130,6 +130,8 @@ class RDConfig
   QString tempDirectory();
   int serviceStartupDelay() const;
   int extendedNextPadEvents() const;
+  bool rdairplayPrefetch() const;
+  int rdairplayPrefetchSlots() const;
   QString sasStation() const;
   int sasMatrix() const;
   unsigned sasBaseCart() const;
@@ -222,6 +224,8 @@ class RDConfig
   QString conf_temp_directory;
   int conf_service_startup_delay;
   int conf_extended_next_pad_events;
+  bool conf_rdairplay_prefetch;
+  int conf_rdairplay_prefetch_window;
   QString conf_sas_station;
   int conf_sas_matrix;
   unsigned conf_sas_base_cart;
