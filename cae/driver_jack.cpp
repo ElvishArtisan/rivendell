@@ -255,7 +255,7 @@ int JackProcess(jack_nframes_t nframes, void *arg)
 		  jack_eof[i]=true;
 		  jack_stopping[i]=true;
 		  jack_playing[i]=false;
-		}
+		} 
 	      }
 	      break;
 
@@ -877,6 +877,12 @@ bool DriverJack::play(int card,int stream,int length,int speed,bool pitch,
 		      bool rates)
 {
 #ifdef JACK
+  // Get file information for tracking
+  unsigned total_file_samples = jack_play_wave[stream] ? jack_play_wave[stream]->getSampleLength() : 0;
+  unsigned total_file_ms = jack_play_wave[stream] ? 
+    (total_file_samples * 1000) / jack_play_wave[stream]->getSamplesPerSec() : 0;
+  
+  
   if((stream <0) || (stream >= RD_MAX_STREAMS) || 
      (jack_play_ring[stream]==NULL)||jack_playing[stream]) {
     return false;
@@ -892,6 +898,7 @@ bool DriverJack::play(int card,int stream,int length,int speed,bool pitch,
   jack_eof[stream]=false;  // Reset EOF flag for new playback
   if(length>0) {
     jack_stop_timer[stream]->start(length);
+    rda->syslog(LOG_DEBUG, "play[%d] - Started stop timer for %d ms (file is %ums)", stream, length, total_file_ms);
   }
   statePlayUpdate(card,stream,1);
   return true;
@@ -905,15 +912,34 @@ bool DriverJack::stopPlayback(int card,int stream)
 {
 #ifdef JACK
   if((stream <0) || (stream>=RD_MAX_STREAMS) || 
-     (jack_play_ring[stream]==NULL)||(!jack_playing[stream])) {
+     (jack_play_ring[stream]==NULL)||(!jack_playing[stream])||
+     (jack_stopping[stream])) {
     return false;
   }
-  jack_playing[stream]=false;
-  jack_timer_expired[stream]=false;  // Reset timer expired flag
-  jack_eof[stream]=false;  // Reset EOF flag
-  jack_stop_timer[stream]->stop();
-  statePlayUpdate(card,stream,2);
-  return true;
+  
+  // Check if there's still audio in the buffer that should be played
+  int samples_remaining = jack_play_ring[stream]->readSpace();
+  
+  if(samples_remaining > 0) {
+    // Don't immediately stop - set timer_expired to allow buffer drainage
+    jack_timer_expired[stream]=true;
+    jack_stopping[stream]=true;  // Mark as stopping to prevent repeated calls
+    jack_stop_timer[stream]->stop();
+    // Immediately send state update to indicate stopping has started
+    // Use state 0 (stopped) to prevent rdairplay from calling stop repeatedly
+    statePlayUpdate(card,stream,0);
+    // Don't reset the ring buffer yet - let it drain naturally
+    // The audio processing loop will handle the actual stop when buffer is empty
+    return true;
+  } else {
+    // Buffer is already empty, safe to stop immediately
+    jack_playing[stream]=false;
+    jack_timer_expired[stream]=false;
+    jack_eof[stream]=false;
+    jack_stop_timer[stream]->stop();
+    statePlayUpdate(card,stream,0);
+    return true;
+  }
 #else
   return false;
 #endif  // JACK
@@ -1372,8 +1398,17 @@ void DriverJack::processBuffers()
 #ifdef JACK
   for(int i=0;i<RD_MAX_STREAMS;i++) {
     if(jack_stopping[i]) {
+      // Calculate final playback statistics
+      unsigned total_file_samples = jack_play_wave[i] ? jack_play_wave[i]->getSampleLength() : 0;
+      unsigned played_samples = jack_output_pos[i];
+      unsigned played_ms = jack_play_wave[i] ? 
+        (played_samples * 1000) / jack_play_wave[i]->getSamplesPerSec() : 0;
+      unsigned total_ms = jack_play_wave[i] ? 
+        (total_file_samples * 1000) / jack_play_wave[i]->getSamplesPerSec() : 0;
       jack_stopping[i]=false;
+      jack_timer_expired[i]=false;  // Reset timer expired flag
       statePlayUpdate(jack_card,i,2);
+      rda->syslog(LOG_DEBUG, "processBuffers[%d] - Cleanup complete, sent state 2", i);
     }
     if(jack_playing[i]&&((jack_clock_phase%4)==0)) {
       FillJackOutputStream(i);
@@ -1392,12 +1427,27 @@ void DriverJack::processBuffers()
 void DriverJack::stopTimerData(int stream)
 {
 #ifdef JACK
+  //rda->syslog(LOG_DEBUG, "stopTimerData called - Stream: %d", stream);
+  
   if((stream<0)||(stream>=RD_MAX_STREAMS)) {
+    //rda->syslog(LOG_DEBUG, "stopTimerData - Invalid stream %d", stream);
     return;
   }
   if(!jack_playing[stream]) {
+    //rda->syslog(LOG_DEBUG, "stopTimerData - Stream %d not playing", stream);
     return;
   }
+  
+  int samples_in_buffer = jack_play_ring[stream] ? jack_play_ring[stream]->readSpace() : 0;
+  
+  // Calculate timing statistics when timer expires
+  unsigned total_file_samples = jack_play_wave[stream] ? jack_play_wave[stream]->getSampleLength() : 0;
+  unsigned played_samples = jack_output_pos[stream];
+  unsigned played_ms = jack_play_wave[stream] ? 
+    (played_samples * 1000) / jack_play_wave[stream]->getSamplesPerSec() : 0;
+  unsigned total_ms = jack_play_wave[stream] ? 
+    (total_file_samples * 1000) / jack_play_wave[stream]->getSamplesPerSec() : 0;
+  
   jack_stop_timer[stream]->stop();
   // Instead of immediately setting EOF, let the buffer drain naturally
   // EOF will be set in JackProcess when buffer is actually empty
@@ -1405,6 +1455,7 @@ void DriverJack::stopTimerData(int stream)
   jack_eof[stream]=false;  // Keep false to allow buffer drainage
   // Set a flag to indicate timer has expired but allow buffer to finish
   jack_timer_expired[stream]=true;
+  
 #endif  // JACK
 }
 

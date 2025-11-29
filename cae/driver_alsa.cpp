@@ -943,16 +943,35 @@ bool DriverAlsa::play(int card,int stream,int length,int speed,bool pitch,
 bool DriverAlsa::stopPlayback(int card,int stream)
 {
 #ifdef ALSA
-  if((alsa_play_ring[card][stream]==NULL)||(!alsa_playing[card][stream])) {
+  if((alsa_play_ring[card][stream]==NULL)||(!alsa_playing[card][stream])||
+     (alsa_stopping[card][stream])) {
     return false;
   }
-  alsa_playing[card][stream]=false;
-  alsa_timer_expired[card][stream]=false;  // Reset timer expired flag
-  alsa_eof[card][stream]=false;  // Reset EOF flag
-  alsa_play_ring[card][stream]->reset();
-  alsa_stop_timer[card][stream]->stop();
-  statePlayUpdate(card,stream,2);
-  return true;
+  
+  // Check if there's still audio in the buffer that should be played
+  int samples_remaining = alsa_play_ring[card][stream]->readSpace();
+  
+  if(samples_remaining > 0) {
+    // Don't immediately stop - set timer_expired to allow buffer drainage
+    alsa_timer_expired[card][stream]=true;
+    alsa_stopping[card][stream]=true;  // Mark as stopping to prevent repeated calls
+    alsa_stop_timer[card][stream]->stop();
+    // Immediately send state update to indicate stopping has started
+    // Use state 0 (stopped) to prevent rdairplay from calling stop repeatedly
+    statePlayUpdate(card,stream,0);
+    // Don't reset the ring buffer yet - let it drain naturally
+    // The audio processing loop will handle the actual stop when buffer is empty
+    return true;
+  } else {
+    // Buffer is already empty, safe to stop immediately
+    alsa_playing[card][stream]=false;
+    alsa_timer_expired[card][stream]=false;
+    alsa_eof[card][stream]=false;
+    alsa_play_ring[card][stream]->reset();
+    alsa_stop_timer[card][stream]->stop();
+    statePlayUpdate(card,stream,0);
+    return true;
+  }
 #else
   return false;
 #endif  // ALSA
@@ -1381,6 +1400,7 @@ void DriverAlsa::processBuffers()
 	  alsa_stopping[i][j]=false;
 	  alsa_eof[i][j]=false;
 	  alsa_playing[i][j]=false;
+	  alsa_timer_expired[i][j]=false;  // Reset timer expired flag
 	  statePlayUpdate(i,j,2);
 	}
 	if(alsa_playing[i][j]) {
