@@ -220,6 +220,10 @@ TranscodingDelay=0
 ; Default is 8 (triggers when CHAIN TO appears in the visible playlist window)
 ; RdAirplayPrefetchSlots=8
 
+; Number of old log lines to keep visible after CHAIN TO for operator reference
+; Default is 10 (keeps last 10 events from previous log visible)
+; RdAirplayPrefetchHistory=10
+
 ; Number at which to start looking for available UDP ports for VU
 ; meters. You should only change this if you have another service
 ; using UDP Port numbers in the range MeterPortBaseNumber to

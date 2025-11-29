@@ -575,6 +575,12 @@ int RDConfig::rdairplayPrefetchSlots() const
 }
 
 
+int RDConfig::rdairplayPrefetchHistory() const
+{
+  return conf_rdairplay_prefetch_history;
+}
+
+
 QString RDConfig::sasStation() const
 {
   return conf_sas_station;
@@ -792,6 +798,8 @@ bool RDConfig::load()
     profile->boolValue("Hacks","RdAirplayPrefetch",true);
   conf_rdairplay_prefetch_window=
     profile->intValue("Hacks","RdAirplayPrefetchSlots",8);
+  conf_rdairplay_prefetch_history=
+    profile->intValue("Hacks","RdAirplayPrefetchHistory",10);
   conf_sas_station=profile->stringValue("SASFilter","Station","");
   conf_sas_matrix=profile->intValue("SASFilter","Matrix",0);
   conf_sas_base_cart=profile->intValue("SASFilter","BaseCart",0);
@@ -917,6 +925,9 @@ void RDConfig::clear()
   conf_sas_base_cart=1;
   conf_sas_tty_device="";
   conf_destinations.clear();
+  conf_rdairplay_prefetch=true;
+  conf_rdairplay_prefetch_window=8;
+  conf_rdairplay_prefetch_history=10;
 }
 
 

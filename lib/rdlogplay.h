@@ -210,6 +210,8 @@ class RDLogPlay : public RDLogModel
   bool scanForChainTo(int start_line, QString *chain_log_name,
                      int *chain_line, int *msecs_remaining);
   void checkPrefetchNeeded();
+  int executeSeamlessChainTo(int chain_line, const QString &new_log_name);
+  void clearPrefetch();
   RDCae *play_cae;
   RDAirPlayConf::OpMode play_op_mode;
   int play_slot_id[LOGPLAY_MAX_PLAYS];
@@ -270,6 +272,8 @@ class RDLogPlay : public RDLogModel
   QString play_prefetch_log_name;
   bool play_prefetch_enabled;
   int play_prefetch_threshold_slots;
+  int play_prefetch_history_slots;
+  static const int PREFETCH_PREVIEW_LINES = 10;
 };
 
 

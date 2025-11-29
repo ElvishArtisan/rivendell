@@ -172,8 +172,10 @@ RDLogPlay::RDLogPlay(int id,RDEventPlayer *player,bool enable_cue,QObject *paren
   play_prefetch_log_name.clear();
   
   // Configuration for pre-fetch from rd.conf [Hacks] section
+  // TODO:  Move to rdadmin. This will require a database version update for the new fields.
   play_prefetch_enabled=rda->config()->rdairplayPrefetch();
   play_prefetch_threshold_slots=rda->config()->rdairplayPrefetchSlots();
+  play_prefetch_history_slots=rda->config()->rdairplayPrefetchHistory();
 
   //
   // Transition Timers
@@ -191,11 +193,7 @@ RDLogPlay::RDLogPlay(int id,RDEventPlayer *player,bool enable_cue,QObject *paren
 
 RDLogPlay::~RDLogPlay()
 {
-  // Clean up prefetch model
-  if(play_prefetch_model != NULL) {
-    delete play_prefetch_model;
-    play_prefetch_model = NULL;
-  }
+  clearPrefetch();
 }
 
 
@@ -593,8 +591,11 @@ void RDLogPlay::load()
                 play_id, logName().toUtf8().constData());
     
     // Copy lines from prefetched model to this model (in-memory, very fast)
+    // Note: Seamless CHAIN TO transitions bypass load() entirely via executeSeamlessChainTo().
+    // This function only handles fresh log loads (running == 0).
     int prefetch_line_count = play_prefetch_model->lineCount();
     
+    // Copy all lines from prefetch model
     for(int i = 0; i < prefetch_line_count; i++) {
       RDLogLine *src_line = play_prefetch_model->logLine(i);
       if(src_line != NULL) {
@@ -611,14 +612,12 @@ void RDLogPlay::load()
       }
     }
     
-    // Clean up prefetch model
-    delete play_prefetch_model;
-    play_prefetch_model = NULL;
-    play_prefetch_log_name.clear();
-    
     rda->syslog(LOG_INFO,
                 "RDLogPlay[%d]: prefetch load complete - %d lines copied from memory",
                 play_id, prefetch_line_count);
+    
+    // Clean up prefetch model
+    clearPrefetch();
     
     // Continue with normal post-load processing
     int line_count = prefetch_line_count;
@@ -630,14 +629,12 @@ void RDLogPlay::load()
     delete log;
     play_line_counter=0;
     play_next_line=0;
+    
     UpdateStartTimes();
     emit reloaded();
     SetTransTimer();
     ChangeTransport();
     UpdatePostPoint();
-    if((running>0)&&(lineCount()>running)) {
-      makeNext(running);
-    }
     
     return; 
   }
@@ -653,10 +650,12 @@ void RDLogPlay::load()
                 "RDLogPlay[%d]: failed to load log '%s': %s",
                 play_id, logName().toUtf8().constData(),
                 loader.lastError().toUtf8().constData());
+    // Loader cleanup is automatic via destructor
     return;
   }
   
   // Transfer cut cache ownership from loader
+  // This must succeed - loader always creates a cache
   if(play_cut_cache != NULL) {
     delete play_cut_cache;
   }
@@ -924,11 +923,7 @@ void RDLogPlay::clear()
   play_duck_volume_port2=0;
   
   // Clean up any prefetch model
-  if(play_prefetch_model != NULL) {
-    delete play_prefetch_model;
-    play_prefetch_model = NULL;
-  }
-  play_prefetch_log_name.clear();
+  clearPrefetch();
   
   while(ClearBlock(start_line++));
   play_svc_name=play_defaultsvc_name;
@@ -2315,23 +2310,47 @@ bool RDLogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
     }
     
     //
-    // Use LL macro to load the chained log
-    // If we prefetched it, load() will use the cached data (instant!)
+    // SEAMLESS CHAIN TO - Check if we have prefetched this log
     //
-    if(GetTransType(logline->markerLabel(),0)!=RDLogLine::Stop) {
-      play_macro_deck->
-	load(QString::asprintf("LL %d %s -2!",
-			       play_id+1,
-			       logline->markerLabel().toUtf8().constData()));
+    if(play_prefetch_enabled && 
+       play_prefetch_model != NULL && 
+       play_prefetch_log_name == logline->markerLabel()) {
+      
+      rda->syslog(LOG_INFO,
+                  "RDLogPlay[%d]: executing seamless CHAIN TO for log '%s'",
+                  play_id, logline->markerLabel().toUtf8().constData());
+      
+      // Execute seamless transition directly (bypass LL macro)
+      // CRITICAL: Get adjusted line number (may change due to history cleanup)
+      int adjusted_line = executeSeamlessChainTo(line, logline->markerLabel());
+      
+      // Mark CHAIN TO as finished using adjusted line number
+      RDLogLine *adjusted_logline = logLine(adjusted_line);
+      if(adjusted_logline != NULL) {
+        adjusted_logline->setStatus(RDLogLine::Finished);
+        emit played(adjusted_line);
+        FinishEvent(adjusted_line);
+      }
     }
     else {
-      play_macro_deck->
-	load(QString::asprintf("LL %d %s -2!",
-			       play_id+1,
-			       logline->markerLabel().toUtf8().constData()));
+      //
+      // No prefetch - use traditional LL macro to load the chained log
+      //
+      if(GetTransType(logline->markerLabel(),0)!=RDLogLine::Stop) {
+        play_macro_deck->
+          load(QString::asprintf("LL %d %s -2!",
+                                 play_id+1,
+                                 logline->markerLabel().toUtf8().constData()));
+      }
+      else {
+        play_macro_deck->
+          load(QString::asprintf("LL %d %s -2!",
+                                 play_id+1,
+                                 logline->markerLabel().toUtf8().constData()));
+      }
+      play_macro_deck->setLine(line);
+      play_macro_deck->exec();
     }
-    play_macro_deck->setLine(line);
-    play_macro_deck->exec();
     
     break;
 
@@ -3656,9 +3675,24 @@ bool RDLogPlay::scanForChainTo(int start_line, QString *chain_log_name,
 }
 
 
+void RDLogPlay::clearPrefetch()
+{
+  if(play_prefetch_model != NULL) {
+    delete play_prefetch_model;
+    play_prefetch_model = NULL;
+  }
+  play_prefetch_log_name.clear();
+}
+
+
 //
 // Check if we need to pre-load the next log.
 // Called during makeNext() to continuously monitor for upcoming CHAIN TO events.
+//
+// THREADING: This function must be called from the main/UI thread only.
+// It performs synchronous database operations and modifies the log model,
+// both of which are not thread-safe. Synchronous operation ensures that
+// prefetch completes before CHAIN TO event triggers.
 //
 void RDLogPlay::checkPrefetchNeeded()
 {
@@ -3688,9 +3722,7 @@ void RDLogPlay::checkPrefetchNeeded()
   
   // Different log than what we prefetched? Clean up old prefetch
   if(play_prefetch_model != NULL && play_prefetch_log_name != chain_log) {
-    delete play_prefetch_model;
-    play_prefetch_model = NULL;
-    play_prefetch_log_name.clear();
+    clearPrefetch();
   }
   
   // Check if CHAIN TO is within the slot threshold
@@ -3710,16 +3742,57 @@ void RDLogPlay::checkPrefetchNeeded()
     
     if(line_count > 0) {
       play_prefetch_log_name = chain_log;
-      rda->syslog(LOG_INFO,
-                 "Pre-load complete: log '%s' ready (%d lines, %d carts)",
-                 chain_log.toUtf8().constData(),
-                 line_count,
-                 loader.lastCartCount());
+      
+      // HYBRID APPROACH: Append first N lines after CHAIN TO marker
+      // These are REAL lines that will play - not just previews
+      int preview_count = qMin(PREFETCH_PREVIEW_LINES, line_count);
+      
+      // Insert lines after the CHAIN TO marker
+      if(chain_line >= 0 && chain_line < lineCount()) {
+        int first_insert_pos = chain_line + 1;
+        int inserted_count = 0;
+        
+        for(int i = 0; i < preview_count; i++) {
+          RDLogLine *src_line = play_prefetch_model->logLine(i);
+          if(src_line != NULL) {
+            // Insert after CHAIN TO marker
+            int insert_pos = chain_line + 1 + i;
+            RDLogModel::insert(insert_pos, 1, false);
+            RDLogLine *dest_line = logLine(insert_pos);
+            if(dest_line != NULL) {
+              *dest_line = *src_line;
+              inserted_count++;
+            }
+            else {
+              rda->syslog(LOG_ERR,
+                          "RDLogPlay[%d]: failed to insert preview line %d at position %d",
+                          play_id, i, insert_pos);
+            }
+          }
+        }
+        
+        // Initialize the preloaded lines (load cart metadata, calculate times)
+        RefreshEvents(first_insert_pos, preview_count);
+        
+        // Update start times for entire log
+        UpdateStartTimes();
+        
+        rda->syslog(LOG_INFO,
+                   "Pre-load complete: log '%s' ready (%d lines total, %d lines preloaded)",
+                   chain_log.toUtf8().constData(),
+                   line_count,
+                   inserted_count);
+      }
+      else {
+        rda->syslog(LOG_WARNING,
+                   "Pre-load: CHAIN TO line %d out of range (log has %d lines)",
+                   chain_line,
+                   lineCount());
+      }
     }
     else {
       // Load failed - clean up
-      delete play_prefetch_model;
-      play_prefetch_model = NULL;
+      clearPrefetch();
       rda->syslog(LOG_WARNING,
                  "Pre-load failed for log '%s': %s",
                  chain_log.toUtf8().constData(),
@@ -3727,4 +3800,149 @@ void RDLogPlay::checkPrefetchNeeded()
     }
   }
 }
+
+
+//
+// Execute seamless CHAIN TO transition using prefetched log data
+// This bypasses the LL macro to maintain playback continuity
+//
+// THREADING: This function must be called from the main/UI thread only.
+// It modifies the log model (insert/remove operations) which is not thread-safe.
+// The prefetch model is populated synchronously in checkPrefetchNeeded() to avoid
+// threading issues with RDLogModel operations.
+//
+int RDLogPlay::executeSeamlessChainTo(int chain_line, const QString &new_log_name)
+{
+  if(play_prefetch_model == NULL) {
+    rda->syslog(LOG_WARNING,
+                "RDLogPlay[%d]: executeSeamlessChainTo called but no prefetch model available!",
+                play_id);
+    // State is consistent - no changes were made
+    return chain_line;
+  }
+  
+  // Validate chain_line parameter
+  if(chain_line < 0 || chain_line >= lineCount()) {
+    rda->syslog(LOG_ERR,
+                "RDLogPlay[%d]: executeSeamlessChainTo called with invalid chain_line %d (lineCount=%d)",
+                play_id, chain_line, lineCount());
+    // Clean up prefetch since we can't use it
+    clearPrefetch();
+    // State is consistent - only prefetch was cleared, log remains unchanged
+    return chain_line;
+  }
+  
+  int prefetch_line_count = play_prefetch_model->lineCount();
+  int history_lines_to_keep = play_prefetch_history_slots;
+  
+  rda->syslog(LOG_INFO,
+              "RDLogPlay[%d]: executing seamless CHAIN TO - %d lines prefetched, current lineCount=%d, chain_line=%d",
+              play_id, prefetch_line_count, lineCount(), chain_line);
+  
+  // Step 1: Clean up old log history
+  // Keep the last N events from old log (before CHAIN TO) regardless of status
+  // Remove older events to keep window manageable
+  
+  // Count how many old log events we have (everything before CHAIN TO marker)
+  int old_log_event_count = chain_line;
+  int events_removed = 0;
+  
+  if(old_log_event_count > history_lines_to_keep) {
+    // Remove oldest events, keep last N
+    events_removed = old_log_event_count - history_lines_to_keep;
+    
+    // Remove from the beginning (oldest events)
+    remove(0, events_removed, false);
+    
+    // Adjust chain_line since we removed events before it
+    chain_line -= events_removed;
+    
+    // CRITICAL: Adjust play_next_line to account for removed events
+    if(play_next_line >= 0) {
+      play_next_line -= events_removed;
+      if(play_next_line < 0) {
+        play_next_line = 0;
+      }
+    }
+    
+    rda->syslog(LOG_INFO,
+                "RDLogPlay[%d]: cleaned up %d old log events (kept last %d for reference), adjusted play_next_line to %d",
+                play_id, events_removed, history_lines_to_keep, play_next_line);
+  }
+  else {
+    rda->syslog(LOG_DEBUG,
+                "RDLogPlay[%d]: keeping all %d old log events (less than history limit of %d)",
+                play_id, old_log_event_count, history_lines_to_keep);
+  }
+  
+  // Step 2: Update log name
+  setLogName(new_log_name);
+  
+  // Step 3: Remove old scheduled events
+  // Keep: running/playing events, CHAIN TO marker, and the N preloaded lines after it
+  // Remove: all other scheduled events from old log
+  int lines_to_keep_after_chain = PREFETCH_PREVIEW_LINES; // The preview lines we already appended
+  int remove_start = chain_line + 1 + lines_to_keep_after_chain;
+  int remove_count = lineCount() - remove_start;
+  
+  if(remove_count > 0) {
+    remove(remove_start, remove_count, false);
+    rda->syslog(LOG_DEBUG,
+                "RDLogPlay[%d]: removed %d old scheduled lines",
+                play_id, remove_count);
+  }
+  
+  // Step 4: Append remaining lines from prefetch (lines N onwards)
+  int insert_pos = lineCount();
+  int start_line = qMin(PREFETCH_PREVIEW_LINES, prefetch_line_count); // Skip preview lines (already preloaded)
+  int lines_appended = 0;
+  
+  for(int i = start_line; i < prefetch_line_count; i++) {
+    RDLogLine *src_line = play_prefetch_model->logLine(i);
+    if(src_line != NULL) {
+      RDLogModel::insert(insert_pos, 1, false);
+      RDLogLine *dest_line = logLine(insert_pos);
+      if(dest_line != NULL) {
+        *dest_line = *src_line;
+        lines_appended++;
+        insert_pos++;
+      }
+      else {
+        rda->syslog(LOG_ERR,
+                    "RDLogPlay[%d]: failed to get destination line at position %d during CHAIN TO",
+                    play_id, insert_pos);
+      }
+    }
+  }
+  
+  rda->syslog(LOG_DEBUG,
+              "RDLogPlay[%d]: appended %d remaining lines from prefetch",
+              play_id, lines_appended);
+  
+  // Step 5: Initialize newly appended lines
+  // The first 10 were already initialized during prefetch, but the rest need it
+  int first_new_line = lineCount() - (prefetch_line_count - start_line);
+  if(first_new_line < lineCount()) {
+    RefreshEvents(first_new_line, lineCount() - first_new_line);
+  }
+  
+  // Step 6: Update log metadata
+  RDLog *log = new RDLog(logName());
+  play_svc_name = log->service();
+  delete log;
+  
+  // Step 7: Update timing
+  UpdateStartTimes();
+  
+  // Step 8: Clean up prefetch model
+  clearPrefetch();
+  
+  rda->syslog(LOG_INFO,
+              "RDLogPlay[%d]: seamless CHAIN TO complete - now playing log '%s' with %d total lines",
+              play_id, new_log_name.toUtf8().constData(), lineCount());
+  
+  // Return adjusted chain_line (may have changed due to history cleanup)
+  return chain_line;
+}
+
 
