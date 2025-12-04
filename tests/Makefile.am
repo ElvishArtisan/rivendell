@@ -37,6 +37,7 @@ noinst_PROGRAMS = audio_convert_test\
                   db_charset_test\
                   delete_test\
                   download_test\
+                  dropbox_copy_test\
                   feed_image_test\
                   getpids_test\
                   gpio_fuzz_test\
@@ -96,6 +97,9 @@ delete_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@ @IMAG
 
 dist_download_test_SOURCES = download_test.cpp download_test.h
 download_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@ @IMAGEMAGICK_LIBS@
+
+dist_dropbox_copy_test_SOURCES = dropbox_copy_test.cpp dropbox_copy_test.h
+dropbox_copy_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@ @IMAGEMAGICK_LIBS@
 
 dist_feed_image_test_SOURCES = feed_image_test.cpp feed_image_test.h
 feed_image_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@ @IMAGEMAGICK_LIBS@

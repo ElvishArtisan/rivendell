@@ -33,3 +33,5 @@ IMPORT_CREATE_DATES          enum('N','Y')
 CREATE_STARTDATE_OFFSET      int(11)
 CREATE_ENDDATE_OFFSET        int(11)
 SET_USER_DEFINED             varchar(191)
+DROP_BOX_SCAN_COUNT	     int(10) unsigned
+DROP_BOX_SCAN_INTERVAL	     int(10) unsigned

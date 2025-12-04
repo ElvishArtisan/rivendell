@@ -62,6 +62,7 @@ dist_rdadmin_SOURCES = add_feed.cpp add_feed.h\
                        edit_channelgpios.cpp edit_channelgpios.h\
                        edit_decks.cpp edit_decks.h\
                        edit_dropbox.cpp edit_dropbox.h\
+                       edit_dropbox_advanced.cpp edit_dropbox_advanced.h\
                        edit_endpoint.cpp edit_endpoint.h\
                        edit_feed.cpp edit_feed.h\
                        edit_feed_perms.cpp edit_feed_perms.h\
@@ -146,6 +147,7 @@ nodist_rdadmin_SOURCES = global_credits.cpp\
                          moc_edit_channelgpios.cpp\
                          moc_edit_decks.cpp\
                          moc_edit_dropbox.cpp\
+                         moc_edit_dropbox_advanced.cpp\
                          moc_edit_endpoint.cpp\
                          moc_edit_feed.cpp\
                          moc_edit_feed_perms.cpp\

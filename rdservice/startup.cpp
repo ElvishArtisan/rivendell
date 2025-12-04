@@ -250,7 +250,9 @@ bool MainObject::StartDropboxes(QString *err_msg)
     "`SEGUE_LEVEL`,"+              // 22
     "`SEGUE_LENGTH`,"+             // 23
     "`SEND_EMAIL`,"+               // 24
-    "`UPDATE_METADATA` "+          // 25
+    "`UPDATE_METADATA`,"+          // 25
+    "`DROP_BOX_SCAN_COUNT`,"+      // 26
+    "`DROP_BOX_SCAN_INTERVAL` "+   // 27
     "from `DROPBOXES` where "+
     "`STATION_NAME`='"+RDEscapeString(rda->config()->stationName())+"'";
   q=new RDSqlQuery(sql);
@@ -308,6 +310,14 @@ bool MainObject::StartDropboxes(QString *err_msg)
     }
     if(q->value(25).toString()=="Y") {
       args.push_back("--update-metadata");
+    }
+    if(q->value(26).toUInt()>0) {
+      args.push_back(QString::asprintf("--drop-box-scan-count=%d",
+				       q->value(26).toUInt()));
+    }
+    if(q->value(27).toUInt()>0) {
+      args.push_back(QString::asprintf("--drop-box-scan-interval=%d",
+				       q->value(27).toUInt()));
     }
     if(q->value(17).toString()=="Y") {
       args.push_back(QString::asprintf("--create-startdate-offset=%d",

@@ -11895,6 +11895,22 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<377)&&(set_schema>cur_schema)) {
+    sql=QString("alter table `DROPBOXES` ")+
+      "add column `DROP_BOX_SCAN_COUNT` int unsigned default 3 after `SET_USER_DEFINED`";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table `DROPBOXES` ")+
+      "add column `DROP_BOX_SCAN_INTERVAL` int unsigned default 5 after `DROP_BOX_SCAN_COUNT`";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    
+    WriteSchemaVersion(++cur_schema);
+  }
+
+
 
   // NEW SCHEMA UPDATES GO HERE...
 

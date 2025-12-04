@@ -46,8 +46,6 @@
 
 #define RDIMPORT_TEMP_BASENAME "rdimp"
 #define RDIMPORT_STDIN_BUFFER_LENGTH 1024
-#define RDIMPORT_DROPBOX_SCAN_INTERVAL 5
-#define RDIMPORT_DROPBOX_PASSES 3
 #define RDIMPORT_USAGE "[options] <group> <filespec> [<filespec>]*\n\nAudio importation tool for the Rivendell Radio Automation System.\nDo 'man 1 rdimport' for the full manual.\n"
 #define RDIMPORT_GLOB_SIZE 10
 
@@ -100,6 +98,8 @@ class MainObject : public QObject
   bool import_delete_source;
   bool import_delete_cuts;
   bool import_drop_box;
+  unsigned import_drop_box_scan_count;
+  unsigned import_drop_box_scan_interval;
   std::vector<QString> import_add_scheduler_codes;
   QString import_set_user_defined;
   bool import_stdin_specified;

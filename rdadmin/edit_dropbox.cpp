@@ -50,6 +50,7 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   // Dialogs
   //
   box_schedcodes_dialog=new RDSchedCodesDialog(this);
+  box_advanced_dialog=new EditDropboxAdvanced(this);
 
   //
   // Group Name
@@ -161,12 +162,20 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
 	  box_log_path_button,SLOT(setDisabled(bool)));
 
   //
-  // Scheduler Codes
+  // Scheduler Codes Button
   //
   box_schedcodes_button=new QPushButton(tr("Scheduler Codes"),this);
-  box_schedcodes_button->setGeometry(110,165,200,25);
+  box_schedcodes_button->setGeometry(60,165,150,25);
   box_schedcodes_button->setFont(buttonFont());
   connect(box_schedcodes_button,SIGNAL(clicked()),this,SLOT(schedcodesData()));
+
+  //
+  // Advanced Settings Button
+  //
+  box_advanced_button=new QPushButton(tr("Advanced Settings"),this);
+  box_advanced_button->setGeometry(280,165,150,25);
+  box_advanced_button->setFont(buttonFont());
+  connect(box_advanced_button,SIGNAL(clicked()),this,SLOT(advancedData()));
 
   //
   // Delete Source
@@ -537,6 +546,12 @@ void EditDropbox::selectLogPathData()
 void EditDropbox::schedcodesData()
 {
   box_schedcodes_dialog->exec(&box_schedcodes,NULL);
+}
+
+
+void EditDropbox::advancedData()
+{
+  box_advanced_dialog->exec(box_dropbox);
 }
 
 

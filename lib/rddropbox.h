@@ -82,12 +82,17 @@ class RDDropbox
   void setSegueLevel(int level) const;
   int segueLength() const;
   void setSegueLength(int length) const;
+  unsigned dropBoxScanCount() const;
+  void setDropBoxScanCount(unsigned val) const;
+  unsigned dropBoxScanInterval() const;
+  void setDropBoxScanInterval(unsigned val) const;
 
  private:
   void SetRow(const QString &param,int value) const;
   void SetRow(const QString &param,unsigned value) const;
   void SetRow(const QString &param,const QString &value) const;
   void SetRow(const QString &param,bool value) const;
+  void SetRowNull(const QString &param) const;
   int box_id;
 };
 

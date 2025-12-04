@@ -30,6 +30,8 @@
 #include <rdgrouplistmodel.h>
 #include <rdschedcodes_dialog.h>
 
+#include "edit_dropbox_advanced.h"
+
 class EditDropbox : public RDDialog
 {
  Q_OBJECT
@@ -44,6 +46,7 @@ class EditDropbox : public RDDialog
   void selectCartData();
   void selectLogPathData();
   void schedcodesData();
+  void advancedData();
   void normalizationToggledData(bool state);
   void autotrimToggledData(bool state);
   void segueToggledData(bool state);
@@ -53,6 +56,7 @@ class EditDropbox : public RDDialog
   void cancelData();
   
  private:
+  EditDropboxAdvanced *box_advanced_dialog;
   RDDropbox *box_dropbox;
   QComboBox *box_group_name_box;
   RDGroupListModel *box_group_name_model;
@@ -60,6 +64,7 @@ class EditDropbox : public RDDialog
   QString box_path;
   QLineEdit *box_to_cart_edit;
   QPushButton *box_schedcodes_button;
+  QPushButton *box_advanced_button;
   QCheckBox *box_delete_cuts_box;
   QLabel *box_delete_cuts_label;
   QCheckBox *box_force_to_mono_box;

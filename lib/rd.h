@@ -702,5 +702,11 @@
 #define STRINGIZE2(x) #x
 #define LINE_NUMBER QString(STRINGIZE(__LINE__)).toInt()
 
+/*
+ * Dropbox Defaults
+ */
+#define RD_DEFAULT_DROPBOX_SCAN_INTERVAL 5
+#define RD_DEFAULT_DROPBOX_SCAN_COUNT 3
+
 
 #endif  // RD_H

@@ -213,6 +213,36 @@
 
     <varlistentry>
       <term>
+	<option>--drop-box-scan-count=<replaceable>scan-quan</replaceable></option>
+      </term>
+      <listitem>
+	<para>
+	  When operating in DropBox mode, require
+	  <replaceable>scan-quan</replaceable> consistent file scans before
+	  proceeding to process a file. The default value is
+	  <userinput>3</userinput>. See THE DROPBOX SCANNING ALGORITHM section
+	  below for more information on the use of this option.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--drop-box-scan-interval=<replaceable>scan-interval</replaceable></option>
+      </term>
+      <listitem>
+	<para>
+	  When operating in DropBox mode, wait
+	  <replaceable>scan-interval</replaceable> seconds between file scans.
+	  The default value is <userinput>5</userinput> seconds. See
+	  THE DROPBOX SCANNING ALGORITHM section
+	  below for more information on the use of this option.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
 	<option>--dump-isci-xref</option>
       </term>
       <listitem>
@@ -1051,6 +1081,35 @@
     </varlistentry>
 
   </variablelist>
+</refsect1>
+
+<refsect1>
+  <title>THE DROPBOX SCANNING ALGORITHM</title>
+  <para>
+    When operating in <emphasis>dropbox mode</emphasis>,
+    <command>rdimport</command><manvolnum>1</manvolnum> will repeatedly
+    scan (by default, every <userinput>5</userinput> seconds) each file that
+    matches the <replaceable>filespec</replaceable>,
+    noting the file's size. Only after the size remains unchanged after
+    a certain number of scans (default value <userinput>3</userinput>) will
+    further processing of the file (importation and, optionally, deletion)
+    be carried out. This is done to ensure that the complete file payload
+    has been transferred to the <replaceable>filepath</replaceable> location
+    before processing begins.
+  </para>
+  <para>
+    The default values should yield reliable results in the great majority of
+    situations, but in certain cases --e.g. file transfers utilizing very
+    slow links-- it may be necessary to increase the default values. Typical
+    indications that this is needed are transferred files that get
+    &quot;stuck&quot; in the <replaceable>filepath</replaceable> or
+    truncated imports. The values can be increased by means of the
+    <option>--drop-box-scan-count</option> and
+    <option>--drop-box-scan-interval</option> options. However, note
+    that increasing these values will result in a correspondingly larger
+    lag between the time that a file is transferred and commencement of
+    processing.
+  </para>
 </refsect1>
 
 <refsect1 id='exit_values'><title>Exit Values</title>

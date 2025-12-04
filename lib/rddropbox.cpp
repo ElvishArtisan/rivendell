@@ -411,53 +411,80 @@ void RDDropbox::setSegueLength(int length) const
   SetRow("SEGUE_LENGTH",length);
 }
 
+
+unsigned RDDropbox::dropBoxScanCount() const
+{
+  return RDGetSqlValue("DROPBOXES","ID",box_id,"DROP_BOX_SCAN_COUNT").toInt();
+}
+
+
+void RDDropbox::setDropBoxScanCount(unsigned val) const
+{
+  SetRow("DROP_BOX_SCAN_COUNT",val);
+}
+
+
+unsigned RDDropbox::dropBoxScanInterval() const
+{
+  return RDGetSqlValue("DROPBOXES","ID",box_id,"DROP_BOX_SCAN_INTERVAL").
+    toInt();
+}
+
+
+void RDDropbox::setDropBoxScanInterval(unsigned val) const
+{
+  SetRow("DROP_BOX_SCAN_INTERVAL",val);
+}
+
+
 void RDDropbox::SetRow(const QString &param,int value) const
 {
-  RDSqlQuery *q;
   QString sql;
 
   sql=QString("update `DROPBOXES` set `")+
     param+QString::asprintf("`=%d where ",value)+
     QString::asprintf("`ID`=%d",box_id);
-  q=new RDSqlQuery(sql);
-  delete q;
+  RDSqlQuery::apply(sql);
 }
 
 
 void RDDropbox::SetRow(const QString &param,unsigned value) const
 {
-  RDSqlQuery *q;
   QString sql;
 
   sql=QString("update `DROPBOXES` set `")+
     param+QString::asprintf("`=%u where ",value)+
     QString::asprintf("`ID`=%d",box_id);
-  q=new RDSqlQuery(sql);
-  delete q;
+  RDSqlQuery::apply(sql);
 }
 
 
 void RDDropbox::SetRow(const QString &param,const QString &value) const
 {
-  RDSqlQuery *q;
   QString sql;
 
   sql=QString("update `DROPBOXES` set `")+
     param+"`='"+RDEscapeString(value)+"' where "+
     QString::asprintf("`ID`=%d",box_id);
-  q=new RDSqlQuery(sql);
-  delete q;
+  RDSqlQuery::apply(sql);
 }
 
 
 void RDDropbox::SetRow(const QString &param,bool value) const
 {
-  RDSqlQuery *q;
   QString sql;
 
   sql=QString("update `DROPBOXES` set `")+
     param+"`='"+RDYesNo(value)+"' where "+
     QString::asprintf("`ID`=%d",box_id);
-  q=new RDSqlQuery(sql);
-  delete q;
+  RDSqlQuery::apply(sql);
+}
+
+
+void RDDropbox::SetRowNull(const QString &param) const
+{
+  QString sql=QString("update `DROPBOXES` set `")+
+    param+"`=NULL where "+
+    QString::asprintf("`ID`=%d",box_id);
+  RDSqlQuery::apply(sql);
 }

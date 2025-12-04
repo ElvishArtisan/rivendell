@@ -81,6 +81,8 @@ MainObject::MainObject(QObject *parent)
   import_delete_source=false;
   import_delete_cuts=false;
   import_drop_box=false;
+  import_drop_box_scan_count=RD_DEFAULT_DROPBOX_SCAN_COUNT;
+  import_drop_box_scan_interval=RD_DEFAULT_DROPBOX_SCAN_INTERVAL;
   import_set_user_defined="";
   import_stdin_specified=false;
   import_startdate_offset=0;
@@ -336,6 +338,22 @@ MainObject::MainObject(QObject *parent)
       import_drop_box=true;
       if(import_persistent_dropbox_id<0) {
 	import_delete_source=true;
+      }
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
+    if(rda->cmdSwitch()->key(i)=="--drop-box-scan-count") {
+      import_drop_box_scan_count=rda->cmdSwitch()->value(i).toUInt(&ok);
+      if((!ok)||(import_drop_box_scan_count<RD_DEFAULT_DROPBOX_SCAN_COUNT)) {
+	Log(LOG_ERR,QString::asprintf("rdimport: --drop-box-scan-count value must be an integer greater than %d\n",RD_DEFAULT_DROPBOX_SCAN_COUNT-1));
+	ErrorExit(RDApplication::ExitInvalidOption);
+      }
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
+    if(rda->cmdSwitch()->key(i)=="--drop-box-scan-interval") {
+      import_drop_box_scan_interval=rda->cmdSwitch()->value(i).toUInt(&ok);
+      if((!ok)||(import_drop_box_scan_interval<RD_DEFAULT_DROPBOX_SCAN_INTERVAL)) {
+	Log(LOG_ERR,QString::asprintf("rdimport: --drop-box-scan-interval value must be an integer greater than %d\n",RD_DEFAULT_DROPBOX_SCAN_INTERVAL-1));
+	ErrorExit(RDApplication::ExitInvalidOption);
       }
       rda->cmdSwitch()->setProcessed(i,true);
     }
@@ -744,6 +762,10 @@ MainObject::MainObject(QObject *parent)
   }
   if(import_drop_box) {
     Log(LOG_INFO,QString(" DropBox mode is ON\n"));
+    Log(LOG_INFO,QString::asprintf(" Dropbox Scan Count is %d\n",
+				   import_drop_box_scan_count));
+    Log(LOG_INFO,QString::asprintf(" Dropbox Scan Interval is %d\n",
+				   import_drop_box_scan_interval));
   }
   else {
     Log(LOG_INFO,QString(" DropBox mode is OFF\n"));
@@ -1065,7 +1087,7 @@ void MainObject::RunDropBox()
       }
     }
 
-    sleep(RDIMPORT_DROPBOX_SCAN_INTERVAL);
+    sleep(import_drop_box_scan_interval);
   } while(import_run);
   Log(LOG_INFO,QString("rdimport stopped\n"));
 }
@@ -1752,7 +1774,7 @@ void MainObject::VerifyFile(const QString &filename,unsigned *cartnum)
 	    LogDropBox("[2] size changed, reset pass, "+(*ci)->dump());
 	  }
 	}
-	if((*ci)->pass>=RDIMPORT_DROPBOX_PASSES) {
+	if((*ci)->pass>=import_drop_box_scan_count) {
 	  MainObject::Result rslt=ImportFile(filename,cartnum);
 	  LogDropBox("  Result: "+ResultText(rslt));
 	  switch(rslt) {
