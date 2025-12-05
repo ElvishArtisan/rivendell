@@ -25105,3 +25105,7 @@
 	in rdadmin(1).
 2025-12-02 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'dropbox_copy_test' test harness in 'tests/'.
+2025-12-05 Brian McGlynn <bmcglynn@geneseemedia.net>
+	* Implemented connection resilence for rdpadd to eliminate 100% CPU
+	utilization when rdairplay or rdvairplayd get killed
+

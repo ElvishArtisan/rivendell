@@ -28,6 +28,9 @@
 #include "rdlog.h"
 #include "rdlog_loader.h"
 #include "rdlogplay.h"
+
+#include <errno.h>
+#include <sys/socket.h>
 #include "rdsvc.h"
 #include "rdweb.h"
 
@@ -88,6 +91,14 @@ RDLogPlay::RDLogPlay(int id,RDEventPlayer *player,bool enable_cue,QObject *paren
       fprintf(stderr,"RDLogPlay: unable to connect to rdpadd\n");
     }
   }
+
+  //
+  // PAD Socket Health Check Timer
+  //
+  play_pad_health_timer=new QTimer(this);
+  connect(play_pad_health_timer,SIGNAL(timeout()),
+	  this,SLOT(checkPadSocketHealth()));
+  play_pad_health_timer->start(1000);
 
   //
   // CAE Connection
@@ -3946,3 +3957,31 @@ int RDLogPlay::executeSeamlessChainTo(int chain_line, const QString &new_log_nam
 }
 
 
+void RDLogPlay::checkPadSocketHealth()
+{
+  int extended_next=2;
+  if(rda->config()->extendedNextPadEvents()==0) {
+    extended_next=1;
+  }
+  
+  for(int i=0;i<extended_next;i++) {
+    if(play_pad_socket[i]!=NULL && 
+       play_pad_socket[i]->state()==QAbstractSocket::ConnectedState) {
+      char buf[1];
+      ssize_t n=::recv(play_pad_socket[i]->socketDescriptor(),buf,1,
+                       MSG_PEEK|MSG_DONTWAIT);
+      
+      if(n==0) {
+        // EOF - rdpadd closed the connection
+        play_pad_socket[i]->close();
+        delete play_pad_socket[i];
+        play_pad_socket[i]=new RDUnixSocket(this);
+        if(!play_pad_socket[i]->
+           connectToAbstract(QString::asprintf("%s-%d",
+                                        RD_PAD_SOURCE_UNIX_BASE_ADDRESS,i))) {
+          // Connection failed - will retry next check interval
+        }
+      }
+    }
+  }
+}

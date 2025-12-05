@@ -145,9 +145,14 @@ QTcpSocket *RDUnixServer::nextPendingConnection()
   memset(&sa,0,sizeof(sa));
   
   if((sock=accept(unix_socket,(struct sockaddr *)(&sa),&sa_len))<0) {
-    unix_error_string=QString("accept failed [")+QString(strerror(errno));
+    unix_error_string=QString("accept failed [")+QString(strerror(errno))+"]";
+    // Disable notifier to prevent spin loop
+    if(unix_notifier!=NULL) {
+      unix_notifier->setEnabled(false);
+    }
     return NULL;
   }
+  
   tcpsock=new QTcpSocket(this);
   tcpsock->setSocketDescriptor(sock,QAbstractSocket::ConnectedState);
 
@@ -188,4 +193,13 @@ void RDUnixServer::setSocketDescriptor(int sock)
 void RDUnixServer::newConnectionData(int fd)
 {
   emit newConnection();
+}
+
+
+void RDUnixServer::resetErrorState()
+{
+  if(unix_notifier!=NULL) {
+    unix_notifier->setEnabled(true);
+  }
+  unix_error_string="ok";
 }

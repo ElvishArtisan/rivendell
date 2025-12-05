@@ -134,6 +134,7 @@ class RDLogPlay : public RDLogModel
   void auditionStartedData();
   void auditionStoppedData();
   void notificationReceivedData(RDNotification *notify);
+  void checkPadSocketHealth();
 
  signals:
   void renamed();
@@ -264,6 +265,7 @@ class RDLogPlay : public RDLogModel
   int play_audition_preroll;
   RDEventPlayer *play_event_player;
   RDUnixSocket *play_pad_socket[2];
+  QTimer *play_pad_health_timer;
   bool play_hours[24];
   RDCutCache *play_cut_cache;
   int play_slot_quantity;

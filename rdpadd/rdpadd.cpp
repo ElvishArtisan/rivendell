@@ -20,6 +20,8 @@
 
 #include <QCoreApplication>
 
+#include <syslog.h>
+
 #include <rd.h>
 
 #include "rdpadd.h"
@@ -27,6 +29,8 @@
 MainObject::MainObject()
   : QObject()
 {
+  openlog("rdpadd", LOG_PID, LOG_DAEMON);
+  
   d_config=new RDConfig();
   d_config->load();
 

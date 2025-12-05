@@ -44,10 +44,12 @@ class RDJsonFramer : public QObject
 
  private slots:
   void readyReadData();
+  void disconnectedData();
 
  private:
   QByteArray d_current_document;
   QTcpSocket *d_socket;
+  int d_empty_read_counter;
 };
 
 

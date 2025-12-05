@@ -49,6 +49,7 @@ class RDUnixServer : public QObject
   void setMaxPendingConnections(int num);
   int socketDescriptor() const;
   void setSocketDescriptor(int sock);
+  void resetErrorState();
 
  signals:
   void newConnection();
