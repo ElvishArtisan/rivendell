@@ -59,6 +59,8 @@ void RDCutData::clear()
   release_mbid="";
   start_datetime=QDateTime();
   end_datetime=QDateTime();
+  start_daypart=QTime();
+  end_daypart=QTime();
   mon=false;
   tue=false;
   wed=false;
@@ -137,18 +139,20 @@ int RDCutCache::batchLoadCuts(const QVector<unsigned> &cart_numbers)
     "`RELEASE_MBID`,"+          // 17
     "`START_DATETIME`,"+        // 18
     "`END_DATETIME`,"+          // 19
-    "`MON`,"+                   // 20
-    "`TUE`,"+                   // 21
-    "`WED`,"+                   // 22
-    "`THU`,"+                   // 23
-    "`FRI`,"+                   // 24
-    "`SAT`,"+                   // 25
-    "`SUN`,"+                   // 26
-    "`WEIGHT`,"+                // 27
-    "`LOCAL_COUNTER`,"+         // 28
-    "`LAST_PLAY_DATETIME`,"+   // 29
-    "`PLAY_ORDER`,"+            // 30
-    "`EVERGREEN` "+             // 31
+    "`START_DAYPART`,"+         // 20
+    "`END_DAYPART`,"+           // 21
+    "`MON`,"+                   // 22
+    "`TUE`,"+                   // 23
+    "`WED`,"+                   // 24
+    "`THU`,"+                   // 25
+    "`FRI`,"+                   // 26
+    "`SAT`,"+                   // 27
+    "`SUN`,"+                   // 28
+    "`WEIGHT`,"+                // 29
+    "`LOCAL_COUNTER`,"+         // 30
+    "`LAST_PLAY_DATETIME`,"+   // 31
+    "`PLAY_ORDER`,"+            // 32
+    "`EVERGREEN` "+             // 33
     "from `CUTS` where "+
     "`CART_NUMBER` in ("+in_clause+") "+
     "order by `CART_NUMBER`,`CUT_NAME`";
@@ -180,18 +184,20 @@ int RDCutCache::batchLoadCuts(const QVector<unsigned> &cart_numbers)
     cut.release_mbid=q->value(17).toString();
     cut.start_datetime=q->value(18).toDateTime();
     cut.end_datetime=q->value(19).toDateTime();
-    cut.mon=RDBool(q->value(20).toString());
-    cut.tue=RDBool(q->value(21).toString());
-    cut.wed=RDBool(q->value(22).toString());
-    cut.thu=RDBool(q->value(23).toString());
-    cut.fri=RDBool(q->value(24).toString());
-    cut.sat=RDBool(q->value(25).toString());
-    cut.sun=RDBool(q->value(26).toString());
-    cut.weight=q->value(27).toInt();
-    cut.local_counter=q->value(28).toInt();
-    cut.last_play_datetime=q->value(29).toDateTime();
-    cut.play_order=q->value(30).toInt();
-    cut.evergreen=RDBool(q->value(31).toString());
+    cut.start_daypart=q->value(20).toTime();
+    cut.end_daypart=q->value(21).toTime();
+    cut.mon=RDBool(q->value(22).toString());
+    cut.tue=RDBool(q->value(23).toString());
+    cut.wed=RDBool(q->value(24).toString());
+    cut.thu=RDBool(q->value(25).toString());
+    cut.fri=RDBool(q->value(26).toString());
+    cut.sat=RDBool(q->value(27).toString());
+    cut.sun=RDBool(q->value(28).toString());
+    cut.weight=q->value(29).toInt();
+    cut.local_counter=q->value(30).toInt();
+    cut.last_play_datetime=q->value(31).toDateTime();
+    cut.play_order=q->value(32).toInt();
+    cut.evergreen=RDBool(q->value(33).toString());
     
     // Store by cart number
     cuts_by_cart[cart_num].push_back(cut);
@@ -316,6 +322,13 @@ QString RDCutCache::selectCut(unsigned cart_number, RDCart::PlayOrder play_order
     }
     if(!day_valid) {
       continue;
+    }
+    
+    // Check daypart time validity (time-of-day restriction)
+    if(cut.start_daypart.isValid()) {
+      if(time<cut.start_daypart || time>cut.end_daypart) {
+        continue;
+      }
     }
     
     valid_cuts.push_back(cut);

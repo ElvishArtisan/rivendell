@@ -63,6 +63,8 @@ class RDCutData
   QString release_mbid;
   QDateTime start_datetime;
   QDateTime end_datetime;
+  QTime start_daypart;
+  QTime end_daypart;
   bool mon;
   bool tue;
   bool wed;
