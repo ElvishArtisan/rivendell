@@ -18,13 +18,17 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <syslog.h>
+
 #include "rdjsonframer.h"
 
 RDJsonFramer::RDJsonFramer(QTcpSocket *in_sock,QObject *parent)
   : QObject(parent)
 {
   d_socket=in_sock;
+  d_empty_read_counter=0;
   connect(d_socket,SIGNAL(readyRead()),this,SLOT(readyReadData()));
+  connect(d_socket,SIGNAL(disconnected()),this,SLOT(disconnectedData()));
 }
 
 
@@ -64,5 +68,18 @@ void RDJsonFramer::reset()
 
 void RDJsonFramer::readyReadData()
 {
-  write(d_socket->readAll());
+  QByteArray data=d_socket->readAll();
+  if(!data.isEmpty()) {
+    write(data);
+  }
+}
+
+
+void RDJsonFramer::disconnectedData()
+{
+  // Socket disconnected - stop processing immediately
+  syslog(LOG_INFO,"RDJsonFramer: disconnected signal received (sockfd=%d), disconnecting readyRead",
+          (int)d_socket->socketDescriptor());
+  disconnect(d_socket,SIGNAL(readyRead()),this,SLOT(readyReadData()));
+  d_empty_read_counter=0;
 }

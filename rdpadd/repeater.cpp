@@ -20,8 +20,12 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <syslog.h>
+#include <errno.h>
+#include <sys/socket.h>
 
 #include <QHostAddress>
+#include <QTimer>
 
 #include <rd.h>
 
@@ -64,6 +68,13 @@ Repeater::Repeater(const QString &src_unix_addr,uint16_t serv_port,
 	    pad_source_server->errorString().toUtf8().constData());
     exit(1);
   }
+  
+  //
+  // Health Check Timer - detect stuck sockets
+  //
+  pad_health_timer=new QTimer(this);
+  connect(pad_health_timer,SIGNAL(timeout()),this,SLOT(checkSocketHealth()));
+  pad_health_timer->start(1000);  // Check every second
 }
 
 
@@ -111,36 +122,69 @@ void Repeater::newSourceConnectionData()
 {
   QTcpSocket *sock=pad_source_server->nextPendingConnection();
   if(sock==NULL) {
-    fprintf(stderr,"rdpadd: UNIX socket error [%s]\n",
-	    (const char *)pad_source_server->errorString().toUtf8());
-    exit(1);
+    QTimer::singleShot(100,this,SLOT(retrySourceConnection()));
+    return;
   }
+  
   connect(sock,SIGNAL(disconnected()),pad_source_disconnect_mapper,SLOT(map()));
   pad_source_disconnect_mapper->setMapping(sock,sock->socketDescriptor());
 
   RDJsonFramer *framer=new RDJsonFramer(sock,this);
   connect(framer,SIGNAL(documentReceived(const QByteArray &)),
 	  this,SLOT(sendUpdate(const QByteArray &)));
-  pad_framers[sock->socketDescriptor()]=framer;
+  
+  int sockfd=sock->socketDescriptor();
+  pad_source_sockets[sockfd]=sock;
+  pad_framers[sockfd]=framer;
 }
 
 
 void Repeater::sourceDisconnected(int id)
 {
-  if(pad_framers.value(id)!=NULL) {
-    pad_framers.value(id)->deleteLater();
+  QTcpSocket *sock=pad_source_sockets.value(id);
+  RDJsonFramer *framer=pad_framers.value(id);
+  
+  if(sock!=NULL && framer!=NULL) {
+    // Disconnect from signal mapper to avoid stale mappings
+    pad_source_disconnect_mapper->removeMappings(sock);
+    
+    sock->blockSignals(true);
     pad_framers.remove(id);
-  }
-  else {
-    fprintf(stderr,"unknown source connection %d attempted to close\n",id);
+    pad_source_sockets.remove(id);
+    delete framer;  // This also deletes the socket
   }
 }
 
 
-void Repeater::sendUpdate(const QByteArray &jdoc)
+void Repeater::retrySourceConnection()
+{
+  pad_source_server->resetErrorState();
+}
+
+
+void Repeater::sendUpdate(const QByteArray &data)
 {
   for(QMap<int,QTcpSocket *>::const_iterator it=pad_client_sockets.begin();
       it!=pad_client_sockets.end();it++) {
-    it.value()->write(jdoc);
+    it.value()->write(data);
+  }
+}
+
+
+void Repeater::checkSocketHealth()
+{
+  for(QMap<int,QTcpSocket *>::iterator it=pad_source_sockets.begin();
+      it!=pad_source_sockets.end();it++) {
+    QTcpSocket *sock=it.value();
+    int fd=it.key();
+    
+    char buf[1];
+    ssize_t n=::recv(sock->socketDescriptor(),buf,1,MSG_PEEK|MSG_DONTWAIT);
+    
+    if(n==0) {
+      // EOF detected - peer closed but Qt didn't fire disconnected signal
+      sourceDisconnected(fd);
+      return;
+    }
   }
 }

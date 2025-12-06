@@ -33,6 +33,7 @@
 #include <QRegExp>
 #include <QSettings>
 #include <QStringList>
+#include <QCoreApplication>
 
 #include "rdconfig.h"
 #include "rdprofile.h"
@@ -84,16 +85,16 @@ void RDConfig::setModuleName(const QString &modname)
   conf_module_name=modname;
 }
 
-
 QString RDConfig::userAgent(const QString &modname) const
 {
   if(!conf_http_user_agent.isEmpty()) {
     return conf_http_user_agent;
   }
+  const QString ver = QCoreApplication::applicationVersion().isEmpty() ? QString("unknown") : QCoreApplication::applicationVersion();
   if(modname.isEmpty()) {
-    return QString("Mozilla/5.0")+" rivendell/"+VERSION;
+    return QString("Mozilla/5.0 rivendell/")+ver;
   }
-  return QString("Mozilla/5.0 rivendell/")+VERSION+" ("+modname+")";
+  return QString("Mozilla/5.0 rivendell/")+ver+" ("+modname+")";
 }
 
 
@@ -357,6 +358,12 @@ QString RDConfig::rnRmlGroup() const
 }
 
 
+bool RDConfig::allowNonRoot() const
+{
+  return conf_allow_non_root;
+}
+
+
 int RDConfig::syslogFacility() const
 {
   return conf_syslog_facility;
@@ -556,6 +563,24 @@ int RDConfig::extendedNextPadEvents() const
 }
 
 
+bool RDConfig::rdairplayPrefetch() const
+{
+  return conf_rdairplay_prefetch;
+}
+
+
+int RDConfig::rdairplayPrefetchSlots() const
+{
+  return conf_rdairplay_prefetch_window;
+}
+
+
+int RDConfig::rdairplayPrefetchHistory() const
+{
+  return conf_rdairplay_prefetch_history;
+}
+
+
 QString RDConfig::sasStation() const
 {
   return conf_sas_station;
@@ -620,6 +645,8 @@ bool RDConfig::load()
     profile->stringValue("Identity","RnRmlOwner",RD_DEFAULT_RN_RML_OWNER);
   conf_rn_rml_group=
     profile->stringValue("Identity","RnRmlGroup",RD_DEFAULT_RN_RML_GROUP);
+  conf_allow_non_root=
+    profile->boolValue("Identity","AllowNonRoot",false);
   conf_label=profile->stringValue("Identity","Label",RD_DEFAULT_LABEL);
   conf_http_user_agent=profile->stringValue("Identity","HttpUserAgent");
 
@@ -767,6 +794,12 @@ bool RDConfig::load()
   conf_extended_next_pad_events=
     profile->intValue("Tuning","ExtendedNextPadEvents",
 		      RD_DEFAULT_EXTENDED_NEXT_PAD_EVENTS);
+  conf_rdairplay_prefetch=
+    profile->boolValue("Hacks","RdAirplayPrefetch",true);
+  conf_rdairplay_prefetch_window=
+    profile->intValue("Hacks","RdAirplayPrefetchSlots",8);
+  conf_rdairplay_prefetch_history=
+    profile->intValue("Hacks","RdAirplayPrefetchHistory",10);
   conf_sas_station=profile->stringValue("SASFilter","Station","");
   conf_sas_matrix=profile->intValue("SASFilter","Matrix",0);
   conf_sas_base_cart=profile->intValue("SASFilter","BaseCart",0);
@@ -842,6 +875,7 @@ void RDConfig::clear()
   conf_pypad_group="";
   conf_rn_rml_owner="";
   conf_rn_rml_group="";
+  conf_allow_non_root=false;
   conf_syslog_facility=LOG_USER;
   conf_audio_root=RD_AUDIO_ROOT;
   conf_audio_extension=RD_AUDIO_EXTENSION;
@@ -891,6 +925,9 @@ void RDConfig::clear()
   conf_sas_base_cart=1;
   conf_sas_tty_device="";
   conf_destinations.clear();
+  conf_rdairplay_prefetch=true;
+  conf_rdairplay_prefetch_window=8;
+  conf_rdairplay_prefetch_history=10;
 }
 
 

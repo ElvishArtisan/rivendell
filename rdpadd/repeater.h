@@ -26,6 +26,7 @@
 #include <QSignalMapper>
 #include <QTcpServer>
 #include <QTcpSocket>
+#include <QTimer>
 
 #include <rdjsonframer.h>
 #include <rdunixserver.h>
@@ -46,6 +47,8 @@ class Repeater : public QObject
   void newSourceConnectionData();
   void sourceDisconnected(int id);
   void sendUpdate(const QByteArray &jdoc);
+  void retrySourceConnection();
+  void checkSocketHealth();
 
  private:
   uint16_t pad_server_port;
@@ -55,7 +58,9 @@ class Repeater : public QObject
   QMap<int,QTcpSocket *> pad_client_sockets;
   QSignalMapper *pad_source_disconnect_mapper;
   RDUnixServer *pad_source_server;
+  QMap<int,QTcpSocket *> pad_source_sockets;
   QMap<int,RDJsonFramer *> pad_framers;
+  QTimer *pad_health_timer;
 };
 
 

@@ -27,6 +27,7 @@
 #include <QObject>
 
 #include <rdcart.h>
+#include <rdcut_cache.h>
 
 class RDLogLine
 {
@@ -277,8 +278,8 @@ class RDLogLine
 			    bool timescale,int len=-1);
   void loadCart(int cartnum,RDLogLine::TransType next_type,int mach,
 		bool timescale,RDLogLine::TransType type=RDLogLine::NoTrans,
-		int len=-1);
-  void loadCart(int cartnum,int cutnum=-1);
+		int len=-1,bool skip_cart_query=false);
+  void loadCart(int cartnum,int cutnum=-1,bool skip_cart_query=false);
   void refreshCart();
   void refreshPointers();
   QString xml(int line) const;
@@ -290,10 +291,15 @@ class RDLogLine
   static QString transText(RDLogLine::TransType trans);
   static TransType transTypeFromString(const QString &str);
   static QString typeText(RDLogLine::Type type);
-  static QString timeTypeText(RDLogLine::TimeType type);
+  static QString timeTypeText(RDLogLine::TimeType time);
   static QString sourceText(RDLogLine::Source src);
   bool isHoldover() const;
   void setHoldover(bool);
+
+  // Cut cache support methods
+  void applyCutData(const RDCutData &cut_data,bool hook_mode,
+                    bool timescale,double time_ratio);
+  void setCutCache(RDCutCache *cache);
 
  private:
   bool modified;
@@ -399,6 +405,7 @@ class RDLogLine
   int log_link_id;
   bool log_link_embedded;
   bool is_holdover;
+  RDCutCache *log_cut_cache;
 };
 
 

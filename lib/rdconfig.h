@@ -83,6 +83,7 @@ class RDConfig
   QString pypadGroup() const;
   QString rnRmlOwner() const;
   QString rnRmlGroup() const;
+  bool allowNonRoot() const;
   int syslogFacility() const;
   QString audioRoot() const;
   QString audioExtension() const;
@@ -129,6 +130,9 @@ class RDConfig
   QString tempDirectory();
   int serviceStartupDelay() const;
   int extendedNextPadEvents() const;
+  bool rdairplayPrefetch() const;
+  int rdairplayPrefetchSlots() const;
+  int rdairplayPrefetchHistory() const;
   QString sasStation() const;
   int sasMatrix() const;
   unsigned sasBaseCart() const;
@@ -175,6 +179,7 @@ class RDConfig
   QString conf_pypad_group;
   QString conf_rn_rml_owner;
   QString conf_rn_rml_group;
+  bool conf_allow_non_root;
   int conf_syslog_facility;
   QString conf_audio_root;
   QString conf_audio_extension;
@@ -220,6 +225,9 @@ class RDConfig
   QString conf_temp_directory;
   int conf_service_startup_delay;
   int conf_extended_next_pad_events;
+  bool conf_rdairplay_prefetch;
+  int conf_rdairplay_prefetch_window;
+  int conf_rdairplay_prefetch_history;
   QString conf_sas_station;
   int conf_sas_matrix;
   unsigned conf_sas_base_cart;

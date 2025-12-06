@@ -32,6 +32,7 @@
 #include <rd.h>
 #include <rdairplay_conf.h>
 #include <rdapplication.h>
+#include <rdcut_cache.h>
 #include <rdevent_player.h>
 #include <rdlog.h>
 #include <rdlogmodel.h>
@@ -54,6 +55,7 @@ class RDLogPlay : public RDLogModel
  Q_OBJECT
  public:
   RDLogPlay(int id,RDEventPlayer *player,bool enable_cue,QObject *parent);
+  ~RDLogPlay();
   QString serviceName() const;
   void setServiceName(const QString &svcname);
   QString defaultServiceName() const;
@@ -132,6 +134,7 @@ class RDLogPlay : public RDLogModel
   void auditionStartedData();
   void auditionStoppedData();
   void notificationReceivedData(RDNotification *notify);
+  void checkPadSocketHealth();
 
  signals:
   void renamed();
@@ -205,6 +208,11 @@ class RDLogPlay : public RDLogModel
   void LogTraffic(RDLogLine *logline,RDLogLine::PlaySource src,
 		  RDAirPlayConf::TrafficAction action,bool onair_flag) const;
   void DumpToSyslog(int prio_lvl,const QString &hdr) const;
+  bool scanForChainTo(int start_line, QString *chain_log_name,
+                     int *chain_line, int *msecs_remaining);
+  void checkPrefetchNeeded();
+  int executeSeamlessChainTo(int chain_line, const QString &new_log_name);
+  void clearPrefetch();
   RDCae *play_cae;
   RDAirPlayConf::OpMode play_op_mode;
   int play_slot_id[LOGPLAY_MAX_PLAYS];
@@ -257,8 +265,17 @@ class RDLogPlay : public RDLogModel
   int play_audition_preroll;
   RDEventPlayer *play_event_player;
   RDUnixSocket *play_pad_socket[2];
+  QTimer *play_pad_health_timer;
   bool play_hours[24];
+  RDCutCache *play_cut_cache;
   int play_slot_quantity;
+  // Simple prefetch state (no threading)
+  RDLogModel *play_prefetch_model;
+  QString play_prefetch_log_name;
+  bool play_prefetch_enabled;
+  int play_prefetch_threshold_slots;
+  int play_prefetch_history_slots;
+  static const int PREFETCH_PREVIEW_LINES = 10;
 };
 
 
