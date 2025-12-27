@@ -18,6 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <QApplication>
+
 #include "rddb.h"
 #include "rdclock.h"
 #include "rdevent_line.h"
@@ -281,6 +283,7 @@ bool RDClock::generateLog(int hour,const QString &logname,
     "order by `START_TIME`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
+    qApp->processEvents();
     eventline.setName(q->value(0).toString());
     eventline.load();
     eventline.setStartTime(QTime(0,0,0).addMSecs(q->value(1).toInt()).
