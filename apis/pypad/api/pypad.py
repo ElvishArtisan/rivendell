@@ -817,7 +817,7 @@ class Receiver(object):
         self.__timer_callback(config)
 
     def __getDbCredentials(self):
-        config=configparser.ConfigParser()
+        config=configparser.ConfigParser(interpolation=None)
         config.read_file(open('/etc/rd.conf'))
         return (config.get('mySQL','Loginname'),config.get('mySQL','Password'),
                 config.get('mySQL','Hostname'),config.get('mySQL','Database'))
