@@ -25136,3 +25136,8 @@
 	cleaning up the mountpoint on CentOS 7.
 2026-06-15 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a dependency error in the 'rivendell-dev' DEB package.
+2026-07-24 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in caed(8) that could cause distorted audio when
+	capturing from AoIP streams via ALSA.
+	* Refactored the ALSA driver in caed(8) to log software parameters
+	upon startup.

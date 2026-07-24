@@ -63,7 +63,7 @@ void *AlsaCaptureCallback(void *ptr)
 
   while(!alsa_format->exiting) {
     int s=snd_pcm_readi(alsa_format->pcm,alsa_format->card_buffer,
-			rda->config()->alsaPeriodSize()/(alsa_format->periods*2));
+			rda->config()->alsaPeriodSize());
     if(((snd_pcm_state(alsa_format->pcm)!=SND_PCM_STATE_RUNNING)&&
 	(!alsa_format->exiting))||(s<0)) {
       snd_pcm_drop (alsa_format->pcm);
@@ -1442,7 +1442,7 @@ bool DriverAlsa::AlsaStartCaptureDevice(QString &dev,int card,snd_pcm_t *pcm,
   snd_pcm_hw_params_any(pcm,hwparams);
 
   rda->syslog(LOG_INFO,"Starting ALSA Capture Device %s:",
-	 (const char *)dev.toUtf8());
+	      dev.toUtf8().constData());
   rda->syslog(LOG_INFO,"  Native Device Name = %s",
 	      alsacard->id().toUtf8().constData());
 
@@ -1464,19 +1464,14 @@ bool DriverAlsa::AlsaStartCaptureDevice(QString &dev,int card,snd_pcm_t *pcm,
   //
   if(snd_pcm_hw_params_test_format(pcm,hwparams,SND_PCM_FORMAT_S32_LE)==0) {
     alsa_capture_format[card].format=SND_PCM_FORMAT_S32_LE;
-    rda->syslog(LOG_INFO,"  Format = 32 bit little-endian");
   }
   else {
     if(snd_pcm_hw_params_test_format(pcm,hwparams,SND_PCM_FORMAT_S16_LE)==0) {
       alsa_capture_format[card].format=SND_PCM_FORMAT_S16_LE;
-      rda->syslog(LOG_INFO,
-			    "  Format = 16 bit little-endian");
     }
     else {
       rda->syslog(LOG_WARNING,
-	     "  Neither 16 nor 32 bit little-endian formats available,");
-      rda->syslog(LOG_WARNING,
-			    "  aborting initialization of device.");
+		  "  no supported sample formats found, aborting initialization of device.");
       return false;
     }
   }
@@ -1502,7 +1497,6 @@ bool DriverAlsa::AlsaStartCaptureDevice(QString &dev,int card,snd_pcm_t *pcm,
     return false;
   }
   alsa_capture_format[card].sample_rate=sr;
-  rda->syslog(LOG_INFO,"  SampleRate = %u",sr);
 
   //
   // Channels
@@ -1516,35 +1510,27 @@ bool DriverAlsa::AlsaStartCaptureDevice(QString &dev,int card,snd_pcm_t *pcm,
   snd_pcm_hw_params_set_channels_near(pcm,hwparams,
 				      &alsa_capture_format[card].channels);
   alsa_play_format[card].capture_channels=alsa_capture_format[card].channels;
-  rda->syslog(LOG_INFO,"  Aggregate Channels = %u",
-	 alsa_capture_format[card].channels);
 
   //
-  // Buffer Size
+  // Buffer Setup
   //
   alsa_capture_format[card].periods=rda->config()->alsaPeriodQuantity();
   snd_pcm_hw_params_set_periods_near(pcm,hwparams,
 				     &alsa_capture_format[card].periods,&dir);
-  rda->syslog(LOG_INFO,
-			"  Periods = %u",alsa_capture_format[card].periods);
   alsa_capture_format[card].buffer_size=
     alsa_capture_format[card].periods*rda->config()->alsaPeriodSize();
   snd_pcm_hw_params_set_buffer_size_near(pcm,hwparams,
 	       			 &alsa_capture_format[card].buffer_size);
-  rda->syslog(LOG_INFO,"  BufferSize = %u frames",
-	 (unsigned)alsa_capture_format[card].buffer_size);
 
   //
   // Fire It Up
   //
   if((err=snd_pcm_hw_params(pcm,hwparams))<0) {
-    rda->syslog(LOG_WARNING,
-			  "  Device Error: %s,",snd_strerror(err));
-    rda->syslog(LOG_WARNING,
-			  "  aborting initialization of device.");
+    rda->syslog(LOG_WARNING,"  Device Error: %s,",snd_strerror(err));
+    rda->syslog(LOG_WARNING,"  aborting initialization of device.");
     return false;
   }
-  rda->syslog(LOG_INFO,"  Device started successfully");
+  rda->syslog(LOG_INFO," Device started successfully");
   switch(alsa_capture_format[card].format) {
   case SND_PCM_FORMAT_S16_LE:
     alsa_capture_format[card].card_buffer_size=
@@ -1574,11 +1560,16 @@ bool DriverAlsa::AlsaStartCaptureDevice(QString &dev,int card,snd_pcm_t *pcm,
   snd_pcm_sw_params_current(pcm,swparams);
   snd_pcm_sw_params_set_avail_min(pcm,swparams,rda->config()->alsaPeriodSize());
   if((err=snd_pcm_sw_params(pcm,swparams))<0) {
-    rda->syslog(LOG_WARNING,
-			  "ALSA Device %s: %s",(const char *)dev.toUtf8(),
-	   snd_strerror(err));
+    rda->syslog(LOG_WARNING,"ALSA Device %s: %s",dev.toUtf8().constData(),
+		snd_strerror(err));
     return false;
   }
+
+  rda->syslog(LOG_INFO," Hardware Parameters");
+  DumpHardwareParams(hwparams);
+
+  rda->syslog(LOG_INFO," Software Parameters");
+  DumpSoftwareParams(swparams);
 
   //
   // Start the Callback
@@ -1622,9 +1613,7 @@ bool DriverAlsa::AlsaStartPlayDevice(QString &dev,int card,snd_pcm_t *pcm,
   if(snd_pcm_hw_params_test_access(pcm,hwparams,
 				   SND_PCM_ACCESS_RW_INTERLEAVED)<0) {
     rda->syslog(LOG_WARNING,
-			  "  Interleaved access not supported,");
-    rda->syslog(LOG_WARNING,
-			  "  aborting initialization of device.");
+		"  Interleaved access not supported, aborting initialization of device.");
     return false;
   }
   snd_pcm_hw_params_set_access(pcm,hwparams,SND_PCM_ACCESS_RW_INTERLEAVED);
@@ -1634,19 +1623,14 @@ bool DriverAlsa::AlsaStartPlayDevice(QString &dev,int card,snd_pcm_t *pcm,
   //
   if(snd_pcm_hw_params_test_format(pcm,hwparams,SND_PCM_FORMAT_S32_LE)==0) {
     alsa_play_format[card].format=SND_PCM_FORMAT_S32_LE;
-    rda->syslog(LOG_INFO,"  Format = 32 bit little-endian");
   }
   else {
     if(snd_pcm_hw_params_test_format(pcm,hwparams,SND_PCM_FORMAT_S16_LE)==0) {
       alsa_play_format[card].format=SND_PCM_FORMAT_S16_LE;
-      rda->syslog(LOG_INFO,
-			    "  Format = 16 bit little-endian");
     }
     else {
       rda->syslog(LOG_WARNING,
-	     "  Neither 16 nor 32 bit little-endian formats available,");
-      rda->syslog(LOG_WARNING,
-			    "  aborting initialization of device.");
+		  "  no supported sample formats found, aborting initialization of device.");
       return false;
     }
   }
@@ -1659,15 +1643,12 @@ bool DriverAlsa::AlsaStartPlayDevice(QString &dev,int card,snd_pcm_t *pcm,
   snd_pcm_hw_params_set_rate_near(pcm,hwparams,&sr,&dir);
   if((sr<(systemSampleRate()-RD_ALSA_SAMPLE_RATE_TOLERANCE))||
      (sr>(systemSampleRate()+RD_ALSA_SAMPLE_RATE_TOLERANCE))) {
-    rda->syslog(LOG_WARNING,
-			  "  Asked for sample rate %u, got %u",
-			  systemSampleRate(),sr);
-    rda->syslog(LOG_WARNING,
-			  "  Sample rate unsupported by device");
+    rda->syslog(LOG_WARNING,"  Asked for sample rate %u, got %u",
+		systemSampleRate(),sr);
+    rda->syslog(LOG_WARNING,"  Sample rate unsupported by device");
     return false;
   }
   alsa_play_format[card].sample_rate=sr;
-  rda->syslog(LOG_INFO,"  SampleRate = %u",sr);
 
   //
   // Channels
@@ -1680,22 +1661,17 @@ bool DriverAlsa::AlsaStartPlayDevice(QString &dev,int card,snd_pcm_t *pcm,
   }
   snd_pcm_hw_params_set_channels_near(pcm,hwparams,
 				      &alsa_play_format[card].channels);
-  rda->syslog(LOG_INFO,"  Aggregate Channels = %u",
-			alsa_play_format[card].channels);
+
   //
   // Buffer Size
   //
   alsa_play_format[card].periods=rda->config()->alsaPeriodQuantity();
   snd_pcm_hw_params_set_periods_near(pcm,hwparams,
 				     &alsa_play_format[card].periods,&dir);
-  rda->syslog(LOG_INFO,
-			"  Periods = %u",alsa_play_format[card].periods);
   alsa_play_format[card].buffer_size=
     alsa_play_format[card].periods*rda->config()->alsaPeriodSize();
   snd_pcm_hw_params_set_buffer_size_near(pcm,hwparams,
 					 &alsa_play_format[card].buffer_size);
-  rda->syslog(LOG_INFO,"  BufferSize = %u frames",
-	 (unsigned)alsa_play_format[card].buffer_size);
 
   //
   // Fire It Up
@@ -1740,6 +1716,12 @@ bool DriverAlsa::AlsaStartPlayDevice(QString &dev,int card,snd_pcm_t *pcm,
 	   (const char *)dev.toUtf8(),snd_strerror(err));
     return false;
   }
+
+  rda->syslog(LOG_INFO," Hardware Parameters");
+  DumpHardwareParams(hwparams);
+
+  rda->syslog(LOG_INFO," Software Parameters");
+  DumpSoftwareParams(swparams);
 
   //
   // Start the Callback
@@ -1973,4 +1955,215 @@ void DriverAlsa::AlsaClock()
     }
   }
 }
+
+
+void DriverAlsa::DumpHardwareParams(snd_pcm_hw_params_t *hwparams) const
+{
+  //
+  // Access Type
+  //
+  snd_pcm_access_t access;
+  if(snd_pcm_hw_params_get_access(hwparams,&access)==0) {
+    switch(access) {
+    case SND_PCM_ACCESS_MMAP_INTERLEAVED:
+      rda->syslog(LOG_INFO,"  Access Type = MMAP Interleaved");
+      break;
+
+    case SND_PCM_ACCESS_MMAP_NONINTERLEAVED:
+      rda->syslog(LOG_INFO,"  Access Type = MMAP Non-interleaved");
+      break;
+
+    case SND_PCM_ACCESS_MMAP_COMPLEX:
+      rda->syslog(LOG_INFO,"  Access Type = MMAP Complex");
+      break;
+
+    case SND_PCM_ACCESS_RW_INTERLEAVED:
+      rda->syslog(LOG_INFO,"  Access Type = RW Interleaved");
+      break;
+
+    case SND_PCM_ACCESS_RW_NONINTERLEAVED:
+      rda->syslog(LOG_INFO,"  Access Type = RW Non-interleaved");
+      break;
+
+    default:
+      rda->syslog(LOG_INFO,"  Access Type = Not recognized [%u]",access);
+      break;
+    }
+  }
+  else {
+    rda->syslog(LOG_INFO,"  Access Type = Unknown/ambiguous");
+  }
+
+  //
+  // Sample Format
+  //
+  snd_pcm_format_t format;
+  if(snd_pcm_hw_params_get_format(hwparams,&format)==0) {
+    rda->syslog(LOG_INFO,"  Sample Format = %s",
+		SampleFormatName(format).toUtf8().constData());
+  }
+  else {
+    rda->syslog(LOG_INFO,"  Sample Format = Unknown/ambiguous");
+  }
+
+  //
+  // Sample Rate
+  //
+  unsigned samprate;
+  if(snd_pcm_hw_params_get_rate(hwparams,&samprate,NULL)==0) {
+    rda->syslog(LOG_INFO,"  Sample Rate = %u sample/sec",samprate);
+  }
+  else {
+    rda->syslog(LOG_INFO,"  Sample Rate = Unknown/ambiguous");
+  }
+
+  //
+  // Aggregate Channels
+  //
+  unsigned chans;
+  if(snd_pcm_hw_params_get_channels(hwparams,&chans)==0) {
+    rda->syslog(LOG_INFO,"  Aggregate Channels = %u",chans);
+  }
+  else {
+    rda->syslog(LOG_INFO,"  Aggregate Channels = Unknown/ambiguous");
+  }
+
+  //
+  // Buffering
+  //
+  snd_pcm_uframes_t buffer_size;
+  snd_pcm_hw_params_get_buffer_size(hwparams,&buffer_size);
+  rda->syslog(LOG_INFO,"  BufferSize = %u frames",buffer_size);
+
+  snd_pcm_uframes_t period_size;
+  snd_pcm_hw_params_get_period_size(hwparams,&period_size,0);
+  rda->syslog(LOG_INFO,"  PeriodSize = %u frames",period_size);
+
+  unsigned period_time;
+  snd_pcm_hw_params_get_period_time(hwparams,&period_time,0);
+  rda->syslog(LOG_INFO,"  PeriodTime = %u",period_time);
+}
+
+
+void DriverAlsa::DumpSoftwareParams(snd_pcm_sw_params_t *swparams) const
+{
+  snd_pcm_tstamp_t tstamp_mode;
+  snd_pcm_sw_params_get_tstamp_mode(swparams,&tstamp_mode);
+  rda->syslog(LOG_INFO,"  tstamp_mode = %s",
+	      snd_pcm_tstamp_mode_name(tstamp_mode));
+
+  snd_pcm_tstamp_type_t tstamp_type;
+  snd_pcm_sw_params_get_tstamp_type(swparams,&tstamp_type);
+  switch(tstamp_type) {
+  case SND_PCM_TSTAMP_TYPE_GETTIMEOFDAY:
+    rda->syslog(LOG_INFO,"  tstamp_type = GETTIMEOFDAY");
+    break;
+
+  case SND_PCM_TSTAMP_TYPE_MONOTONIC:
+    rda->syslog(LOG_INFO,"  tstamp_type = MONOTONIC");
+    break;
+
+  case SND_PCM_TSTAMP_TYPE_MONOTONIC_RAW:
+    rda->syslog(LOG_INFO,"  tstamp_type = MONOTONIC_RAW");
+    break;
+
+  default:
+    rda->syslog(LOG_INFO,"  tstamp_type = UNKNOWN [%u]",tstamp_type);
+    break;
+  }
+
+  snd_pcm_uframes_t avail_min;
+  snd_pcm_sw_params_get_avail_min(swparams,&avail_min);
+  rda->syslog(LOG_INFO,"  avail_min = %u",avail_min);
+
+  int period_event;
+  snd_pcm_sw_params_get_period_event(swparams,&period_event);
+  rda->syslog(LOG_INFO,"  period_event = %u",period_event);
+
+  snd_pcm_uframes_t start_threshold;
+  snd_pcm_sw_params_get_start_threshold(swparams,&start_threshold);
+  rda->syslog(LOG_INFO,"  start_threshold = %u",start_threshold);
+
+  snd_pcm_uframes_t stop_threshold;
+  snd_pcm_sw_params_get_stop_threshold(swparams,&stop_threshold);
+  rda->syslog(LOG_INFO,"  stop_threshold = %u",stop_threshold);
+
+  snd_pcm_uframes_t silence_threshold;
+  snd_pcm_sw_params_get_silence_threshold(swparams,&silence_threshold);
+  rda->syslog(LOG_INFO,"  silence_threshold = %u",silence_threshold);
+
+  snd_pcm_uframes_t silence_size;
+  snd_pcm_sw_params_get_silence_size(swparams,&silence_size);
+  rda->syslog(LOG_INFO,"  silence_size = %u",silence_size);
+
+  snd_pcm_uframes_t boundary;
+  snd_pcm_sw_params_get_boundary(swparams,&boundary);
+  rda->syslog(LOG_INFO,"  boundary = %u",boundary);
+}
+
+
+QString DriverAlsa::SampleFormatName(snd_pcm_format_t format) const
+{
+  QString ret=tr("unknown");
+  if(format<=49) {
+    const char fmt_names[][20]={{"S8"},                        /*  0 */
+				{"U8"},                        /*  1 */
+				{"S16_LE"},                    /*  2 */
+				{"S16_BE"},                    /*  3 */
+				{"U16_LE"},                    /*  4 */
+				{"U16_BE"},                    /*  5 */
+				{"S24_LE"},                    /*  6 */
+				{"S24_BE"},                    /*  7 */
+				{"U24_LE"},                    /*  8 */
+				{"U24_BE"},                    /*  9 */
+				{"S32_LE"},                    /* 10 */
+				{"S32_BE"},                    /* 11 */
+				{"FLOAT_LE"},                  /* 12 */
+				{"FLOAT_BE"},                  /* 13 */
+				{"FLOAT64_LE"},                /* 14 */
+				{"FLOAT64_BE"},                /* 15 */
+				{"IEC958_SUBFRAME_LE"},        /* 16 */
+				{"IEC958_SUBFRAME_BE"},        /* 17 */
+				{"MU_LAW"},                    /* 18 */
+				{"A_LAW"},                     /* 19 */
+				{"IMA_ADPCM"},                 /* 20 */
+				{"MPEG"},                      /* 21 */
+				{"GSM"},                       /* 22 */
+				{"UNDEFINED [23]"},            /* 23 */
+				{"UNDEFINED [24]"},            /* 24 */
+				{"UNDEFINED [25]"},            /* 25 */
+				{"UNDEFINED [26]"},            /* 26 */
+				{"UNDEFINED [27]"},            /* 27 */
+				{"UNDEFINED [28]"},            /* 28 */
+				{"UNDEFINED [29]"},            /* 29 */
+				{"UNDEFINED [30]"},            /* 30 */
+				{"SPECIAL"},                   /* 31 */
+				{"S24_3LE"},                   /* 32 */
+				{"S24_3BE"},                   /* 33 */
+				{"U24_3LE"},                   /* 34 */
+				{"U24_3BE"},                   /* 35 */
+				{"S20_3LE"},                   /* 36 */
+				{"S20_3BE"},                   /* 37 */
+				{"S18_3LE"},                   /* 38 */
+				{"S18_3BE"},                   /* 39 */
+				{"U18_3LE"},                   /* 40 */
+				{"U18_3BE"},                   /* 41 */
+				{"S16"},                       /* 42 */
+				{"U16"},                       /* 43 */
+				{"S24"},                       /* 44 */
+				{"U24"},                       /* 45 */
+				{"S32"},                       /* 46 */
+				{"U32"},                       /* 47 */
+				{"FLOAT"},                     /* 48 */
+				{"FLOAT64"},                   /* 49 */
+				{"IEC956_SUBFRAME"}};          /* 50 */
+    ret=QString::fromUtf8(fmt_names[format]);
+  }
+  else {
+    ret=QString::asprintf("UNDEFINED %u",format);
+  }
+
+  return ret;
+}
+
 #endif  // ALSA

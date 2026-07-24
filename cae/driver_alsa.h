@@ -110,6 +110,9 @@ class DriverAlsa : public Driver
   void WriteAlsaBuffer(int card,int stream,short *buffer,unsigned len);
   void FillAlsaOutputStream(int card,int stream);
   void AlsaClock();
+  void DumpHardwareParams(snd_pcm_hw_params_t *hwparams) const;
+  void DumpSoftwareParams(snd_pcm_sw_params_t *swparams) const;
+  QString SampleFormatName(snd_pcm_format_t format) const;
   QMap<int,int> alsa_input_port_quantities;
   QMap<int,int> alsa_output_port_quantities;
   struct alsa_format alsa_play_format[RD_MAX_CARDS];
