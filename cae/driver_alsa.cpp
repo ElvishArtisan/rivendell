@@ -600,15 +600,18 @@ DriverAlsa::DriverAlsa(QObject *parent)
   for(int i=0;i<RD_MAX_CARDS;i++) {
     for(int j=0;j<RD_MAX_STREAMS;j++) {
       alsa_stop_timer[i][j]=new QTimer(this);
+      alsa_stop_timer[i][j]->setTimerType(Qt::PreciseTimer);
       alsa_stop_timer[i][j]->setSingleShot(true);
       stop_mapper->setMapping(alsa_stop_timer[i][j],i*RD_MAX_STREAMS+j);
       connect(alsa_stop_timer[i][j],SIGNAL(timeout()),stop_mapper,SLOT(map()));
       alsa_fade_timer[i][j]=new QTimer(this);
+      alsa_fade_timer[i][j]->setTimerType(Qt::PreciseTimer);
       fade_mapper->setMapping(alsa_fade_timer[i][j],i*RD_MAX_STREAMS+j);
       connect(alsa_fade_timer[i][j],SIGNAL(timeout()),fade_mapper,SLOT(map()));
     }
     for(int j=0;j<RD_MAX_PORTS;j++) {
       alsa_record_timer[i][j]=new QTimer(this);
+      alsa_record_timer[i][j]->setTimerType(Qt::PreciseTimer);
       alsa_record_timer[i][j]->setSingleShot(true);
       record_mapper->setMapping(alsa_record_timer[i][j],i*RD_MAX_PORTS+j);
       connect(alsa_record_timer[i][j],SIGNAL(timeout()),
@@ -890,7 +893,7 @@ bool DriverAlsa::playbackPosition(int card,int stream,unsigned pos)
   if(alsa_playing[card][stream]) {
     alsa_stop_timer[card][stream]->stop();
     alsa_stop_timer[card][stream]->
-      start(alsa_play_wave[card][stream]->getExtTimeLength()-pos);
+      start(alsa_play_wave[card][stream]->getExtTimeLength()-pos+50);
   }
   return true;
 #else
@@ -909,7 +912,7 @@ bool DriverAlsa::play(int card,int stream,int length,int speed,bool pitch,
   }
   alsa_playing[card][stream]=true;
   if(length>0) {
-    alsa_stop_timer[card][stream]->start(length);
+    alsa_stop_timer[card][stream]->start(length+50);
   }
   statePlayUpdate(card,stream,1);
   return true;

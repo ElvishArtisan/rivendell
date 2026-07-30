@@ -25141,3 +25141,6 @@
 	capturing from AoIP streams via ALSA.
 	* Refactored the ALSA driver in caed(8) to log software parameters
 	upon startup.
+2026-07-30 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression that could caused truncation of audio play-out
+	from logs in rdairplay(1).

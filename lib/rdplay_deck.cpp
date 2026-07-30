@@ -65,21 +65,26 @@ RDPlayDeck::RDPlayDeck(RDCae *cae,int id,QObject *parent)
   connect(mapper,SIGNAL(mapped(int)),this,SLOT(pointTimerData(int)));
   for(int i=0;i<3;i++) {
     play_point_timer[i]=new QTimer(this);
+    play_point_timer[i]->setTimerType(Qt::PreciseTimer);
     play_point_timer[i]->setSingleShot(true);
     connect(play_point_timer[i],SIGNAL(timeout()),mapper,SLOT(map()));
     mapper->setMapping(play_point_timer[i],i);
   }
 
   play_position_timer=new QTimer(this);
+  play_position_timer->setTimerType(Qt::PreciseTimer);
   connect(play_position_timer,SIGNAL(timeout()),
 	  this,SLOT(positionTimerData()));
   play_fade_timer=new QTimer(this);
+  play_fade_timer->setTimerType(Qt::PreciseTimer);
   play_fade_timer->setSingleShot(true);
   connect(play_fade_timer,SIGNAL(timeout()),this,SLOT(fadeTimerData()));
   play_stop_timer=new QTimer(this);
+  play_stop_timer->setTimerType(Qt::PreciseTimer);
   play_stop_timer->setSingleShot(true);
   connect(play_stop_timer,SIGNAL(timeout()),this,SLOT(stop()));
   play_duck_timer=new QTimer(this);
+  play_duck_timer->setTimerType(Qt::PreciseTimer);
   play_duck_timer->setSingleShot(true);
   connect(play_duck_timer,SIGNAL(timeout()),this,SLOT(duckTimerData()));
 }

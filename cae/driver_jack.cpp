@@ -845,7 +845,7 @@ bool DriverJack::playbackPosition(int card,int stream,unsigned pos)
   if(jack_playing[stream]) {
     jack_stop_timer[stream]->stop();
     jack_stop_timer[stream]->
-      start(jack_play_wave[stream]->getExtTimeLength()-pos);
+      start(jack_play_wave[stream]->getExtTimeLength()-pos+50);
   }
   return true;
 #else
@@ -870,7 +870,7 @@ bool DriverJack::play(int card,int stream,int length,int speed,bool pitch,
   }
   jack_playing[stream]=true;
   if(length>0) {
-    jack_stop_timer[stream]->start(length);
+    jack_stop_timer[stream]->start(length+50);
   }
   statePlayUpdate(card,stream,1);
   return true;
