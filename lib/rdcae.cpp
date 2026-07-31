@@ -190,7 +190,7 @@ bool RDCae::connectHost(QString *err_msg)
   int count=10;
   struct sockaddr_in sa;
   QTimer *timer=new QTimer(this);
-
+  timer->setTimerType(Qt::PreciseTimer);
   connect(timer,SIGNAL(timeout()),this,SLOT(readyData()));
   timer->start(CAE_POLL_INTERVAL);
   memset(&sa,0,sizeof(sa));

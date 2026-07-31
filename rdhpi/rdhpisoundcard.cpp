@@ -1035,6 +1035,7 @@ void RDHPISoundCard::HPIProbe()
     }
   }
   clock_timer=new QTimer(this);
+  clock_timer->setTimerType(Qt::PreciseTimer);
   connect(clock_timer,SIGNAL(timeout()),this,SLOT(clock()));
   clock_timer->start(METER_INTERVAL);
 }

@@ -2,7 +2,7 @@
 //
 //   An event timer engine.
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2026 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -57,6 +57,7 @@ void RDTimeEngine::addEvent(int id,const QTime &time)
 {
   d_times[id]=time;
   d_timers[id]=new QTimer(this);
+  d_timers[id]->setTimerType(Qt::PreciseTimer);
   d_timers.value(id)->setTimerType(Qt::PreciseTimer);
   d_timers.value(id)->setSingleShot(true);
   d_mapper->setMapping(d_timers.value(id),id);

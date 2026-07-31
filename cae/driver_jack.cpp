@@ -635,15 +635,18 @@ bool DriverJack::initialize(unsigned *next_cardnum)
   connect(record_mapper,SIGNAL(mapped(int)),this,SLOT(recordTimerData(int)));
   for(int i=0;i<RD_MAX_STREAMS;i++) {
     jack_stop_timer[i]=new QTimer(this);
+    jack_stop_timer[i]->setTimerType(Qt::PreciseTimer);
     jack_stop_timer[i]->setSingleShot(true);
     stop_mapper->setMapping(jack_stop_timer[i],i);
     connect(jack_stop_timer[i],SIGNAL(timeout()),stop_mapper,SLOT(map()));
     jack_fade_timer[i]=new QTimer(this);
+    jack_fade_timer[i]->setTimerType(Qt::PreciseTimer);
     fade_mapper->setMapping(jack_fade_timer[i],i);
     connect(jack_fade_timer[i],SIGNAL(timeout()),fade_mapper,SLOT(map()));
   }
   for(int i=0;i<RD_MAX_PORTS;i++) {
     jack_record_timer[i]=new QTimer(this);
+    jack_record_timer[i]->setTimerType(Qt::PreciseTimer);
     record_mapper->setMapping(jack_record_timer[i],i);
     connect(jack_record_timer[i],SIGNAL(timeout()),record_mapper,SLOT(map()));
   }
@@ -845,7 +848,7 @@ bool DriverJack::playbackPosition(int card,int stream,unsigned pos)
   if(jack_playing[stream]) {
     jack_stop_timer[stream]->stop();
     jack_stop_timer[stream]->
-      start(jack_play_wave[stream]->getExtTimeLength()-pos+50);
+      start(jack_play_wave[stream]->getExtTimeLength()-pos+RD_LENGTH_FUDGE);
   }
   return true;
 #else
@@ -870,7 +873,7 @@ bool DriverJack::play(int card,int stream,int length,int speed,bool pitch,
   }
   jack_playing[stream]=true;
   if(length>0) {
-    jack_stop_timer[stream]->start(length+50);
+    jack_stop_timer[stream]->start(length+RD_LENGTH_FUDGE);
   }
   statePlayUpdate(card,stream,1);
   return true;

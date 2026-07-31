@@ -33,6 +33,7 @@ RDEventPlayer::RDEventPlayer(RDRipc *ripc,QObject *parent)
   connect(player_mapper,SIGNAL(mapped(int)),
 	  this,SLOT(macroFinishedData(int)));
   player_timer=new QTimer(this);
+  player_timer->setTimerType(Qt::PreciseTimer);
   player_timer->setSingleShot(true);
   connect(player_timer,SIGNAL(timeout()),this,SLOT(macroTimerData()));
 }

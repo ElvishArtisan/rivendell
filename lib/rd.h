@@ -2,7 +2,7 @@
 //
 // System-Wide Values for Rivendell
 //
-//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2026 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -707,6 +707,12 @@
  */
 #define RD_DEFAULT_DROPBOX_SCAN_INTERVAL 5
 #define RD_DEFAULT_DROPBOX_SCAN_COUNT 3
+
+/*
+ * Fudge factor to add to the lengths of realtime audio streams (mS)
+ * (See also the RDHPISOUNDCARD_LENGTH_FUDGE define in 'rdhpi/rdsoundcard.h')
+ */
+#define RD_LENGTH_FUDGE 50
 
 
 #endif  // RD_H

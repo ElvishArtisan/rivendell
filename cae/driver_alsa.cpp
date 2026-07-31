@@ -2,7 +2,7 @@
 //
 // caed(8) driver for Advanced Linux Audio Architecture devices
 //
-//   (C) Copyright 2021-2025 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2026 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -893,7 +893,7 @@ bool DriverAlsa::playbackPosition(int card,int stream,unsigned pos)
   if(alsa_playing[card][stream]) {
     alsa_stop_timer[card][stream]->stop();
     alsa_stop_timer[card][stream]->
-      start(alsa_play_wave[card][stream]->getExtTimeLength()-pos+50);
+      start(alsa_play_wave[card][stream]->getExtTimeLength()-pos+RD_LENGTH_FUDGE);
   }
   return true;
 #else
@@ -912,7 +912,7 @@ bool DriverAlsa::play(int card,int stream,int length,int speed,bool pitch,
   }
   alsa_playing[card][stream]=true;
   if(length>0) {
-    alsa_stop_timer[card][stream]->start(length+50);
+    alsa_stop_timer[card][stream]->start(length+RD_LENGTH_FUDGE);
   }
   statePlayUpdate(card,stream,1);
   return true;
@@ -1846,7 +1846,6 @@ void DriverAlsa::FillAlsaOutputStream(int card,int stream)
       n=alsa_play_wave[card][stream]->readWave(alsa_wave_buffer,free);
       if(n!=free) {
 	alsa_eof[card][stream]=true;
-	alsa_stop_timer[card][stream]->stop();
       }
       break;
 
@@ -1856,7 +1855,6 @@ void DriverAlsa::FillAlsaOutputStream(int card,int stream)
       n=2*alsa_play_wave[card][stream]->readWave(alsa_wave24_buffer,3*free/2)/3;
       if(n!=free) {
 	alsa_eof[card][stream]=true;
-	alsa_stop_timer[card][stream]->stop();
 	break;
       }
       for(int i=0;i<n/2;i++) {
@@ -1918,7 +1916,6 @@ void DriverAlsa::FillAlsaOutputStream(int card,int stream)
 	  }
 	}
 	alsa_eof[card][stream]=true;
-	alsa_stop_timer[card][stream]->stop();
 	continue;
       }
       mad_left_over[card][stream]=

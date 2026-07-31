@@ -25149,3 +25149,7 @@
 2026-07-31 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdlibrary(1) that caused a segfault if started
 	with the 'rivendell' service inactive.
+2026-07-31 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the ALSA driver that could cause play-out to
+	ignore Stop markers in the 'Edit Audio' dialog.
+	* Modified caed(8) to improve timer precision for audio transitions.

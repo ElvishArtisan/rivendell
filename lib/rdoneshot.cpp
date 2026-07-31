@@ -2,7 +2,7 @@
 //
 // A class for providing one-shot single use timers.
 //
-//   (C) Copyright 2008,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2008-2026 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -42,6 +42,7 @@ void RDOneShot::start(int value,int msecs)
 {
   shot_values[shot_count]=value;
   shot_timers[shot_count]=new QTimer(this);
+  shot_timers[shot_count]->setTimerType(Qt::PreciseTimer);
   shot_timers[shot_count]->setSingleShot(true);
   shot_mapper->setMapping(shot_timers[shot_count],shot_count);
   connect(shot_timers[shot_count],SIGNAL(timeout()),

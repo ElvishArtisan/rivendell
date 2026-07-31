@@ -2,7 +2,7 @@
 //
 // A container class for a list of RML macros.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2026 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,6 +34,7 @@ RDMacroEvent::RDMacroEvent(RDRipc *ripc,QObject *parent)
   event_line=-1;
 
   event_sleep_timer=new QTimer(this);
+  event_sleep_timer->setTimerType(Qt::PreciseTimer);
   event_sleep_timer->setSingleShot(true);
   connect(event_sleep_timer,SIGNAL(timeout()),this,SLOT(sleepTimerData()));
 }
@@ -48,6 +49,7 @@ RDMacroEvent::RDMacroEvent(QHostAddress addr,RDRipc *ripc,QObject *parent)
   event_line=-1;
 
   event_sleep_timer=new QTimer(this);
+  event_sleep_timer->setTimerType(Qt::PreciseTimer);
   event_sleep_timer->setSingleShot(true);
   connect(event_sleep_timer,SIGNAL(timeout()),this,SLOT(sleepTimerData()));
 }

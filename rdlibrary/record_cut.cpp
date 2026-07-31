@@ -310,6 +310,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
   // Record Timer
   //
   rec_timer=new QTimer(this);
+  rec_timer->setTimerType(Qt::PreciseTimer);
   connect(rec_timer,SIGNAL(timeout()),this,SLOT(recTimerData()));
   rec_timer_label=new QLabel(this);
   rec_timer_label->setFont(timerFont());

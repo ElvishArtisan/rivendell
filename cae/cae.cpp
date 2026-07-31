@@ -245,6 +245,7 @@ MainObject::MainObject(QObject *parent)
   // Meter Update Timer
   //
   QTimer *timer=new QTimer(this);
+  timer->setTimerType(Qt::PreciseTimer);
   connect(timer,SIGNAL(timeout()),this,SLOT(updateMeters()));
   timer->start(RD_METER_UPDATE_INTERVAL);
 

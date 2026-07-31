@@ -2,7 +2,7 @@
 //
 //   A class for playing Microsoft WAV file on AudioScience HPI devices.
 //
-//   (C) Copyright 2002-2025 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2026 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -113,9 +113,11 @@ RDHPIPlayStream::RDHPIPlayStream(RDHPISoundCard *card,QObject *parent)
   }
 
   clock=new QTimer(this);
+  clock->setTimerType(Qt::PreciseTimer);
   connect(clock,SIGNAL(timeout()),this,SLOT(tickClock()));
 
   play_timer=new QTimer(this);
+  play_timer->setTimerType(Qt::PreciseTimer);
   play_timer->setSingleShot(true);
   connect(play_timer,SIGNAL(timeout()),this,SLOT(pause()));
 }
@@ -529,7 +531,7 @@ bool RDHPIPlayStream::play()
       emit isStopped(false);
       emit played();
       emit stateChanged(card_number,stream_number,(int)stream_state);
-      play_timer->start(play_length);
+      play_timer->start(play_length+RDHPISOUNDCARD_LENGTH_FUDGE);
       start_time=QTime::currentTime();
     }
   }
@@ -684,7 +686,7 @@ void RDHPIPlayStream::setPlayLength(int length)
       diff=0;
     }
     play_timer->stop();
-    play_timer->start(diff);
+    play_timer->start(diff+RDHPISOUNDCARD_LENGTH_FUDGE);
     start_time=current_time;
   }
   play_length=length;

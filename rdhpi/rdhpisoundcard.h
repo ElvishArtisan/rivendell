@@ -2,7 +2,7 @@
 //
 //   Sound card subsystem for the HPI Library.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2026 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -47,6 +47,11 @@ typedef uint32_t hpi_handle_t;
 #define RDHPISOUNDCARD_HPI_MAX_LEVEL 2400
 #define RDHPISOUNDCARD_HPI_MIN_LEVEL 0
 
+/*
+ * Fudge factor to add to the lengths of realtime audio streams (mS)
+ * (See also the RD_LENGTH_FUDGE define in 'lib/rd.h')
+ */
+#define RDHPISOUNDCARD_LENGTH_FUDGE 75
 
 class RDHPISoundCard : public QObject
 {

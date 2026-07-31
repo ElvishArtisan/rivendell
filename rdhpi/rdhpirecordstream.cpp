@@ -2,7 +2,7 @@
 //
 //   A class for recording Microsoft WAV files.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2026 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -93,9 +93,11 @@ RDHPIRecordStream::RDHPIRecordStream(RDHPISoundCard *card,QWidget *parent)
   }
 
   clock=new QTimer(this);
+  clock->setTimerType(Qt::PreciseTimer);
   connect(clock,SIGNAL(timeout()),this,SLOT(tickClock()));
 
   length_timer=new QTimer(this);
+  length_timer->setTimerType(Qt::PreciseTimer);
   length_timer->setSingleShot(true);
   connect(length_timer,SIGNAL(timeout()),this,SLOT(pause()));
 }
@@ -664,7 +666,7 @@ void RDHPIRecordStream::tickClock()
   if((!record_started)&&(is_recording)) {
     if(samples_recorded>0) {
       if(record_length>0) {
-        length_timer->start(record_length);
+        length_timer->start(record_length+RDHPISOUNDCARD_LENGTH_FUDGE);
       }
       emit recordStart();
       emit stateChanged(card_number,stream_number,4);  // RecordStarted

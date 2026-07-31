@@ -175,6 +175,7 @@ RDCueEdit::RDCueEdit(QWidget *parent)
   // Audition Stop Timer
   //
   edit_audition_timer=new QTimer(this);
+  edit_audition_timer->setTimerType(Qt::PreciseTimer);
   edit_audition_timer->setSingleShot(true);
   connect(edit_audition_timer,SIGNAL(timeout()),this,SLOT(auditionTimerData()));
 
