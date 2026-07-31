@@ -267,6 +267,8 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
 
   dragsChangedData(lib_cart_filter->dragEnabled());
 
+  disk_gauge->update();
+
   LoadGeometry();
 }
 
@@ -308,7 +310,6 @@ void MainWidget::userData()
   }
 
   SetCaption(rda->ripc()->user());
-  disk_gauge->update();
 }
 
 

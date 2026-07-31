@@ -25146,3 +25146,6 @@
 	from logs in rdairplay(1).
 2026-07-30 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to v4.4.1int4.
+2026-07-31 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlibrary(1) that caused a segfault if started
+	with the 'rivendell' service inactive.
