@@ -25153,3 +25153,5 @@
 	* Fixed a bug in the ALSA driver that could cause play-out to
 	ignore Stop markers in the 'Edit Audio' dialog.
 	* Modified caed(8) to improve timer precision for audio transitions.
+2026-07-31 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to v4.4.1int5.

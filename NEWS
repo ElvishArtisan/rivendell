@@ -15,6 +15,20 @@ Database Update:
    Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
    to allow any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
+v4.4.1int5 -- 31 July 2026
+
+Changes:
+   Timing Precision. Added various tweaks to real-time audio components
+   to improve timing precision. See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 377, and will
+   automatically upgrade any earlier versions. To see the current schema
+   version prior to upgrade, do 'sudo rddbmgr'.
+
+   Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
+   to allow any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
 v4.4.1int3 -- 13 February 2026
 
 Changes:
