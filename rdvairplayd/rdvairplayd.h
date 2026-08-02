@@ -41,6 +41,7 @@ class MainObject : public QObject
   void userData();
   void rmlReceivedData(RDMacro*);
   void logReloadedData(int log);
+  void tickClock();
   void exitData();
 
  private:
@@ -55,6 +56,8 @@ class MainObject : public QObject
   RDEventPlayer *air_event_player;
   QDateTime air_startup_datetime;
   RDAirPlayConf::ExitCode air_previous_exit_code;
+  QDate air_current_date;
+  QTimer *air_clock_timer;
   QTimer *air_exit_timer;
 };
 

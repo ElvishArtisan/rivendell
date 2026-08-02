@@ -56,7 +56,8 @@ MainObject::MainObject(QObject *parent)
   RDApplication::ErrorType err_type=RDApplication::ErrorOk;
   QString sql;
   RDSqlQuery *q;
-
+  air_current_date=QDate::currentDate();
+  
   //
   // Startup DateTime
   //
@@ -179,6 +180,11 @@ MainObject::MainObject(QObject *parent)
   air_exit_timer->start(1000);
   ::signal(SIGINT,SigHandler);
   ::signal(SIGTERM,SigHandler);
+
+  air_current_date=QDate::currentDate();
+  air_clock_timer=new QTimer(this);
+  connect(air_clock_timer,SIGNAL(timeout()),this,SLOT(tickClock()));
+  air_clock_timer->start(1000);
 }
 
 
@@ -310,6 +316,19 @@ void MainObject::logReloadedData(int log)
 	   (const char *)air_start_lognames[log].toUtf8());
   }
   air_start_lognames[log]="";
+}
+
+
+void MainObject::tickClock()
+{
+  QDate today=QDate::currentDate();
+
+  if(air_current_date!=today) {
+    air_current_date=today;
+    for(int i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
+      air_logs[i]->changeCurrentDate(air_current_date);
+    }
+  }
 }
 
 

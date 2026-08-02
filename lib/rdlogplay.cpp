@@ -1435,6 +1435,8 @@ void RDLogPlay::setSlotQuantity(int slot_quan)
 
 void RDLogPlay::changeCurrentDate(const QDate &date)
 {
+  rda->syslog(LOG_DEBUG,"changing current date to %s on log machine %d",
+	      date.toString("yyyy-dd-MM").toUtf8().constData(),play_id);
   if(date!=play_current_date) {
     RefreshEvents(0,lineCount());
     play_current_date=date;

@@ -25159,3 +25159,7 @@
 	* Fixed a bug in rdairplay(1) that could cause log event dayparting
 	status to fail to be updated correctly when transitioning into a new
 	day.
+2026-08-02 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdvairplayd(8) that could cause log event dayparting
+	status to fail to be updated correctly when transitioning into a new
+	day.
