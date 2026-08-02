@@ -283,6 +283,8 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
 	    this,SLOT(logChannelStartedData(int,int,int,int)));
     connect(air_log[i],SIGNAL(channelStopped(int,int,int,int)),
 	    this,SLOT(logChannelStoppedData(int,int,int,int)));
+    connect(air_top_strip,SIGNAL(dateChanged(const QDate &)),
+	    air_log[i],SLOT(changeCurrentDate(const QDate &)));
   }
   connect(air_log[0],SIGNAL(transportChanged()),
 	  this,SLOT(transportChangedData()));

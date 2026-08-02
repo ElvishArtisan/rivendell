@@ -36,6 +36,8 @@ TopStrip::TopStrip(QWidget *parent)
   //
   d_wall_clock_widget=new WallClock(this);
   d_wall_clock_widget->setCheckSyncEnabled(rda->airplayConf()->checkTimesync());
+  connect(d_wall_clock_widget,SIGNAL(dateChanged(const QDate &)),
+	  this,SLOT(dateChangedData(const QDate &)));
 
   //
   // Mode Display Widget
@@ -120,6 +122,12 @@ void TopStrip::setOnairFlag(bool state)
     d_onair_flag=state;
     update();
   }
+}
+
+
+void TopStrip::dateChangedData(const QDate &date)
+{
+  emit dateChanged(date);
 }
 
 

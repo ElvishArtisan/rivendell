@@ -25155,3 +25155,7 @@
 	* Modified caed(8) to improve timer precision for audio transitions.
 2026-07-31 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to v4.4.1int5.
+2026-08-02 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdairplay(1) that could cause event dayparting
+	status to fail to be updated correctly when transitioning into a new
+	day.

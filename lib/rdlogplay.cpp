@@ -1433,6 +1433,15 @@ void RDLogPlay::setSlotQuantity(int slot_quan)
 }
 
 
+void RDLogPlay::changeCurrentDate(const QDate &date)
+{
+  if(date!=play_current_date) {
+    RefreshEvents(0,lineCount());
+    play_current_date=date;
+  }
+}
+
+
 void RDLogPlay::transTimerData()
 {
   int lines[TRANSPORT_QUANTITY];

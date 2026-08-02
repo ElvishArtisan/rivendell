@@ -77,7 +77,10 @@ void WallClock::tickClock()
   }
   
   QDateTime now=QDateTime::currentDateTime();
-  current_date=now.date();
+  if(current_date!=now.date()) {
+    current_date=now.date();
+    emit dateChanged(current_date);
+  }
   current_time=now.time();;
   if(current_time.second()==previous_time.second()) {
     return;

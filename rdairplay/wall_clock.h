@@ -34,6 +34,9 @@ class WallClock : public RDPushButton
   void setDateDisplay(bool state);
   void setCheckSyncEnabled(bool);
 
+ signals:
+  void dateChanged(const QDate &date);
+
  public slots:
   void tickClock();
 

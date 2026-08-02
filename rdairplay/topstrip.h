@@ -43,9 +43,16 @@ class TopStrip : public RDWidget
   ModeDisplay *modeDisplayWidget() const;
   RDMeterStrip *meterWidget();
   MessageWidget *messageWidget() const;
+
+ signals:
+  void dateChanged(const QDate &date);
+
  public slots:
   void setOnairFlag(bool state);   
 
+ private slots:
+  void dateChangedData(const QDate &date);
+  
  protected:
   void resizeEvent(QResizeEvent *e);
   void paintEvent(QPaintEvent *e);

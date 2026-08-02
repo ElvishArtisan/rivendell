@@ -114,6 +114,7 @@ class RDLogPlay : public RDLogModel
 
  public slots:
   void setSlotQuantity(int slot_quan);
+  void changeCurrentDate(const QDate &date);
 
  private slots:
   void transTimerData();
@@ -259,6 +260,7 @@ class RDLogPlay : public RDLogModel
   RDUnixSocket *play_pad_socket[2];
   bool play_hours[24];
   int play_slot_quantity;
+  QDate play_current_date;
 };
 
 
