@@ -25166,3 +25166,5 @@
 2026-08-02 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdadmin(1) that could cause spurious values
 	to appear in the 'Port' field on RDCardSelector widgets.
+2026-08-03 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to v4.4.1int6.
