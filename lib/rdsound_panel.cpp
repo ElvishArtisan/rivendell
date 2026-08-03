@@ -1329,8 +1329,13 @@ void RDSoundPanel::UpdatePanels(const QString &username)
     if(panel_arrays.value(username).size()>0) {
       list=panel_arrays.value(username);
     }
+    bool flash_panel=rda->panelConf()->flashPanel();
+    bool enforce_setup=rda->station()->enforcePanelSetup();
+    bool enable_drag_drop=rda->station()->enableDragdrop();
     for(int i=panel_arrays.value(username).size();i<max_panels;i++) {
-      RDButtonPanel *panel=new RDButtonPanel(type,i,PanelName(type,i),this);
+      RDButtonPanel *panel=
+	new RDButtonPanel(type,i,PanelName(type,i),
+			  flash_panel,enforce_setup,enable_drag_drop,this);
       panel->setGeometry(0,0,size().width()-5,size().height()-60);
       connect(panel,SIGNAL(buttonClicked(int,int,int)),
 	      this,SLOT(buttonClickedData(int,int,int)));

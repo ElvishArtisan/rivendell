@@ -26,7 +26,9 @@
 #include "rdbutton_panel.h"
 
 RDButtonPanel::RDButtonPanel(RDAirPlayConf::PanelType type,int number,
-			     const QString &title,QWidget *parent)
+			     const QString &title,
+			     bool flash_panel,bool enforce_setup,bool drag_drop,
+			     QWidget *parent)
   : RDWidget(parent)
 {
   panel_type=type;
@@ -39,16 +41,15 @@ RDButtonPanel::RDButtonPanel(RDAirPlayConf::PanelType type,int number,
 
   for(int i=0;i<PANEL_MAX_BUTTON_ROWS;i++) {
     for(int j=0;j<PANEL_MAX_BUTTON_COLUMNS;j++) {
-      panel_button[i][j]=new RDPanelButton(i,j,rda->station(),
-					   rda->panelConf()->flashPanel(),this);
+      panel_button[i][j]=new RDPanelButton(i,j,rda->station(),flash_panel,this);
       int id=(number*PANEL_MAX_BUTTON_COLUMNS*PANEL_MAX_BUTTON_ROWS)+
 	(i*PANEL_MAX_BUTTON_COLUMNS)+j;
       connect(panel_button[i][j],SIGNAL(clicked()),
 	      panel_button_mapper,SLOT(map()));
       panel_button_mapper->setMapping(panel_button[i][j],id);
-      if(rda->station()->enableDragdrop()) {
+      if(drag_drop) {
 	panel_button[i][j]->setAllowDrags(true);
-	if(!rda->station()->enforcePanelSetup()) {
+	if(!enforce_setup) {
 	  panel_button[i][j]->setAcceptDrops(true);
 	}
       }

@@ -44,7 +44,10 @@ class RDButtonPanel : public RDWidget
   Q_OBJECT;
  public:
   RDButtonPanel(RDAirPlayConf::PanelType type,int number,const QString &title,
+		bool flash_panel,bool enforce_setup,bool drag_drop,
 		QWidget *parent);
+  //  RDButtonPanel(RDAirPlayConf::PanelType type,int number,const QString &title,
+  //		QWidget *parent);
   ~RDButtonPanel();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;

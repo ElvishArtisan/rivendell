@@ -25168,3 +25168,6 @@
 	to appear in the 'Port' field on RDCardSelector widgets.
 2026-08-03 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to v4.4.1int6.
+2026-08-03 Fred Gleason <fredg@paravelsystems.com>
+	* Optimized database lookups when starting Sound Panel instances
+	in rdpanel(1) and rdairplay(1).
