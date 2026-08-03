@@ -134,7 +134,12 @@ int RDCardSelector::card() const
 
 void RDCardSelector::setCard(int card)
 {
-  card_card_box->setValue(card);
+  if(card<0) {
+    card_card_box->setValue(-1);
+  }
+  else {
+    card_card_box->setValue(card);
+  }
 }
 
 
@@ -146,7 +151,12 @@ int RDCardSelector::port() const
 
 void RDCardSelector::setPort(int port)
 {
-  card_port_box->setValue(port);
+  if(port<0) {
+    card_port_box->setValue(-1);
+  }
+  else {
+    card_port_box->setValue(port);
+  }
 }
 
 
