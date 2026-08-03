@@ -1,6 +1,20 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
+v4.4.1int7 -- 3 August 2026
+
+Changes:
+   SoundPanel Optimization. Optimized code to provide greatly improved
+   startup time for Sound Panel instances with many panels.
+
+Database Update:
+   This version of Rivendell uses database schema version 377, and will
+   automatically upgrade any earlier versions. To see the current schema
+   version prior to upgrade, do 'sudo rddbmgr'.
+
+   Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
+   to allow any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
 v4.4.1int6 -- 3 August 2026
 
 Changes:
