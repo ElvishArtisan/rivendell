@@ -9,6 +9,7 @@ Package: rivendell
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, mariadb-client, libqt5sql5-mysql, qttranslations5-l10n, apache2, curl, rsyslog, python3, python3-pycurl, python3-mysqldb, python3-serial, python3-requests, icedax, qt5-style-plugins, xsltproc
 Replaces: rivendell-pypad
+Conflicts: pulseaudio
 Description: Radio Broadcast Automation System
  Rivendell is a complete radio broadcast automation solution, with
  facilities for the acquisition, management, scheduling and playout of

@@ -25173,3 +25173,6 @@
 	in rdpanel(1) and rdairplay(1).
 2026-08-03 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to v4.4.1int7.
+2026-08-07 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'pulseaudio' to the 'Conflicts:' field for the 'rivendell'
+	DEB package.
