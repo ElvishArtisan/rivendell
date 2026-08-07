@@ -710,12 +710,24 @@ bool DriverAlsa::initialize(unsigned *next_cardnum)
 	snd_pcm_close(pcm_play_handle);
       }
     }
+    else {
+      if(errno!=0) {
+	rda->syslog(LOG_NOTICE,"failed to open pcm %s for playback [%s]",
+		    card_id.toUtf8().constData(),strerror(errno));
+      }
+    }
     if(snd_pcm_open(&pcm_capture_handle,card_id.toUtf8(),
 		    SND_PCM_STREAM_CAPTURE,0)==0) {
       pcm_opened=true;
       if(!AlsaStartCaptureDevice(card_id,*next_cardnum,pcm_capture_handle,
 				 alsacard)) {
 	snd_pcm_close(pcm_capture_handle);
+      }
+    }
+    else {
+      if(errno!=0) {
+	rda->syslog(LOG_NOTICE,"failed to open pcm %s for capture [%s]",
+		    card_id.toUtf8().constData(),strerror(errno));
       }
     }
     if(!pcm_opened) {
