@@ -25176,3 +25176,6 @@
 2026-08-07 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'pulseaudio' to the 'Conflicts:' field for the 'rivendell'
 	DEB package.
+2026-08-07 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdalsaconfig(8) that caused extra linefeeds
+	to be inserted into existing entries in asound.conf(5).

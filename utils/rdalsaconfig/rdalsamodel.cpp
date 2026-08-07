@@ -167,7 +167,7 @@ bool RDAlsaModel::loadConfig(const QString &filename)
 	      istate=10;
 	    }
 	    else {
-	      model_other_lines.push_back(str+"\n");
+	      model_other_lines.push_back(str);
 	    }
 	  }
 	  break;
@@ -219,7 +219,7 @@ bool RDAlsaModel::loadConfig(const QString &filename)
 	}
       }
       else {
-	model_other_lines.push_back(str+"\n");
+	model_other_lines.push_back(str);
       }
     }
   }
