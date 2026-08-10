@@ -2,7 +2,7 @@
 //
 // Abstract ALSA 'card' information
 //
-//   (C) Copyright 2019-2025 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2019-2026 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -54,6 +54,14 @@ RDAlsaCard::RDAlsaCard(snd_ctl_t *ctl,int index)
     if(card_max_channels_per_pcm<0) {
       card_max_channels_per_pcm=2;
     }
+  }
+  if(card_id=="lw") {  // AoIP driver
+    card_id=QString::asprintf("lw32_%d",index);
+    card_driver="LWSound";
+    card_pretty_name+=QString::asprintf(", slot %d",1+index);
+    card_pretty_long_name+=QString::asprintf(", slot %d",1+index);
+    card_pretty_mixer_name=QObject::tr("[none]");
+    card_max_channels_per_pcm=2;
   }
   snd_ctl_card_info_free(card_info);
 }

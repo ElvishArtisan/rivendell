@@ -99,9 +99,9 @@ class DriverAlsa : public Driver
 
  private:
 #ifdef ALSA
-  bool AlsaStartCaptureDevice(QString &dev,int card,snd_pcm_t *pcm,
+  bool AlsaStartCaptureDevice(const QString &dev,int card,snd_pcm_t *pcm,
 			      RDAlsaCard *alsacard);
-  bool AlsaStartPlayDevice(QString &dev,int card,snd_pcm_t *pcm,
+  bool AlsaStartPlayDevice(const QString &dev,int card,snd_pcm_t *pcm,
 			   RDAlsaCard *alsacard);
   void AlsaInitCallback();
   int GetAlsaOutputStream(int card);

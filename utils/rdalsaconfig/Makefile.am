@@ -1,6 +1,6 @@
 ## Makefile.am
 ##
-## (C) Copyright 2009-2025 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2009-2026 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -29,13 +29,16 @@ moc_%.cpp:	%.h
 bin_PROGRAMS = rdalsaconfig
 
 dist_rdalsaconfig_SOURCES = alsaitem.cpp alsaitem.h\
-                            rdalsamodel.cpp rdalsamodel.h\
                             rdalsaconfig.cpp rdalsaconfig.h
 
-nodist_rdalsaconfig_SOURCES = moc_rdalsamodel.cpp\
-                              moc_rdalsaconfig.cpp
+nodist_rdalsaconfig_SOURCES = moc_rdalsaconfig.cpp
 
-rdalsaconfig_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @LIBALSA@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@ @IMAGEMAGICK_LIBS@
+rdalsaconfig_LDADD = @LIB_RDLIBS@\
+                     @LIBVORBIS@\
+                     @QT5_LIBS@\
+                     @MUSICBRAINZ_LIBS@\
+                     @IMAGEMAGICK_LIBS@\
+                     @LIBALSA@
 
 EXTRA_DIST = rdalsaconfig.pro
 

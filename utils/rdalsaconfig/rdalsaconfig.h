@@ -2,7 +2,7 @@
 //
 // A Qt-based application to display info about ALSA cards.
 //
-//   (C) Copyright 2009-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2009-2026 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,11 +21,11 @@
 #ifndef RDALSACONFIG_H
 #define RDALSACONFIG_H
 
-#include <qlistview.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
+#include <QLabel>
+#include <QPushButton>
 
 #include <rd.h>
+#include <rdtableview.h>
 #include <rdwidget.h>
 
 #include "rdalsamodel.h"
@@ -44,6 +44,7 @@ class MainWidget : public RDWidget
   QSizePolicy sizePolicy() const;
 
  private slots:
+  void selectionChangedData(const QItemSelection &,const QItemSelection &);
   void saveData();
   void cancelData();
 
@@ -52,11 +53,11 @@ class MainWidget : public RDWidget
   void closeEvent(QCloseEvent *e);
 
  private:
-  void LoadConfig(const QString &filename);
-  void SaveConfig(const QString &filename) const;
+  void LoadSelections(const QString &filename);
+  void SaveSelections(const QString &filename) const;
   QLabel *alsa_system_label;
   QLabel *alsa_description_label;
-  QListView *alsa_system_list;
+  RDTableView *alsa_system_table;
   RDAlsaModel *alsa_system_model;
   QStringList alsa_other_lines;
   QPushButton *alsa_save_button;

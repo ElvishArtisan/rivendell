@@ -18,16 +18,17 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#ifdef ALSA
 #include <math.h>
 #include <signal.h>
 
+#include <rdalsamodel.h>
 #include <rdconf.h>
 #include <rdmeteraverage.h>
 #include <rdringbuffer.h>
 
 #include "driver_alsa.h"
 
-#ifdef ALSA
 //
 // Callback Variables
 //
@@ -665,94 +666,101 @@ QString DriverAlsa::version() const
 bool DriverAlsa::initialize(unsigned *next_cardnum)
 {
 #ifdef ALSA
-  QString card_id;
   snd_pcm_t *pcm_play_handle;
   snd_pcm_t *pcm_capture_handle;
   snd_ctl_t *snd_ctl=NULL;
   snd_ctl_card_info_t *card_info=NULL;
-  bool pcm_opened=false;
   int card=0;
   RDAlsaCard *alsacard=NULL;
+  bool pcm_started=false;
 
   //
   // Start Up Interfaces
   //
-  while((*next_cardnum)<RD_MAX_CARDS) {
-    //
-    // Open the Control Interface
-    //
-    rda->station()->setCardDriver(*next_cardnum,RDStation::Alsa);
-    card_id=QString::asprintf("rd%d",card);
-    if(snd_ctl_open(&snd_ctl,card_id.toUtf8(),0)<0) {
-      rda->syslog(LOG_INFO,
-		  "no control device found for %s",
-		  card_id.toUtf8().constData());
-      alsacard=new RDAlsaCard(card_id,card);
-    }
-    else {
-      alsacard=new RDAlsaCard(snd_ctl,card);
-      snd_ctl_card_info_malloc(&card_info);
-      snd_ctl_card_info(snd_ctl,card_info);
-      rda->station()->setCardName(*next_cardnum,alsacard->longName());
-      snd_ctl_close(snd_ctl);
-    }
-
-    //
-    // Open the PCM
-    //
-    pcm_opened=false;
-    alsa_play_format[*next_cardnum].exiting = true;
-    alsa_capture_format[*next_cardnum].exiting = true;
-    if(snd_pcm_open(&pcm_play_handle,card_id.toUtf8(),
-		    SND_PCM_STREAM_PLAYBACK,0)==0){
-      pcm_opened=true;
-      if(!AlsaStartPlayDevice(card_id,*next_cardnum,pcm_play_handle,alsacard)) {
-	snd_pcm_close(pcm_play_handle);
-      }
-    }
-    else {
-      if(errno!=0) {
-	rda->syslog(LOG_NOTICE,"failed to open pcm %s for playback [%s]",
-		    card_id.toUtf8().constData(),strerror(errno));
-      }
-    }
-    if(snd_pcm_open(&pcm_capture_handle,card_id.toUtf8(),
-		    SND_PCM_STREAM_CAPTURE,0)==0) {
-      pcm_opened=true;
-      if(!AlsaStartCaptureDevice(card_id,*next_cardnum,pcm_capture_handle,
-				 alsacard)) {
-	snd_pcm_close(pcm_capture_handle);
-      }
-    }
-    else {
-      if(errno!=0) {
-	rda->syslog(LOG_NOTICE,"failed to open pcm %s for capture [%s]",
-		    card_id.toUtf8().constData(),strerror(errno));
-      }
-    }
-    if(!pcm_opened) {
-      delete alsacard;
-      alsacard=NULL;
-      return card>0;
-    }
-    rda->station()->setCardName(*next_cardnum,alsacard->prettyLongName());
-    delete alsacard;
-    alsacard=NULL;
-
-    alsa_input_port_quantities[*next_cardnum]=
-      alsa_capture_format[*next_cardnum].channels/RD_DEFAULT_CHANNELS;
-    rda->station()->setCardInputs(*next_cardnum,
-			    alsa_input_port_quantities.value(*next_cardnum));
-		    
-    alsa_output_port_quantities[*next_cardnum]=
-      alsa_play_format[*next_cardnum].channels/RD_DEFAULT_CHANNELS;
-    rda->station()->setCardOutputs(*next_cardnum,
-			    alsa_output_port_quantities.value(*next_cardnum));
-		     
-    card++;
-    addCard(*next_cardnum);
-    (*next_cardnum)++;
+  RDAlsaModel *alsa_model=new RDAlsaModel(rda->system()->sampleRate(),this);
+  if(!alsa_model->loadSelections(RD_ASOUNDRC_FILE)) {
+    rda->syslog(LOG_INFO,"no ALSA configuration found, ALSA support disabled");
+    delete alsa_model;
+    return false;
   }
+  for(int i=0;i<alsa_model->rowCount();i++) {
+    if((*next_cardnum<RD_MAX_CARDS)&&alsa_model->isEnabled(i)) {
+      //
+      // Open the Control Interface
+      //
+      rda->station()->setCardDriver(*next_cardnum,RDStation::Alsa);
+      alsacard=alsa_model->card(i);
+      if(snd_ctl_open(&snd_ctl,alsacard->id().toUtf8(),0)<0) {
+	rda->syslog(LOG_INFO,
+		    "no control device found for %s",
+		    alsacard->id().toUtf8().constData());
+      }
+      else {
+	snd_ctl_card_info_malloc(&card_info);
+	snd_ctl_card_info(snd_ctl,card_info);
+	rda->station()->setCardName(*next_cardnum,alsacard->longName());
+	snd_ctl_close(snd_ctl);
+      }
+
+      //
+      // Open the PCM
+      //
+      alsa_play_format[*next_cardnum].exiting = true;
+      alsa_capture_format[*next_cardnum].exiting = true;
+      if(snd_pcm_open(&pcm_play_handle,alsacard->id().toUtf8(),
+		      SND_PCM_STREAM_PLAYBACK,0)==0){
+	if(AlsaStartPlayDevice(alsacard->id(),*next_cardnum,pcm_play_handle,
+			       alsacard)) {
+	  pcm_started=true;
+	}
+	else {
+	  snd_pcm_close(pcm_play_handle);
+	}
+      }
+      else {
+	if(errno!=0) {
+	  rda->syslog(LOG_NOTICE,"failed to open pcm %s for playback [%s]",
+		      alsacard->id().toUtf8().constData(),strerror(errno));
+	}
+      }
+      if(snd_pcm_open(&pcm_capture_handle,alsacard->id().toUtf8(),
+		      SND_PCM_STREAM_CAPTURE,0)==0) {
+	if(AlsaStartCaptureDevice(alsacard->id(),*next_cardnum,
+				   pcm_capture_handle,alsacard)) {
+	  pcm_started=true;
+	}
+	else {
+	  snd_pcm_close(pcm_capture_handle);
+	}
+      }
+      else {
+	if(errno!=0) {
+	  rda->syslog(LOG_NOTICE,"failed to open pcm %s for capture [%s]",
+		      alsacard->id().toUtf8().constData(),strerror(errno));
+	}
+	continue;
+      }
+      if(!pcm_started) {
+	continue;
+      }
+      rda->station()->setCardName(*next_cardnum,alsacard->prettyLongName());
+
+      alsa_input_port_quantities[*next_cardnum]=
+	alsa_capture_format[*next_cardnum].channels/RD_DEFAULT_CHANNELS;
+      rda->station()->setCardInputs(*next_cardnum,
+		      alsa_input_port_quantities.value(*next_cardnum));
+
+      alsa_output_port_quantities[*next_cardnum]=
+	alsa_play_format[*next_cardnum].channels/RD_DEFAULT_CHANNELS;
+      rda->station()->setCardOutputs(*next_cardnum,
+		      alsa_output_port_quantities.value(*next_cardnum));
+
+      card++;
+      addCard(*next_cardnum);
+      (*next_cardnum)++;
+    }
+  }
+  delete alsa_model;
   return card>0;
 #else
   return false;
@@ -1441,8 +1449,8 @@ void DriverAlsa::recordTimerData(int cardport)
 
 
 #ifdef ALSA
-bool DriverAlsa::AlsaStartCaptureDevice(QString &dev,int card,snd_pcm_t *pcm,
-					RDAlsaCard *alsacard)
+bool DriverAlsa::AlsaStartCaptureDevice(const QString &dev,int card,
+					snd_pcm_t *pcm,RDAlsaCard *alsacard)
 {
   snd_pcm_hw_params_t *hwparams;
   snd_pcm_sw_params_t *swparams;
@@ -1602,7 +1610,7 @@ bool DriverAlsa::AlsaStartCaptureDevice(QString &dev,int card,snd_pcm_t *pcm,
 }
 
 
-bool DriverAlsa::AlsaStartPlayDevice(QString &dev,int card,snd_pcm_t *pcm,
+bool DriverAlsa::AlsaStartPlayDevice(const QString &dev,int card,snd_pcm_t *pcm,
 				     RDAlsaCard *alsacard)
 {
   snd_pcm_hw_params_t *hwparams;

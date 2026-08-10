@@ -4,7 +4,7 @@
 ##
 ## by Fred Gleason <fredg@paravelsystems.com>
 ##
-##   (C) Copyright 2025 Fred Gleason <fredg@paravelsystems.com>
+##   (C) Copyright 2025-2026 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -35,7 +35,10 @@ html_%.cpp:	%.html
 	$(CWRAP) -o $@ $<
 
 lib_LTLIBRARIES = librdalsa.la
-dist_librdalsa_la_SOURCES = rdalsacard.cpp rdalsacard.h
+dist_librdalsa_la_SOURCES = rdalsacard.cpp rdalsacard.h\
+                            rdalsamodel.cpp rdalsamodel.h
+
+nodist_librdalsa_la_SOURCES = moc_rdalsamodel.cpp
 
 librdalsa_la_LDFLAGS = -release $(VERSION)
 

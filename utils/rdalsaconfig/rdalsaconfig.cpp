@@ -2,7 +2,7 @@
 //
 // A Qt-based application to display info about ALSA cards.
 //
-//   (C) Copyright 2009-2025 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2009-2026 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,8 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qapplication.h>
-#include <qmessagebox.h>
+#include <QApplication>
+#include <QMessageBox>
 
 #include <rdapplication.h>
 #include <rdconf.h>
@@ -92,14 +92,14 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // ALSA Sound Devices
   //
-  alsa_system_list=new QListView(this);
-  alsa_system_list->setSelectionMode(QAbstractItemView::MultiSelection);
+  alsa_system_table=new RDTableView(this);
+  alsa_system_table->setSelectionMode(QAbstractItemView::MultiSelection);
   alsa_system_label=new QLabel(tr("ALSA Sound Devices"),this);
-  alsa_system_label->setFont(labelFont());
+  alsa_system_label->setFont(bigLabelFont());
   alsa_system_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   alsa_description_label=new QLabel(this);
   alsa_description_label->
-    setText(tr("Select the audio devices to dedicate for use with Rivendell. (Devices so dedicated will be unavailable for use with other applications.)"));
+    setText(tr("Select the ALSA audio device(s) to dedicate for use with Rivendell. (Devices so dedicated will be unavailable for use with other applications.)"));
   alsa_description_label->setAlignment(Qt::AlignLeft|Qt::AlignTop);
   alsa_description_label->setWordWrap(true);
 
@@ -121,8 +121,14 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   // Load Available Devices and Configuration
   //
   alsa_system_model=new RDAlsaModel(rda->system()->sampleRate(),this);
-  alsa_system_list->setModel(alsa_system_model);
-  LoadConfig(alsa_filename);
+  alsa_system_table->setModel(alsa_system_model);
+  alsa_system_table->setCurrentIndex(QModelIndex());
+  alsa_system_table->resizeColumnsToContents();
+  connect(alsa_system_table->selectionModel(),
+	SIGNAL(selectionChanged(const QItemSelection &,const QItemSelection &)),
+	this,
+	SLOT(selectionChangedData(const QItemSelection &,const QItemSelection &)));
+  LoadSelections(alsa_filename);
 
   //
   // Daemon Management
@@ -148,7 +154,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
 
 QSize MainWidget::sizeHint() const
 {
-  return QSize(400,400);
+  return QSize(600,400);
 }
 
 
@@ -158,9 +164,16 @@ QSizePolicy MainWidget::sizePolicy() const
 }
 
 
+void MainWidget::selectionChangedData(const QItemSelection &,
+				      const QItemSelection &)
+{
+  alsa_system_table->setCurrentIndex(QModelIndex());
+}
+
+
 void MainWidget::saveData()
 {
-  SaveConfig(alsa_filename);
+  SaveSelections(alsa_filename);
 
   StartDaemons();
 
@@ -179,8 +192,8 @@ void MainWidget::resizeEvent(QResizeEvent *e)
 {
   alsa_system_label->setGeometry(10,5,size().width()-20,20);
   alsa_description_label->setGeometry(10,25,size().width()-20,50);
-  alsa_system_list->
-    setGeometry(10,75,size().width()-20,size().height()-130);
+  alsa_system_table->
+    setGeometry(10,75-10,size().width()-20,size().height()-130+10);
   alsa_save_button->
     setGeometry(size().width()-140,size().height()-40,60,30);
   alsa_cancel_button->
@@ -209,31 +222,35 @@ void MainWidget::closeEvent(QCloseEvent *e)
 }
 
 
-void MainWidget::LoadConfig(const QString &filename)
+void MainWidget::LoadSelections(const QString &filename)
 {
-  if(!alsa_system_model->loadConfig(filename)) {
+  if(!alsa_system_model->loadSelections(filename)) {
     return;
   }
   for(int i=0;i<alsa_system_model->rowCount();i++) {
     if(alsa_system_model->isEnabled(i)) {
-      alsa_system_list->selectionModel()->
-	select(alsa_system_model->index(i,0),QItemSelectionModel::Select);
+      alsa_system_table->selectionModel()->
+	select(QItemSelection(alsa_system_model->index(i,0),
+			      alsa_system_model->index(i,1)),
+	       QItemSelectionModel::Select);
     }
     else {
-      alsa_system_list->selectionModel()->
-	select(alsa_system_model->index(i,0),QItemSelectionModel::Deselect);
+      alsa_system_table->selectionModel()->
+	select(QItemSelection(alsa_system_model->index(i,0),
+			      alsa_system_model->index(i,1)),
+	       QItemSelectionModel::Deselect);
     }
   }
 }
 
 
-void MainWidget::SaveConfig(const QString &filename) const
+void MainWidget::SaveSelections(const QString &filename) const
 {
   for(int i=0;i<alsa_system_model->rowCount();i++) {
-    QItemSelectionModel *sel=alsa_system_list->selectionModel();
+    QItemSelectionModel *sel=alsa_system_table->selectionModel();
     alsa_system_model->setEnabled(i,sel->isRowSelected(i,QModelIndex()));
   }
-  alsa_system_model->saveConfig(filename);
+  alsa_system_model->saveSelections(filename);
 }
 
 
@@ -257,7 +274,7 @@ Autogen::Autogen()
 
   RDAlsaModel *model=new RDAlsaModel(rda->system()->sampleRate());
   if(alsa_rewrite) {
-    if(!model->loadConfig(alsa_filename)) {
+    if(!model->loadSelections(alsa_filename)) {
       fprintf(stderr,"rdalsaconfig: unable to load file \"%s\"\n",
 	      (const char *)alsa_filename.toUtf8());
       StartDaemons();
@@ -269,7 +286,7 @@ Autogen::Autogen()
       model->setEnabled(i,true);
     }
   }
-  if(!model->saveConfig(alsa_filename)) {
+  if(!model->saveSelections(alsa_filename)) {
     fprintf(stderr,"rdalsaconfig: unable to load file \"%s\"\n",
 	    (const char *)alsa_filename.toUtf8());
     StartDaemons();
