@@ -172,15 +172,10 @@ bool RDAlsaModel::loadSelections(const QString &filename)
   FILE *f=NULL;
   char line[1024];
   bool active_line=false;
-  int rd_index;
+  int rd_index=0;
   QString rd_type;
+  int rd_slot=0;
   QString rd_card;
-  int rd_device;
-  int rd_rate;
-  int rd_bits;
-  int rd_slot;
-
-  //  QString slot;
   RDAlsaCard *card=NULL;
   bool ok=false;
 
@@ -214,18 +209,6 @@ bool RDAlsaModel::loadSelections(const QString &filename)
 	  }
 	}
 	if(rd_index>=0) {
-	  if(f0.first()=="bits") {
-	    rd_bits=f0.last().toUInt();
-	  }
-	  if(f0.first()=="card") {
-	    rd_card=f0.last();
-	  }
-	  if(f0.first()=="device") {
-	    rd_device=f0.last().toUInt();
-	  }
-	  if(f0.first()=="rate") {
-	    rd_rate=f0.last().toUInt();
-	  }
 	  if(f0.first()=="slot") {
 	    rd_slot=f0.last().toUInt();
 	  }

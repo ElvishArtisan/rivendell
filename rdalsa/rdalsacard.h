@@ -44,6 +44,10 @@ class RDAlsaCard
   bool isEnabled() const;
   void setEnabled(bool state);
   int maxChannelsPerPcm() const;
+  int periodFrames() const;
+  void setPeriodFrames(int frames);
+  int periodQuantity() const;
+  void setPeriodQuantity(int n);
   QString dump() const;
 
  private:
@@ -57,6 +61,8 @@ class RDAlsaCard
   QString card_mixer_name;
   QString card_pretty_mixer_name;
   int card_max_channels_per_pcm;
+  int card_period_frames;
+  int card_period_quantity;
   bool card_enabled;
 };
 #endif  // ALSA

@@ -43,9 +43,11 @@ RDAlsaCard::RDAlsaCard(snd_ctl_t *ctl,int index)
   card_mixer_name=QString(snd_ctl_card_info_get_mixername(card_info));
   card_pretty_mixer_name=card_mixer_name;
   card_max_channels_per_pcm=rda->config()->alsaChannelsPerPcm();
+  card_period_frames=-1;
+  card_period_quantity=-1;
 
   //
-  // Apply Specific Device Quirks
+  // Apply Specific Device Hints
   //
   if(card_name=="Loopback") {  // Fix the opaque name assigned by Wheatstone
     card_pretty_name.replace("Loopback","WheatNet");
@@ -62,6 +64,8 @@ RDAlsaCard::RDAlsaCard(snd_ctl_t *ctl,int index)
     card_pretty_long_name+=QString::asprintf(", slot %d",1+index);
     card_pretty_mixer_name=QObject::tr("[none]");
     card_max_channels_per_pcm=2;
+    card_period_frames=240;
+    card_period_quantity=4;
   }
   snd_ctl_card_info_free(card_info);
 }
@@ -155,6 +159,30 @@ int RDAlsaCard::maxChannelsPerPcm() const
 }
 
 
+int RDAlsaCard::periodFrames() const
+{
+  return card_period_frames;
+}
+
+
+void RDAlsaCard::setPeriodFrames(int frames)
+{
+  card_period_frames=frames;
+}
+
+
+int RDAlsaCard::periodQuantity() const
+{
+  return card_period_quantity;
+}
+
+
+void RDAlsaCard::setPeriodQuantity(int n)
+{
+  card_period_quantity=n;
+}
+
+
 QString RDAlsaCard::dump() const
 {
   QString ret=QString::asprintf("Card %d\n",index());
@@ -173,5 +201,18 @@ QString RDAlsaCard::dump() const
   else {
     ret+=QString::asprintf("  Max Channels Per PCM: %d\n",maxChannelsPerPcm());
   }
+  if(periodFrames()<0) {
+    ret+="  Period Frames: [default]\n";
+  }
+  else {
+    ret+=QString::asprintf("  Period Frames: %d\n",periodFrames());
+  }
+  if(periodQuantity()<0) {
+    ret+="  Period Quantity: [default]\n";
+  }
+  else {
+    ret+=QString::asprintf("  Period Quantity: %d\n",periodQuantity());
+  }
+
   return ret;
 }

@@ -25187,3 +25187,6 @@
 	* Added a device quirk for the LWSound driver.
 	* Refactored rdalsaconfig(8) to include the ALSA device ID for
 	each detected sound card.
+2026-08-10 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the ALSA driver in caed(8) to use period timing hints
+	from RDAlsaCard.

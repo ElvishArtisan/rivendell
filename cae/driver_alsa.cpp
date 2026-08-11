@@ -64,7 +64,7 @@ void *AlsaCaptureCallback(void *ptr)
 
   while(!alsa_format->exiting) {
     int s=snd_pcm_readi(alsa_format->pcm,alsa_format->card_buffer,
-			rda->config()->alsaPeriodSize());
+			alsa_format->alsacard->periodFrames());
     if(((snd_pcm_state(alsa_format->pcm)!=SND_PCM_STATE_RUNNING)&&
 	(!alsa_format->exiting))||(s<0)) {
       snd_pcm_drop (alsa_format->pcm);
@@ -530,8 +530,6 @@ void *AlsaPlayCallback(void *ptr)
 
 void DriverAlsa::AlsaInitCallback()
 {
-  int avg_periods=
-    (330*systemSampleRate())/(1000*rda->config()->alsaPeriodSize());
   for(int i=0;i<RD_MAX_CARDS;i++) {
     for(int j=0;j<RD_MAX_PORTS;j++) {
       alsa_recording[i][j]=false;
@@ -539,8 +537,8 @@ void DriverAlsa::AlsaInitCallback()
       alsa_input_volume[i][j]=1.0;
       alsa_input_vox[i][j]=0.0;
       for(int k=0;k<2;k++) {
-	alsa_input_meter[i][j][k]=new RDMeterAverage(avg_periods);
-	alsa_output_meter[i][j][k]=new RDMeterAverage(avg_periods);
+	alsa_input_meter[i][j][k]=new RDMeterAverage(64);
+	alsa_output_meter[i][j][k]=new RDMeterAverage(64);
       }
       for(int k=0;k<RD_MAX_STREAMS;k++) {
 	alsa_output_volume[i][j][k]=1.0;
@@ -556,7 +554,7 @@ void DriverAlsa::AlsaInitCallback()
       alsa_play_ring[i][j]=NULL;
       alsa_playing[i][j]=false;
       for(int k=0;k<2;k++) {
-	alsa_stream_output_meter[i][j][k]=new RDMeterAverage(avg_periods);
+	alsa_stream_output_meter[i][j][k]=new RDMeterAverage(64);
       }
     }
   }
@@ -684,12 +682,12 @@ bool DriverAlsa::initialize(unsigned *next_cardnum)
     return false;
   }
   for(int i=0;i<alsa_model->rowCount();i++) {
+    alsacard=alsa_model->card(i);
     if((*next_cardnum<RD_MAX_CARDS)&&alsa_model->isEnabled(i)) {
       //
       // Open the Control Interface
       //
       rda->station()->setCardDriver(*next_cardnum,RDStation::Alsa);
-      alsacard=alsa_model->card(i);
       if(snd_ctl_open(&snd_ctl,alsacard->id().toUtf8(),0)<0) {
 	rda->syslog(LOG_INFO,
 		    "no control device found for %s",
@@ -709,8 +707,7 @@ bool DriverAlsa::initialize(unsigned *next_cardnum)
       alsa_capture_format[*next_cardnum].exiting = true;
       if(snd_pcm_open(&pcm_play_handle,alsacard->id().toUtf8(),
 		      SND_PCM_STREAM_PLAYBACK,0)==0){
-	if(AlsaStartPlayDevice(alsacard->id(),*next_cardnum,pcm_play_handle,
-			       alsacard)) {
+	if(AlsaStartPlayDevice(alsacard,*next_cardnum,pcm_play_handle)) {
 	  pcm_started=true;
 	}
 	else {
@@ -725,8 +722,7 @@ bool DriverAlsa::initialize(unsigned *next_cardnum)
       }
       if(snd_pcm_open(&pcm_capture_handle,alsacard->id().toUtf8(),
 		      SND_PCM_STREAM_CAPTURE,0)==0) {
-	if(AlsaStartCaptureDevice(alsacard->id(),*next_cardnum,
-				   pcm_capture_handle,alsacard)) {
+	if(AlsaStartCaptureDevice(alsacard,*next_cardnum,pcm_capture_handle)) {
 	  pcm_started=true;
 	}
 	else {
@@ -760,7 +756,6 @@ bool DriverAlsa::initialize(unsigned *next_cardnum)
       (*next_cardnum)++;
     }
   }
-  delete alsa_model;
   return card>0;
 #else
   return false;
@@ -1449,8 +1444,8 @@ void DriverAlsa::recordTimerData(int cardport)
 
 
 #ifdef ALSA
-bool DriverAlsa::AlsaStartCaptureDevice(const QString &dev,int card,
-					snd_pcm_t *pcm,RDAlsaCard *alsacard)
+bool DriverAlsa::AlsaStartCaptureDevice(RDAlsaCard *alsacard,int card,
+					snd_pcm_t *pcm)
 {
   snd_pcm_hw_params_t *hwparams;
   snd_pcm_sw_params_t *swparams;
@@ -1460,12 +1455,13 @@ bool DriverAlsa::AlsaStartCaptureDevice(const QString &dev,int card,
   unsigned sr;
 
   memset(&alsa_capture_format[card],0,sizeof(struct alsa_format));
+  alsa_capture_format[card].alsacard=alsacard;
 
   snd_pcm_hw_params_alloca(&hwparams);
   snd_pcm_hw_params_any(pcm,hwparams);
 
   rda->syslog(LOG_INFO,"Starting ALSA Capture Device %s:",
-	      dev.toUtf8().constData());
+	      alsacard->id().toUtf8().constData());
   rda->syslog(LOG_INFO,"  Native Device Name = %s",
 	      alsacard->id().toUtf8().constData());
 
@@ -1537,11 +1533,11 @@ bool DriverAlsa::AlsaStartCaptureDevice(const QString &dev,int card,
   //
   // Buffer Setup
   //
-  alsa_capture_format[card].periods=rda->config()->alsaPeriodQuantity();
+  alsa_capture_format[card].periods=alsacard->periodQuantity();
   snd_pcm_hw_params_set_periods_near(pcm,hwparams,
 				     &alsa_capture_format[card].periods,&dir);
   alsa_capture_format[card].buffer_size=
-    alsa_capture_format[card].periods*rda->config()->alsaPeriodSize();
+    alsa_capture_format[card].periods*alsacard->periodFrames();
   snd_pcm_hw_params_set_buffer_size_near(pcm,hwparams,
 	       			 &alsa_capture_format[card].buffer_size);
 
@@ -1581,10 +1577,10 @@ bool DriverAlsa::AlsaStartCaptureDevice(const QString &dev,int card,
   //
   snd_pcm_sw_params_alloca(&swparams);
   snd_pcm_sw_params_current(pcm,swparams);
-  snd_pcm_sw_params_set_avail_min(pcm,swparams,rda->config()->alsaPeriodSize());
+  snd_pcm_sw_params_set_avail_min(pcm,swparams,alsacard->periodFrames());
   if((err=snd_pcm_sw_params(pcm,swparams))<0) {
-    rda->syslog(LOG_WARNING,"ALSA Device %s: %s",dev.toUtf8().constData(),
-		snd_strerror(err));
+    rda->syslog(LOG_WARNING,"ALSA Device %s: %s",
+		alsacard->id().toUtf8().constData(),snd_strerror(err));
     return false;
   }
 
@@ -1610,8 +1606,8 @@ bool DriverAlsa::AlsaStartCaptureDevice(const QString &dev,int card,
 }
 
 
-bool DriverAlsa::AlsaStartPlayDevice(const QString &dev,int card,snd_pcm_t *pcm,
-				     RDAlsaCard *alsacard)
+bool DriverAlsa::AlsaStartPlayDevice(RDAlsaCard *alsacard,int card,
+				     snd_pcm_t *pcm)
 {
   snd_pcm_hw_params_t *hwparams;
   snd_pcm_sw_params_t *swparams;
@@ -1621,12 +1617,13 @@ bool DriverAlsa::AlsaStartPlayDevice(const QString &dev,int card,snd_pcm_t *pcm,
   unsigned sr;
 
   memset(&alsa_play_format[card],0,sizeof(struct alsa_format));
+  alsa_play_format[card].alsacard=alsacard;
 
   snd_pcm_hw_params_alloca(&hwparams);
   snd_pcm_hw_params_any(pcm,hwparams);
 
   rda->syslog(LOG_INFO,"Starting ALSA Play Device %s:",
-	 (const char *)dev.toUtf8());
+	      alsacard->id().toUtf8().constData());
   rda->syslog(LOG_INFO,"  Native Device Name = %s",
 	      alsacard->id().toUtf8().constData());
 
@@ -1688,11 +1685,16 @@ bool DriverAlsa::AlsaStartPlayDevice(const QString &dev,int card,snd_pcm_t *pcm,
   //
   // Buffer Size
   //
-  alsa_play_format[card].periods=rda->config()->alsaPeriodQuantity();
+  if(alsacard->periodQuantity()<0) {
+    alsa_play_format[card].periods=rda->config()->alsaPeriodQuantity();
+  }
+  else {
+    alsa_play_format[card].periods=alsacard->periodFrames();
+  }
   snd_pcm_hw_params_set_periods_near(pcm,hwparams,
 				     &alsa_play_format[card].periods,&dir);
   alsa_play_format[card].buffer_size=
-    alsa_play_format[card].periods*rda->config()->alsaPeriodSize();
+    alsa_play_format[card].periods*alsacard->periodFrames();
   snd_pcm_hw_params_set_buffer_size_near(pcm,hwparams,
 					 &alsa_play_format[card].buffer_size);
 
@@ -1733,10 +1735,16 @@ bool DriverAlsa::AlsaStartPlayDevice(const QString &dev,int card,snd_pcm_t *pcm,
   //
   snd_pcm_sw_params_alloca(&swparams);
   snd_pcm_sw_params_current(pcm,swparams);
-  snd_pcm_sw_params_set_avail_min(pcm,swparams,rda->config()->alsaPeriodSize());
+  if(alsacard->periodFrames()<0) {
+    snd_pcm_sw_params_set_avail_min(pcm,swparams,
+				    rda->config()->alsaPeriodSize());
+  }
+  else {
+    snd_pcm_sw_params_set_avail_min(pcm,swparams,alsacard->periodFrames());
+  }
   if((err=snd_pcm_sw_params(pcm,swparams))<0) {
     rda->syslog(LOG_WARNING,"ALSA Device %s: %s",
-	   (const char *)dev.toUtf8(),snd_strerror(err));
+		alsacard->id().toUtf8().constData(),snd_strerror(err));
     return false;
   }
 
