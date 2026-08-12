@@ -48,7 +48,6 @@ RDAlsaCard::RDAlsaCard(snd_ctl_t *ctl,int index)
   if(card_driver=="Axia") {
     slot_quantity=AxiaSlotQuantity();
   }
-  printf("processing card: %s\n",card_id.toUtf8().constData());
   if(snd_ctl_pcm_info(ctl,pcm_info)==0) {
     printf("  found PCM info\n");
     pcm=-1;
@@ -94,6 +93,8 @@ RDAlsaCard::RDAlsaCard(snd_ctl_t *ctl,int index)
     card_max_channels_per_pcm=2;
     card_period_frames=240;
     card_period_quantity=4;
+    card_pcm_names.push_back(card_pretty_name);
+    card_enableds.push_back(false);
   }
   snd_pcm_info_free(pcm_info);
   snd_ctl_card_info_free(card_info);

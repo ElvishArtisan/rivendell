@@ -25193,3 +25193,6 @@
 2026-08-12 Fred Gleason <fredg@paravelsystems.com>
 	* Modified rdalsaconfig(8) to correctly handle management of
 	the Axia Livewire driver.
+2026-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed regressions in rdalsaconfig(8) that broke support for
+	management of the LWSound AoIP driver.

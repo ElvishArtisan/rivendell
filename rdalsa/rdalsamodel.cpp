@@ -256,19 +256,20 @@ bool RDAlsaModel::loadSelections(const QString &filename)
 	}
 	if(f0.first()=="}") {
 	  /*
-	  printf("PROCESSING: class: %s  type: %s  card: %s  device: %u\n",
+	  printf("PROCESSING: class: %s  type: %s  card: %s  device: %u  slot: %d\n",
 		 rd_class.toUtf8().constData(),
 		 rd_type.toUtf8().constData(),
 		 rd_card.toUtf8().constData(),
-		 rd_device);
+		 rd_device,
+		 rd_slot);
 	  */
 	  if(rd_class=="pcm") {
 	    if(rd_type=="lw") {   // LWSound virtual devices
-	      for(int i=0;i<model_alsa_cards.size();i++) {
-		card=model_alsa_cards.at(i);
+	      for(int i=0;i<rowCount();i++) {
+		card=model_alsa_cards.at(model_card_index.at(i));
 		if((card->driver()=="LWSound")&&
 		   (card->id()==QString::asprintf("lw32_%d",rd_slot))) {
-		  card->setEnabled(rd_slot,true);
+		  card->setEnabled(0,true);
 		}
 	      }
 	    }
@@ -288,6 +289,7 @@ bool RDAlsaModel::loadSelections(const QString &filename)
 	  rd_type="";
 	  rd_card="";
 	  rd_device=0;
+	  rd_slot=0;
 	}
       }
       else {
@@ -383,6 +385,7 @@ void RDAlsaModel::LoadDevicesList()
     snd_ctl_close(snd_ctl);
     index++;
   }
+  int hw_index=index;
 
   //
   // AoIP Devices
@@ -390,7 +393,9 @@ void RDAlsaModel::LoadDevicesList()
   index=0;
   while(snd_ctl_open(&snd_ctl,QString::asprintf("lw32_%d",index).toUtf8(),0)>=0) {
     model_alsa_cards.push_back(new RDAlsaCard(snd_ctl,index));
+    model_card_index.push_back(hw_index+index);
     d_pretty_ids.push_back(model_alsa_cards.back()->id());
+    model_pcm_index.push_back(0);
     snd_ctl_close(snd_ctl);
     index++;
   }
