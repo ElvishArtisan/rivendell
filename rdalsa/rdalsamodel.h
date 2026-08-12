@@ -43,7 +43,7 @@ class RDAlsaModel : public QAbstractTableModel
   QVariant data(const QModelIndex &index,int role=Qt::DisplayRole) const;
   QVariant headerData(int section,Qt::Orientation orient,
 		      int role=Qt::DisplayRole) const;
-  QModelIndex indexOf(const QString &card_id) const;
+  QModelIndex indexOf(const QString &card_id,int pcm_num) const;
   RDAlsaCard *card(int row) const;
   bool isEnabled(int row) const;
   void setEnabled(int row,bool state);
@@ -55,6 +55,9 @@ class RDAlsaModel : public QAbstractTableModel
   QList<QVariant> d_headers;
   QList<QVariant> d_alignments;
   QList<RDAlsaCard *> model_alsa_cards;
+  QList<QVariant> d_pretty_ids;
+  QList<int> model_card_index;
+  QList<int> model_pcm_index;
   unsigned model_sample_rate;
   QStringList model_other_lines;
 };

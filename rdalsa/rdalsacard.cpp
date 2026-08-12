@@ -26,12 +26,15 @@
 
 RDAlsaCard::RDAlsaCard(snd_ctl_t *ctl,int index)
 {
-  card_enabled=false;
   card_index=index;
 
-  snd_ctl_card_info_t *card_info;
+  snd_ctl_card_info_t *card_info=NULL;
+  snd_pcm_info_t *pcm_info=NULL;
+  int pcm=0;
+  int slot_quantity=0;
 
   snd_ctl_card_info_malloc(&card_info);
+  snd_pcm_info_malloc(&pcm_info);
 
   snd_ctl_card_info(ctl,card_info);
   card_id=QString(snd_ctl_card_info_get_id(card_info));
@@ -42,6 +45,31 @@ RDAlsaCard::RDAlsaCard(snd_ctl_t *ctl,int index)
   card_pretty_long_name=card_long_name;
   card_mixer_name=QString(snd_ctl_card_info_get_mixername(card_info));
   card_pretty_mixer_name=card_mixer_name;
+  if(card_driver=="Axia") {
+    slot_quantity=AxiaSlotQuantity();
+  }
+  printf("processing card: %s\n",card_id.toUtf8().constData());
+  if(snd_ctl_pcm_info(ctl,pcm_info)==0) {
+    printf("  found PCM info\n");
+    pcm=-1;
+    do {
+      snd_ctl_pcm_next_device(ctl,&pcm);
+      QString pcm_name=snd_pcm_info_get_name(pcm_info);
+      if(card_driver=="Axia") {
+	if(card_pcm_names.size()<slot_quantity) {
+	  pcm_name=QString::asprintf("Livewire Driver, Slot %d",1+pcm);
+	  card_pcm_names.push_back(pcm_name);
+	  card_enableds.push_back(false);
+	}
+      }
+      else {
+	if(card_pcm_names.size()==0) {
+	  card_pcm_names.push_back(pcm_name);
+	  card_enableds.push_back(false);
+	}
+      }
+    } while(pcm>=0);
+  }
   card_max_channels_per_pcm=rda->config()->alsaChannelsPerPcm();
   card_period_frames=-1;
   card_period_quantity=-1;
@@ -67,7 +95,10 @@ RDAlsaCard::RDAlsaCard(snd_ctl_t *ctl,int index)
     card_period_frames=240;
     card_period_quantity=4;
   }
+  snd_pcm_info_free(pcm_info);
   snd_ctl_card_info_free(card_info);
+
+  //  printf("[index:%d]: %s\n",index,dump().toUtf8().constData());
 }
 
 
@@ -141,15 +172,27 @@ QString RDAlsaCard::prettyMixerName() const
 }
 
 
-bool RDAlsaCard::isEnabled() const
+int RDAlsaCard::pcmQuantity() const
 {
-  return card_enabled;
+  return card_pcm_names.size();
 }
 
 
-void RDAlsaCard::setEnabled(bool state)
+QString RDAlsaCard::pcmName(int pcm_num) const
 {
-  card_enabled=state;
+  return card_pcm_names.at(pcm_num);
+}
+
+
+bool RDAlsaCard::isEnabled(int pcm_num) const
+{
+  return card_enableds.at(pcm_num);
+}
+
+
+void RDAlsaCard::setEnabled(int pcm_num,bool state)
+{
+  card_enableds[pcm_num]=state;
 }
 
 
@@ -212,6 +255,28 @@ QString RDAlsaCard::dump() const
   }
   else {
     ret+=QString::asprintf("  Period Quantity: %d\n",periodQuantity());
+  }
+
+  return ret;
+}
+
+
+int RDAlsaCard::AxiaSlotQuantity() const
+{
+  FILE *f=NULL;
+  char line[256];
+  int ret=0;
+
+  if((f=fopen("/etc/axia/license","r"))!=NULL) {
+    while(fgets(line,255,f)!=NULL) {
+      QString str=QString::fromUtf8(line).trimmed();
+      QStringList f0=str.split("=");
+      if((f0.size()==2)&&(f0.first()=="SlotQuantity")) {
+	ret=f0.last().toInt();
+	break;
+      }
+    }
+    fclose(f);
   }
 
   return ret;

@@ -25190,3 +25190,6 @@
 2026-08-10 Fred Gleason <fredg@paravelsystems.com>
 	* Modified the ALSA driver in caed(8) to use period timing hints
 	from RDAlsaCard.
+2026-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Modified rdalsaconfig(8) to correctly handle management of
+	the Axia Livewire driver.
