@@ -370,7 +370,6 @@ void RDAlsaModel::LoadDevicesList()
     model_alsa_cards.push_back(new RDAlsaCard(snd_ctl,index));
     if(model_alsa_cards.back()->driver()!="Axia") {
       if(model_alsa_cards.back()->pcmQuantity()>0) {
-	printf("creating pretty_id: %s\n",model_alsa_cards.back()->id().toUtf8().constData());
 	d_pretty_ids.push_back(model_alsa_cards.back()->id());
       }
     }

@@ -49,7 +49,6 @@ RDAlsaCard::RDAlsaCard(snd_ctl_t *ctl,int index)
     slot_quantity=AxiaSlotQuantity();
   }
   if(snd_ctl_pcm_info(ctl,pcm_info)==0) {
-    printf("  found PCM info\n");
     pcm=-1;
     do {
       snd_ctl_pcm_next_device(ctl,&pcm);

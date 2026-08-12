@@ -25196,3 +25196,6 @@
 2026-08-12 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed regressions in rdalsaconfig(8) that broke support for
 	management of the LWSound AoIP driver.
+2026-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Removed debugging statements from 'rdalsa/rdalsacard.cpp'.
+	* Removed debugging statements from 'rdalsa/rdalsamodel.cpp'.
