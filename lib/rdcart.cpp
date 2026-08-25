@@ -1250,8 +1250,12 @@ void RDCart::updateLength(bool enforce_length,unsigned length)
       QString::asprintf("`CART`.`AVERAGE_HOOK_LENGTH`=%d,",
 			active_hook_len/active_cuts)+
       "`CART`.`MINIMUM_TALK_LENGTH`=0,"+
-      "`CART`.`MAXIMUM_TALK_LENGTH`=0 "+
-      QString::asprintf(" where `NUMBER`=%u",cart_number);
+      "`CART`.`MAXIMUM_TALK_LENGTH`=0";
+    if(!enforce_length) {
+      sql+=
+	QString::asprintf(",`CART`.`FORCED_LENGTH`=%d",active_len/active_cuts);
+    }
+    sql+=QString::asprintf(" where `NUMBER`=%u",cart_number);
     RDSqlQuery::apply(sql);
   }
   else {

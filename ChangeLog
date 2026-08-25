@@ -25199,3 +25199,7 @@
 2026-08-12 Fred Gleason <fredg@paravelsystems.com>
 	* Removed debugging statements from 'rdalsa/rdalsacard.cpp'.
 	* Removed debugging statements from 'rdalsa/rdalsamodel.cpp'.
+2026-08-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'RDCart::updateLength()' method that failed to
+	update the 'CART.FORCED_LENGTH' field when calculating a new overall
+	length.
