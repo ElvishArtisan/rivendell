@@ -1,104 +1,27 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v4.4.1int8 -- 25 August 2026
-
-Changes:
-   ALSA Device Support. Refactored the ALSA device subsystem to better detect
-   virtual audio drivers.
-
-   Bugfixes. Fixed a bug in rdimport(1) that could leave carts in an
-   unplayable state in rdairplay(1).
-
-Database Update:
-   This version of Rivendell uses database schema version 377, and will
-   automatically upgrade any earlier versions. To see the current schema
-   version prior to upgrade, do 'sudo rddbmgr'.
-
-   Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
-   to allow any necessary changes to the database schema to be applied.
--------------------------------------------------------------------------------
-v4.4.1int7 -- 3 August 2026
+v4.5.0 -- 26 August 2026
 
 Changes:
    SoundPanel Optimization. Optimized code to provide greatly improved
    startup time for Sound Panel instances with many panels.
 
-Database Update:
-   This version of Rivendell uses database schema version 377, and will
-   automatically upgrade any earlier versions. To see the current schema
-   version prior to upgrade, do 'sudo rddbmgr'.
+   ALSA Device Support. Refactored the ALSA device subsystem to better support
+   virtual audio drivers.
 
-   Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
-   to allow any necessary changes to the database schema to be applied.
--------------------------------------------------------------------------------
-v4.4.1int6 -- 3 August 2026
+   Play-Out Timing Anomalies. Overhauled cart play-out code to eliminate
+   problems with truncating the end of log events.
 
-Changes:
-   Bugfixes. Fixed a bug in rdairplay(1) that caused carts with day-of-week
-   dayparting to fail to update their status at midnight.
+   Dropbox Enhancements. Added an 'Advanced Settings' button to the
+   'Dropbox Configuration' dialog in rdadmin(1) to permit tuning to support
+   reliable dropbox operation in high-latency WAN environments. See the
+   DROPBOX SCANNING ALGORITHM section in the rdimport(1) man page for details.
 
-Database Update:
-   This version of Rivendell uses database schema version 377, and will
-   automatically upgrade any earlier versions. To see the current schema
-   version prior to upgrade, do 'sudo rddbmgr'.
-
-   Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
-   to allow any necessary changes to the database schema to be applied.
--------------------------------------------------------------------------------
-v4.4.1int4 -- 30 July 2026
-
-Changes:
-   Bugfixes. Fixed a bug that could cause clipping at the end of play-outs
-   in rdairplay(1).
+   Multiple Bugfixes. See the ChangeLog.
 
 Database Update:
    This version of Rivendell uses database schema version 377, and will
-   automatically upgrade any earlier versions. To see the current schema
-   version prior to upgrade, do 'sudo rddbmgr'.
-
-   Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
-   to allow any necessary changes to the database schema to be applied.
--------------------------------------------------------------------------------
-v4.4.1int5 -- 31 July 2026
-
-Changes:
-   Timing Precision. Added various tweaks to real-time audio components
-   to improve timing precision. See the ChangeLog for details.
-
-Database Update:
-   This version of Rivendell uses database schema version 377, and will
-   automatically upgrade any earlier versions. To see the current schema
-   version prior to upgrade, do 'sudo rddbmgr'.
-
-   Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
-   to allow any necessary changes to the database schema to be applied.
--------------------------------------------------------------------------------
-v4.4.1int3 -- 13 February 2026
-
-Changes:
-   Bugfixes. Fixed a bug that could cause clipping at the end of play-outs
-   in rdairplay(1).
-
-Database Update:
-   This version of Rivendell uses database schema version 377, and will
-   automatically upgrade any earlier versions. To see the current schema
-   version prior to upgrade, do 'sudo rddbmgr'.
-
-   Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
-   to allow any necessary changes to the database schema to be applied.
--------------------------------------------------------------------------------
-v4.4.1int1 -- 24 November 2025
-
-Changes:
-   Bugfixes. Fixed a bug that could cause patently ridiculous values to
-   be calculated for the 'Start' and 'End' date-time columns in the cart
-   library.
-
-   Various bug fixes. See the ChangeLog.
-
-Database Update:
-   This version of Rivendell uses database schema version 376, and will
    automatically upgrade any earlier versions. To see the current schema
    version prior to upgrade, do 'sudo rddbmgr'.
 

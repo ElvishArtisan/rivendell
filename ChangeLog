@@ -25205,3 +25205,5 @@
 	length.
 2026-08-25 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to v4.4.1int8.
+2026-08-26 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to v4.5.0.
