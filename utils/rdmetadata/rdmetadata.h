@@ -45,6 +45,7 @@
   --songid=<songid>\n\
   --title=<title>\n\
   --year=<year>\n\
+  --user-defined=<data>\n\
   --verbose\n\
 \n"
 
@@ -77,6 +78,7 @@ class MainObject : public QObject
   int bpm;
   QString add_schedcode;
   QString rem_schedcode;
+  QString user_defined;
 };
 
 
