@@ -1169,9 +1169,9 @@ void RDCart::updateLength(bool enforce_length,unsigned length)
     if(q->value(0).toUInt()>0) {
       if(q->value(20).toString()=="Y") {  // Evergreen?
 	evergreen_found=true;
-	evergreen_segue_len=
+	evergreen_segue_len+=
 	  GetPointerRange(q->value(1).toInt(),q->value(2).toInt());
-	evergreen_hook_len=
+	evergreen_hook_len+=
 	  GetPointerRange(q->value(13).toInt(),q->value(14).toInt());
 	evergreen_len+=q->value(0).toUInt();
 	evergreen_cuts++;
@@ -1203,9 +1203,9 @@ void RDCart::updateLength(bool enforce_length,unsigned length)
 	      }
 	    }
 	    if(q->value(16).isNull()||(q->value(16).toDateTime()<=now)) {
-	      active_segue_len=
+	      active_segue_len+=
 		GetPointerRange(q->value(1).toInt(),q->value(2).toInt());
-	      active_hook_len=
+	      active_hook_len+=
 		GetPointerRange(q->value(13).toInt(),q->value(14).toInt());
 	      active_len+=q->value(0).toUInt();
 	      active_cuts++;

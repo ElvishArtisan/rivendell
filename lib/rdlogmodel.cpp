@@ -799,7 +799,9 @@ QTime RDLogModel::blockStartTime(int line) const
   for(int i=start_line;i<line;i++) {
     if((i<(lineCount()+1))&&((logLine(i+1)->transType()==RDLogLine::Segue))) {
       if(logLine(i)->segueStartPoint(RDLogLine::LogPointer)<0) {
-	actual_length+=100*(logLine(i)->averageSegueLength()/100);
+	//actual_length+=100*(logLine(i)->averageSegueLength()/100);
+        actual_length+=100*( (logLine(i)->forcedLength()-logLine(i)->averageSegueLength()) / 100) ;  
+
       }
       else {
 	if(logLine(i)->startPoint(RDLogLine::LogPointer)<0) {
