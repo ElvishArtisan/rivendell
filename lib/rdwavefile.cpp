@@ -2134,15 +2134,16 @@ QString RDWaveFile::getRdxlContents() const
 
 void RDWaveFile::setRdxlContents(const QString &xml)
 {
-  rdxl_contents=xml;
-
+  QByteArray utf8Data = xml.toUtf8();
+  
   //
   // Make sure that the RDXL chunk is of even length.
-  // (To avoid goosing a bug in CoolEdit Pro 2003).
   //
-  if((rdxl_contents.length()%2)!=0) {
-    rdxl_contents+=" ";
+  if ((utf8Data.size() % 2) != 0) {
+    utf8Data.append(' '); // O append('\0')
   }
+  
+  rdxl_contents = QString::fromUtf8(utf8Data);
 }
 
 
@@ -2577,19 +2578,21 @@ void RDWaveFile::WriteChunk(int fd,const char *cname,unsigned char *buf,
 }
 
 
-void RDWaveFile::WriteChunk(int fd,const char *cname,const QString &contents)
+void RDWaveFile::WriteChunk(int fd, const char *cname, const QString &contents)
 {
-  unsigned char size_buf[4];
-  size_buf[0]=contents.toUtf8().length()&0xff;
-  size_buf[1]=(contents.toUtf8().length()>>8)&0xff;
-  size_buf[2]=(contents.toUtf8().length()>>16)&0xff;
-  size_buf[3]=(contents.toUtf8().length()>>24)&0xff;
+  QByteArray utf8Data = contents.toUtf8();
+  int dataSize = utf8Data.size();
 
-  lseek(fd,0,SEEK_END);
-  CheckExitCode("RDWaveFile::WriteChunk()",write(fd,cname,4));
-  CheckExitCode("RDWaveFile::WriteChunk()",write(fd,size_buf,4));
-  CheckExitCode("RDWaveFile::WriteChunk()",
-		write(fd,contents.toUtf8(),contents.toUtf8().length()));
+  unsigned char size_buf[4];
+  size_buf[0] = dataSize & 0xff;
+  size_buf[1] = (dataSize >> 8) & 0xff;
+  size_buf[2] = (dataSize >> 16) & 0xff;
+  size_buf[3] = (dataSize >> 24) & 0xff;
+
+  lseek(fd, 0, SEEK_END);
+  CheckExitCode("RDWaveFile::WriteChunk()", write(fd, cname, 4));
+  CheckExitCode("RDWaveFile::WriteChunk()", write(fd, size_buf, 4));
+  CheckExitCode("RDWaveFile::WriteChunk()", write(fd, utf8Data.constData(), dataSize));
 }
 
 
