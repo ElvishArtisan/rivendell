@@ -82,6 +82,7 @@ class MainObject : public QObject
   QStringList GetCanonicalTables(int schema) const;
   void CheckLogLineIds(const QString &logname) const;
   void ValidateAudioLengths() const;
+  void RecalculateLengths() const;
   void Rehash(const QString &arg) const;
   void RehashCart(unsigned cartnum) const;
   void RehashCut(const QString &cutnum) const;
