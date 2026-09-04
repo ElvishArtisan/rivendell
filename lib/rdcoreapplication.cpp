@@ -425,7 +425,9 @@ QString RDCoreApplication::timeString(const QTime &time,bool show_secs,
     }
   }
   if(app_show_twelve_hour_time) {
-    QString time_str=time.toString(RD_TWELVE_HOUR_FORMAT);
+    //QString time_str=time.toString(RD_TWELVE_HOUR_FORMAT);
+    QLocale localeFijo(QLocale::English, QLocale::UnitedStates);
+    QString time_str=localeFijo.toString(time, RD_TWELVE_HOUR_FORMAT);
     if(!padding.isEmpty()) {
       if((time.hour()==0)||((time.hour()>=10)&&(time.hour()<13))||
 	 (time.hour()>=22)) {
@@ -486,7 +488,9 @@ QString RDCoreApplication::tenthsTimeString(const QTime &time,
 					    const QString &padding) const
 {
   if(app_show_twelve_hour_time) {
-    QString time_str=time.toString(RD_TWELVE_HOUR_TENTHS_FORMAT);
+    //QString time_str=time.toString(RD_TWELVE_HOUR_TENTHS_FORMAT);
+    QLocale localeFijo(QLocale::English, QLocale::UnitedStates);
+    QString time_str=localeFijo.toString(time, RD_TWELVE_HOUR_TENTHS_FORMAT);
     if(!padding.isEmpty()) {
       if((time.hour()==0)||((time.hour()>=10)&&(time.hour()<13))||
 	 (time.hour()>=22)) {
@@ -494,7 +498,9 @@ QString RDCoreApplication::tenthsTimeString(const QTime &time,
       }
       return padding+time_str.left(9)+" "+time_str.right(2);
     }
-    if(((time.hour()>=10)&&(time.hour()<13))||(time.hour()>=22)) {
+    //if(((time.hour()>=10)&&(time.hour()<13))||(time.hour()>=22)) {
+    if((time.hour()==0)||((time.hour()>=10)&&(time.hour()<13))||  
+         (time.hour()>=22)) {   
       return time_str.left(10)+" "+time_str.right(2);
     }
     return time_str.left(9)+" "+time_str.right(2);

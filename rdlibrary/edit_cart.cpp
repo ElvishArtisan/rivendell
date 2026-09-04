@@ -107,7 +107,7 @@ EditCart::EditCart(const QList<unsigned> &cartnums,QString *path,bool new_cart,
     rdcart_group_box->setGeometry(280,11,140,21);
   }
   else {
-    rdcart_group_box->setGeometry(135,38,110,21);
+    rdcart_group_box->setGeometry(135,38,140,21);
   }
   rdcart_group_model=new RDGroupListModel(false,cartnums.size()>1,false,this);
   rdcart_group_box->setModel(rdcart_group_model);
