@@ -179,6 +179,11 @@ RDCartFilter::RDCartFilter(bool show_drag_box,bool user_is_admin,
     d_showmatches_check->setChecked(rda->libraryConf()->searchLimited());
     break;
   }
+
+  d_last_search_time = QDateTime::currentMSecsSinceEpoch();
+  search_filter_timer=new QTimer(this);
+  connect(search_filter_timer,SIGNAL(timeout()),this,SLOT(searchClickedData()));
+  search_filter_timer->start(100);
 }
 
 
@@ -441,6 +446,7 @@ void RDCartFilter::changeUser()
 
 void RDCartFilter::filterChangedData(const QString &str)
 {
+  d_last_search_time = QDateTime::currentMSecsSinceEpoch();  
   d_search_button->setEnabled(true);
   if(rda->station()->filterMode()!=RDStation::FilterSynchronous) {
     return;
@@ -464,6 +470,10 @@ void RDCartFilter::setMatchCount(int matches)
 void RDCartFilter::searchClickedData()
 {
 
+  qint64 now = QDateTime::currentMSecsSinceEpoch();
+  if (now-d_last_search_time<750)
+    return;
+  d_last_search_time = now;
   d_search_button->setDisabled(true);
   if(d_filter_edit->text().isEmpty()) {
     d_clear_button->setDisabled(true);
@@ -857,17 +867,31 @@ void RDCartFilter::UpdateModel()
 QString RDCartFilter::ClauseSql(const QString &clause,bool incl_cuts)
 {
   QString search=RDEscapeString(clause);
-  QString sql=QString("(`CART`.`TITLE` like '%")+search+"%')||"+
-    "(`CART`.`ARTIST` like '%"+search+"%')||"+
-    "(`CART`.`CLIENT` like '%"+search+"%')||"+
-    "(`CART`.`AGENCY` like '%"+search+"%')||"+
-    "(`CART`.`ALBUM` like '%"+search+"%')||"+
-    "(`CART`.`LABEL` like '%"+search+"%')||"+
-    "(`CART`.`PUBLISHER` like '%"+search+"%')||"+
-    "(`CART`.`COMPOSER` like '%"+search+"%')||"+
-    "(`CART`.`CONDUCTOR` like '%"+search+"%')||"+
-    "(`CART`.`SONG_ID` like '%"+search+"%')||"+
-    "(`CART`.`USER_DEFINED` like '%"+search+"%')||";
+  QString sql="";
+  QStringList words = search.split(' ');
+
+  bool first=false;
+  foreach (const QString &word, words) {
+    if (first)
+        sql=sql+QString(" AND ");
+
+    sql=sql+QString(" CONCAT(`CART`.`TITLE`,")+
+                            " `CART`.`ARTIST`,"+
+                            " `CART`.`AGENCY`,"+
+                            " `CART`.`ALBUM`,"+
+                            " `CART`.`LABEL`,"+
+                            " `CART`.`PUBLISHER`,"+
+                            " `CART`.`COMPOSER`,"+
+                            " `CART`.`CONDUCTOR`,"+
+                            " `CART`.`SONG_ID`,"+
+                            " `CART`.`USER_DEFINED`"+
+                            ") like \"%" +word+ "%\" ";
+    first=true;
+  }
+
+  if (sql!="")
+    sql=" ("+sql+") ||";
+
   if(incl_cuts) {
     sql+=QString("(`CUTS`.`ISCI` like '%")+search+"%')||"+
       "(`CUTS`.`ISRC` like '%"+search+"%')||"+

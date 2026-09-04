@@ -127,6 +127,8 @@ class RDCartFilter : public RDWidget
   QString d_service;
   QString d_model_filter_sql;
   int d_model_cart_limit;
+  QTimer *search_filter_timer;
+  qint64 d_last_search_time;
 };
 
 
